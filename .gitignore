@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Environment variables
+.env
+.env.local
+
+# Docker
+pgdata/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Data — ignore only the heavy local-only files
+# (dividend.csv, right-share.csv, floorsheet_*, prices.csv are tracked for GitHub Actions)
+data/company-wise/*/announcements/
+data/company-wise/*/financial_reports/
+data/vector_db/
+.cache/
+.pytest_cache/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# FAISS Vector DB
+vector_db/
+*.bin
+*.pkl
+
+# Debug output
+scraper/core/debug_output/
+
+# Private — not for public repo
+scraper/core/announcements.py
+

@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+pandas
+lxml
+apscheduler
+python-dotenv
+pytz
+opencv-python==4.9.0.80  # For watermark removal
+

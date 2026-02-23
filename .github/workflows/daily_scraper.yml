@@ -1,0 +1,51 @@
+name: Daily Scraper
+
+on:
+  schedule:
+    # Runs at 6:30 PM Nepal time (12:45 UTC) on weekdays — after NEPSE closes at 3 PM
+    - cron: "45 12 * * 1-5"
+  workflow_dispatch:  # allow manual trigger from GitHub UI
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed to git push scraped data back to repo
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4
+
+      - name: Run dividend scraper
+        run: python scraper/run_github_actions.py --dividends
+
+      - name: Run right-share scraper
+        run: python scraper/run_github_actions.py --right-shares
+
+      - name: Run floorsheet scraper
+        run: python scraper/run_github_actions.py --floorsheet
+
+      - name: Update company prices (incremental)
+        # NOTE: Price scraping is intentionally excluded from GitHub Actions.
+        # Prices require existing prices.csv files to do incremental updates.
+        # Run 'python scraper/run_daily.py --incremental' locally instead.
+        run: echo "Price scraping skipped (run locally)"
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "chore: daily scrape $(date -u +'%Y-%m-%d')"
+          git push

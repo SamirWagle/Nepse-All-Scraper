@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Data files
+# data/  <-- Commented out to allow data tracking for daily scraper
+# *.csv  <-- Commented out
+# *.json <-- Commented out
+
+# Ignore large/temp data if needed
+data/floorsheet_*.json
+# storage/
+
+# Debug output
+debug_output/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Environment
+.env
+.env.local
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
