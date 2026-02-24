@@ -27,6 +27,11 @@ jobs:
         run: |
           pip install requests beautifulsoup4
 
+      - name: Update company prices (incremental)
+        run: |
+          cd scraper
+          python run_daily.py --incremental
+
       - name: Run dividend scraper
         run: python scraper/run_github_actions.py --dividends
 
@@ -36,11 +41,6 @@ jobs:
       - name: Run floorsheet scraper
         run: python scraper/run_github_actions.py --floorsheet
 
-      - name: Update company prices (incremental)
-        # NOTE: Price scraping is intentionally excluded from GitHub Actions.
-        # Prices require existing prices.csv files to do incremental updates.
-        # Run 'python scraper/run_daily.py --incremental' locally instead.
-        run: echo "Price scraping skipped (run locally)"
 
       - name: Commit and push updated data
         run: |

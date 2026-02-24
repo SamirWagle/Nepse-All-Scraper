@@ -112,9 +112,6 @@ class DailyScraperManager:
         """
         logger.info("=== Daily Update Started ===")
 
-        # Refresh the ID mapping so new listings are picked up
-        self.price_scraper._load_company_id_map(force_update=True)
-
         target = self.get_priority_companies()
         logger.info(f"Priority companies: {len(target)}")
 
