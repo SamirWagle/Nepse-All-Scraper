@@ -32,7 +32,8 @@ from datetime import date as dt_date
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 COMPANY_WISE = DATA_DIR / "company-wise"
-COMPANY_LIST = DATA_DIR / "company_list.json"
+FLOORSHEET_DIR = DATA_DIR / "floorsheet"
+COMPANY_LIST = Path(__file__).resolve().parent / "company_list.json"
 
 # ── Logging ────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -394,18 +395,16 @@ def scrape_floorsheet(max_pages=None):
 
 
 def save_floorsheet(records):
-    """Save to data/floorsheet_YYYY-MM-DD.csv and .json (overwrites if re-run same day)."""
+    """Save to data/floorsheet/floorsheet_YYYY-MM-DD.csv (overwrites if re-run same day)."""
     if not records:
         return
     today = str(dt_date.today())
-    ensure_dir(DATA_DIR)
+    ensure_dir(FLOORSHEET_DIR)
 
-    csv_path = DATA_DIR / f"floorsheet_{today}.csv"
-    json_path = DATA_DIR / f"floorsheet_{today}.json"
+    csv_path = FLOORSHEET_DIR / f"floorsheet_{today}.csv"
 
     overwrite_csv(csv_path, FLOORSHEET_FIELDS, records)
-    json_path.write_text(json.dumps(records, indent=2), encoding="utf-8")
-    log.info(f"Floorsheet: saved -> {csv_path.name} + {json_path.name}")
+    log.info(f"Floorsheet: saved -> {csv_path}")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
