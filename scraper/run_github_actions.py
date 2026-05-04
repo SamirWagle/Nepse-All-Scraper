@@ -97,6 +97,11 @@ def ensure_dir(path: Path):
     path.mkdir(parents=True, exist_ok=True)
 
 
+def safe_dir(symbol: str) -> str:
+    """Filesystem-safe folder name. ShareSansar uses '/' in some symbols (e.g. GBILD86/87)."""
+    return symbol.replace("/", "-")
+
+
 def read_existing_set(filepath: Path, key_col: str) -> set:
     """Return a set of values from key_col in an existing CSV."""
     if not filepath.exists():
@@ -235,7 +240,7 @@ def update_dividends(symbol):
         log.info(f"  [{symbol}] No dividend data")
         return
 
-    out = COMPANY_WISE / symbol / "dividend.csv"
+    out = COMPANY_WISE / safe_dir(symbol) / "dividend.csv"
     ensure_dir(out.parent)
     overwrite_csv(out, DIVIDEND_FIELDS, records)
     log.info(f"  [{symbol}] Saved {len(records)} dividend records")
@@ -302,7 +307,7 @@ def update_right_shares(symbol):
         log.info(f"  [{symbol}] No right share data")
         return
 
-    out = COMPANY_WISE / symbol / "right-share.csv"
+    out = COMPANY_WISE / safe_dir(symbol) / "right-share.csv"
     ensure_dir(out.parent)
     overwrite_csv(out, RIGHT_SHARE_FIELDS, records)
     log.info(f"  [{symbol}] Saved {len(records)} right share records")

@@ -4,13 +4,13 @@
 
 **A free, open-source data pipeline for the Nepal Stock Exchange.**  
 Automatically scrapes prices, dividends, right shares, and floorsheet data  
-for **337 listed companies** — committed to this repo every weekday via GitHub Actions.
+for **365 listed companies** — committed to this repo every weekday via GitHub Actions.
 
 [![Daily Scraper](https://github.com/SamirWagle/Nepse-All-Scraper/actions/workflows/daily_scraper.yml/badge.svg)](https://github.com/SamirWagle/Nepse-All-Scraper/actions/workflows/daily_scraper.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
 ![Data Source](https://img.shields.io/badge/Source-ShareSansar%20%7C%20Merolagani-orange)
 ![License](https://img.shields.io/badge/License-Educational-green)
-![Companies](https://img.shields.io/badge/Companies-337-purple)
+![Companies](https://img.shields.io/badge/Companies-365-purple)
 
 </div>
 
@@ -39,7 +39,7 @@ Nepse-All-Scraper/
 │       └── daily_scraper.yml      # GitHub Actions — runs every weekday at 6:30 PM NPT
 │
 ├── data/
-│   ├── company_list.json          # 337 priority company symbols
+│   ├── company_list.json          # 365 priority company symbols
 │   ├── company_id_mapping.json    # Symbol → ShareSansar internal ID
 │   ├── floorsheet_YYYY-MM-DD.csv  # Daily floorsheet (all trades)
 │   ├── floorsheet_YYYY-MM-DD.json # Same data as JSON
@@ -69,8 +69,8 @@ The workflow [`.github/workflows/daily_scraper.yml`](.github/workflows/daily_scr
 ┌─────────────────────────────────────────────────────┐
 │              GitHub Actions — Daily Run              │
 ├─────────────┬───────────────────────────────────────┤
-│  Dividends  │  Updates dividend.csv (all 337)        │
-│ Right Shares│  Updates right-share.csv (all 337)     │
+│  Dividends  │  Updates dividend.csv (all 365)        │
+│ Right Shares│  Updates right-share.csv (all 365)     │
 │  Floorsheet │  Full day's trades from merolagani.com │
 │  Commit     │  git push → data/ auto-updated in repo │
 └─────────────┴───────────────────────────────────────┘
@@ -103,7 +103,7 @@ python scraper/run_github_actions.py --floorsheet --max-pages 3
 
 ### Scrape full OHLC price history (local only, first-time)
 ```bash
-# Full history for all 337 companies — takes ~2-4 hours on first run
+# Full history for all 365 companies — takes ~2-4 hours on first run
 python scraper/run_daily.py --full-scrape
 
 # Incremental — only fetches newer records than what's already in prices.csv

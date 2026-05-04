@@ -71,7 +71,8 @@ class DailySummaryUpdater:
                 symbol = symbol_dir.name
                 
                 # Filter by priority list
-                if priority_list and symbol not in priority_list:
+                # Symbols can contain '/' (e.g. GBILD86/87) but dirs use '-'.
+                if priority_list and symbol not in {s.replace('/', '-') for s in priority_list}:
                     continue
                 
                 csv_file = symbol_dir / "prices.csv"
@@ -93,8 +94,9 @@ class DailySummaryUpdater:
                     logger.warning(f"Error reading {symbol}/prices.csv: {e}")
                     continue
                 
-                # Find this symbol in today's data
-                symbol_data = price_table.loc[price_table['Symbol'] == symbol]
+                # Find this symbol in today's data (table uses original symbol with '/')
+                lookup = symbol.replace('-', '/')
+                symbol_data = price_table.loc[price_table['Symbol'].isin([symbol, lookup])]
                 
                 if len(symbol_data) == 1:
                     row = symbol_data.iloc[0]

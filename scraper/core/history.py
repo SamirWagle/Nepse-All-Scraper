@@ -39,7 +39,7 @@ class ShareSansarHistoryScraper:
         Returns a date string 'YYYY-MM-DD' or None if no file exists.
         """
         filepath = os.path.join(
-            os.path.dirname(__file__), '..', '..', 'data', 'company-wise', symbol, 'prices.csv'
+            os.path.dirname(__file__), '..', '..', 'data', 'company-wise', symbol.replace('/', '-'), 'prices.csv'
         )
         if not os.path.exists(filepath):
             return None
@@ -222,7 +222,7 @@ class ShareSansarHistoryScraper:
         Append new records to company CSV file, avoiding duplicates.
         Saves to data/company-wise/{symbol}/prices.csv
         """
-        base_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'company-wise', symbol)
+        base_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'company-wise', symbol.replace('/', '-'))
         os.makedirs(base_dir, exist_ok=True)
         
         filepath = os.path.join(base_dir, "prices.csv")

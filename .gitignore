@@ -19,6 +19,7 @@ pgdata/
 # IDEs
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 *~

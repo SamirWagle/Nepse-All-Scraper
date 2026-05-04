@@ -60,7 +60,9 @@ class DailyScraperManager:
 
     def _update_prices(self, symbols, force_full=False):
         """Scrape / update prices.csv for the given symbols."""
-        existing = self.get_existing_companies()
+        existing_dirs = self.get_existing_companies()
+        # Dirs use '-' instead of '/' (e.g. GBILD86/87 -> GBILD86-87). Normalize for comparison.
+        existing = {d.replace('-', '/') if d.replace('-', '/') in symbols else d for d in existing_dirs}
         new_companies = symbols - existing
         existing_priority = symbols & existing
 
