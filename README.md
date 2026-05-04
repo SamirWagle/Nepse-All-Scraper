@@ -9,6 +9,7 @@ for **365 listed companies** — committed to this repo every weekday via GitHub
 🚀 **Live API + Swagger UI:** https://samirwagle.github.io/Nepse-All-Scraper/
 
 [![Daily Scraper](https://github.com/SamirWagle/Nepse-All-Scraper/actions/workflows/daily_scraper.yml/badge.svg)](https://github.com/SamirWagle/Nepse-All-Scraper/actions/workflows/daily_scraper.yml)
+[![Latest Scrape](https://img.shields.io/endpoint?url=https://samirwagle.github.io/Nepse-All-Scraper/api/status.json&label=latest+scrape)](https://samirwagle.github.io/Nepse-All-Scraper/api/status.json)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
 ![Data Source](https://img.shields.io/badge/Source-ShareSansar%20%7C%20Merolagani-orange)
 ![License](https://img.shields.io/badge/License-Educational-green)
@@ -117,6 +118,60 @@ python scraper/run_daily.py --new-only
 
 > **Why are prices local-only?**  
 > Price scraping needs the existing `prices.csv` files to know where to stop (incremental logic). Run it locally once, push the data, then automation handles daily updates.
+
+---
+
+## 🌐 Public API (free, no auth)
+
+Two equivalent ways to consume the data — pick whichever your client likes.
+
+### A. Swagger / JSON via GitHub Pages
+
+```
+https://samirwagle.github.io/Nepse-All-Scraper/                 # Swagger UI
+https://samirwagle.github.io/Nepse-All-Scraper/openapi.json     # OpenAPI 3.1 spec
+https://samirwagle.github.io/Nepse-All-Scraper/api/companies.json
+https://samirwagle.github.io/Nepse-All-Scraper/api/latest.json
+https://samirwagle.github.io/Nepse-All-Scraper/api/prices/ADBL.json
+https://samirwagle.github.io/Nepse-All-Scraper/api/dividends/ADBL.json
+https://samirwagle.github.io/Nepse-All-Scraper/api/right-shares/NABIL.json
+https://samirwagle.github.io/Nepse-All-Scraper/api/floorsheet/index.json
+https://samirwagle.github.io/Nepse-All-Scraper/api/status.json  # health snapshot
+```
+
+### B. Raw CSV via jsDelivr CDN (faster, no rate limit)
+
+[jsDelivr](https://www.jsdelivr.com/) auto-mirrors public GitHub repos on a global CDN. Same files, faster, no GitHub rate limits, automatic gzip:
+
+```
+https://cdn.jsdelivr.net/gh/SamirWagle/Nepse-All-Scraper@main/data/company_list.json
+https://cdn.jsdelivr.net/gh/SamirWagle/Nepse-All-Scraper@main/data/company-wise/ADBL/prices.csv
+https://cdn.jsdelivr.net/gh/SamirWagle/Nepse-All-Scraper@main/data/company-wise/ADBL/dividend.csv
+https://cdn.jsdelivr.net/gh/SamirWagle/Nepse-All-Scraper@main/data/floorsheet/floorsheet_2026-05-04.csv
+```
+
+> Symbols with `/` in the name (e.g. `GBILD86/87`) live on disk as `GBILD86-87`. Use the dashed form in URLs.
+
+### Quick examples
+
+```python
+# Python
+import requests
+prices = requests.get("https://samirwagle.github.io/Nepse-All-Scraper/api/prices/ADBL.json").json()
+print(prices["count"], prices["data"][-1])
+```
+
+```js
+// JavaScript / TypeScript
+const r = await fetch("https://samirwagle.github.io/Nepse-All-Scraper/api/latest.json");
+const latest = await r.json();
+console.log(latest["NABIL"]);
+```
+
+```bash
+# CLI
+curl https://cdn.jsdelivr.net/gh/SamirWagle/Nepse-All-Scraper@main/data/company-wise/NABIL/dividend.csv
+```
 
 ---
 

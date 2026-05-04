@@ -178,6 +178,13 @@ def build_openapi(symbol_count: int, floorsheet_dates: list[str]):
                     "responses": {"200": {"description": "Right-share records"}}
                 }
             },
+            "/status.json": {
+                "get": {
+                    "summary": "Scrape health & coverage snapshot",
+                    "description": "Last scrape date, symbol counts, coverage %. Shields.io-compatible endpoint format.",
+                    "responses": {"200": {"description": "Status object"}}
+                }
+            },
             "/floorsheet/index.json": {
                 "get": {
                     "summary": "List of available floorsheet dates with raw-CSV download URLs",
@@ -225,6 +232,26 @@ SWAGGER_HTML = """<!doctype html>
 """
 
 
+def build_status(symbols, latest, fs, dividend_count, rights_count):
+    """Health snapshot — drives shields.io endpoint badges."""
+    today = str(dt_date.today())
+    coverage_pct = round(100 * len(latest) / max(len(symbols), 1), 1)
+    return {
+        "schemaVersion": 1,  # shields.io endpoint contract
+        "label": "data",
+        "message": f"{len(symbols)} symbols · {today}",
+        "color": "blue",
+        "scrape_date": today,
+        "symbols_total": len(symbols),
+        "symbols_with_prices": len(latest),
+        "symbols_with_dividends": dividend_count,
+        "symbols_with_right_shares": rights_count,
+        "floorsheet_days": len(fs),
+        "floorsheet_latest": fs[-1]["date"] if fs else None,
+        "coverage_pct": coverage_pct,
+    }
+
+
 def main():
     print(f"Building static API to {DOCS}/")
     DOCS.mkdir(parents=True, exist_ok=True)
@@ -243,6 +270,12 @@ def main():
     write_json(API / "floorsheet" / "index.json", fs)
     print(f"  floorsheet dates: {len(fs)}")
 
+    div_count = sum(1 for _ in (API / "dividends").glob("*.json")) if (API / "dividends").exists() else 0
+    rights_count = sum(1 for _ in (API / "right-shares").glob("*.json")) if (API / "right-shares").exists() else 0
+
+    status = build_status(symbols, latest, fs, div_count, rights_count)
+    write_json(API / "status.json", status)
+
     spec = build_openapi(len(symbols), [e["date"] for e in fs])
     write_json(DOCS / "openapi.json", spec)
 
@@ -252,6 +285,7 @@ def main():
     (DOCS / ".nojekyll").write_text("", encoding="utf-8")
 
     print(f"Done. {len(symbols)} symbols, {len(latest)} with prices, {len(fs)} floorsheet days.")
+    print(f"      dividends: {div_count}, right-shares: {rights_count}")
 
 
 if __name__ == "__main__":
