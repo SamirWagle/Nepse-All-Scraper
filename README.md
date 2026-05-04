@@ -6,6 +6,8 @@
 Automatically scrapes prices, dividends, right shares, and floorsheet data  
 for **365 listed companies** — committed to this repo every weekday via GitHub Actions.
 
+🚀 **Live API + Swagger UI:** https://samirwagle.github.io/Nepse-All-Scraper/
+
 [![Daily Scraper](https://github.com/SamirWagle/Nepse-All-Scraper/actions/workflows/daily_scraper.yml/badge.svg)](https://github.com/SamirWagle/Nepse-All-Scraper/actions/workflows/daily_scraper.yml)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
 ![Data Source](https://img.shields.io/badge/Source-ShareSansar%20%7C%20Merolagani-orange)
