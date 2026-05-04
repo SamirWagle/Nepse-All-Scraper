@@ -1,0 +1,9 @@
+{
+  "name": "com.nepse.cagr",
+  "description": "NEPSE CAGR Engine Bridge",
+  "path": "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_host_wrapper.sh",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://kladefednckikmmkfgadpdemkomckckn/"
+  ]
+}

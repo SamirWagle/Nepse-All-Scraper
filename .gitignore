@@ -59,3 +59,4 @@ scraper/core/debug_output/
 # Private — not for public repo
 scraper/core/announcements.py
 
+.claude/

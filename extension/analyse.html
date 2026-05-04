@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NEPSE Stock Analyser</title>
+  <style>
+    :root {
+      --bg:       #0d1f2d;
+      --card:     #112233;
+      --input-bg: #1a2e3f;
+      --border:   #1e3a4f;
+      --text:     #cdd9e5;
+      --label:    #7a9bb5;
+      --accent:   #4ecdc4;
+      --accent2:  #38b2aa;
+      --neg:      #ff6b6b;
+      --pos:      #4ecdc4;
+      --row-even: #0f1e2b;
+      --row-odd:  #112233;
+    }
+    body.light {
+      --bg:       #fdf6e3;
+      --card:     #eee8d5;
+      --input-bg: #fdf6e3;
+      --border:   #ccc4a8;
+      --text:     #073642;
+      --label:    #657b83;
+      --accent:   #2aa198;
+      --accent2:  #1d8a82;
+      --neg:      #dc322f;
+      --pos:      #2aa198;
+      --row-even: #eee8d5;
+      --row-odd:  #fdf6e3;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      transition: background 0.3s;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .topbar-brand img { width: 28px; height: 28px; border-radius: 6px; }
+    .theme-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    .theme-btn:hover { background: var(--card); }
+
+    /* ── Hero search area ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 32px 40px;
+    }
+    .hero-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: var(--label);
+      margin-bottom: 32px;
+    }
+
+    /* ── Search box ── */
+    .search-wrap {
+      width: 100%;
+      max-width: 620px;
+      position: relative;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 32px;
+      padding: 0 20px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    }
+    .search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 4px 32px rgba(78,205,196,0.15);
+    }
+    .search-icon {
+      font-size: 18px;
+      margin-right: 12px;
+      color: var(--label);
+    }
+    #search-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      color: var(--text);
+      padding: 16px 0;
+      letter-spacing: 0.5px;
+    }
+    #search-input::placeholder { color: var(--label); opacity: 0.6; }
+    .search-btn {
+      background: var(--accent);
+      color: #0d1f2d;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .search-btn:hover { background: var(--accent2); }
+
+    /* ── Options row ── */
+    .options-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .opt-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 14px;
+    }
+    .opt-label {
+      font-size: 12px;
+      color: var(--label);
+      white-space: nowrap;
+    }
+    .opt-toggle {
+      display: flex;
+      background: var(--input-bg);
+      border-radius: 8px;
+      padding: 2px;
+    }
+    .opt-toggle button {
+      background: none;
+      border: none;
+      color: var(--label);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .opt-toggle button.active {
+      background: var(--accent);
+      color: #0d1f2d;
+    }
+    .opt-input {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 5px 10px;
+      font-size: 13px;
+      outline: none;
+      width: 80px;
+      transition: border-color 0.2s;
+    }
+    .opt-input:focus { border-color: var(--accent); }
+    #date-opt { display: none; width: 130px; }
+
+    /* ── Results area ── */
+    .results-area {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 32px 48px;
+      display: none;
+    }
+
+    /* CAGR hero */
+    .cagr-hero {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .cagr-hero-symbol {
+      font-size: 13px;
+      color: var(--label);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .cagr-hero-value {
+      font-size: 56px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .cagr-hero-value.pos { color: var(--pos); }
+    .cagr-hero-value.neg { color: var(--neg); }
+    .cagr-hero-meta { font-size: 13px; color: var(--label); }
+
+    /* Summary grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 600px) {
+      .summary-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .summary-card-label {
+      font-size: 10px;
+      color: var(--label);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .summary-card-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Events table */
+    .events-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .events-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--label);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      color: var(--label);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 10px 16px;
+      color: var(--text);
+    }
+    tr:nth-child(even) td { background: var(--row-even); }
+    tr:nth-child(odd) td { background: var(--row-odd); }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-bonus { background: #1a3a5c; color: #4ecdc4; }
+    .badge-cash  { background: #1a3a2a; color: #51cf66; }
+    body.light .badge-bonus { background: #d0eae8; color: #2aa198; }
+    body.light .badge-cash  { background: #d0ead5; color: #22863a; }
+
+    #page-status {
+      text-align: center;
+      padding: 20px;
+      color: var(--label);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-brand">
+      <img src="icons/icon48.png" alt="NEPSE">
+      NEPSE Stock Analyser
+    </div>
+    <button class="theme-btn" id="theme-btn">☀️ Light Mode</button>
+  </div>
+
+  <div class="hero">
+    <div class="hero-title">Analyse Any Stock</div>
+    <div class="hero-sub">Enter a NEPSE stock symbol to calculate its CAGR</div>
+
+    <div class="search-wrap">
+      <div class="search-box">
+        <span class="search-icon">📈</span>
+        <input type="text" id="search-input" placeholder="e.g. NABIL, NICA, ADBL..." autocomplete="off">
+        <button class="search-btn" id="search-btn">Analyse</button>
+      </div>
+    </div>
+
+    <div class="options-row">
+      <!-- Period -->
+      <div class="opt-group">
+        <span class="opt-label">Period</span>
+        <div class="opt-toggle">
+          <button id="opt-years-btn" class="active">Years</button>
+          <button id="opt-date-btn">From date</button>
+        </div>
+        <input type="number" class="opt-input" id="years-opt" value="5" min="1" max="30">
+        <input type="date" class="opt-input" id="date-opt">
+      </div>
+
+      <!-- Investment -->
+      <div class="opt-group">
+        <span class="opt-label">Investment</span>
+        <span style="color:var(--label);font-size:13px">Rs.</span>
+        <input type="number" class="opt-input" id="invest-opt" value="100000" min="1000" style="width:100px">
+      </div>
+    </div>
+  </div>
+
+  <div id="page-status"></div>
+  <div class="results-area" id="results-area">
+    <div class="cagr-hero">
+      <div class="cagr-hero-symbol" id="r-symbol">—</div>
+      <div class="cagr-hero-value" id="r-cagr">—</div>
+      <div class="cagr-hero-meta" id="r-meta">—</div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-card-label">Start Price</div>
+        <div class="summary-card-value" id="r-start-price">—</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-label">LTP</div>
+        <div class="summary-card-value" id="r-ltp">—</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-label">Units Today</div>
+        <div class="summary-card-value" id="r-units">—</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-label">Market Value</div>
+        <div class="summary-card-value" id="r-market">—</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-label">Cash Dividends</div>
+        <div class="summary-card-value" id="r-divs">—</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-label">Today's Value</div>
+        <div class="summary-card-value" id="r-today">—</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-label">Initial Investment</div>
+        <div class="summary-card-value" id="r-invest">—</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-card-label">Years</div>
+        <div class="summary-card-value" id="r-years">—</div>
+      </div>
+    </div>
+
+    <div class="events-section">
+      <div class="events-header">Year-by-Year Events</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Event</th>
+            <th>Fiscal Year</th>
+            <th>Units After</th>
+            <th>Cash Rs.</th>
+          </tr>
+        </thead>
+        <tbody id="r-events"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // ── Theme ──
+    let isDark = true;
+    document.getElementById('theme-btn').onclick = () => {
+      isDark = !isDark;
+      document.body.classList.toggle('light', !isDark);
+      document.getElementById('theme-btn').textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    };
+
+    // ── Period toggle ──
+    let useYears = true;
+    document.getElementById('opt-years-btn').onclick = () => {
+      useYears = true;
+      document.getElementById('opt-years-btn').classList.add('active');
+      document.getElementById('opt-date-btn').classList.remove('active');
+      document.getElementById('years-opt').style.display = '';
+      document.getElementById('date-opt').style.display = 'none';
+    };
+    document.getElementById('opt-date-btn').onclick = () => {
+      useYears = false;
+      document.getElementById('opt-date-btn').classList.add('active');
+      document.getElementById('opt-years-btn').classList.remove('active');
+      document.getElementById('years-opt').style.display = 'none';
+      document.getElementById('date-opt').style.display = '';
+    };
+
+    // ── Search ──
+    document.getElementById('search-btn').onclick = doSearch;
+    document.getElementById('search-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doSearch();
+    });
+
+    async function doSearch() {
+      const symbol = document.getElementById('search-input').value.trim().toUpperCase();
+      if (!symbol) return;
+
+      const investment = parseFloat(document.getElementById('invest-opt').value) || 100000;
+      const payload = { symbol, investment };
+      if (useYears) payload.years = parseFloat(document.getElementById('years-opt').value) || 5;
+      else { payload.start_date = document.getElementById('date-opt').value; }
+
+      document.getElementById('page-status').textContent = '⏳ Calculating...';
+      document.getElementById('results-area').style.display = 'none';
+
+      // Find engine
+      let port = await findPort();
+      let data;
+
+      if (port) {
+        try {
+          const resp = await fetch(`http://localhost:${port}/cagr`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          data = await resp.json();
+        } catch(e) {
+          document.getElementById('page-status').textContent = '❌ ' + e.message;
+          return;
+        }
+      } else {
+        document.getElementById('page-status').textContent = '⚙️ Starting engine...';
+        data = await new Promise(resolve => {
+          chrome.runtime.sendMessage({ action: 'cagrViaNative', payload }, resolve);
+        });
+      }
+
+      if (!data || data.error) {
+        document.getElementById('page-status').textContent = '❌ ' + (data?.error || 'Error');
+        return;
+      }
+
+      showResults(data);
+    }
+
+    async function findPort() {
+      for (let p = 5758; p <= 5768; p++) {
+        try {
+          const r = await fetch(`http://localhost:${p}/ping`, { signal: AbortSignal.timeout(300) });
+          if (r.ok) return p;
+        } catch(_) {}
+      }
+      return null;
+    }
+
+    function fmt(n) {
+      return Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 });
+    }
+
+    function showResults(d) {
+      document.getElementById('page-status').textContent = '';
+      document.getElementById('results-area').style.display = 'block';
+
+      document.getElementById('r-symbol').textContent = d.symbol;
+      const cagrEl = document.getElementById('r-cagr');
+      cagrEl.textContent = (d.cagr_pct >= 0 ? '+' : '') + d.cagr_pct.toFixed(2) + '%';
+      cagrEl.className = 'cagr-hero-value ' + (d.cagr_pct >= 0 ? 'pos' : 'neg');
+      document.getElementById('r-meta').textContent =
+        `${d.start_date} → ${d.end_date}  (${d.years} years)`;
+
+      document.getElementById('r-start-price').textContent = 'Rs. ' + fmt(d.start_price);
+      document.getElementById('r-ltp').textContent         = 'Rs. ' + fmt(d.ltp);
+      document.getElementById('r-units').textContent       = d.total_units_today + ' kitta';
+      document.getElementById('r-market').textContent      = 'Rs. ' + fmt(d.market_value);
+      document.getElementById('r-divs').textContent        = 'Rs. ' + fmt(d.total_cash_dividends);
+      document.getElementById('r-today').textContent       = 'Rs. ' + fmt(d.todays_value);
+      document.getElementById('r-invest').textContent      = 'Rs. ' + fmt(d.initial_investment);
+      document.getElementById('r-years').textContent       = d.years + ' yrs';
+
+      const tbody = document.getElementById('r-events');
+      tbody.innerHTML = '';
+      if (d.events && d.events.length > 0) {
+        d.events.forEach(ev => {
+          const tr = document.createElement('tr');
+          const badge = ev.type === 'bonus'
+            ? `<span class="badge badge-bonus">Bonus ${(ev.pct*100).toFixed(0)}%</span>`
+            : `<span class="badge badge-cash">Cash ${(ev.pct*100).toFixed(1)}%</span>`;
+          tr.innerHTML = `
+            <td>${ev.date}</td>
+            <td>${badge}</td>
+            <td>${ev.fiscal_year || '—'}</td>
+            <td>${ev.units_after.toFixed(4)}</td>
+            <td>${ev.type === 'cash' ? 'Rs. ' + fmt(ev.cash_rs) : '—'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } else {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--label);padding:16px">No events in this period</td></tr>';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    :root {
+      /* Dark mode (default) — matches screenshot */
+      --bg:          #0d1f2d;
+      --card-bg:     #112233;
+      --input-bg:    #1a2e3f;
+      --border:      #1e3a4f;
+      --text:        #cdd9e5;
+      --label:       #7a9bb5;
+      --accent:      #4ecdc4;
+      --accent-dark: #38b2aa;
+      --btn-bg:      #2a4a5e;
+      --btn-text:    #cdd9e5;
+      --toggle-bg:   #1a2e3f;
+      --toggle-on:   #4ecdc4;
+      --result-bg:   #0a1a28;
+      --cagr-color:  #4ecdc4;
+      --positive:    #4ecdc4;
+      --negative:    #ff6b6b;
+      --row-even:    #0f1e2b;
+      --row-odd:     #112233;
+    }
+
+    body.light {
+      /* Solarized Light */
+      --bg:          #fdf6e3;
+      --card-bg:     #eee8d5;
+      --input-bg:    #fdf6e3;
+      --border:      #ccc4a8;
+      --text:        #657b83;
+      --label:       #839496;
+      --accent:      #2aa198;
+      --accent-dark: #1d8a82;
+      --btn-bg:      #d4c9b0;
+      --btn-text:    #073642;
+      --toggle-bg:   #d4c9b0;
+      --toggle-on:   #2aa198;
+      --result-bg:   #fdf6e3;
+      --cagr-color:  #2aa198;
+      --positive:    #2aa198;
+      --negative:    #dc322f;
+      --row-even:    #eee8d5;
+      --row-odd:     #fdf6e3;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 400px;
+      min-height: 200px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 13px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-left img {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+    }
+    .header-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.2px;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ── Theme toggle ── */
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .theme-toggle:hover { background: var(--border); }
+
+    /* ── Analyse badge ── */
+    .analyse-badge {
+      background: var(--accent);
+      color: #0d1f2d;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: background 0.2s;
+    }
+    .analyse-badge:hover { background: var(--accent-dark); }
+
+    /* ── Body ── */
+    .body { padding: 16px; }
+
+    .field-label {
+      font-size: 11px;
+      color: var(--label);
+      margin-bottom: 6px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    input[type="text"], input[type="number"], input[type="date"] {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus { border-color: var(--accent); }
+    input::placeholder { color: var(--label); opacity: 0.7; }
+
+    /* ── Period toggle ── */
+    .period-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 14px 0 8px;
+    }
+    .period-toggle {
+      display: flex;
+      background: var(--toggle-bg);
+      border-radius: 8px;
+      padding: 2px;
+      border: 1px solid var(--border);
+    }
+    .period-toggle button {
+      background: none;
+      border: none;
+      color: var(--label);
+      padding: 5px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .period-toggle button.active {
+      background: var(--accent);
+      color: #0d1f2d;
+    }
+
+    .period-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .period-input-row input[type="number"] {
+      width: 80px;
+      flex-shrink: 0;
+    }
+    .period-input-row span {
+      color: var(--label);
+      font-size: 12px;
+    }
+    #date-input-wrap { display: none; margin-bottom: 14px; }
+
+    /* ── Investment ── */
+    .investment-row {
+      margin-bottom: 16px;
+    }
+    .investment-inner {
+      display: flex;
+      align-items: center;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .investment-inner:focus-within { border-color: var(--accent); }
+    .currency-label {
+      padding: 10px 10px 10px 12px;
+      color: var(--label);
+      font-size: 13px;
+      font-weight: 600;
+      background: transparent;
+      border-right: 1px solid var(--border);
+    }
+    .investment-inner input {
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      padding-left: 10px;
+    }
+    .investment-inner input:focus { border-color: transparent; }
+
+    /* ── Calculate button ── */
+    #calc-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: all 0.2s;
+    }
+    #calc-btn:hover:not(:disabled) {
+      background: var(--accent);
+      color: #0d1f2d;
+      border-color: var(--accent);
+    }
+    #calc-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ── Status ── */
+    #status {
+      text-align: center;
+      font-size: 12px;
+      color: var(--label);
+      min-height: 16px;
+      margin-top: 10px;
+    }
+
+    /* ── Results ── */
+    #results { display: none; margin-top: 16px; }
+
+    .cagr-banner {
+      background: var(--result-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .cagr-label {
+      font-size: 11px;
+      color: var(--label);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .cagr-value {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+    .cagr-value.positive { color: var(--positive); }
+    .cagr-value.negative { color: var(--negative); }
+    .cagr-meta {
+      font-size: 11px;
+      color: var(--label);
+      margin-top: 4px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .summary-cell {
+      background: var(--result-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .summary-cell-label {
+      font-size: 10px;
+      color: var(--label);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 3px;
+    }
+    .summary-cell-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* ── Year-by-year table ── */
+    .events-title {
+      font-size: 11px;
+      color: var(--label);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+    .events-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .events-table th {
+      color: var(--label);
+      font-weight: 600;
+      text-align: left;
+      padding: 5px 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .events-table td {
+      padding: 6px 8px;
+      color: var(--text);
+    }
+    .events-table tr:nth-child(even) td { background: var(--row-even); }
+    .events-table tr:nth-child(odd) td { background: var(--row-odd); }
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .badge-bonus { background: #1a3a5c; color: #4ecdc4; }
+    .badge-cash  { background: #1a3a2a; color: #51cf66; }
+    body.light .badge-bonus { background: #d0eae8; color: #2aa198; }
+    body.light .badge-cash  { background: #d0ead5; color: #22863a; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-left">
+      <img src="icons/icon48.png" alt="NEPSE">
+      <span class="header-title">NEPSE CAGR Calculator</span>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" id="theme-btn" title="Toggle theme">☀️</button>
+      <span class="analyse-badge" id="analyse-btn">Analyse Stock</span>
+    </div>
+  </div>
+
+  <div class="body">
+    <!-- Stock Symbol -->
+    <div class="field-label">Stock Symbol / Name</div>
+    <input type="text" id="symbol-input" placeholder="e.g. NABIL" autocomplete="off">
+
+    <!-- Period -->
+    <div class="period-row">
+      <div class="field-label" style="margin:0">Period</div>
+      <div class="period-toggle">
+        <button id="toggle-years" class="active">Years</button>
+        <button id="toggle-date">From date</button>
+      </div>
+    </div>
+
+    <!-- Years input -->
+    <div class="period-input-row" id="years-input-wrap">
+      <input type="number" id="years-input" value="5" min="1" max="30">
+      <span>years ago until today</span>
+    </div>
+
+    <!-- Date input -->
+    <div id="date-input-wrap">
+      <input type="date" id="date-input">
+    </div>
+
+    <!-- Investment -->
+    <div class="investment-row">
+      <div class="field-label">Initial Investment</div>
+      <div class="investment-inner">
+        <span class="currency-label">Rs.</span>
+        <input type="number" id="investment-input" value="100000" min="1000">
+      </div>
+    </div>
+
+    <!-- Calculate -->
+    <button id="calc-btn">Calculate CAGR</button>
+    <div id="status"></div>
+
+    <!-- Results -->
+    <div id="results">
+      <div class="cagr-banner">
+        <div class="cagr-label">Compound Annual Growth Rate</div>
+        <div class="cagr-value" id="cagr-display">—</div>
+        <div class="cagr-meta" id="cagr-meta"></div>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-cell">
+          <div class="summary-cell-label">Units Today</div>
+          <div class="summary-cell-value" id="res-units">—</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-cell-label">LTP</div>
+          <div class="summary-cell-value" id="res-ltp">—</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-cell-label">Market Value</div>
+          <div class="summary-cell-value" id="res-market">—</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-cell-label">Cash Dividends</div>
+          <div class="summary-cell-value" id="res-cash">—</div>
+        </div>
+      </div>
+
+      <div class="events-title">Year-by-Year Events</div>
+      <table class="events-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Event</th>
+            <th>Units After</th>
+            <th>Cash Rs.</th>
+          </tr>
+        </thead>
+        <tbody id="events-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
