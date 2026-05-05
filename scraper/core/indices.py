@@ -7,6 +7,8 @@ Returns a 17-row table per date (4 main + 13 sectoral indices).
 Output: data/indices/{INDEX_SLUG}.csv with columns:
   date, current, point_change, percent_change, turnover
 """
+from __future__ import annotations
+
 import csv
 import logging
 import re
@@ -109,14 +111,14 @@ def _write_csv(path: Path, rows: list):
         w.writerows(rows)
 
 
-def update_indices(start: date | None = None, end: date | None = None, max_misses: int = 30):
+def update_indices(start: date | None = None, end: date | None = None, max_misses: int = 90):
     """
     Append new daily index rows to data/indices/{slug}.csv for each index.
 
     `start` defaults to "day after the last date already saved" (incremental).
     `end` defaults to today.
-    `max_misses` aborts the loop after that many consecutive empty days
-    (handles long market holidays / running on a weekend).
+    `max_misses` aborts the loop after that many consecutive empty days.
+    Default 90 covers Dashain+Tihar (~3 weeks) and the 2020 COVID closure (~60 days).
     """
     INDICES_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -189,8 +191,10 @@ def update_indices(start: date | None = None, end: date | None = None, max_misse
     # Drop a metadata file mapping slug -> human name
     if name_by_slug:
         meta_path = INDICES_DIR / "_index_names.csv"
-        old, old_slugs = _read_existing(meta_path)
-        old_map = {r["slug"]: r["name"] for r in old} if old else {}
+        old_map: dict[str, str] = {}
+        if meta_path.exists():
+            with open(meta_path, newline="", encoding="utf-8") as f:
+                old_map = {r["slug"]: r["name"] for r in csv.DictReader(f)}
         old_map.update(name_by_slug)
         with open(meta_path, "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)

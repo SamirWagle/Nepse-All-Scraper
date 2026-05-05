@@ -14,6 +14,8 @@ Output: docs/
     right-shares/{SYMBOL}.json
     floorsheet/index.json -- list of dates + raw-CSV URLs
 """
+from __future__ import annotations
+
 import csv
 import json
 import os
