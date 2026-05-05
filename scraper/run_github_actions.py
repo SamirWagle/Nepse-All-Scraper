@@ -24,6 +24,8 @@ import random
 import logging
 import argparse
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
 from pathlib import Path
 from datetime import date as dt_date
@@ -53,6 +55,18 @@ def make_session():
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9",
     })
+    retry = Retry(
+        total=5,
+        connect=5,
+        read=5,
+        backoff_factor=2,
+        status_forcelist=(429, 500, 502, 503, 504),
+        allowed_methods=("GET", "POST"),
+        raise_on_status=False,
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    s.mount("http://", adapter)
+    s.mount("https://", adapter)
     return s
 
 
@@ -334,7 +348,11 @@ def scrape_floorsheet(max_pages=None):
     })
 
     log.info("Floorsheet: loading page...")
-    resp = fs_session.get(FLOORSHEET_URL, timeout=30)
+    try:
+        resp = fs_session.get(FLOORSHEET_URL, timeout=(15, 90))
+    except requests.exceptions.RequestException as e:
+        log.error(f"Floorsheet: initial request failed: {e}")
+        return []
     if resp.status_code != 200:
         log.error(f"Floorsheet: failed to load page ({resp.status_code})")
         return []
@@ -389,7 +407,11 @@ def scrape_floorsheet(max_pages=None):
         payload[submit_input["name"]] = ""
 
         time.sleep(random.uniform(1, 2))
-        resp = fs_session.post(FLOORSHEET_URL, data=payload, timeout=45)
+        try:
+            resp = fs_session.post(FLOORSHEET_URL, data=payload, timeout=(15, 90))
+        except requests.exceptions.RequestException as e:
+            log.warning(f"Floorsheet: page {page_num + 1} request failed: {e}; stopping pagination")
+            break
         if resp.status_code != 200:
             break
         soup = BeautifulSoup(resp.text, "html.parser")
