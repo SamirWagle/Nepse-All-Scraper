@@ -178,6 +178,27 @@ def build_openapi(symbol_count: int, floorsheet_dates: list[str]):
                     "responses": {"200": {"description": "Right-share records"}}
                 }
             },
+            "/snapshots/today.json": {
+                "get": {
+                    "summary": "Today's market snapshot — top gainers/losers/turnover/volume in one file",
+                    "responses": {"200": {"description": "Snapshot object with all top-N lists"}}
+                }
+            },
+            "/snapshots/top-gainers.json": {
+                "get": {
+                    "summary": "Top 20 gainers (by percent change) for the latest trading day",
+                    "responses": {"200": {"description": "Array of {symbol, ltp, percent_change, qty, turnover, date}"}}
+                }
+            },
+            "/snapshots/top-losers.json": {
+                "get": {"summary": "Top 20 losers", "responses": {"200": {"description": "Array of rows"}}}
+            },
+            "/snapshots/top-turnover.json": {
+                "get": {"summary": "Top 20 by daily turnover (NPR)", "responses": {"200": {"description": "Array of rows"}}}
+            },
+            "/snapshots/top-volume.json": {
+                "get": {"summary": "Top 20 by daily share volume", "responses": {"200": {"description": "Array of rows"}}}
+            },
             "/status.json": {
                 "get": {
                     "summary": "Scrape health & coverage snapshot",
@@ -232,6 +253,39 @@ SWAGGER_HTML = """<!doctype html>
 """
 
 
+def build_snapshots(latest):
+    """Top-N snapshots derived from latest-day OHLC. No new scraping needed."""
+    def _f(v, default=0.0):
+        try: return float(str(v).replace(",", "").replace("%", "").strip())
+        except (ValueError, AttributeError): return default
+
+    rows = []
+    for sym, r in latest.items():
+        if not r: continue
+        rows.append({
+            "symbol": sym,
+            "ltp": _f(r.get("ltp")),
+            "percent_change": _f(r.get("percent_change")),
+            "qty": _f(r.get("qty")),
+            "turnover": _f(r.get("turnover")),
+            "date": r.get("date"),
+        })
+
+    # Snapshot is "for the latest market date" — keep only rows from that date with qty>0.
+    snapshot_date = max((r["date"] for r in rows if r["date"]), default=None)
+    traded = [r for r in rows if r["qty"] > 0 and r["date"] == snapshot_date]
+
+    return {
+        "date": snapshot_date,
+        "top_gainers":      sorted(traded, key=lambda r: -r["percent_change"])[:20],
+        "top_losers":       sorted(traded, key=lambda r:  r["percent_change"])[:20],
+        "top_turnover":     sorted(traded, key=lambda r: -r["turnover"])[:20],
+        "top_volume":       sorted(traded, key=lambda r: -r["qty"])[:20],
+        "traded_count":     len(traded),
+        "untraded_count":   len(rows) - len(traded),
+    }
+
+
 def build_status(symbols, latest, fs, dividend_count, rights_count):
     """Health snapshot — drives shields.io endpoint badges."""
     today = str(dt_date.today())
@@ -269,6 +323,14 @@ def main():
     fs = build_floorsheet_index()
     write_json(API / "floorsheet" / "index.json", fs)
     print(f"  floorsheet dates: {len(fs)}")
+
+    snapshot = build_snapshots(latest)
+    write_json(API / "snapshots" / "today.json", snapshot)
+    write_json(API / "snapshots" / "top-gainers.json", snapshot["top_gainers"])
+    write_json(API / "snapshots" / "top-losers.json", snapshot["top_losers"])
+    write_json(API / "snapshots" / "top-turnover.json", snapshot["top_turnover"])
+    write_json(API / "snapshots" / "top-volume.json", snapshot["top_volume"])
+    print(f"  snapshots: {snapshot['traded_count']} traded, {snapshot['untraded_count']} untraded ({snapshot['date']})")
 
     div_count = sum(1 for _ in (API / "dividends").glob("*.json")) if (API / "dividends").exists() else 0
     rights_count = sum(1 for _ in (API / "right-shares").glob("*.json")) if (API / "right-shares").exists() else 0
