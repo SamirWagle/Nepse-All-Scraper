@@ -106,6 +106,7 @@ def build_indices():
 
     listing = []
     latest = {}
+    NULLABLE = ("point_change", "percent_change", "turnover")
     for f in sorted(INDICES.glob("*.csv")):
         if f.name.startswith("_"):
             continue
@@ -113,6 +114,11 @@ def build_indices():
         rows = csv_to_records(f)
         if not rows:
             continue
+        # CSV-empty -> JSON null for fields where sharesansar's archive lacks data.
+        for r in rows:
+            for k in NULLABLE:
+                if r.get(k) == "":
+                    r[k] = None
         name = name_by_slug.get(slug, slug.replace("-", " ").title())
         write_json(API / "indices" / f"{slug}.json",
                    {"slug": slug, "name": name, "count": len(rows), "data": rows})
