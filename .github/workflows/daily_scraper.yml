@@ -41,6 +41,11 @@ jobs:
       - name: Run floorsheet scraper
         run: python scraper/run_github_actions.py --floorsheet
 
+      - name: Update NEPSE main + sub-index history
+        run: |
+          cd scraper
+          python -m core.indices
+
       - name: Build static JSON API + Swagger UI
         run: python scraper/build_api.py
         env:

@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 COMPANY_WISE = DATA / "company-wise"
 FLOORSHEET = DATA / "floorsheet"
+INDICES = DATA / "indices"
 DOCS = ROOT / "docs"
 API = DOCS / "api"
 
@@ -87,6 +88,39 @@ def build_per_symbol(symbols):
             write_json(API / "right-shares" / f"{slug}.json",
                        {"symbol": sym, "count": len(rights), "data": rights})
     return latest
+
+
+def build_indices():
+    """Convert data/indices/*.csv to JSON. Returns latest snapshot dict."""
+    if not INDICES.exists():
+        return [], {}
+
+    # Read slug -> human name mapping
+    name_by_slug = {}
+    meta = INDICES / "_index_names.csv"
+    if meta.exists():
+        for row in csv_to_records(meta):
+            name_by_slug[row["slug"]] = row["name"]
+
+    listing = []
+    latest = {}
+    for f in sorted(INDICES.glob("*.csv")):
+        if f.name.startswith("_"):
+            continue
+        slug = f.stem
+        rows = csv_to_records(f)
+        if not rows:
+            continue
+        name = name_by_slug.get(slug, slug.replace("-", " ").title())
+        write_json(API / "indices" / f"{slug}.json",
+                   {"slug": slug, "name": name, "count": len(rows), "data": rows})
+        listing.append({"slug": slug, "name": name, "rows": len(rows),
+                        "first_date": rows[0]["date"], "last_date": rows[-1]["date"]})
+        latest[slug] = {"name": name, **rows[-1]}
+
+    write_json(API / "indices" / "list.json", listing)
+    write_json(API / "indices" / "latest.json", latest)
+    return listing, latest
 
 
 def build_floorsheet_index():
@@ -176,6 +210,31 @@ def build_openapi(symbol_count: int, floorsheet_dates: list[str]):
                         "schema": {"type": "string"}, "example": "NABIL"
                     }],
                     "responses": {"200": {"description": "Right-share records"}}
+                }
+            },
+            "/indices/list.json": {
+                "get": {
+                    "summary": "All available NEPSE indices (main + sub-indices)",
+                    "description": "List of slugs with first/last dates and row counts. Slugs feed `/indices/{slug}.json`.",
+                    "responses": {"200": {"description": "Array of {slug, name, rows, first_date, last_date}"}}
+                }
+            },
+            "/indices/latest.json": {
+                "get": {
+                    "summary": "Latest-day value for every index (NEPSE, Sensitive, Banking, Hydro, etc.)",
+                    "responses": {"200": {"description": "Map slug -> {name, date, current, point_change, percent_change, turnover}"}}
+                }
+            },
+            "/indices/{slug}.json": {
+                "get": {
+                    "summary": "Daily history for one index",
+                    "parameters": [{
+                        "name": "slug", "in": "path", "required": True,
+                        "schema": {"type": "string"},
+                        "example": "nepse",
+                        "description": "Index slug. Common values: `nepse`, `sensitive`, `float`, `sensitive-float`, `banking`, `hydropower`, `finance`, `development-bank`, `manufacturing-and-processing`, `microfinance`, `mutual-fund`, `life-insurance`, `non-life-insurance`, `hotels-and-tourism`, `investment`, `trading`, `others`. See `/indices/list.json` for full list."
+                    }],
+                    "responses": {"200": {"description": "Daily index history"}}
                 }
             },
             "/snapshots/today.json": {
@@ -323,6 +382,9 @@ def main():
     fs = build_floorsheet_index()
     write_json(API / "floorsheet" / "index.json", fs)
     print(f"  floorsheet dates: {len(fs)}")
+
+    idx_list, idx_latest = build_indices()
+    print(f"  indices: {len(idx_list)} indices, latest snapshot: {len(idx_latest)}")
 
     snapshot = build_snapshots(latest)
     write_json(API / "snapshots" / "today.json", snapshot)
