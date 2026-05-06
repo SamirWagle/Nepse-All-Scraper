@@ -128,7 +128,7 @@ def append_to_csv(filepath: Path, fieldnames: list, rows: list):
     """Append rows to CSV, writing header if file is new."""
     file_exists = filepath.exists() and filepath.stat().st_size > 0
     with open(filepath, "a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore", lineterminator="\n")
         if not file_exists:
             writer.writeheader()
         writer.writerows(rows)
@@ -137,7 +137,7 @@ def append_to_csv(filepath: Path, fieldnames: list, rows: list):
 def overwrite_csv(filepath: Path, fieldnames: list, rows: list):
     """Write/overwrite a CSV with the given rows."""
     with open(filepath, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore", lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

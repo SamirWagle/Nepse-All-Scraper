@@ -114,7 +114,7 @@ class DailySummaryUpdater:
                     }])
                     
                     # Append to CSV
-                    new_row.to_csv(csv_file, mode='a', header=False, index=False)
+                    new_row.to_csv(csv_file, mode='a', header=False, index=False, lineterminator='\n')
                     updated_count += 1
                     
                 elif len(symbol_data) == 0:

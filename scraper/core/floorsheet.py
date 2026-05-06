@@ -201,7 +201,7 @@ if __name__ == "__main__":
         fieldnames = ['date', 'sn', 'contract_no', 'stock_symbol', 'buyer', 'seller', 'quantity', 'rate', 'amount']
         file_exists = os.path.isfile(csv_path)
         with open(csv_path, 'a', newline='', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator='\n')
             if not file_exists:
                 writer.writeheader()
             writer.writerows(data)

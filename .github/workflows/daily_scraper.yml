@@ -6,6 +6,10 @@ on:
     - cron: "45 12 * * 1-5"
   workflow_dispatch:  # allow manual trigger from GitHub UI
 
+concurrency:
+  group: daily-scraper-main
+  cancel-in-progress: false
+
 jobs:
   scrape:
     runs-on: ubuntu-latest

@@ -106,7 +106,7 @@ def _read_existing(path: Path):
 def _write_csv(path: Path, rows: list):
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=INDEX_FIELDS, extrasaction="ignore")
+        w = csv.DictWriter(f, fieldnames=INDEX_FIELDS, extrasaction="ignore", lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
 
@@ -197,7 +197,7 @@ def update_indices(start: date | None = None, end: date | None = None, max_misse
                 old_map = {r["slug"]: r["name"] for r in csv.DictReader(f)}
         old_map.update(name_by_slug)
         with open(meta_path, "w", newline="", encoding="utf-8") as f:
-            w = csv.writer(f)
+            w = csv.writer(f, lineterminator="\n")
             w.writerow(["slug", "name"])
             for s in sorted(old_map): w.writerow([s, old_map[s]])
 

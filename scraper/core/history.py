@@ -250,7 +250,7 @@ class ShareSansarHistoryScraper:
         try:
             with open(filepath, 'a', newline='') as f:
                 fieldnames = ['date', 'open', 'high', 'low', 'ltp', 'percent_change', 'qty', 'turnover']
-                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator='\n')
                 
                 if not file_exists:
                     writer.writeheader()
