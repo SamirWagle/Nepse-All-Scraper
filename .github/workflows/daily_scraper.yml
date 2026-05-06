@@ -5,6 +5,11 @@ on:
     # Runs at 6:30 PM Nepal time (12:45 UTC) on weekdays — after NEPSE closes at 3 PM
     - cron: "45 12 * * 1-5"
   workflow_dispatch:  # allow manual trigger from GitHub UI
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/daily_scraper.yml"
 
 concurrency:
   group: daily-scraper-main
