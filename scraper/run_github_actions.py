@@ -348,10 +348,19 @@ def scrape_floorsheet(max_pages=None):
     })
 
     log.info("Floorsheet: loading page...")
-    try:
-        resp = fs_session.get(FLOORSHEET_URL, timeout=(15, 90))
-    except requests.exceptions.RequestException as e:
-        log.error(f"Floorsheet: initial request failed: {e}")
+    resp = None
+    last_err = None
+    for attempt in range(1, 5):
+        try:
+            resp = fs_session.get(FLOORSHEET_URL, timeout=(30, 240))
+            break
+        except requests.exceptions.RequestException as e:
+            last_err = e
+            wait = min(60, 5 * (2 ** (attempt - 1)))
+            log.warning(f"Floorsheet: initial GET attempt {attempt}/4 failed ({e}); retrying in {wait}s")
+            time.sleep(wait)
+    if resp is None:
+        log.error(f"Floorsheet: all initial GET attempts failed: {last_err}")
         return []
     if resp.status_code != 200:
         log.error(f"Floorsheet: failed to load page ({resp.status_code})")
@@ -407,11 +416,21 @@ def scrape_floorsheet(max_pages=None):
         payload[submit_input["name"]] = ""
 
         time.sleep(random.uniform(1, 2))
-        try:
-            resp = fs_session.post(FLOORSHEET_URL, data=payload, timeout=(15, 90))
-        except requests.exceptions.RequestException as e:
-            log.warning(f"Floorsheet: page {page_num + 1} request failed: {e}; stopping pagination")
+        post_resp = None
+        post_err = None
+        for attempt in range(1, 4):
+            try:
+                post_resp = fs_session.post(FLOORSHEET_URL, data=payload, timeout=(30, 240))
+                break
+            except requests.exceptions.RequestException as e:
+                post_err = e
+                wait = min(45, 5 * (2 ** (attempt - 1)))
+                log.warning(f"Floorsheet: page {page_num + 1} POST attempt {attempt}/3 failed ({e}); retrying in {wait}s")
+                time.sleep(wait)
+        if post_resp is None:
+            log.warning(f"Floorsheet: page {page_num + 1} all POST attempts failed: {post_err}; stopping pagination")
             break
+        resp = post_resp
         if resp.status_code != 200:
             break
         soup = BeautifulSoup(resp.text, "html.parser")
