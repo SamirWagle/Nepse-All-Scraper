@@ -21,6 +21,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -59,13 +61,18 @@ jobs:
 
       - name: Commit and push updated data
         run: |
+          set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
           git add data/ docs/
+          git add --renormalize data/ docs/
           git diff --cached --quiet && exit 0
           git commit -m "chore: daily scrape $(date -u +'%Y-%m-%d')"
           for i in 1 2 3 4 5; do
-            git pull --rebase origin main && git push && exit 0
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main && exit 0
             echo "Push attempt $i failed; retrying..."
             sleep 5
           done
