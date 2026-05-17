@@ -1,5 +1,5 @@
     // ── Page switching ──
-    const backDestination = { buffett: 'bullbear' };
+    const backDestination = { buffett: 'nexttop', nexttop: 'bullbear' };
     let lastSearchedSymbol = null;
     function switchPage(name) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -42,6 +42,9 @@
     document.getElementById('menu-cagr').addEventListener('click', (e) => {
       e.stopPropagation();
       switchPage('cagr');
+    });
+    document.getElementById('nexttop-btn').addEventListener('click', () => {
+      switchPage('nexttop');
     });
     document.getElementById('buffett-link').addEventListener('click', (e) => {
       e.preventDefault();
