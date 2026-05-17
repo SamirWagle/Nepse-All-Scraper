@@ -312,8 +312,14 @@
         </div>`;
       }).join('');
 
+      const listedStr = listingDate
+        ? `<span style="font-size:11px;font-weight:500;color:var(--label);opacity:0.8;">🗓 Listed: ${listingDate}</span>`
+        : '';
       container.innerHTML = `
-        <div class="bull-cycle-header">📊 ${symbol} — Performance Across Bull Cycles</div>
+        <div class="bull-cycle-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>📊 ${symbol} — Performance Across Bull Cycles</span>
+          ${listedStr}
+        </div>
         <div class="bull-boxes-grid">${boxes}</div>`;
     }
 
