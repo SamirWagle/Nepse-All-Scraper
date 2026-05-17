@@ -152,22 +152,14 @@
 
       const port = await findPort();
 
-      // Fetch listing date first so we can skip cycles that ended before the stock existed
+      // Fetch listing date from ipo_listings.csv via server
       let listingDate = null;
       try {
-        const probe = { symbol, investment: 100000, start_date: '1994-01-01' };
-        let probeData;
         if (port) {
-          const r = await fetch(`http://localhost:${port}/cagr`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(probe),
-          });
-          probeData = await r.json();
-        } else {
-          probeData = await new Promise(resolve => chrome.runtime.sendMessage({ action: 'cagrViaNative', payload: probe }, resolve));
+          const r = await fetch(`http://localhost:${port}/listing_date?symbol=${symbol}`);
+          const d = await r.json();
+          if (d && d.listing_date) listingDate = d.listing_date;
         }
-        if (probeData && !probeData.error) listingDate = probeData.start_date;
       } catch(_) {}
 
       const fetchable = BULL_CYCLES_DEF.filter(c => !c.blank);

@@ -33,6 +33,8 @@ from nepse_cagr import (
 )
 
 import pandas as pd
+from scraper.core.listing_date import ShareHubListingDateScraper
+_listing_scraper = ShareHubListingDateScraper()
 
 # ── Config ────────────────────────────────────────────────────────────────────
 PORT               = 5758
@@ -174,6 +176,15 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/ping":
             self._send_json({"status": "ok"})
+        elif self.path.startswith("/listing_date"):
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            symbol = qs.get("symbol", [""])[0].strip().upper()
+            if symbol and _SYMBOL_RE.match(symbol):
+                listing_date = _listing_scraper.get(symbol)
+                self._send_json({"symbol": symbol, "listing_date": listing_date})
+            else:
+                self._send_json({"error": "Invalid symbol"})
         else:
             self.send_response(404)
             self.end_headers()
