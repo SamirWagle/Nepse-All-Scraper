@@ -9,7 +9,8 @@
       document.getElementById('back-btn').style.display = name === 'analyse' ? 'none' : 'inline-block';
       if (name === 'bullbear') {
         buildChart();
-        if (lastSearchedSymbol) doBullSearch(lastSearchedSymbol);
+        const sym = lastSearchedSymbol || document.getElementById('search-input').value.trim().toUpperCase();
+        if (sym) doBullSearch(sym);
       }
     }
 
