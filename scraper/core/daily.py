@@ -16,7 +16,7 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler("daily_scraper.log")
+        logging.FileHandler(Path(__file__).resolve().parent / "daily_scraper.log")
     ]
 )
 logger = logging.getLogger(__name__)
@@ -69,6 +69,7 @@ class DailyScraperManager:
         existing = self.get_existing_companies()
         new_companies = symbols - existing
         existing_priority = symbols & existing
+        failed_count = 0
 
         logger.info(f"Prices — new: {len(new_companies)}, existing: {len(existing_priority)}")
 
@@ -84,6 +85,7 @@ class DailyScraperManager:
                     logger.warning(f"    No data found for {sym}")
             except Exception as e:
                 logger.error(f"    Failed {sym}: {e}")
+                failed_count += 1
             time.sleep(1)
 
         # Existing companies: incremental (stop early once we hit known dates)
@@ -99,7 +101,10 @@ class DailyScraperManager:
                     logger.info(f"    No new data")
             except Exception as e:
                 logger.error(f"    Failed {sym}: {e}")
+                failed_count += 1
             time.sleep(1)
+
+        return failed_count
 
 
     # ------------------------------------------------------------------
@@ -139,12 +144,12 @@ class DailyScraperManager:
 
         if not check_new_only:
             logger.info("--- Updating prices ---")
-            self._update_prices(target, force_full=force_full)
+            failed_count = self._update_prices(target, force_full=force_full)
         else:
             logger.info("--- New companies only (prices) ---")
             existing = self.get_existing_companies()
             new_only = target - existing
-            self._update_prices(new_only, force_full=False)
+            failed_count = self._update_prices(new_only, force_full=False)
 
         # Incrementally update IPO listing dates (fast: stops on first known symbol)
         logger.info("--- Updating IPO listing dates ---")
@@ -152,8 +157,12 @@ class DailyScraperManager:
             self.ipo_scraper.scrape_all_listings(stop_on_existing=True)
         except Exception as e:
             logger.error(f"IPO listing scrape failed: {e}")
+            failed_count += 1
 
         logger.info("=== Daily Update Completed ===")
+        if failed_count > 0:
+            logger.error(f"{failed_count} company/companies failed — exiting with code 1")
+            sys.exit(1)
 
 
 if __name__ == "__main__":
