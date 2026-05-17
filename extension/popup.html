@@ -304,6 +304,32 @@
       color: var(--text);
     }
 
+    /* ── Performance details toggle button ── */
+    #perf-toggle-btn {
+      width: 100%;
+      padding: 7px 12px;
+      background: transparent;
+      color: var(--label);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    #perf-toggle-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    #perf-details { display: none; }
+
     /* ── Year-by-year table ── */
     .events-title {
       font-size: 11px;
@@ -406,37 +432,41 @@
         <div class="cagr-meta" id="cagr-meta"></div>
       </div>
 
-      <div class="summary-grid">
-        <div class="summary-cell">
-          <div class="summary-cell-label">Units Today</div>
-          <div class="summary-cell-value" id="res-units">—</div>
-        </div>
-        <div class="summary-cell">
-          <div class="summary-cell-label">LTP</div>
-          <div class="summary-cell-value" id="res-ltp">—</div>
-        </div>
-        <div class="summary-cell">
-          <div class="summary-cell-label">Market Value</div>
-          <div class="summary-cell-value" id="res-market">—</div>
-        </div>
-        <div class="summary-cell">
-          <div class="summary-cell-label">Cash Dividends</div>
-          <div class="summary-cell-value" id="res-cash">—</div>
-        </div>
-      </div>
+      <button id="perf-toggle-btn">▼ Performance Details</button>
 
-      <div class="events-title">Year-by-Year Events</div>
-      <table class="events-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Event</th>
-            <th>Units After</th>
-            <th>Cash Rs.</th>
-          </tr>
-        </thead>
-        <tbody id="events-body"></tbody>
-      </table>
+      <div id="perf-details">
+        <div class="summary-grid">
+          <div class="summary-cell">
+            <div class="summary-cell-label">Units Today</div>
+            <div class="summary-cell-value" id="res-units">—</div>
+          </div>
+          <div class="summary-cell">
+            <div class="summary-cell-label">LTP</div>
+            <div class="summary-cell-value" id="res-ltp">—</div>
+          </div>
+          <div class="summary-cell">
+            <div class="summary-cell-label">Market Value</div>
+            <div class="summary-cell-value" id="res-market">—</div>
+          </div>
+          <div class="summary-cell">
+            <div class="summary-cell-label">Cash Dividends</div>
+            <div class="summary-cell-value" id="res-cash">—</div>
+          </div>
+        </div>
+
+        <div class="events-title">Year-by-Year Events</div>
+        <table class="events-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Event</th>
+              <th>Units After</th>
+              <th>Cash Rs.</th>
+            </tr>
+          </thead>
+          <tbody id="events-body"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 

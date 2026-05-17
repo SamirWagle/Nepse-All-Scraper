@@ -9,6 +9,8 @@ const investmentInput = document.getElementById('investment-input');
 const calcBtn         = document.getElementById('calc-btn');
 const statusEl        = document.getElementById('status');
 const resultsEl       = document.getElementById('results');
+const perfToggleBtn   = document.getElementById('perf-toggle-btn');
+const perfDetails     = document.getElementById('perf-details');
 const themeBtn        = document.getElementById('theme-btn');
 const analyseBtn      = document.getElementById('analyse-btn');
 const toggleYears     = document.getElementById('toggle-years');
@@ -44,6 +46,12 @@ toggleDate.onclick = () => {
 // ── Analyse Stock button — opens full-page analysis ───────────────────────────
 analyseBtn.onclick = () => {
   chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') });
+};
+
+perfToggleBtn.onclick = () => {
+  const open = perfDetails.style.display === 'block';
+  perfDetails.style.display = open ? 'none' : 'block';
+  perfToggleBtn.textContent = open ? '▼ Performance Details' : '▲ Performance Details';
 };
 
 // ── Calculate ─────────────────────────────────────────────────────────────────
@@ -128,6 +136,8 @@ function handleResult(data) {
 
   setStatus('');
   resultsEl.style.display = 'block';
+  perfDetails.style.display = 'none';
+  perfToggleBtn.textContent = '▼ Performance Details';
 
   // CAGR banner
   const cagr = data.cagr_pct;
