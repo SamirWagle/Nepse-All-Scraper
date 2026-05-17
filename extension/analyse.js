@@ -46,6 +46,49 @@
     document.getElementById('nexttop-btn').addEventListener('click', () => {
       switchPage('nexttop');
     });
+
+    // ── Cycle modals ──
+    const modalOverlay = document.getElementById('cycle-modal-overlay');
+    const modalTitle   = document.getElementById('cycle-modal-title');
+    const modalBody    = document.getElementById('cycle-modal-body');
+
+    function showCycleModal(title, rows, cls) {
+      modalTitle.style.color = cls === 'bull' ? 'var(--positive)' : 'var(--negative)';
+      modalTitle.textContent = title;
+      modalBody.innerHTML = rows.map((r, i) =>
+        `<tr>
+          <td style="padding:6px 8px;color:var(--label)">${i + 1}</td>
+          <td style="padding:6px 8px">${r.date}</td>
+          <td style="padding:6px 8px;font-weight:600;color:${cls === 'bull' ? 'var(--positive)' : 'var(--negative)'}">${r.index}</td>
+        </tr>`
+      ).join('');
+      modalOverlay.style.display = 'flex';
+    }
+
+    document.getElementById('show-bull-tops').addEventListener('click', () => {
+      showCycleModal('🐂 Bull Tops', [
+        { date: '2000-11-23', index: '545.82' },
+        { date: '2008-08-31', index: '1,175.38' },
+        { date: '2016-07-27', index: '1,881.45' },
+        { date: '2021-08-18', index: '3,198.60' },
+      ], 'bull');
+    });
+
+    document.getElementById('show-bear-bottoms').addEventListener('click', () => {
+      showCycleModal('🐻 Bear Bottoms', [
+        { date: '2002-03-15', index: '186.22' },
+        { date: '2012-03-29', index: '298.90' },
+        { date: '2019-03-05', index: '1,098.95' },
+        { date: '2022-09-25', index: '1,815.13' },
+      ], 'bear');
+    });
+
+    document.getElementById('cycle-modal-close').addEventListener('click', () => {
+      modalOverlay.style.display = 'none';
+    });
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) modalOverlay.style.display = 'none';
+    });
     document.getElementById('buffett-link').addEventListener('click', (e) => {
       e.preventDefault();
       switchPage('buffett');
