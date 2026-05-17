@@ -35,7 +35,7 @@ import pandas as pd
 FACE_VALUE = 100          # Rs. face value for most NEPSE stocks
 DEFAULT_INVESTMENT = 100_000  # Rs.
 DEFAULT_DATA_DIR = Path(__file__).parent / "data"  # override with --data-dir
-DAYS_PER_YEAR = DAYS_PER_YEAR    # accounts for leap years
+DAYS_PER_YEAR = 365.25    # accounts for leap years
 
 
 # ─────────────────────────────────────────────
