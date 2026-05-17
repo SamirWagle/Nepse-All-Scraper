@@ -141,9 +141,32 @@
       container.innerHTML = '<div style="color:var(--label);font-size:13px;padding:16px 0">⏳ Loading ' + symbol + ' across bull cycles...</div>';
 
       const port = await findPort();
+
+      // Fetch listing date first so we can skip cycles that ended before the stock existed
+      let listingDate = null;
+      try {
+        const probe = { symbol, investment: 100000, start_date: '1994-01-01' };
+        let probeData;
+        if (port) {
+          const r = await fetch(`http://localhost:${port}/cagr`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(probe),
+          });
+          probeData = await r.json();
+        } else {
+          probeData = await new Promise(resolve => chrome.runtime.sendMessage({ action: 'cagrViaNative', payload: probe }, resolve));
+        }
+        if (probeData && !probeData.error) listingDate = probeData.start_date;
+      } catch(_) {}
+
       const fetchable = BULL_CYCLES_DEF.filter(c => !c.blank);
 
       const fetched = await Promise.all(fetchable.map(async cycle => {
+        // Cycle ended before stock was listed — skip fetching, mark as not listed
+        if (listingDate && cycle.end && cycle.end < listingDate) {
+          return { num: cycle.num, data: { notListed: true, listingDate } };
+        }
         const payload = { symbol, investment: 100000, start_date: cycle.start };
         if (cycle.end) payload.end_date = cycle.end;
         try {
@@ -165,10 +188,10 @@
 
       const dataMap = {};
       fetched.forEach(r => { dataMap[r.num] = r.data; });
-      renderBullBoxes(symbol, dataMap);
+      renderBullBoxes(symbol, dataMap, listingDate);
     }
 
-    function renderBullBoxes(symbol, dataMap) {
+    function renderBullBoxes(symbol, dataMap, listingDate) {
       const container = document.getElementById('bull-cycle-results');
       const boxes = BULL_CYCLES_DEF.map(cycle => {
         if (cycle.blank) {
@@ -180,6 +203,15 @@
           </div>`;
         }
         const d = dataMap[cycle.num];
+        // Stock didn't exist during this cycle
+        if (d && d.notListed) {
+          return `<div class="bull-box bull-box-blank">
+            <div class="bull-box-title">${cycle.label}</div>
+            <div class="bull-box-period">${cycle.period}</div>
+            <div class="bull-box-na">—</div>
+            <div class="bull-box-note">Not listed yet<br><span style="font-size:10px">Listed: ${d.listingDate}</span></div>
+          </div>`;
+        }
         if (!d || d.error) {
           return `<div class="bull-box bull-box-blank">
             <div class="bull-box-title">${cycle.label}</div>

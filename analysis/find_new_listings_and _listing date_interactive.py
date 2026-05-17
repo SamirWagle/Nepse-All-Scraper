@@ -287,18 +287,22 @@ def _run_once():
     print("  [1] Save full query to CSV  (listing date → today for each stock)")
     print("  [2] Enter a custom time window")
     print("  [3] All data — from earliest listing in dataset")
+    print("  [4] Look up listing date for a specific stock")
 
     while True:
         raw = input("\n  Enter number: ").strip()
-        if raw in ("1", "2", "3"):
+        if raw in ("1", "2", "3", "4"):
             choice = int(raw)
             break
-        print("  Invalid -- enter 1, 2 or 3")
+        print("  Invalid -- enter 1, 2, 3 or 4")
 
-    # Step 2: missed listing date?
-    divider()
-    missed = prompt_yn(f"Did you miss the listing date by {MISS_DAYS} days? (shifts entry & window end by +{MISS_DAYS} days)")
-    missed_days = MISS_DAYS if missed else 0
+    # Step 2: missed listing date? (not applicable for option 4)
+    if choice != 4:
+        divider()
+        missed = prompt_yn(f"Did you miss the listing date by {MISS_DAYS} days? (shifts entry & window end by +{MISS_DAYS} days)")
+        missed_days = MISS_DAYS if missed else 0
+    else:
+        missed_days = 0
 
     # For option 3: find the earliest listing date across all symbols
     if choice == 3:
@@ -333,6 +337,55 @@ def _run_once():
 
         run_analysis(months, days, window_label, filename, data_dir, DEFAULT_INVESTMENT,
                      missed_days=missed_days)
+
+    if choice == 4:
+        divider()
+        while True:
+            raw = input("  Enter stock symbol (e.g. NABIL): ").strip().upper()
+            if raw:
+                break
+            print("  Symbol cannot be empty.")
+
+        first_date = get_first_trading_date(raw, data_dir)
+        divider()
+        if first_date is None:
+            print(f"  ❌  No price data found for {raw}.")
+            print(f"      Check the symbol or run the scraper to fetch data.")
+        else:
+            name          = get_stock_name(raw)
+            listing_price = get_price_on_date(raw, first_date, data_dir)
+            days_since    = (today - first_date).days
+            years_since   = days_since / 365.25
+
+            print(f"  Symbol       : {raw}")
+            print(f"  Name         : {name}")
+            print(f"  Listing date : {first_date}")
+            print(f"  Listing price: Rs. {listing_price:,.2f}" if listing_price else "  Listing price: N/A")
+            print(f"  Days listed  : {days_since:,} days  ({years_since:.2f} years)")
+
+            # offer to look up more symbols without re-running the full menu
+            while True:
+                another = input("\n  Look up another symbol? [y/N]: ").strip().lower()
+                if another != "y":
+                    break
+                raw2 = input("  Symbol: ").strip().upper()
+                if not raw2:
+                    continue
+                fd2  = get_first_trading_date(raw2, data_dir)
+                divider()
+                if fd2 is None:
+                    print(f"  ❌  No price data found for {raw2}.")
+                else:
+                    name2  = get_stock_name(raw2)
+                    lp2    = get_price_on_date(raw2, fd2, data_dir)
+                    days2  = (today - fd2).days
+                    yrs2   = days2 / 365.25
+                    print(f"  Symbol       : {raw2}")
+                    print(f"  Name         : {name2}")
+                    print(f"  Listing date : {fd2}")
+                    print(f"  Listing price: Rs. {lp2:,.2f}" if lp2 else "  Listing price: N/A")
+                    print(f"  Days listed  : {days2:,} days  ({yrs2:.2f} years)")
+        return
 
     else:  # choice == 3
         divider()
