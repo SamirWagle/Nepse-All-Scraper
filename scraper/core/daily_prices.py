@@ -1,4 +1,5 @@
 
+import sys
 import requests
 import pandas as pd
 from pathlib import Path
@@ -62,6 +63,7 @@ class DailySummaryUpdater:
             # Update each company's CSV
             updated_count = 0
             skipped_count = 0
+            failed_count = 0
             
             # Iterate through directories
             for symbol_dir in self.data_dir.iterdir():
@@ -91,6 +93,7 @@ class DailySummaryUpdater:
                             continue  # Already have today's data
                 except (KeyError, FileNotFoundError) as e:
                     logger.warning(f"Error reading {symbol}/prices.csv: {e}")
+                    failed_count += 1
                     continue
                 
                 # Find this symbol in today's data
@@ -122,15 +125,19 @@ class DailySummaryUpdater:
             
             logger.info(f"✅ Updated: {updated_count} companies")
             logger.info(f"⏭️  Skipped: {skipped_count} companies (already have today's data)")
-            
-            return updated_count
-            
+            if failed_count > 0:
+                logger.error(f"{failed_count} company/companies failed")
+
+            return updated_count, failed_count
+
         except Exception as e:
             logger.error(f"Error updating daily prices: {e}")
             import traceback
             logger.error(traceback.format_exc())
-            return 0
+            return 0, 1
 
 if __name__ == "__main__":
     updater = DailySummaryUpdater()
-    updater.update_all_companies()
+    _, failed = updater.update_all_companies()
+    if failed > 0:
+        sys.exit(1)
