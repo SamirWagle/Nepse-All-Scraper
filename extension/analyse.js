@@ -193,6 +193,28 @@
         const soFar = cycle.current ? ' so far' : '';
         const verb  = d.cagr_pct >= 0 ? 'grew' : 'fell';
         const cagrColor = d.cagr_pct >= 0 ? 'var(--accent)' : '#ff6b6b';
+
+        const boxId = `bull-perf-${cycle.num}`;
+        const eventsHtml = (d.events && d.events.length > 0)
+          ? d.events.map(ev => {
+              let badge;
+              if (ev.type === 'bonus') {
+                badge = `<span class="badge badge-bonus">Bonus ${(ev.pct * 100).toFixed(0)}%</span>`;
+              } else if (ev.type === 'right') {
+                badge = `<span class="badge badge-right">Rights ${ev.ratio} @ Rs.${ev.issue_price}</span>`;
+              } else {
+                badge = `<span class="badge badge-cash">Cash ${(ev.pct * 100).toFixed(1)}%</span>`;
+              }
+              const cashCol = ev.type === 'cash' ? 'Rs. ' + fmt(ev.cash_rs) : '—';
+              return `<tr>
+                <td>${ev.date}</td>
+                <td>${badge} <span class="ev-fy">${ev.fiscal_year || ''}</span></td>
+                <td>${ev.units_after.toFixed(4)}</td>
+                <td>${cashCol}</td>
+              </tr>`;
+            }).join('')
+          : `<tr><td colspan="4" class="perf-no-events">No bonus / dividend events in this period</td></tr>`;
+
         return `<div class="bull-box">
           <div class="bull-box-title">${cycle.label}</div>
           <div class="bull-box-period">${d.start_date} → ${d.end_date}</div>
@@ -201,6 +223,50 @@
           <div class="bull-box-duration">⏱ ${d.years.toFixed(1)} yrs</div>
           <div class="bull-box-multi">📈 Investment ${verb} ~${multX}${soFar}</div>
           <div class="bull-box-prices">Rs.${fmt(d.start_price)} → Rs.${fmt(d.ltp)}</div>
+
+          <button class="perf-toggle-btn" data-perf-id="${boxId}">
+            <span>▼ Performance Details</span>
+          </button>
+
+          <div class="perf-panel" id="${boxId}">
+            <div class="perf-summary-grid">
+              <div class="perf-summary-item">
+                <span class="perf-label">Total Invested</span>
+                <span class="perf-val">Rs. ${fmt(d.total_invested)}</span>
+              </div>
+              <div class="perf-summary-item">
+                <span class="perf-label">Market Value</span>
+                <span class="perf-val">Rs. ${fmt(d.market_value)}</span>
+              </div>
+              <div class="perf-summary-item">
+                <span class="perf-label">Cash Dividends</span>
+                <span class="perf-val perf-val-pos">Rs. ${fmt(d.total_cash_dividends)}</span>
+              </div>
+              <div class="perf-summary-item">
+                <span class="perf-label">Total Value</span>
+                <span class="perf-val ${d.todays_value >= d.total_invested ? 'perf-val-pos' : 'perf-val-neg'}">Rs. ${fmt(d.todays_value)}</span>
+              </div>
+              <div class="perf-summary-item">
+                <span class="perf-label">Units Bought</span>
+                <span class="perf-val">${d.units_bought.toFixed(4)} kitta</span>
+              </div>
+              <div class="perf-summary-item">
+                <span class="perf-label">Units Today</span>
+                <span class="perf-val perf-val-pos">${d.total_units_today.toFixed(4)} kitta</span>
+              </div>
+            </div>
+            <div class="perf-formula">
+              CAGR = (${fmt(d.todays_value)} ÷ ${fmt(d.total_invested)})<sup>1/${d.years}</sup> − 1
+              = <span style="color:${cagrColor}">${d.cagr_pct >= 0 ? '+' : ''}${d.cagr_pct.toFixed(2)}%</span>
+            </div>
+            <div class="perf-events-label">Corporate Action Timeline</div>
+            <div class="perf-table-wrap">
+              <table class="perf-table">
+                <thead><tr><th>Date</th><th>Event</th><th>Units After</th><th>Cash (Rs.)</th></tr></thead>
+                <tbody>${eventsHtml}</tbody>
+              </table>
+            </div>
+          </div>
         </div>`;
       }).join('');
 
@@ -208,6 +274,17 @@
         <div class="bull-cycle-header">📊 ${symbol} — Performance Across Bull Cycles</div>
         <div class="bull-boxes-grid">${boxes}</div>`;
     }
+
+    document.getElementById('bull-cycle-results').addEventListener('click', function(e) {
+      const btn = e.target.closest('.perf-toggle-btn');
+      if (!btn) return;
+      const id = btn.dataset.perfId;
+      const panel = document.getElementById(id);
+      if (!panel) return;
+      const isOpen = panel.classList.toggle('open');
+      btn.classList.toggle('open', isOpen);
+      btn.querySelector('span').textContent = isOpen ? '▲ Performance Details' : '▼ Performance Details';
+    });
 
     async function doSearch() {
       const symbol = document.getElementById('search-input').value.trim().toUpperCase();

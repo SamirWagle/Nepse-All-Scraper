@@ -439,6 +439,53 @@
     .bull-box-prices { font-size: 11px; color: var(--label); margin-top: 2px; }
     .bull-box-na { font-size: 22px; color: var(--label); margin: 8px 0; }
     .bull-box-note { font-size: 11px; color: var(--label); }
+
+    /* ── Performance Details panel ── */
+    .perf-toggle-btn {
+      width: 100%;
+      margin-top: 6px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: inherit;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .perf-toggle-btn:hover, .perf-toggle-btn.open {
+      background: var(--input-bg);
+      border-color: var(--accent);
+    }
+    .perf-panel { display: none; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+    .perf-panel.open { display: block; }
+    .perf-summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; margin-bottom: 10px; }
+    .perf-summary-item { display: flex; flex-direction: column; gap: 2px; }
+    .perf-label { font-size: 9px; color: var(--label); text-transform: uppercase; letter-spacing: 0.07em; }
+    .perf-val { font-size: 12px; font-weight: 600; color: var(--text); }
+    .perf-val-pos { color: var(--pos); }
+    .perf-val-neg { color: var(--neg); }
+    .perf-formula {
+      font-size: 10px; color: var(--label);
+      background: var(--input-bg); border-radius: 5px;
+      padding: 6px 8px; margin-bottom: 10px; line-height: 1.5;
+    }
+    .perf-events-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: var(--label); text-transform: uppercase; margin-bottom: 6px; }
+    .perf-table-wrap { overflow-x: auto; border-radius: 5px; border: 1px solid var(--border); }
+    .perf-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+    .perf-table th { padding: 5px 7px; text-align: left; color: var(--label); font-weight: 600; font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); white-space: nowrap; background: var(--input-bg); }
+    .perf-table td { padding: 5px 7px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; white-space: nowrap; background: transparent; }
+    .perf-table tr:last-child td { border-bottom: none; }
+    .perf-no-events { text-align: center; color: var(--label); padding: 10px !important; }
+    .ev-fy { font-size: 9px; color: var(--label); }
+    .badge-right { background: #1e1a3f; color: #a5b4fc; }
+    html.light .badge-right { background: #e0e0f8; color: #4338ca; }
   </style>
 </head>
 <body>
