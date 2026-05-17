@@ -53,13 +53,14 @@
     const modalBody    = document.getElementById('cycle-modal-body');
 
     function showCycleModal(title, rows, cls) {
-      modalTitle.style.color = cls === 'bull' ? 'var(--positive)' : 'var(--negative)';
+      const accent = cls === 'bull' ? '#4ecdc4' : '#ff6b6b';
+      modalTitle.style.color = accent;
       modalTitle.textContent = title;
       modalBody.innerHTML = rows.map((r, i) =>
-        `<tr>
-          <td style="padding:6px 8px;color:var(--label)">${i + 1}</td>
-          <td style="padding:6px 8px">${r.date}</td>
-          <td style="padding:6px 8px;font-weight:600;color:${cls === 'bull' ? 'var(--positive)' : 'var(--negative)'}">${r.index}</td>
+        `<tr style="border-bottom:1px solid #2d5a3d">
+          <td style="padding:8px 10px;color:#7ab898">${i + 1}</td>
+          <td style="padding:8px 10px;color:#e0ede6">${r.date}</td>
+          <td style="padding:8px 10px;font-weight:700;color:${accent}">${r.index}</td>
         </tr>`
       ).join('');
       modalOverlay.style.display = 'flex';
