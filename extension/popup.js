@@ -45,7 +45,9 @@ toggleDate.onclick = () => {
 
 // ── Analyse Stock button — opens full-page analysis ───────────────────────────
 analyseBtn.onclick = () => {
-  chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') });
+  const sym = symbolInput.value.trim().toUpperCase();
+  const url = chrome.runtime.getURL('analyse.html') + (sym ? '?symbol=' + encodeURIComponent(sym) : '');
+  chrome.tabs.create({ url });
 };
 
 perfToggleBtn.onclick = () => {

@@ -71,6 +71,14 @@
     // ── Search ──
     document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
 
+    // ── Init symbol from popup URL param ──
+    const _urlSym = new URLSearchParams(window.location.search).get('symbol');
+    if (_urlSym) {
+      document.getElementById('search-input').value = _urlSym;
+      lastSearchedSymbol = _urlSym;
+      doSearch();
+    }
+
     const BULL_CYCLES_DEF = [
       { num: 1, label: 'Bull 1', period: '~1994–2000', blank: true, reason: 'Pre-digital era' },
       { num: 2, label: 'Bull 2', period: '2002–2008',  blank: true, reason: 'Historical data unavailable' },
