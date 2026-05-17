@@ -34,5 +34,15 @@ def main():
         print("Running STANDARD DAILY UPDATE (New Companies + Incremental Updates)...")
         manager.run_daily_update(force_full=False, priority_only=priority_only)
 
+    # Sync listing dates for any new symbols not yet in ipo_listings.csv
+    print("\nChecking for new symbols missing listing dates...")
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from scraper.core.listing_date import ShareHubListingDateScraper
+    listing_scraper = ShareHubListingDateScraper()
+    company_wise = Path(__file__).parent.parent / "data" / "company-wise"
+    symbols = sorted([p.name for p in company_wise.iterdir() if p.is_dir()])
+    listing_scraper.scrape_symbols(symbols, skip_existing=True)
+
 if __name__ == "__main__":
     main()
