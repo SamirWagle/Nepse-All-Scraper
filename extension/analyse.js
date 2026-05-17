@@ -57,6 +57,8 @@
       const isLight = document.documentElement.classList.contains('light');
       const boxBg      = isLight ? '#1a3a2a' : 'var(--card)';
       const boxBorder  = isLight ? '#2d5a3d' : 'var(--border)';
+      const rowBg      = isLight ? '#1f4433' : 'transparent';
+      const rowBgAlt   = isLight ? '#1a3a2a' : 'transparent';
       const labelColor = isLight ? '#7ab898' : 'var(--label)';
       const textColor  = isLight ? '#e0ede6' : 'var(--text)';
       document.getElementById('cycle-modal-box').style.background = boxBg;
@@ -64,7 +66,7 @@
       modalTitle.style.color = accent;
       modalTitle.textContent = title;
       modalBody.innerHTML = rows.map((r, i) =>
-        `<tr style="border-bottom:1px solid ${boxBorder}">
+        `<tr style="border-bottom:1px solid ${boxBorder};background:${i % 2 === 0 ? rowBg : rowBgAlt}">
           <td style="padding:8px 10px;color:${labelColor}">${i + 1}</td>
           <td style="padding:8px 10px;color:${textColor}">${r.date}</td>
           <td style="padding:8px 10px;font-weight:700;color:${accent}">${r.index}</td>
