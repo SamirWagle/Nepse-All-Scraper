@@ -124,6 +124,61 @@ def _build_events(symbol: str, initial_units: float,
     return events
 
 
+# ── NEPSE index CAGR (price-only, no corporate actions) ──────────────────────
+def calculate_index_cagr(start_date: date, initial_investment: float,
+                         end_date: date = None) -> dict:
+    csv_path = DATA_DIR / "index" / "nepse" / "history.csv"
+    try:
+        df = pd.read_csv(csv_path, parse_dates=["date"])
+    except FileNotFoundError:
+        return {"error": "NEPSE index history not found"}
+
+    df = df.sort_values("date").reset_index(drop=True)
+
+    today         = date.today()
+    effective_end = end_date if (end_date and end_date < today) else today
+
+    start_rows = df[df["date"].dt.date >= start_date]
+    if start_rows.empty:
+        return {"error": f"No NEPSE data on or after {start_date}"}
+    start_row    = start_rows.iloc[0]
+    actual_start = start_row["date"].date()
+    start_price  = float(start_row["close"])
+
+    end_rows = df[df["date"].dt.date <= effective_end]
+    if end_rows.empty:
+        return {"error": f"No NEPSE data on or before {effective_end}"}
+    end_row    = end_rows.iloc[-1]
+    actual_end = end_row["date"].date()
+    end_price  = float(end_row["close"])
+
+    years = (actual_end - actual_start).days / DAYS_PER_YEAR
+    if years <= 0:
+        return {"error": "End date must be after start date"}
+
+    final_value = initial_investment * (end_price / start_price)
+    cagr_pct    = ((final_value / initial_investment) ** (1.0 / years) - 1) * 100
+
+    return {
+        "symbol":               "NEPSE",
+        "is_index":             True,
+        "start_date":           str(actual_start),
+        "end_date":             str(actual_end),
+        "years":                round(years, 2),
+        "start_price":          round(start_price, 2),
+        "ltp":                  round(end_price, 2),
+        "initial_investment":   round(initial_investment, 2),
+        "total_invested":       round(initial_investment, 2),
+        "units_bought":         0,
+        "total_units_today":    0,
+        "market_value":         round(final_value, 2),
+        "total_cash_dividends": 0,
+        "todays_value":         round(final_value, 2),
+        "cagr_pct":             round(cagr_pct, 4),
+        "events":               [],
+    }
+
+
 # ── Server-facing CAGR wrapper ────────────────────────────────────────────────
 def calculate_cagr(symbol: str, start_date: date,
                    initial_investment: float, end_date: date = None) -> dict:
@@ -180,7 +235,9 @@ class Handler(BaseHTTPRequestHandler):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
             symbol = qs.get("symbol", [""])[0].strip().upper()
-            if symbol and _SYMBOL_RE.match(symbol):
+            if symbol == "NEPSE":
+                self._send_json({"symbol": "NEPSE", "listing_date": None})
+            elif symbol and _SYMBOL_RE.match(symbol):
                 listing_date = _listing_scraper.get(symbol)
                 self._send_json({"symbol": symbol, "listing_date": listing_date})
             else:
@@ -204,6 +261,29 @@ class Handler(BaseHTTPRequestHandler):
 
             if not symbol or not _SYMBOL_RE.match(symbol):
                 self._send_json({"error": "Invalid symbol. Use letters and digits only (e.g. NABIL)."})
+                return
+
+            if symbol == "NEPSE":
+                if start_date_str:
+                    try:
+                        start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+                    except ValueError:
+                        self._send_json({"error": "Invalid start_date format. Use YYYY-MM-DD."})
+                        return
+                elif years:
+                    start_date = date.today() - timedelta(days=int(float(years) * DAYS_PER_YEAR))
+                else:
+                    self._send_json({"error": "Provide either years or start_date."})
+                    return
+                end_date = None
+                end_date_str = body.get("end_date")
+                if end_date_str:
+                    try:
+                        end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+                    except ValueError:
+                        self._send_json({"error": "Invalid end_date format. Use YYYY-MM-DD."})
+                        return
+                self._send_json(calculate_index_cagr(start_date, investment, end_date))
                 return
 
             if start_date_str:
