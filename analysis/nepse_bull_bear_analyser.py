@@ -166,24 +166,43 @@ def load_index_history(path: Path = INDEX_HISTORY_PATH):
 
 # NEPSE index CAGR (price-only)
 
-def _index_cagr(win_start: date, win_end: date, investment: float) -> dict | None:
+def _index_cagr(win_start: date, win_end: date, investment: float,
+                fallback_start: float | None = None,
+                fallback_end: float | None = None) -> dict | None:
     """
     Pure price-based CAGR for the NEPSE index.
+    Uses daily CSV when available; falls back to hardcoded cycle index values
+    (fallback_start / fallback_end) for pre-2011 cycles where CSV has no data.
     Returns a result dict with the same keys as calculate_cagr(), or None on failure.
     """
     index_df = load_index_history()
-    if index_df is None:
+
+    start_rows = (index_df[index_df["date"].dt.date >= win_start]
+                  if index_df is not None else None)
+    end_rows   = (index_df[index_df["date"].dt.date <= win_end]
+                  if index_df is not None else None)
+
+    MAX_DATE_GAP_DAYS = 90  # if CSV nearest date is >90 days from requested, use fallback
+
+    if (start_rows is not None and not start_rows.empty and
+            abs((start_rows.iloc[0]["date"].date() - win_start).days) <= MAX_DATE_GAP_DAYS):
+        actual_start = start_rows.iloc[0]["date"].date()
+        start_price  = float(start_rows.iloc[0]["close"])
+    elif fallback_start is not None:
+        actual_start = win_start
+        start_price  = fallback_start
+    else:
         return None
 
-    start_rows = index_df[index_df["date"].dt.date >= win_start]
-    end_rows   = index_df[index_df["date"].dt.date <= win_end]
-    if start_rows.empty or end_rows.empty:
+    if (end_rows is not None and not end_rows.empty and
+            abs((end_rows.iloc[-1]["date"].date() - win_end).days) <= MAX_DATE_GAP_DAYS):
+        actual_end = end_rows.iloc[-1]["date"].date()
+        end_price  = float(end_rows.iloc[-1]["close"])
+    elif fallback_end is not None:
+        actual_end = win_end
+        end_price  = fallback_end
+    else:
         return None
-
-    actual_start = start_rows.iloc[0]["date"].date()
-    actual_end   = end_rows.iloc[-1]["date"].date()
-    start_price  = float(start_rows.iloc[0]["close"])
-    end_price    = float(end_rows.iloc[-1]["close"])
 
     years = (actual_end - actual_start).days / DAYS_PER_YEAR
     if years <= 0:
@@ -377,10 +396,12 @@ def analyse_cycle(win_start: date, win_end: date,
                   data_dir: Path,
                   investment: float,
                   symbol_filter: list[str] | None = None,
-                  show_progress: bool = True) -> tuple[pd.DataFrame, list]:
+                  show_progress: bool = True,
+                  index_fallback: tuple[float, float] | None = None) -> tuple[pd.DataFrame, list]:
     # NEPSE index: single price-based row, no stock loop
     if symbol_filter == ["NEPSE"]:
-        r = _index_cagr(win_start, win_end, investment)
+        fb_start, fb_end = index_fallback if index_fallback else (None, None)
+        r = _index_cagr(win_start, win_end, investment, fb_start, fb_end)
         if r is None:
             return pd.DataFrame(), [("NEPSE", "no index data for window")]
         total_ret = (r["todays_value"] / r["total_invested"] - 1) * 100
@@ -695,10 +716,13 @@ def run_cycle(cycle_key: str, mode: str,
     full_window = shaved_window = (None, None)
     shaved_note = ""
 
+    idx_fallback = (cycle.get("start_index"), cycle.get("end_index")) if cycle_key != ENTIRE_KEY else None
+
     if mode in ("full", "both"):
         print(f"\n  Analysing {label} — FULL window  ({full_start} -> {full_end})")
         full_df, skipped_f = analyse_cycle(full_start, full_end, data_dir, investment,
-                                           symbol_filter=symbol_filter)
+                                           symbol_filter=symbol_filter,
+                                           index_fallback=idx_fallback)
         full_window = (full_start, full_end)
         out["sheets"].append((f"{label} — Full", full_df))
         print(f"  done  {len(full_df)} stocks  ({len(skipped_f)} skipped)")
@@ -709,7 +733,8 @@ def run_cycle(cycle_key: str, mode: str,
         print(f"\n  Analysing {label} — SHAVED 15% window  ({s_start} -> {s_end})")
         print(f"    method: {note}")
         shaved_df, skipped_s = analyse_cycle(s_start, s_end, data_dir, investment,
-                                             symbol_filter=symbol_filter)
+                                             symbol_filter=symbol_filter,
+                                             index_fallback=idx_fallback)
         shaved_window = (s_start, s_end)
         out["sheets"].append((f"{label} — Shaved 15%", shaved_df))
         print(f"  done  {len(shaved_df)} stocks  ({len(skipped_s)} skipped)")
