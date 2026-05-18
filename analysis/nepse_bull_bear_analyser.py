@@ -47,7 +47,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from nepse_cagr import calculate_cagr, get_all_symbols
+from nepse_cagr import calculate_cagr, get_all_symbols, DAYS_PER_YEAR
 
 # Config
 
@@ -164,6 +164,51 @@ def load_index_history(path: Path = INDEX_HISTORY_PATH):
         return None
 
 
+# NEPSE index CAGR (price-only)
+
+def _index_cagr(win_start: date, win_end: date, investment: float) -> dict | None:
+    """
+    Pure price-based CAGR for the NEPSE index.
+    Returns a result dict with the same keys as calculate_cagr(), or None on failure.
+    """
+    index_df = load_index_history()
+    if index_df is None:
+        return None
+
+    start_rows = index_df[index_df["date"].dt.date >= win_start]
+    end_rows   = index_df[index_df["date"].dt.date <= win_end]
+    if start_rows.empty or end_rows.empty:
+        return None
+
+    actual_start = start_rows.iloc[0]["date"].date()
+    actual_end   = end_rows.iloc[-1]["date"].date()
+    start_price  = float(start_rows.iloc[0]["close"])
+    end_price    = float(end_rows.iloc[-1]["close"])
+
+    years = (actual_end - actual_start).days / DAYS_PER_YEAR
+    if years <= 0:
+        return None
+
+    final_value = investment * (end_price / start_price)
+    cagr_pct    = ((final_value / investment) ** (1.0 / years) - 1) * 100
+
+    return {
+        "start_date":           actual_start,
+        "end_date":             actual_end,
+        "years":                round(years, 2),
+        "start_price":          round(start_price, 2),
+        "ltp":                  round(end_price, 2),
+        "initial_investment":   round(investment, 2),
+        "total_invested":       round(investment, 2),
+        "todays_value":         round(final_value, 2),
+        "market_value":         round(final_value, 2),
+        "total_cash_dividends": 0,
+        "units_bought":         0,
+        "total_units_today":    0,
+        "cagr_pct":             round(cagr_pct, 4),
+    }
+
+
 # Stock scope resolution
 
 def resolve_symbols(raw_input: str, all_symbols: list[str]) -> list[str]:
@@ -175,6 +220,15 @@ def resolve_symbols(raw_input: str, all_symbols: list[str]) -> list[str]:
     entries = [e.strip() for e in raw_input.split(",") if e.strip()]
     matched = []
     unmatched = []
+
+    # NEPSE index is a special symbol — not in company-wise data
+    filtered_entries = []
+    for entry in entries:
+        if entry.upper() == "NEPSE":
+            matched.append("NEPSE")
+        else:
+            filtered_entries.append(entry)
+    entries = filtered_entries
 
     # Build a lowercase name -> ticker lookup
     name_to_ticker = {
@@ -324,6 +378,27 @@ def analyse_cycle(win_start: date, win_end: date,
                   investment: float,
                   symbol_filter: list[str] | None = None,
                   show_progress: bool = True) -> tuple[pd.DataFrame, list]:
+    # NEPSE index: single price-based row, no stock loop
+    if symbol_filter == ["NEPSE"]:
+        r = _index_cagr(win_start, win_end, investment)
+        if r is None:
+            return pd.DataFrame(), [("NEPSE", "no index data for window")]
+        total_ret = (r["todays_value"] / r["total_invested"] - 1) * 100
+        df = pd.DataFrame([{
+            "#":              1,
+            "Ticker":         "NEPSE",
+            "Name":           "NEPSE Index",
+            "Start_Date":     r["start_date"],
+            "End_Date":       r["end_date"],
+            "Start_Price":    r["start_price"],
+            "End_Price":      r["ltp"],
+            "Total_Return_%": round(total_ret, 2),
+            "Cagr_%":         round(r["cagr_pct"], 2),
+            "# of Yrs":       r["years"],
+            "Multiple":       round(r["todays_value"] / r["total_invested"], 2),
+        }])
+        return df, []
+
     all_symbols = get_all_symbols(data_dir)
 
     # Apply symbol filter if provided
@@ -394,6 +469,9 @@ def analyse_from_listing(data_dir: Path,
                          symbol_filter: list[str] | None = None,
                          skip_days: int = LISTING_SKIP_DAYS,
                          show_progress: bool = True) -> tuple[pd.DataFrame, list]:
+    if symbol_filter == ["NEPSE"]:
+        print("  Note: listing+60 mode not applicable for NEPSE index — use a cycle instead.")
+        return pd.DataFrame(), [("NEPSE", "not applicable for index")]
     """
     For each stock, start date = first date in prices.csv + skip_days.
     End date = today.
