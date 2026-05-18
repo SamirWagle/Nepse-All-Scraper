@@ -228,6 +228,7 @@
         const verb  = d.cagr_pct >= 0 ? 'grew' : 'fell';
         const cagrColor = d.cagr_pct >= 0 ? 'var(--accent)' : '#ff6b6b';
 
+        const isIndex = !!d.is_index;
         const boxId = `bull-perf-${cycle.num}`;
         const eventsHtml = (d.events && d.events.length > 0)
           ? d.events.map(ev => {
@@ -256,9 +257,9 @@
           <div class="bull-box-cagr" style="color:${cagrColor}">${d.cagr_pct >= 0 ? '+' : ''}${d.cagr_pct.toFixed(1)}% CAGR</div>
           <div class="bull-box-duration">⏱ ${d.years.toFixed(1)} yrs</div>
           <div class="bull-box-multi">📈 Investment ${verb} ~${multX}${soFar}</div>
-          <div class="bull-box-prices">Rs.${fmt(d.start_price)} → Rs.${fmt(d.ltp)}</div>
+          <div class="bull-box-prices">${isIndex ? 'Index: ' : 'Rs.'}${fmt(d.start_price)} → ${isIndex ? '' : 'Rs.'}${fmt(d.ltp)}</div>
 
-          <button class="perf-toggle-btn" data-perf-id="${boxId}">
+          ${isIndex ? '' : `<button class="perf-toggle-btn" data-perf-id="${boxId}">
             <span>▼ Performance Details</span>
           </button>
 
@@ -300,7 +301,7 @@
                 <tbody>${eventsHtml}</tbody>
               </table>
             </div>
-          </div>
+          </div>`}
         </div>`;
       }).join('');
 
@@ -367,9 +368,9 @@
       document.getElementById('r-meta').textContent = `${d.start_date} → ${d.end_date}  (${d.years} years)`;
       document.getElementById('r-start-price').textContent = 'Rs. ' + fmt(d.start_price);
       document.getElementById('r-ltp').textContent         = 'Rs. ' + fmt(d.ltp);
-      document.getElementById('r-units').textContent       = d.total_units_today + ' kitta';
+      document.getElementById('r-units').textContent       = d.is_index ? '— (Index)' : d.total_units_today + ' kitta';
       document.getElementById('r-market').textContent      = 'Rs. ' + fmt(d.market_value);
-      document.getElementById('r-divs').textContent        = 'Rs. ' + fmt(d.total_cash_dividends);
+      document.getElementById('r-divs').textContent        = d.is_index ? '—' : 'Rs. ' + fmt(d.total_cash_dividends);
       document.getElementById('r-today').textContent       = 'Rs. ' + fmt(d.todays_value);
       document.getElementById('r-invest').textContent      = 'Rs. ' + fmt(d.initial_investment);
       document.getElementById('r-years').textContent       = d.years + ' yrs';

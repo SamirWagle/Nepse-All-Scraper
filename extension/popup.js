@@ -150,10 +150,10 @@ function handleResult(data) {
     `${data.start_date} → ${data.end_date}  (${data.years} yrs)`;
 
   // Summary cells
-  document.getElementById('res-units').textContent  = data.total_units_today + ' kitta';
-  document.getElementById('res-ltp').textContent    = 'Rs. ' + fmt(data.ltp);
+  document.getElementById('res-units').textContent  = data.is_index ? '— (Index)' : data.total_units_today + ' kitta';
+  document.getElementById('res-ltp').textContent    = (data.is_index ? '' : 'Rs. ') + fmt(data.ltp);
   document.getElementById('res-market').textContent = 'Rs. ' + fmt(data.market_value);
-  document.getElementById('res-cash').textContent   = 'Rs. ' + fmt(data.total_cash_dividends);
+  document.getElementById('res-cash').textContent   = data.is_index ? '—' : 'Rs. ' + fmt(data.total_cash_dividends);
 
   // Events table
   const tbody = document.getElementById('events-body');
