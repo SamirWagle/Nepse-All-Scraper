@@ -137,8 +137,10 @@
     }
 
     const BULL_CYCLES_DEF = [
-      { num: 1, label: 'Bull 1', period: '~1994–2000', blank: true, reason: 'Pre-digital era' },
-      { num: 2, label: 'Bull 2', period: '2002–2008',  blank: true, reason: 'Historical data unavailable' },
+      { num: 1, label: 'Bull 1', period: '~1994–2000', blank: true, reason: 'Pre-digital era',
+        nepseStart: 100, nepseEnd: 545.82, nepseStartDate: '1994-01-13', nepseEndDate: '2000-11-23' },
+      { num: 2, label: 'Bull 2', period: '2002–2008',  blank: true, reason: 'Historical data unavailable',
+        nepseStart: 299.0, nepseEnd: 1175.38, nepseStartDate: '2002-03-15', nepseEndDate: '2008-08-31' },
       { num: 3, label: 'Bull 3', period: '2012–2016', start: '2012-03-29', end: '2016-07-27' },
       { num: 4, label: 'Bull 4', period: '2019–2021', start: '2019-03-05', end: '2021-08-18' },
       { num: 5, label: 'Bull 5 ★ Current', period: '2022–now', start: '2022-09-25', end: null, current: true },
@@ -313,7 +315,127 @@
           <span>📊 ${symbol} — Performance Across Bull Cycles</span>
           ${listedStr}
         </div>
-        <div class="bull-boxes-grid">${boxes}</div>`;
+        <div class="bull-boxes-grid" id="stock-bull-cards-row">${boxes}</div>`;
+
+      // Compare to NEPSE button
+      const hdr = container.querySelector('.bull-cycle-header');
+      let btn = document.getElementById('compare-nepse-btn');
+      if (!btn) {
+        btn = document.createElement('button');
+        btn.id = 'compare-nepse-btn';
+        btn.style.cssText = 'background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:20px;padding:4px 14px;font-size:0.78rem;font-weight:600;letter-spacing:0.03em;cursor:pointer;opacity:0.85;transition:opacity 0.2s;';
+        btn.onmouseenter = () => btn.style.opacity = 1;
+        btn.onmouseleave = () => btn.style.opacity = 0.85;
+        hdr.insertBefore(btn, hdr.lastElementChild);
+      }
+      btn.textContent = '📈 Compare to NEPSE';
+      btn.onclick = () => toggleNepseComparison(symbol, dataMap);
+
+      // Nepse row container
+      let nepseRow = document.getElementById('nepse-comparison-row');
+      if (!nepseRow) {
+        nepseRow = document.createElement('div');
+        nepseRow.id = 'nepse-comparison-row';
+        nepseRow.style.cssText = 'display:none;margin-top:10px;';
+        nepseRow.innerHTML = '<div style="font-size:11px;font-weight:700;color:var(--label);letter-spacing:0.08em;margin-bottom:8px;">NEPSE INDEX</div><div class="bull-boxes-grid" id="nepse-bull-cards-row"></div>';
+        container.appendChild(nepseRow);
+      } else {
+        nepseRow.style.display = 'none';
+        btn.textContent = '📈 Compare to NEPSE';
+      }
+    }
+
+    async function toggleNepseComparison(symbol, dataMap) {
+      const row = document.getElementById('nepse-comparison-row');
+      const btn = document.getElementById('compare-nepse-btn');
+      if (row.style.display !== 'none') {
+        row.style.display = 'none';
+        btn.textContent = '📈 Compare to NEPSE';
+        return;
+      }
+
+      btn.textContent = '⏳ Loading…';
+      btn.disabled = true;
+
+      // Fetch NEPSE data for the same cycles
+      const port = await findPort();
+      const fetchable = BULL_CYCLES_DEF.filter(c => !c.blank);
+      const fetched = await Promise.all(fetchable.map(async cycle => {
+        try {
+          const payload = { symbol: 'NEPSE', bull_num: cycle.num, start_date: cycle.start, end_date: cycle.end || null };
+          let data;
+          if (port) {
+            const resp = await fetch(`http://localhost:${port}/cagr`, {
+              method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+            });
+            data = await resp.json();
+          } else {
+            data = await new Promise(resolve => chrome.runtime.sendMessage({ action: 'cagrViaNative', payload }, resolve));
+          }
+          return { num: cycle.num, data };
+        } catch(e) {
+          return { num: cycle.num, data: { error: e.message } };
+        }
+      }));
+
+      const nepseMap = {};
+      fetched.forEach(r => { nepseMap[r.num] = r.data; });
+
+      const cardsRow = document.getElementById('nepse-bull-cards-row');
+      cardsRow.innerHTML = BULL_CYCLES_DEF.map(cycle => {
+        if (cycle.blank) {
+          // Use hardcoded nepse prices if available
+          if (cycle.nepseStart && cycle.nepseEnd) {
+            const years = (new Date(cycle.nepseEndDate) - new Date(cycle.nepseStartDate)) / (1000*60*60*24*365.25);
+            const cagr = (Math.pow(cycle.nepseEnd / cycle.nepseStart, 1/years) - 1) * 100;
+            const ratio = cycle.nepseEnd / cycle.nepseStart;
+            const multX = ratio >= 2 ? Math.round(ratio) + 'x' : ratio.toFixed(1) + 'x';
+            const cagrColor = cagr >= 0 ? 'var(--accent)' : '#ff6b6b';
+            return `<div class="bull-box">
+              <div class="bull-box-title">${cycle.label}</div>
+              <div class="bull-box-period">${cycle.nepseStartDate} → ${cycle.nepseEndDate}</div>
+              <div class="bull-box-symbol">NEPSE</div>
+              <div class="bull-box-cagr" style="color:${cagrColor}">${cagr >= 0 ? '+' : ''}${cagr.toFixed(1)}% CAGR</div>
+              <div class="bull-box-duration">⏱ ${years.toFixed(1)} yrs</div>
+              <div class="bull-box-multi">📈 Index grew ~${multX}</div>
+              <div class="bull-box-prices">Index: ${cycle.nepseStart} → ${cycle.nepseEnd}</div>
+            </div>`;
+          }
+          return `<div class="bull-box bull-box-blank">
+            <div class="bull-box-title">${cycle.label}</div>
+            <div class="bull-box-period">${cycle.period}</div>
+            <div class="bull-box-na">—</div>
+            <div class="bull-box-note">${cycle.reason}</div>
+          </div>`;
+        }
+        const d = nepseMap[cycle.num];
+        if (!d || d.error) {
+          return `<div class="bull-box bull-box-blank">
+            <div class="bull-box-title">${cycle.label}</div>
+            <div class="bull-box-period">${cycle.period}</div>
+            <div class="bull-box-na">❌</div>
+            <div class="bull-box-note">${d?.error || 'No data'}</div>
+          </div>`;
+        }
+        const cagrColor = d.cagr_pct >= 0 ? 'var(--accent)' : '#ff6b6b';
+        const ratio = d.todays_value / d.initial_investment;
+        const multX = ratio >= 2 ? Math.round(ratio) + 'x' : ratio.toFixed(1) + 'x';
+        const soFar = cycle.current ? ' so far' : '';
+        const verb  = d.cagr_pct >= 0 ? 'grew' : 'fell';
+        return `<div class="bull-box">
+          <div class="bull-box-title">${cycle.label}</div>
+          <div class="bull-box-period">${d.start_date} → ${d.end_date}</div>
+          <div class="bull-box-symbol">NEPSE</div>
+          <div class="bull-box-cagr" style="color:${cagrColor}">${d.cagr_pct >= 0 ? '+' : ''}${d.cagr_pct.toFixed(1)}% CAGR</div>
+          <div class="bull-box-duration">⏱ ${d.years.toFixed(1)} yrs</div>
+          <div class="bull-box-multi">📈 Index ${verb} ~${multX}${soFar}</div>
+          <div class="bull-box-prices">Index: ${fmt(d.start_price)} → ${fmt(d.ltp)}</div>
+        </div>`;
+      }).join('');
+
+      row.style.display = 'block';
+      btn.textContent = '✕ Hide NEPSE';
+      btn.disabled = false;
     }
 
     document.getElementById('bull-cycle-results').addEventListener('click', function(e) {
