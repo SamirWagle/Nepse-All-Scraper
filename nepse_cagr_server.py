@@ -39,6 +39,11 @@ import pandas as pd
 from scraper.core.listing_date import ShareHubListingDateScraper
 _listing_scraper = ShareHubListingDateScraper()
 
+# ── Known listing dates (overrides scraper data) ───────────────────────────────
+LISTING_DATE_OVERRIDES = {
+    "SPIL": "2023-04-03",
+}
+
 # ── Config ────────────────────────────────────────────────────────────────────
 PORT               = 5758
 DEFAULT_INVESTMENT = 100_000
@@ -244,7 +249,11 @@ class Handler(BaseHTTPRequestHandler):
             if symbol == "NEPSE":
                 self._send_json({"symbol": "NEPSE", "listing_date": None})
             elif symbol and _SYMBOL_RE.match(symbol):
-                listing_date = _listing_scraper.get(symbol)
+                # Check overrides first
+                if symbol in LISTING_DATE_OVERRIDES:
+                    listing_date = LISTING_DATE_OVERRIDES[symbol]
+                else:
+                    listing_date = _listing_scraper.get(symbol)
                 self._send_json({"symbol": symbol, "listing_date": listing_date})
             else:
                 self._send_json({"error": "Invalid symbol"})

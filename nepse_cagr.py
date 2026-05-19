@@ -37,6 +37,11 @@ DEFAULT_INVESTMENT = 100_000  # Rs.
 DEFAULT_DATA_DIR = Path(__file__).parent / "data"  # override with --data-dir
 DAYS_PER_YEAR = 365.25    # accounts for leap years
 
+# Known listing dates (overrides earliest data in CSV if earlier)
+LISTING_DATES = {
+    "SPIL": date(2023, 4, 3),
+}
+
 
 # ─────────────────────────────────────────────
 # Helpers
@@ -183,13 +188,19 @@ def calculate_cagr(
     dividends = load_dividends(symbol, data_dir)
     rights    = load_right_shares(symbol, data_dir)
 
+    # Check if there's a known listing date that's later than earliest data
+    known_listing_date = LISTING_DATES.get(symbol.upper())
+    first_available = prices["date"].dt.date.min()
+    if known_listing_date and known_listing_date > first_available:
+        first_available = known_listing_date
+        prices = prices[prices["date"].dt.date >= known_listing_date].reset_index(drop=True)
+
     # ── Step 1: Initial purchase ──────────────────────────────────────────
     start_row = nearest_price(prices, start_date, direction="forward")
     actual_start_date = start_row["date"].date()
     start_price = float(start_row["close"])
     units = initial_investment / start_price
 
-    first_available = prices["date"].dt.date.min()
     if start_date < first_available:
         print(f"\n  ⚠️  WARNING: Requested start date {start_date} is before this stock's")
         print(f"  earliest available data ({first_available}).")
