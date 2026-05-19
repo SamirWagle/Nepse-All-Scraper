@@ -125,6 +125,15 @@
       toggleTheme();
     });
 
+    document.getElementById('quit-btn').addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const port = await findPort();
+      if (!port) { alert('Server not running.'); return; }
+      try { await fetch(`http://localhost:${port}/quit`); } catch(_) {}
+      document.getElementById('quit-btn').textContent = '✓ Stopped';
+      document.getElementById('quit-btn').disabled = true;
+    });
+
     // ── Search ──
     document.getElementById('search-input').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
 
@@ -217,11 +226,12 @@
           </div>`;
         }
         if (!d || d.error) {
+          const noDataForCycle = d?.error && d.error.includes('No price data');
           return `<div class="bull-box bull-box-blank">
             <div class="bull-box-title">${cycle.label}</div>
             <div class="bull-box-period">${cycle.period}</div>
-            <div class="bull-box-na">❌</div>
-            <div class="bull-box-note">${d?.error || 'No data'}</div>
+            <div class="bull-box-na">—</div>
+            <div class="bull-box-note">${noDataForCycle ? 'No data for this cycle' : (d?.error || 'No data')}</div>
           </div>`;
         }
         const ratio = d.todays_value / d.initial_investment;
@@ -410,11 +420,12 @@
         }
         const d = nepseMap[cycle.num];
         if (!d || d.error) {
+          const noDataForCycle = d?.error && d.error.includes('No price data');
           return `<div class="bull-box bull-box-blank">
             <div class="bull-box-title">${cycle.label}</div>
             <div class="bull-box-period">${cycle.period}</div>
-            <div class="bull-box-na">❌</div>
-            <div class="bull-box-note">${d?.error || 'No data'}</div>
+            <div class="bull-box-na">—</div>
+            <div class="bull-box-note">${noDataForCycle ? 'No data for this cycle' : (d?.error || 'No data')}</div>
           </div>`;
         }
         const cagrColor = d.cagr_pct >= 0 ? 'var(--accent)' : '#ff6b6b';

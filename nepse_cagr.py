@@ -195,6 +195,12 @@ def calculate_cagr(
         print(f"  earliest available data ({first_available}).")
         print(f"  Calculation will start from {first_available} instead.\n")
 
+    if actual_start_date >= reference_end:
+        raise ValueError(
+            f"No price data for {symbol} before cycle end {reference_end}. "
+            f"Earliest available data: {first_available}."
+        )
+
     if verbose:
         print(f"\n{'='*60}")
         print(f"  NEPSE CAGR Calculator  |  {symbol.upper()}")

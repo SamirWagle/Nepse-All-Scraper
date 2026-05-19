@@ -16,8 +16,11 @@ GET /ping
 
 import errno
 import json
+import os
 import re
 import sys
+import threading
+import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -231,6 +234,9 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/ping":
             self._send_json({"status": "ok"})
+        elif self.path == "/quit":
+            self._send_json({"status": "shutting_down"})
+            threading.Thread(target=lambda: (time.sleep(0.2), os._exit(0)), daemon=True).start()
         elif self.path.startswith("/listing_date"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
