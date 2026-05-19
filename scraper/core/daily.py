@@ -9,7 +9,7 @@ from pathlib import Path
 LOCK_FILE = "/tmp/nepse_daily_scraper.lock"
 
 from .history import ShareSansarHistoryScraper
-from .ipo_listing import ShareSansarIPO_listingScraper
+from .listing_date import ShareHubListingDateScraper
 
 logging.basicConfig(
     level=logging.INFO,
@@ -31,7 +31,7 @@ class DailyScraperManager:
 
     def __init__(self, base_dir="data"):
         self.price_scraper = ShareSansarHistoryScraper()
-        self.ipo_scraper = ShareSansarIPO_listingScraper()
+        self.ipo_scraper = ShareHubListingDateScraper()
 
         self.data_dir = Path(__file__).resolve().parent.parent.parent / "data"
         self.company_wise_dir = self.data_dir / "company-wise"
@@ -154,7 +154,7 @@ class DailyScraperManager:
         # Incrementally update IPO listing dates (fast: stops on first known symbol)
         logger.info("--- Updating IPO listing dates ---")
         try:
-            self.ipo_scraper.scrape_all_listings(stop_on_existing=True)
+            self.ipo_scraper.scrape_symbols(self.get_priority_companies(), skip_existing=True)
         except Exception as e:
             logger.error(f"IPO listing scrape failed: {e}")
             failed_count += 1
