@@ -32,10 +32,25 @@ DATE_FORMATS = [
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def normalise(s: str) -> str:
     """'October 24, 2012' → 'October 24 2012'"""
-    return re.sub(r'(\d),\s*(\d{4})', r'\1 \2', s).strip()
+    s = s.strip().rstrip(".,")
+    s = re.sub(r"^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s*", "", s, flags=re.IGNORECASE)
+    s = re.sub(r'(\d),\s*(\d{4})', r'\1 \2', s)
+    return s.strip()
 
 
 def parse_date(s: str) -> date | None:
+    s_lower = s.strip().lower()
+    if s_lower == "today":
+        return date.today()
+    if s_lower == "yesterday":
+        return date.today() - timedelta(days=1)
+    if s_lower == "the day before yesterday":
+        return date.today() - timedelta(days=2)
+    import re as _re
+    _m = _re.fullmatch(r'(\d) days? ago', s_lower)
+    if _m:
+        return date.today() - timedelta(days=int(_m.group(1)))
+    s = s_lower
     s = normalise(s)
     for fmt in DATE_FORMATS:
         try:
