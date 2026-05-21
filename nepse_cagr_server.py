@@ -56,7 +56,7 @@ def _load_companies() -> list:
     _companies_cache = [{"symbol": str(r["symbol"]), "name": str(r["name"])} for _, r in df.iterrows()]
     return _companies_cache
 
-def search_companies(q: str, max_results: int = 8) -> list:
+def search_companies(q: str, max_results: int = 10, offset: int = 0) -> list:
     """Return companies matching q by exact ticker, ticker prefix, or name substring."""
     q_up = q.strip().upper()
     q_low = q.strip().lower()
@@ -86,7 +86,7 @@ def search_companies(q: str, max_results: int = 8) -> list:
             or token_match
         ) and c not in results:
             results.append(c)
-    return results[:max_results]
+    return results[offset:offset + max_results]
 
 # ── Config ────────────────────────────────────────────────────────────────────
 PORT               = 5758
@@ -293,7 +293,15 @@ class Handler(BaseHTTPRequestHandler):
             if not q:
                 self._send_json({"error": "Missing q parameter"})
             else:
-                self._send_json({"results": search_companies(q)})
+                try:
+                    max_results = max(1, min(50, int(qs.get("max_results", ["10"])[0])))
+                except (TypeError, ValueError):
+                    max_results = 10
+                try:
+                    offset = max(0, int(qs.get("offset", ["0"])[0]))
+                except (TypeError, ValueError):
+                    offset = 0
+                self._send_json({"results": search_companies(q, max_results=max_results, offset=offset)})
         elif self.path.startswith("/listing_date"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)

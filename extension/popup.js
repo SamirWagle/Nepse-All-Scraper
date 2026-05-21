@@ -49,7 +49,7 @@ async function resolveSymbol(query) {
     try {
       const probe = await fetch(`http://localhost:${p}/ping`, { signal: AbortSignal.timeout(300) });
       if (!probe.ok) continue;
-      const resp = await fetch(`http://localhost:${p}/search?q=${encodeURIComponent(query)}`);
+      const resp = await fetch(`http://localhost:${p}/search?q=${encodeURIComponent(query)}&max_results=30`);
       const data = await resp.json();
       return { port: p, results: data.results || [] };
     } catch(_) { continue; }
@@ -111,11 +111,14 @@ function localResolveCandidates(query) {
     .map(item => ({ symbol: item.symbol, name: item.symbol }));
 }
 
-function showPickerInStatus(candidates, onSelect) {
+function showPickerInStatus(candidates, onSelect, onMore, hasMore = false) {
   const list = candidates.map(c =>
     `<div class="picker-item" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</div>`
   ).join('');
-  statusEl.innerHTML = `<div style="font-size:12px;color:var(--label);margin-bottom:4px">Pick one:</div>${list}`;
+  const moreBtn = hasMore
+    ? `<button class="picker-more-btn" type="button">Show 10 more</button>`
+    : '';
+  statusEl.innerHTML = `<div style="font-size:12px;color:var(--label);margin-bottom:4px">Pick one:</div>${list}${moreBtn}`;
   statusEl.querySelectorAll('.picker-item').forEach(el => {
     el.style.cssText = 'cursor:pointer;padding:4px 6px;border-radius:6px;margin:2px 0;font-size:12px;';
     el.addEventListener('mouseenter', () => { el.style.background = 'rgba(78,205,196,0.2)'; });
@@ -125,6 +128,10 @@ function showPickerInStatus(candidates, onSelect) {
       onSelect(el.dataset.symbol);
     });
   });
+  const moreEl = statusEl.querySelector('.picker-more-btn');
+  if (moreEl && onMore) {
+    moreEl.addEventListener('click', () => onMore());
+  }
 }
 
 // ── Analyse Stock button — opens full-page analysis ───────────────────────────
@@ -142,9 +149,9 @@ analyseBtn.onclick = async () => {
       chrome.tabs.create({ url });
       return;
     } else if (localResults.length > 1) {
-      showPickerInStatus(localResults, sym => {
-        chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(sym) });
-      });
+    showPickerInStatus(localResults, sym => {
+      chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(sym) });
+    }, null, false);
       return;
     }
     if (looksLikeTicker(query)) {
@@ -159,7 +166,7 @@ analyseBtn.onclick = async () => {
   } else {
     showPickerInStatus(results, sym => {
       chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(sym) });
-    });
+    }, null, false);
   }
 };
 
@@ -186,7 +193,7 @@ calcBtn.onclick = async () => {
       return;
     } else if (localResults.length > 1) {
       calcBtn.disabled = false;
-      showPickerInStatus(localResults, sym => { symbolInput.value = sym; calcBtn.click(); });
+    showPickerInStatus(localResults, sym => { symbolInput.value = sym; calcBtn.click(); }, null, false);
       return;
     }
     if (looksLikeTicker(query)) {
@@ -199,7 +206,7 @@ calcBtn.onclick = async () => {
   }
   if (results.length > 1) {
     calcBtn.disabled = false;
-    showPickerInStatus(results, sym => { symbolInput.value = sym; calcBtn.click(); });
+    showPickerInStatus(results, sym => { symbolInput.value = sym; calcBtn.click(); }, null, false);
     return;
   }
   runCalc(results[0].symbol);

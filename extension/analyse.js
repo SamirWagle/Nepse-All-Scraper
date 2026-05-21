@@ -26,7 +26,14 @@
         return;
       }
       if (results.length > 1) {
-        showBullPicker(results);
+        showPagedPicker(async (offset, limit) => {
+          const { results: pageResults, error: pageError } = await resolveSymbolPage(query, offset, limit);
+          return { results: pageResults || [], error: pageError };
+        }, sym => {
+          lastSearchedSymbol = sym;
+          document.getElementById('search-input').value = sym;
+          switchPage('bullbear');
+        });
         return;
       }
       lastSearchedSymbol = results[0].symbol;
@@ -484,7 +491,33 @@
       const port = await findPort();
       if (!port) return { error: 'Server not running.' };
       try {
-        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}`);
+        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=30`);
+        const data = await resp.json();
+        if (data.error) return { error: data.error };
+        return { results: data.results || [] };
+      } catch(e) {
+        return { error: e.message };
+      }
+    }
+
+    async function resolveSymbolPage(query, offset, limit) {
+      const port = await findPort();
+      if (!port) return { error: 'Server not running.' };
+      try {
+        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=${limit}&offset=${offset}`);
+        const data = await resp.json();
+        if (data.error) return { error: data.error };
+        return { results: data.results || [] };
+      } catch(e) {
+        return { error: e.message };
+      }
+    }
+
+    async function resolveSymbolPage(query, offset, limit) {
+      const port = await findPort();
+      if (!port) return { error: 'Server not running.' };
+      try {
+        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=${limit}&offset=${offset}`);
         const data = await resp.json();
         if (data.error) return { error: data.error };
         return { results: data.results || [] };
@@ -553,20 +586,68 @@
       });
     }
 
-    function showBullPicker(candidates) {
+    function showPagedPicker(fetchPage, onSelect) {
       const statusEl = document.getElementById('page-status');
-      const list = candidates.map(c =>
-        `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
-      ).join('');
-      statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
-      statusEl.querySelectorAll('.picker-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          statusEl.innerHTML = '';
-          lastSearchedSymbol = btn.dataset.symbol;
-          document.getElementById('search-input').value = btn.dataset.symbol;
-          switchPage('bullbear');
+      let offset = 0;
+      const pageSize = 10;
+
+      async function render() {
+        const { results, error } = await fetchPage(offset, pageSize);
+        if (error) {
+          statusEl.textContent = '❌ ' + error;
+          return;
+        }
+        const list = results.map(c =>
+          `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+        ).join('');
+        const moreBtn = results.length === pageSize ? `<button class="picker-btn picker-more-btn" data-more="1">Show 10 more</button>` : '';
+        statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}${moreBtn}</div>`;
+        statusEl.querySelectorAll('.picker-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.dataset.more) {
+              offset += pageSize;
+              render();
+              return;
+            }
+            statusEl.innerHTML = '';
+            onSelect(btn.dataset.symbol);
+          });
         });
-      });
+      }
+
+      render();
+    }
+
+    function showPagedPicker(fetchPage, onSelect) {
+      const statusEl = document.getElementById('page-status');
+      let offset = 0;
+      const pageSize = 10;
+
+      async function render() {
+        const { results, error } = await fetchPage(offset, pageSize);
+        if (error) {
+          statusEl.textContent = '❌ ' + error;
+          return;
+        }
+        const list = results.map(c =>
+          `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+        ).join('');
+        const moreBtn = results.length === pageSize ? `<button class="picker-btn picker-more-btn" data-more="1">Show 10 more</button>` : '';
+        statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}${moreBtn}</div>`;
+        statusEl.querySelectorAll('.picker-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.dataset.more) {
+              offset += pageSize;
+              render();
+              return;
+            }
+            statusEl.innerHTML = '';
+            onSelect(btn.dataset.symbol);
+          });
+        });
+      }
+
+      render();
     }
 
     async function resolveBullSymbol(query) {
@@ -592,7 +673,10 @@
           runCagrForSymbol(localResults[0].symbol);
           return;
         } else if (localResults.length > 1) {
-          showSymbolPicker(localResults, sym => runCagrForSymbol(sym));
+          showPagedPicker(async (offset, limit) => {
+            const page = localResults.slice(offset, offset + limit);
+            return { results: page };
+          }, sym => runCagrForSymbol(sym));
           return;
         }
         document.getElementById('page-status').textContent = '❌ No company found for "' + query + '"';
