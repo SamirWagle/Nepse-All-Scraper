@@ -460,10 +460,53 @@
       btn.querySelector('span').textContent = isOpen ? '▲ Performance Details' : '▼ Performance Details';
     });
 
+    async function resolveSymbol(query) {
+      const port = await findPort();
+      if (!port) return { error: 'Server not running.' };
+      try {
+        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}`);
+        const data = await resp.json();
+        if (data.error) return { error: data.error };
+        return { results: data.results || [] };
+      } catch(e) {
+        return { error: e.message };
+      }
+    }
+
+    function showSymbolPicker(candidates, onSelect) {
+      const statusEl = document.getElementById('page-status');
+      const list = candidates.map(c =>
+        `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+      ).join('');
+      statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
+      statusEl.querySelectorAll('.picker-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          statusEl.innerHTML = '';
+          onSelect(btn.dataset.symbol);
+        });
+      });
+    }
+
     async function doSearch() {
-      const symbol = document.getElementById('search-input').value.trim().toUpperCase();
-      if (!symbol) return;
+      const query = document.getElementById('search-input').value.trim();
+      if (!query) return;
+      document.getElementById('page-status').textContent = '⏳ Resolving...';
+      document.getElementById('results-area').style.display = 'none';
+
+      const { results, error } = await resolveSymbol(query);
+      if (error) { document.getElementById('page-status').textContent = '❌ ' + error; return; }
+      if (!results || results.length === 0) { document.getElementById('page-status').textContent = '❌ No company found for "' + query + '"'; return; }
+
+      if (results.length > 1) {
+        showSymbolPicker(results, sym => runCagrForSymbol(sym));
+        return;
+      }
+      runCagrForSymbol(results[0].symbol);
+    }
+
+    async function runCagrForSymbol(symbol) {
       lastSearchedSymbol = symbol;
+      document.getElementById('search-input').value = symbol;
       const payload = { symbol, investment: 100000, years: 5 };
       document.getElementById('page-status').textContent = '⏳ Calculating...';
       document.getElementById('results-area').style.display = 'none';
@@ -718,8 +761,31 @@
     document.getElementById('cagr-symbol').addEventListener('keydown', e => { if (e.key === 'Enter') doCagr(); });
 
     async function doCagr() {
-      const symbol = document.getElementById('cagr-symbol').value.trim().toUpperCase();
-      if (!symbol) return;
+      const query = document.getElementById('cagr-symbol').value.trim();
+      if (!query) return;
+      document.getElementById('cagr-status').textContent = '⏳ Resolving...';
+      document.getElementById('cagr-results-area').style.display = 'none';
+
+      const { results, error } = await resolveSymbol(query);
+      if (error) { document.getElementById('cagr-status').textContent = '❌ ' + error; return; }
+      if (!results || results.length === 0) { document.getElementById('cagr-status').textContent = '❌ No company found for "' + query + '"'; return; }
+
+      if (results.length > 1) {
+        const statusEl = document.getElementById('cagr-status');
+        const list = results.map(c =>
+          `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+        ).join('');
+        statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
+        statusEl.querySelectorAll('.picker-btn').forEach(btn => {
+          btn.addEventListener('click', () => { statusEl.innerHTML = ''; runCagrCalc(btn.dataset.symbol); });
+        });
+        return;
+      }
+      runCagrCalc(results[0].symbol);
+    }
+
+    async function runCagrCalc(symbol) {
+      document.getElementById('cagr-symbol').value = symbol;
       const investment = parseFloat(document.getElementById('cagr-invest').value) || 100000;
       const payload = { symbol, investment };
       if (cagrUseYears) payload.years = parseFloat(document.getElementById('cagr-years').value) || 5;

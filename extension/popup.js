@@ -43,11 +43,55 @@ toggleDate.onclick = () => {
   dateWrap.style.display = 'block';
 };
 
+// ── Resolve name/ticker → symbol via server search ────────────────────────────
+async function resolveSymbol(query) {
+  for (let p = 5758; p <= 5768; p++) {
+    try {
+      const probe = await fetch(`http://localhost:${p}/ping`, { signal: AbortSignal.timeout(300) });
+      if (!probe.ok) continue;
+      const resp = await fetch(`http://localhost:${p}/search?q=${encodeURIComponent(query)}`);
+      const data = await resp.json();
+      return { port: p, results: data.results || [] };
+    } catch(_) { continue; }
+  }
+  return { port: null, results: [] };
+}
+
+function showPickerInStatus(candidates, onSelect) {
+  const list = candidates.map(c =>
+    `<div class="picker-item" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</div>`
+  ).join('');
+  statusEl.innerHTML = `<div style="font-size:12px;color:var(--label);margin-bottom:4px">Pick one:</div>${list}`;
+  statusEl.querySelectorAll('.picker-item').forEach(el => {
+    el.style.cssText = 'cursor:pointer;padding:4px 6px;border-radius:6px;margin:2px 0;font-size:12px;';
+    el.addEventListener('mouseenter', () => { el.style.background = 'rgba(78,205,196,0.2)'; });
+    el.addEventListener('mouseleave', () => { el.style.background = ''; });
+    el.addEventListener('click', () => {
+      statusEl.innerHTML = '';
+      onSelect(el.dataset.symbol);
+    });
+  });
+}
+
 // ── Analyse Stock button — opens full-page analysis ───────────────────────────
-analyseBtn.onclick = () => {
-  const sym = symbolInput.value.trim().toUpperCase();
-  const url = chrome.runtime.getURL('analyse.html') + (sym ? '?symbol=' + encodeURIComponent(sym) : '');
-  chrome.tabs.create({ url });
+analyseBtn.onclick = async () => {
+  const query = symbolInput.value.trim();
+  if (!query) {
+    chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') });
+    return;
+  }
+  const { results } = await resolveSymbol(query);
+  if (results.length === 0) {
+    const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(query.toUpperCase());
+    chrome.tabs.create({ url });
+  } else if (results.length === 1) {
+    const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(results[0].symbol);
+    chrome.tabs.create({ url });
+  } else {
+    showPickerInStatus(results, sym => {
+      chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(sym) });
+    });
+  }
 };
 
 perfToggleBtn.onclick = () => {
@@ -58,9 +102,29 @@ perfToggleBtn.onclick = () => {
 
 // ── Calculate ─────────────────────────────────────────────────────────────────
 calcBtn.onclick = async () => {
-  const symbol = symbolInput.value.trim().toUpperCase();
-  if (!symbol) { setStatus('Please enter a stock symbol.'); return; }
+  const query = symbolInput.value.trim();
+  if (!query) { setStatus('Please enter a stock symbol or name.'); return; }
 
+  calcBtn.disabled = true;
+  resultsEl.style.display = 'none';
+  setStatus('⏳ Resolving...');
+
+  const { results } = await resolveSymbol(query);
+  if (results.length === 0) {
+    runCalc(query.toUpperCase());
+    return;
+  }
+  if (results.length > 1) {
+    calcBtn.disabled = false;
+    showPickerInStatus(results, sym => { symbolInput.value = sym; calcBtn.click(); });
+    return;
+  }
+  runCalc(results[0].symbol);
+};
+
+async function runCalc(symbol) {
+  symbolInput.value = symbol;
+  calcBtn.disabled = true;
   const investment = parseFloat(investmentInput.value) || 100000;
   let years = null;
   let startDate = null;
@@ -69,11 +133,9 @@ calcBtn.onclick = async () => {
     years = parseFloat(yearsInput.value) || 5;
   } else {
     startDate = dateInput.value;
-    if (!startDate) { setStatus('Please select a start date.'); return; }
+    if (!startDate) { setStatus('Please select a start date.'); calcBtn.disabled = false; return; }
   }
 
-  calcBtn.disabled = true;
-  resultsEl.style.display = 'none';
   setStatus('⏳ Calculating...');
 
   const payload = { symbol, investment };
@@ -113,7 +175,7 @@ calcBtn.onclick = async () => {
     }
     calcBtn.disabled = false;
   });
-};
+}
 
 // ── Find engine port ──────────────────────────────────────────────────────────
 async function findEnginePort() {

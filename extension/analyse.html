@@ -213,6 +213,21 @@
     }
     .search-btn:hover { background: var(--accent2); }
 
+    .picker-wrap { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; padding: 8px 0; }
+    .picker-label { font-size: 13px; color: var(--label); margin-bottom: 4px; }
+    .picker-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s;
+    }
+    .picker-btn:hover { background: var(--accent); color: var(--btn-text); }
+
     .options-row {
       display: flex;
       align-items: center;
@@ -511,7 +526,7 @@
       <div class="search-wrap">
         <div class="search-box">
           <span class="search-icon">📈</span>
-          <input type="text" id="search-input" placeholder="e.g. NABIL, NICA, ADBL..." autocomplete="off">
+          <input type="text" id="search-input" placeholder="Ticker or name (e.g. NABIL, Nepal Life...)" autocomplete="off">
           <div class="nav-dropdown">
             <button class="search-btn nav-trigger" id="analyse-trigger">Analyse <span class="arrow">▼</span></button>
             <div class="nav-menu" id="analyse-menu" style="right:0;left:auto">
@@ -819,7 +834,7 @@
       <div class="search-wrap">
         <div class="search-box">
           <span class="search-icon">📊</span>
-          <input type="text" id="cagr-symbol" placeholder="e.g. NABIL, NICA, ADBL..." autocomplete="off">
+          <input type="text" id="cagr-symbol" placeholder="Ticker or name (e.g. NABIL, Nepal Life...)" autocomplete="off">
           <button class="search-btn" id="cagr-btn">Calculate</button>
         </div>
       </div>

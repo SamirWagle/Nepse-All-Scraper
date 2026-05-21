@@ -44,6 +44,37 @@ LISTING_DATE_OVERRIDES = {
     "SPIL": "2023-04-03",
 }
 
+# ── Company search ────────────────────────────────────────────────────────────
+_companies_cache: list | None = None
+
+def _load_companies() -> list:
+    global _companies_cache
+    if _companies_cache is not None:
+        return _companies_cache
+    companies_csv = Path(__file__).parent / "data" / "companies.csv"
+    df = pd.read_csv(companies_csv)
+    _companies_cache = [{"symbol": str(r["symbol"]), "name": str(r["name"])} for _, r in df.iterrows()]
+    return _companies_cache
+
+def search_companies(q: str, max_results: int = 8) -> list:
+    """Return companies matching q by exact ticker, ticker prefix, or name substring."""
+    q_up = q.strip().upper()
+    q_low = q.strip().lower()
+    companies = _load_companies()
+
+    exact = [c for c in companies if c["symbol"] == q_up]
+    if exact:
+        return exact
+
+    results = []
+    for c in companies:
+        if c["symbol"].startswith(q_up):
+            results.append(c)
+    for c in companies:
+        if q_low in c["name"].lower() and c not in results:
+            results.append(c)
+    return results[:max_results]
+
 # ── Config ────────────────────────────────────────────────────────────────────
 PORT               = 5758
 DEFAULT_INVESTMENT = 100_000
@@ -242,6 +273,14 @@ class Handler(BaseHTTPRequestHandler):
         elif self.path == "/quit":
             self._send_json({"status": "shutting_down"})
             threading.Thread(target=lambda: (time.sleep(0.2), os._exit(0)), daemon=True).start()
+        elif self.path.startswith("/search"):
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            q = qs.get("q", [""])[0].strip()
+            if not q:
+                self._send_json({"error": "Missing q parameter"})
+            else:
+                self._send_json({"results": search_companies(q)})
         elif self.path.startswith("/listing_date"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
