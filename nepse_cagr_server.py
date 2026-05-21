@@ -61,6 +61,7 @@ def search_companies(q: str, max_results: int = 8) -> list:
     q_up = q.strip().upper()
     q_low = q.strip().lower()
     q_norm = re.sub(r'[^a-z0-9]+', '', q_low)
+    q_tokens = [t for t in re.split(r'[^a-z0-9]+', q_low) if t]
     companies = _load_companies()
 
     exact = [c for c in companies if c["symbol"] == q_up]
@@ -74,9 +75,15 @@ def search_companies(q: str, max_results: int = 8) -> list:
     for c in companies:
         name_low = c["name"].lower()
         name_norm = re.sub(r'[^a-z0-9]+', '', name_low)
+        name_tokens = [t for t in re.split(r'[^a-z0-9]+', name_low) if t]
+        token_match = any(
+            any(nt.startswith(qt) or qt.startswith(nt) for nt in name_tokens)
+            for qt in q_tokens
+        ) if q_tokens else False
         if (
             q_low in name_low
             or (q_norm and q_norm in name_norm)
+            or token_match
         ) and c not in results:
             results.append(c)
     return results[:max_results]

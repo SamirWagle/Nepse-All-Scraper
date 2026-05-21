@@ -9,25 +9,29 @@
       document.getElementById('back-btn').style.display = name === 'analyse' ? 'none' : 'inline-block';
       if (name === 'bullbear') {
         buildChart();
-        const query = document.getElementById('search-input').value.trim();
-        const localResults = localResolveCandidates(query);
-        if (localResults.length > 1) {
-          const statusEl = document.getElementById('page-status');
-          const list = localResults.map(c =>
-            `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
-          ).join('');
-          statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
-          statusEl.querySelectorAll('.picker-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-              statusEl.innerHTML = '';
-              doBullSearch(btn.dataset.symbol);
-            });
-          });
-        } else {
-          const sym = lastSearchedSymbol || localResolveSymbol(query) || query.toUpperCase();
-          if (sym) doBullSearch(sym);
-        }
+        if (lastSearchedSymbol) doBullSearch(lastSearchedSymbol);
       }
+    }
+
+    async function openBullBearFromQuery(query) {
+      if (!query) return;
+      document.getElementById('page-status').textContent = '⏳ Resolving...';
+      const { results, error } = await resolveBullSymbol(query);
+      if (error) {
+        document.getElementById('page-status').textContent = '❌ ' + error;
+        return;
+      }
+      if (!results || results.length === 0) {
+        document.getElementById('page-status').textContent = '❌ No company found for "' + query + '"';
+        return;
+      }
+      if (results.length > 1) {
+        showBullPicker(results);
+        return;
+      }
+      lastSearchedSymbol = results[0].symbol;
+      document.getElementById('search-input').value = results[0].symbol;
+      switchPage('bullbear');
     }
 
     // ── Back button ──
@@ -53,7 +57,7 @@
     });
     document.getElementById('menu-bullbear').addEventListener('click', (e) => {
       e.stopPropagation();
-      switchPage('bullbear');
+      openBullBearFromQuery(document.getElementById('search-input').value.trim());
     });
     document.getElementById('menu-cagr').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -503,6 +507,23 @@
       { pattern: /\bmuktinath\b/i, symbol: 'MNBBL' },
     ];
 
+    const LOCAL_NAME_GROUPS = [
+      {
+        pattern: /\bhimalayan\b/i,
+        items: [
+          { symbol: 'HBL', name: 'Himalayan Bank Limited' },
+          { symbol: 'HDL', name: 'Himalayan Distillery Limited' },
+          { symbol: 'HEI', name: 'Himalayan Everest Insurance Limited' },
+          { symbol: 'HEIP', name: 'Himalayan Everest Insurance Limited Promoter' },
+          { symbol: 'HHL', name: 'Himalayan Hydropower Limited' },
+          { symbol: 'HLBSL', name: 'Himalayan Laghubitta Bittiya Sanstha Limited' },
+          { symbol: 'HLI', name: 'Himalayan Life Insurance Limited' },
+          { symbol: 'HPPL', name: 'Himalayan Power Partner Limited' },
+          { symbol: 'HRL', name: 'Himalayan Reinsurance Limited' },
+        ],
+      },
+    ];
+
     function localResolveSymbol(query) {
       const q = query.trim();
       const hit = LOCAL_NAME_ALIASES.find(item => item.pattern.test(q));
@@ -511,6 +532,8 @@
 
     function localResolveCandidates(query) {
       const q = query.trim();
+      const grouped = LOCAL_NAME_GROUPS.find(item => item.pattern.test(q));
+      if (grouped) return grouped.items;
       return LOCAL_NAME_ALIASES
         .filter(item => item.pattern.test(q))
         .map(item => ({ symbol: item.symbol, name: item.symbol }));
@@ -528,6 +551,31 @@
           onSelect(btn.dataset.symbol);
         });
       });
+    }
+
+    function showBullPicker(candidates) {
+      const statusEl = document.getElementById('page-status');
+      const list = candidates.map(c =>
+        `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+      ).join('');
+      statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
+      statusEl.querySelectorAll('.picker-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          statusEl.innerHTML = '';
+          lastSearchedSymbol = btn.dataset.symbol;
+          document.getElementById('search-input').value = btn.dataset.symbol;
+          switchPage('bullbear');
+        });
+      });
+    }
+
+    async function resolveBullSymbol(query) {
+      const localResults = localResolveCandidates(query);
+      if (localResults.length > 1) return { results: localResults };
+      if (localResults.length === 1) return { results: localResults };
+      const { results, error } = await resolveSymbol(query);
+      if (error) return { error };
+      return { results: results || [] };
     }
 
     async function doSearch() {

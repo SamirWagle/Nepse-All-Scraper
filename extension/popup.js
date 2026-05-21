@@ -79,6 +79,23 @@ const LOCAL_NAME_ALIASES = [
   { pattern: /\bmuktinath\b/i, symbol: 'MNBBL' },
 ];
 
+const LOCAL_NAME_GROUPS = [
+  {
+    pattern: /\bhimalayan\b/i,
+    items: [
+      { symbol: 'HBL', name: 'Himalayan Bank Limited' },
+      { symbol: 'HDL', name: 'Himalayan Distillery Limited' },
+      { symbol: 'HEI', name: 'Himalayan Everest Insurance Limited' },
+      { symbol: 'HEIP', name: 'Himalayan Everest Insurance Limited Promoter' },
+      { symbol: 'HHL', name: 'Himalayan Hydropower Limited' },
+      { symbol: 'HLBSL', name: 'Himalayan Laghubitta Bittiya Sanstha Limited' },
+      { symbol: 'HLI', name: 'Himalayan Life Insurance Limited' },
+      { symbol: 'HPPL', name: 'Himalayan Power Partner Limited' },
+      { symbol: 'HRL', name: 'Himalayan Reinsurance Limited' },
+    ],
+  },
+];
+
 function localResolveSymbol(query) {
   const q = query.trim();
   const hit = LOCAL_NAME_ALIASES.find(item => item.pattern.test(q));
@@ -87,6 +104,8 @@ function localResolveSymbol(query) {
 
 function localResolveCandidates(query) {
   const q = query.trim();
+  const grouped = LOCAL_NAME_GROUPS.find(item => item.pattern.test(q));
+  if (grouped) return grouped.items;
   return LOCAL_NAME_ALIASES
     .filter(item => item.pattern.test(q))
     .map(item => ({ symbol: item.symbol, name: item.symbol }));
