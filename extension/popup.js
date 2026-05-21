@@ -57,6 +57,41 @@ async function resolveSymbol(query) {
   return { port: null, results: [] };
 }
 
+function normalizeQueryFallback(query) {
+  return query.trim().toUpperCase().replace(/[^A-Z0-9]+/g, '');
+}
+
+function looksLikeTicker(query) {
+  return /^[A-Za-z0-9]{1,15}$/.test(query.trim());
+}
+
+const LOCAL_NAME_ALIASES = [
+  { pattern: /\beverest\b/i, symbol: 'EBL' },
+  { pattern: /\bnabil\b/i, symbol: 'NABIL' },
+  { pattern: /\bnepal life\b/i, symbol: 'NLIC' },
+  { pattern: /\bnic asia\b/i, symbol: 'NICA' },
+  { pattern: /\bglobal ime\b/i, symbol: 'GBIME' },
+  { pattern: /\bhimalayan bank\b/i, symbol: 'HBL' },
+  { pattern: /\bstandard chartered\b/i, symbol: 'SCB' },
+  { pattern: /\bprabhu bank\b/i, symbol: 'PRVU' },
+  { pattern: /\bmachhapuchchhre\b/i, symbol: 'MBL' },
+  { pattern: /\bkumari bank\b/i, symbol: 'KBL' },
+  { pattern: /\bmuktinath\b/i, symbol: 'MNBBL' },
+];
+
+function localResolveSymbol(query) {
+  const q = query.trim();
+  const hit = LOCAL_NAME_ALIASES.find(item => item.pattern.test(q));
+  return hit ? hit.symbol : null;
+}
+
+function localResolveCandidates(query) {
+  const q = query.trim();
+  return LOCAL_NAME_ALIASES
+    .filter(item => item.pattern.test(q))
+    .map(item => ({ symbol: item.symbol, name: item.symbol }));
+}
+
 function showPickerInStatus(candidates, onSelect) {
   const list = candidates.map(c =>
     `<div class="picker-item" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</div>`
@@ -82,8 +117,23 @@ analyseBtn.onclick = async () => {
   }
   const { results } = await resolveSymbol(query);
   if (results.length === 0) {
-    const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(query.toUpperCase());
-    chrome.tabs.create({ url });
+    const localResults = localResolveCandidates(query);
+    if (localResults.length === 1) {
+      const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(localResults[0].symbol);
+      chrome.tabs.create({ url });
+      return;
+    } else if (localResults.length > 1) {
+      showPickerInStatus(localResults, sym => {
+        chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(sym) });
+      });
+      return;
+    }
+    if (looksLikeTicker(query)) {
+      const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(normalizeQueryFallback(query));
+      chrome.tabs.create({ url });
+    } else {
+      setStatus(`No company found for "${query}"`);
+    }
   } else if (results.length === 1) {
     const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(results[0].symbol);
     chrome.tabs.create({ url });
@@ -111,7 +161,21 @@ calcBtn.onclick = async () => {
 
   const { results } = await resolveSymbol(query);
   if (results.length === 0) {
-    runCalc(query.toUpperCase());
+    const localResults = localResolveCandidates(query);
+    if (localResults.length === 1) {
+      runCalc(localResults[0].symbol);
+      return;
+    } else if (localResults.length > 1) {
+      calcBtn.disabled = false;
+      showPickerInStatus(localResults, sym => { symbolInput.value = sym; calcBtn.click(); });
+      return;
+    }
+    if (looksLikeTicker(query)) {
+      runCalc(normalizeQueryFallback(query));
+    } else {
+      setStatus(`No company found for "${query}"`);
+      calcBtn.disabled = false;
+    }
     return;
   }
   if (results.length > 1) {

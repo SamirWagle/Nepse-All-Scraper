@@ -1,7 +1,7 @@
     // ── Page switching ──
     const backDestination = { buffett: 'nexttop', nexttop: 'bullbear' };
     let lastSearchedSymbol = null;
-    function switchPage(name) {
+    async function switchPage(name) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + name).classList.add('active');
       document.getElementById('analyse-menu').classList.remove('open');
@@ -9,8 +9,24 @@
       document.getElementById('back-btn').style.display = name === 'analyse' ? 'none' : 'inline-block';
       if (name === 'bullbear') {
         buildChart();
-        const sym = lastSearchedSymbol || document.getElementById('search-input').value.trim().toUpperCase();
-        if (sym) doBullSearch(sym);
+        const query = document.getElementById('search-input').value.trim();
+        const localResults = localResolveCandidates(query);
+        if (localResults.length > 1) {
+          const statusEl = document.getElementById('page-status');
+          const list = localResults.map(c =>
+            `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+          ).join('');
+          statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
+          statusEl.querySelectorAll('.picker-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              statusEl.innerHTML = '';
+              doBullSearch(btn.dataset.symbol);
+            });
+          });
+        } else {
+          const sym = lastSearchedSymbol || localResolveSymbol(query) || query.toUpperCase();
+          if (sym) doBullSearch(sym);
+        }
       }
     }
 
@@ -473,6 +489,33 @@
       }
     }
 
+    const LOCAL_NAME_ALIASES = [
+      { pattern: /\beverest\b/i, symbol: 'EBL' },
+      { pattern: /\bnabil\b/i, symbol: 'NABIL' },
+      { pattern: /\bnepal life\b/i, symbol: 'NLIC' },
+      { pattern: /\bnic asia\b/i, symbol: 'NICA' },
+      { pattern: /\bglobal ime\b/i, symbol: 'GBIME' },
+      { pattern: /\bhimalayan bank\b/i, symbol: 'HBL' },
+      { pattern: /\bstandard chartered\b/i, symbol: 'SCB' },
+      { pattern: /\bprabhu bank\b/i, symbol: 'PRVU' },
+      { pattern: /\bmachhapuchchhre\b/i, symbol: 'MBL' },
+      { pattern: /\bkumari bank\b/i, symbol: 'KBL' },
+      { pattern: /\bmuktinath\b/i, symbol: 'MNBBL' },
+    ];
+
+    function localResolveSymbol(query) {
+      const q = query.trim();
+      const hit = LOCAL_NAME_ALIASES.find(item => item.pattern.test(q));
+      return hit ? hit.symbol : null;
+    }
+
+    function localResolveCandidates(query) {
+      const q = query.trim();
+      return LOCAL_NAME_ALIASES
+        .filter(item => item.pattern.test(q))
+        .map(item => ({ symbol: item.symbol, name: item.symbol }));
+    }
+
     function showSymbolPicker(candidates, onSelect) {
       const statusEl = document.getElementById('page-status');
       const list = candidates.map(c =>
@@ -495,7 +538,18 @@
 
       const { results, error } = await resolveSymbol(query);
       if (error) { document.getElementById('page-status').textContent = '❌ ' + error; return; }
-      if (!results || results.length === 0) { document.getElementById('page-status').textContent = '❌ No company found for "' + query + '"'; return; }
+      if (!results || results.length === 0) {
+        const localResults = localResolveCandidates(query);
+        if (localResults.length === 1) {
+          runCagrForSymbol(localResults[0].symbol);
+          return;
+        } else if (localResults.length > 1) {
+          showSymbolPicker(localResults, sym => runCagrForSymbol(sym));
+          return;
+        }
+        document.getElementById('page-status').textContent = '❌ No company found for "' + query + '"';
+        return;
+      }
 
       if (results.length > 1) {
         showSymbolPicker(results, sym => runCagrForSymbol(sym));
@@ -768,7 +822,25 @@
 
       const { results, error } = await resolveSymbol(query);
       if (error) { document.getElementById('cagr-status').textContent = '❌ ' + error; return; }
-      if (!results || results.length === 0) { document.getElementById('cagr-status').textContent = '❌ No company found for "' + query + '"'; return; }
+      if (!results || results.length === 0) {
+        const localResults = localResolveCandidates(query);
+        if (localResults.length === 1) {
+          runCagrCalc(localResults[0].symbol);
+          return;
+        } else if (localResults.length > 1) {
+          const statusEl = document.getElementById('cagr-status');
+          const list = localResults.map(c =>
+            `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+          ).join('');
+          statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
+          statusEl.querySelectorAll('.picker-btn').forEach(btn => {
+            btn.addEventListener('click', () => { statusEl.innerHTML = ''; runCagrCalc(btn.dataset.symbol); });
+          });
+          return;
+        }
+        document.getElementById('cagr-status').textContent = '❌ No company found for "' + query + '"';
+        return;
+      }
 
       if (results.length > 1) {
         const statusEl = document.getElementById('cagr-status');

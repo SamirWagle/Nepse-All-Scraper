@@ -60,6 +60,7 @@ def search_companies(q: str, max_results: int = 8) -> list:
     """Return companies matching q by exact ticker, ticker prefix, or name substring."""
     q_up = q.strip().upper()
     q_low = q.strip().lower()
+    q_norm = re.sub(r'[^a-z0-9]+', '', q_low)
     companies = _load_companies()
 
     exact = [c for c in companies if c["symbol"] == q_up]
@@ -71,7 +72,12 @@ def search_companies(q: str, max_results: int = 8) -> list:
         if c["symbol"].startswith(q_up):
             results.append(c)
     for c in companies:
-        if q_low in c["name"].lower() and c not in results:
+        name_low = c["name"].lower()
+        name_norm = re.sub(r'[^a-z0-9]+', '', name_low)
+        if (
+            q_low in name_low
+            or (q_norm and q_norm in name_norm)
+        ) and c not in results:
             results.append(c)
     return results[:max_results]
 
