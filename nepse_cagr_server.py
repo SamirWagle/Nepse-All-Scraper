@@ -51,9 +51,49 @@ def _load_companies() -> list:
     global _companies_cache
     if _companies_cache is not None:
         return _companies_cache
-    companies_csv = Path(__file__).parent / "data" / "companies.csv"
-    df = pd.read_csv(companies_csv)
-    _companies_cache = [{"symbol": str(r["symbol"]), "name": str(r["name"])} for _, r in df.iterrows()]
+
+    data_dir = Path(__file__).parent / "data"
+    mapping_path = data_dir / "company_id_mapping.json"
+    names_path = data_dir / "company_names.json"
+    companies_csv = data_dir / "companies.csv"
+
+    mapping = {}
+    names = {}
+    if mapping_path.exists():
+        try:
+            mapping = json.loads(mapping_path.read_text())
+        except Exception:
+            mapping = {}
+    if names_path.exists():
+        try:
+            names = json.loads(names_path.read_text())
+        except Exception:
+            names = {}
+
+    companies = []
+    seen = set()
+
+    # Primary source: full mapping, including merged/delisted companies.
+    for sym in sorted(mapping.keys()):
+        name = names.get(sym)
+        if not name and companies_csv.exists():
+            try:
+                df = pd.read_csv(companies_csv)
+                match = df[df["symbol"].astype(str).str.upper() == sym]
+                if not match.empty:
+                    name = str(match.iloc[0]["name"])
+            except Exception:
+                pass
+        companies.append({"symbol": sym, "name": name or sym})
+        seen.add(sym)
+
+    # Backfill any names that exist in company_names.json but not mapping.
+    for sym, name in names.items():
+        if sym not in seen:
+            companies.append({"symbol": sym, "name": name or sym})
+            seen.add(sym)
+
+    _companies_cache = companies
     return _companies_cache
 
 def search_companies(q: str, max_results: int = 10, offset: int = 0) -> list:
@@ -231,6 +271,21 @@ def calculate_index_cagr(start_date: date, initial_investment: float,
     }
 
 
+def get_company_trading_range(symbol: str) -> dict:
+    """Return first and last available trading dates for a company, if present."""
+    csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
+    if not csv_path.exists():
+        return {"symbol": symbol, "first_date": None, "last_date": None}
+    try:
+        df = pd.read_csv(csv_path, usecols=["date"])
+        if df.empty:
+          return {"symbol": symbol, "first_date": None, "last_date": None}
+        dates = sorted(str(d).split(" ")[0] for d in df["date"].dropna().tolist())
+        return {"symbol": symbol, "first_date": dates[0], "last_date": dates[-1]}
+    except Exception:
+        return {"symbol": symbol, "first_date": None, "last_date": None}
+
+
 # ── Server-facing CAGR wrapper ────────────────────────────────────────────────
 def calculate_cagr(symbol: str, start_date: date,
                    initial_investment: float, end_date: date = None) -> dict:
@@ -286,6 +341,14 @@ class Handler(BaseHTTPRequestHandler):
         elif self.path == "/quit":
             self._send_json({"status": "shutting_down"})
             threading.Thread(target=lambda: (time.sleep(0.2), os._exit(0)), daemon=True).start()
+        elif self.path.startswith("/trading_range"):
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            symbol = qs.get("symbol", [""])[0].strip().upper()
+            if symbol and _SYMBOL_RE.match(symbol):
+                self._send_json(get_company_trading_range(symbol))
+            else:
+                self._send_json({"error": "Invalid symbol"})
         elif self.path.startswith("/search"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)

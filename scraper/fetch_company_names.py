@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 DATA_DIR  = Path(__file__).parent.parent / "data"
 OUT_PATH  = DATA_DIR / "company_names.json"
 LIST_PATH = DATA_DIR / "company_list.json"
+MAPPING_PATH = DATA_DIR / "company_id_mapping.json"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -70,9 +71,17 @@ def get_company_name(session: requests.Session, symbol: str) -> str | None:
 
 
 def main():
-    # Load symbol list
-    with open(LIST_PATH) as f:
-        symbols = json.load(f)
+    # Load symbol list, preferring the full mapping so merged/delisted
+    # companies are included too.
+    if MAPPING_PATH.exists():
+        with open(MAPPING_PATH) as f:
+            mapping = json.load(f)
+        symbols = sorted(mapping.keys())
+        logger.info(f"Loaded {len(symbols)} symbols from company_id_mapping.json")
+    else:
+        with open(LIST_PATH) as f:
+            symbols = json.load(f)
+        logger.info(f"Loaded {len(symbols)} symbols from company_list.json")
 
     logger.info(f"Fetching names for {len(symbols)} symbols...")
 
