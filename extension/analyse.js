@@ -189,6 +189,8 @@
       container.innerHTML = '<div style="color:var(--label);font-size:13px;padding:16px 0">⏳ Loading ' + symbol + ' across bull cycles...</div>';
 
       const port = await findPort();
+      const tradingRange = await getTradingRange(symbol);
+      const lastTradingDate = tradingRange.last_date || null;
 
       // Fetch listing date from ipo_listings.csv via server
       let listingDate = null;
@@ -206,6 +208,9 @@
         // Cycle ended before stock was listed — skip fetching, mark as not listed
         if (listingDate && cycle.end && cycle.end < listingDate) {
           return { num: cycle.num, data: { notListed: true, listingDate } };
+        }
+        if (lastTradingDate && cycle.start > lastTradingDate) {
+          return { num: cycle.num, data: { notListed: true, listingDate: lastTradingDate } };
         }
         const payload = { symbol, investment: 100000, start_date: cycle.start };
         if (cycle.end) payload.end_date = cycle.end;
@@ -245,11 +250,12 @@
         const d = dataMap[cycle.num];
         // Stock didn't exist during this cycle
         if (d && d.notListed) {
+          const mergedDate = d.listingDate ? d.listingDate : 'Unknown';
           return `<div class="bull-box bull-box-blank">
             <div class="bull-box-title">${cycle.label}</div>
             <div class="bull-box-period">${cycle.period}</div>
             <div class="bull-box-na">—</div>
-            <div class="bull-box-note">Not listed yet<br><span style="font-size:10px">Listed: ${d.listingDate}</span></div>
+            <div class="bull-box-note">Merged<br><span style="font-size:10px">Last traded: ${mergedDate}</span></div>
           </div>`;
         }
         if (!d || d.error) {
@@ -510,6 +516,18 @@
         return { results: data.results || [] };
       } catch(e) {
         return { error: e.message };
+      }
+    }
+
+    async function getTradingRange(symbol) {
+      const port = await findPort();
+      if (!port) return { first_date: null, last_date: null };
+      try {
+        const resp = await fetch(`http://localhost:${port}/trading_range?symbol=${encodeURIComponent(symbol)}`);
+        const data = await resp.json();
+        return data || { first_date: null, last_date: null };
+      } catch(_) {
+        return { first_date: null, last_date: null };
       }
     }
 
