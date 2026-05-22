@@ -51,6 +51,16 @@ class DailyScraperManager:
         with open(list_path) as f:
             return set(json.load(f))
 
+    def get_all_companies(self):
+        """Load every symbol known to the ShareSansar mapping, including merged/delisted companies."""
+        mapping_path = self.data_dir / "company_id_mapping.json"
+        if not mapping_path.exists():
+            logger.warning("company_id_mapping.json not found — falling back to priority list.")
+            return self.get_priority_companies()
+        with open(mapping_path) as f:
+            mapping = json.load(f)
+        return set(mapping.keys())
+
     def get_existing_companies(self):
         """Return symbols that already have a prices.csv."""
         if not self.company_wise_dir.exists():
@@ -139,7 +149,7 @@ class DailyScraperManager:
     def _run_daily_update_inner(self, check_new_only=False, force_full=False, priority_only=True):
         logger.info("=== Daily Update Started ===")
 
-        target = self.get_priority_companies()
+        target = self.get_priority_companies() if priority_only else self.get_all_companies()
         logger.info(f"Priority companies: {len(target)}")
 
         if not check_new_only:
@@ -154,7 +164,7 @@ class DailyScraperManager:
         # Incrementally update IPO listing dates (fast: stops on first known symbol)
         logger.info("--- Updating IPO listing dates ---")
         try:
-            self.ipo_scraper.scrape_symbols(self.get_priority_companies(), skip_existing=True)
+            self.ipo_scraper.scrape_symbols(target, skip_existing=True)
         except Exception as e:
             logger.error(f"IPO listing scrape failed: {e}")
             failed_count += 1
