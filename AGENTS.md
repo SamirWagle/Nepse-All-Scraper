@@ -1,13 +1,13 @@
 <claude-mem-context>
 # Memory Context
 
-# [Nepse-CAGR] recent context, 2026-05-22 9:40pm GMT+5:45
+# [Nepse-CAGR] recent context, 2026-05-22 11:08pm GMT+5:45
 
 Legend: 🎯session 🔴bugfix 🟣feature 🔄refactor ✅change 🔵discovery ⚖️decision 🚨security_alert 🔐security_note
 Format: ID TIME TYPE TITLE
 Fetch details: get_observations([IDs]) | Search: mem-search skill
 
-Stats: 36 obs (11,825t read) | 478,108t work | 98% savings
+Stats: 39 obs (12,511t read) | 517,472t work | 98% savings
 
 ### May 21, 2026
 493 8:30p 🟣 NEPSE App Search: Company Name Input Support Requested
@@ -52,7 +52,10 @@ S300 NEPSE CAGR extension: company name search feature — fully complete and co
 525 " 🔵 Git Status Shows Full Scope of --all-companies Scrape: Hundreds of New Company Directories
 526 2:02p 🔵 CAGR Dropdown Removal — Element Locations Identified
 527 9:39p 🟣 CAGR Calculator Removed from Nav Dropdown
+529 " 🔵 Git State: Ahead 49, CAGR Removal Unstaged on Main
 528 9:40p 🔴 CAGR Dropdown Removal Verified Complete
+530 9:41p ✅ Branch Created for CAGR Dropdown Removal Commit
+531 " ✅ Checked Out `codex-remove-cagr-dropdown` Branch
 
-Access 478k tokens of past work via get_observations([IDs]) or mem-search skill.
+Access 517k tokens of past work via get_observations([IDs]) or mem-search skill.
 </claude-mem-context>

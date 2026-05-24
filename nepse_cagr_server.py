@@ -37,7 +37,9 @@ from nepse_cagr import (
 
 import pandas as pd
 from scraper.core.listing_date import ShareHubListingDateScraper
+from scraper.core.fundamentals import MerolaganiFundamentalsScraper
 _listing_scraper = ShareHubListingDateScraper()
+_fundamentals_scraper = MerolaganiFundamentalsScraper()
 
 # ── Known listing dates (overrides scraper data) ───────────────────────────────
 LISTING_DATE_OVERRIDES = {
@@ -380,6 +382,42 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"symbol": symbol, "listing_date": listing_date})
             else:
                 self._send_json({"error": "Invalid symbol"})
+        elif self.path.startswith("/fundamentals"):
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            symbol = qs.get("symbol", [""])[0].strip().upper()
+            force = qs.get("force", ["0"])[0] in ("1", "true", "yes")
+            if not symbol or not _SYMBOL_RE.match(symbol):
+                self._send_json({"error": "Invalid symbol"})
+            else:
+                data = _fundamentals_scraper.get(symbol, force_refresh=force)
+                if "listing_date" not in data:
+                    if symbol in LISTING_DATE_OVERRIDES:
+                        data["listing_date"] = LISTING_DATE_OVERRIDES[symbol]
+                    else:
+                        try:
+                            data["listing_date"] = _listing_scraper.get(symbol)
+                        except Exception:
+                            data["listing_date"] = None
+                # Attach latest day OHLC from local prices.csv
+                try:
+                    csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
+                    if csv_path.exists():
+                        df = pd.read_csv(csv_path)
+                        if len(df) > 0:
+                            row = df.iloc[0]
+                            data["latest_day"] = {
+                                "date": str(row.get("date", "")),
+                                "open": float(row.get("open", 0) or 0),
+                                "high": float(row.get("high", 0) or 0),
+                                "low": float(row.get("low", 0) or 0),
+                                "ltp": float(row.get("ltp", 0) or 0),
+                                "qty": float(row.get("qty", 0) or 0),
+                                "turnover": float(row.get("turnover", 0) or 0),
+                            }
+                except Exception:
+                    pass
+                self._send_json(data)
         else:
             self.send_response(404)
             self.end_headers()

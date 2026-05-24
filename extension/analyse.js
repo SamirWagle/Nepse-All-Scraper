@@ -684,13 +684,13 @@
       if (!results || results.length === 0) {
         const localResults = localResolveCandidates(query);
         if (localResults.length === 1) {
-          runCagrForSymbol(localResults[0].symbol);
+          runFundamentalsForSymbol(localResults[0].symbol);
           return;
         } else if (localResults.length > 1) {
           showPagedPicker(async (offset, limit) => {
             const page = localResults.slice(offset, offset + limit);
             return { results: page };
-          }, sym => runCagrForSymbol(sym));
+          }, sym => runFundamentalsForSymbol(sym));
           return;
         }
         document.getElementById('page-status').textContent = '❌ No company found for "' + query + '"';
@@ -698,31 +698,35 @@
       }
 
       if (results.length > 1) {
-        showSymbolPicker(results, sym => runCagrForSymbol(sym));
+        showSymbolPicker(results, sym => runFundamentalsForSymbol(sym));
         return;
       }
-      runCagrForSymbol(results[0].symbol);
+      runFundamentalsForSymbol(results[0].symbol);
     }
 
-    async function runCagrForSymbol(symbol) {
+    async function runFundamentalsForSymbol(symbol) {
       lastSearchedSymbol = symbol;
       document.getElementById('search-input').value = symbol;
-      const payload = { symbol, investment: 100000, years: 5 };
-      document.getElementById('page-status').textContent = '⏳ Calculating...';
+      document.getElementById('page-status').textContent = '⏳ Fetching fundamentals...';
       document.getElementById('results-area').style.display = 'none';
-      let port = await findPort();
-      let data;
-      if (port) {
-        try {
-          const resp = await fetch(`http://localhost:${port}/cagr`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          data = await resp.json();
-        } catch(e) { document.getElementById('page-status').textContent = '❌ ' + e.message; return; }
-      } else {
-        document.getElementById('page-status').textContent = '⚙️ Starting engine...';
-        data = await new Promise(resolve => { chrome.runtime.sendMessage({ action: 'cagrViaNative', payload }, resolve); });
+      const port = await findPort();
+      if (!port) {
+        document.getElementById('page-status').textContent = '❌ Server not running. Restart engine from popup.';
+        return;
       }
-      if (!data || data.error) { document.getElementById('page-status').textContent = '❌ ' + (data?.error || 'Error'); return; }
-      showResults(data);
+      let data;
+      try {
+        const resp = await fetch(`http://localhost:${port}/fundamentals?symbol=${encodeURIComponent(symbol)}`);
+        data = await resp.json();
+      } catch (e) {
+        document.getElementById('page-status').textContent = '❌ ' + e.message;
+        return;
+      }
+      if (!data || data.error) {
+        document.getElementById('page-status').textContent = '❌ ' + (data && data.error || 'Error fetching fundamentals');
+        return;
+      }
+      showFundamentals(data);
     }
 
     async function findPort() {
@@ -734,36 +738,170 @@
 
     function fmt(n) { return Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 }); }
 
-    function showResults(d) {
+    function fmtCompact(n) {
+      if (n == null || isNaN(n)) return '—';
+      const abs = Math.abs(n);
+      if (abs >= 1e9) return (n / 1e9).toFixed(2) + ' Arba';
+      if (abs >= 1e7) return (n / 1e7).toFixed(2) + ' Cr';
+      if (abs >= 1e5) return (n / 1e5).toFixed(2) + ' Lakh';
+      return Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 });
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function showFundamentals(d) {
       document.getElementById('page-status').textContent = '';
       document.getElementById('results-area').style.display = 'block';
-      document.getElementById('r-symbol').textContent = d.symbol;
-      const cagrEl = document.getElementById('r-cagr');
-      cagrEl.textContent = (d.cagr_pct >= 0 ? '+' : '') + d.cagr_pct.toFixed(2) + '%';
-      cagrEl.className = 'cagr-hero-value ' + (d.cagr_pct >= 0 ? 'pos' : 'neg');
-      document.getElementById('r-meta').textContent = `${d.start_date} → ${d.end_date}  (${d.years} years)`;
-      document.getElementById('r-start-price').textContent = 'Rs. ' + fmt(d.start_price);
-      document.getElementById('r-ltp').textContent         = 'Rs. ' + fmt(d.ltp);
-      document.getElementById('r-units').textContent       = d.is_index ? '— (Index)' : d.total_units_today + ' kitta';
-      document.getElementById('r-market').textContent      = 'Rs. ' + fmt(d.market_value);
-      document.getElementById('r-divs').textContent        = d.is_index ? '—' : 'Rs. ' + fmt(d.total_cash_dividends);
-      document.getElementById('r-today').textContent       = 'Rs. ' + fmt(d.todays_value);
-      document.getElementById('r-invest').textContent      = 'Rs. ' + fmt(d.initial_investment);
-      document.getElementById('r-years').textContent       = d.years + ' yrs';
-      const tbody = document.getElementById('r-events');
-      tbody.innerHTML = '';
-      if (d.events && d.events.length > 0) {
-        d.events.forEach(ev => {
-          const tr = document.createElement('tr');
-          const badge = ev.type === 'bonus'
-            ? `<span class="badge badge-bonus">Bonus ${(ev.pct*100).toFixed(0)}%</span>`
-            : `<span class="badge badge-cash">Cash ${(ev.pct*100).toFixed(1)}%</span>`;
-          tr.innerHTML = `<td>${ev.date}</td><td>${badge}</td><td>${ev.fiscal_year || '—'}</td><td>${ev.units_after.toFixed(4)}</td><td>${ev.type === 'cash' ? 'Rs. ' + fmt(ev.cash_rs) : '—'}</td>`;
-          tbody.appendChild(tr);
-        });
-      } else {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--label);padding:16px">No events in this period</td></tr>';
+
+      // Hero
+      const name = (d.company_name || d.symbol || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
+      setText('r-name', name);
+      setText('r-symbol', d.symbol || '—');
+      setText('r-sector', d.sector || 'NEPSE');
+      setText('r-substext', [
+        d.sector,
+        d.shares_outstanding ? `${fmtCompact(d.shares_outstanding)} shares listed` : null,
+        d.listing_date ? `Listed ${d.listing_date}` : null,
+      ].filter(Boolean).join(' · ') || '—');
+
+      // Logo: first 2 chars of ticker
+      const logoEl = document.getElementById('r-logo');
+      if (logoEl) logoEl.textContent = (d.symbol || '?').slice(0, 3);
+
+      // Price
+      setText('r-price', d.market_price != null ? fmt(d.market_price) : '—');
+      const changeEl = document.getElementById('r-change');
+      if (changeEl) {
+        if (d.percent_change != null && !isNaN(d.percent_change)) {
+          const up = d.percent_change >= 0;
+          changeEl.textContent = (up ? '▲ +' : '▼ ') + d.percent_change.toFixed(2) + '%';
+          changeEl.className = 'change ' + (up ? 'up' : 'down');
+        } else {
+          changeEl.textContent = '—';
+          changeEl.className = 'change';
+        }
       }
+      setText('r-asof', d.last_traded_on ? `As of ${d.last_traded_on}` : '—');
+
+      // Market status pill
+      const pill = document.getElementById('r-mkt-pill');
+      if (pill) {
+        const isOpen = isMarketOpen();
+        pill.classList.toggle('closed', !isOpen);
+        setText('r-mkt-status', isOpen ? 'Market open' : 'Market closed');
+      }
+
+      // Quick stats
+      let dayRange = '—';
+      if (d.latest_day && d.latest_day.high && d.latest_day.low) {
+        dayRange = `${fmt(d.latest_day.low)} – ${fmt(d.latest_day.high)}`;
+      }
+      setText('r-day-range', dayRange);
+      setText('r-52w-range', (d.high_52w && d.low_52w)
+        ? `${fmt(d.low_52w)} – ${fmt(d.high_52w)}`
+        : '—');
+      setText('r-avg-vol', d.avg_volume_30d != null
+        ? Number(d.avg_volume_30d).toLocaleString('en-IN', { maximumFractionDigits: 0 })
+        : '—');
+      setText('r-1y-yield', d.year_yield_pct != null ? d.year_yield_pct.toFixed(2) + '%' : '—');
+
+      // FY meta header
+      setText('r-fy-meta', d.eps_fy ? `FY ${d.eps_fy}` : 'Latest data');
+
+      // Key metrics cards
+      setText('r-mkt-cap', d.market_cap != null ? 'Rs. ' + fmtCompact(d.market_cap) : '—');
+      setText('r-mkt-cap-sub', d.shares_outstanding != null
+        ? `${fmtCompact(d.shares_outstanding)} shares × Rs. ${fmt(d.market_price || 0)}`
+        : '');
+
+      const paidUp = d.shares_outstanding != null ? d.shares_outstanding * 100 : null;
+      setText('r-paid-up', paidUp != null ? 'Rs. ' + fmtCompact(paidUp) : '—');
+      setText('r-paid-up-sub', d.shares_outstanding != null
+        ? `${fmtCompact(d.shares_outstanding)} shares · Rs. 100 face value`
+        : '');
+
+      setText('r-pe', d.pe_ratio != null ? d.pe_ratio.toFixed(2) + '×' : '—');
+      setText('r-pe-sub', d.pbv != null ? `P/B ${d.pbv.toFixed(2)}×` : '');
+
+      setText('r-eps', d.eps != null ? 'Rs. ' + d.eps.toFixed(2) : '—');
+      setText('r-eps-sub', d.eps_fy ? `FY ${d.eps_fy}` : '');
+
+      setText('r-bvps', d.book_value != null ? 'Rs. ' + d.book_value.toFixed(2) : '—');
+      setText('r-bvps-sub', d.pbv != null ? `Price-to-Book ${d.pbv.toFixed(2)}×` : '');
+
+      setText('r-listing', d.listing_date || '—');
+      let listingSub = '';
+      if (d.listing_date) {
+        const yrs = (new Date() - new Date(d.listing_date)) / (1000 * 60 * 60 * 24 * 365.25);
+        if (!isNaN(yrs) && yrs > 0) listingSub = `${yrs.toFixed(1)} years on NEPSE`;
+      }
+      setText('r-listing-sub', listingSub);
+
+      // Shareholding donut
+      renderShareholdingDonut(d);
+
+      // Footer
+      setText('r-scraped-at', d.scraped_at ? d.scraped_at.replace('T', ' ') : '—');
+      const srcLink = document.getElementById('r-source-link');
+      if (srcLink && d.symbol) {
+        srcLink.href = `https://merolagani.com/CompanyDetail.aspx?symbol=${d.symbol}`;
+      }
+    }
+
+    function renderShareholdingDonut(d) {
+      const hasData = d.promoter_pct != null && d.public_pct != null;
+      const promoterPct = hasData ? d.promoter_pct : 0;
+      const publicPct = hasData ? d.public_pct : 0;
+
+      // Center text shows promoter %
+      setText('r-donut-center', hasData ? promoterPct.toFixed(1) + '%' : '—');
+
+      // SVG donut arcs (circumference = 100 since r=15.915)
+      const promoterCircle = document.getElementById('r-donut-promoter');
+      const publicCircle = document.getElementById('r-donut-public');
+      if (promoterCircle) {
+        promoterCircle.setAttribute('stroke-dasharray', `${promoterPct} ${100 - promoterPct}`);
+        promoterCircle.setAttribute('stroke-dashoffset', '25');
+      }
+      if (publicCircle) {
+        publicCircle.setAttribute('stroke-dasharray', `${publicPct} ${100 - publicPct}`);
+        publicCircle.setAttribute('stroke-dashoffset', String(25 - promoterPct));
+      }
+
+      // Legend
+      setText('r-promoter-pct', hasData ? promoterPct.toFixed(2) + '%' : '—');
+      setText('r-public-pct', hasData ? publicPct.toFixed(2) + '%' : '—');
+      setText('r-promoter-shares', d.promoter_shares != null
+        ? Number(d.promoter_shares).toLocaleString('en-IN')
+        : '—');
+      setText('r-public-shares', d.public_shares != null
+        ? Number(d.public_shares).toLocaleString('en-IN')
+        : '—');
+
+      // Segmented bar
+      const segP = document.getElementById('r-seg-promoter');
+      const segPub = document.getElementById('r-seg-public');
+      if (segP) segP.style.width = promoterPct + '%';
+      if (segPub) segPub.style.width = publicPct + '%';
+      setText('r-seg-note', hasData
+        ? `Promoter ${promoterPct.toFixed(1)}% · Public ${publicPct.toFixed(1)}%`
+        : 'Shareholding data unavailable');
+    }
+
+    function isMarketOpen() {
+      // NEPSE trading: Sun–Thu 11:00–15:00 NPT (UTC+5:45). Closed Fri/Sat.
+      const now = new Date();
+      const nptMs = now.getTime() + (now.getTimezoneOffset() + 345) * 60 * 1000;
+      const npt = new Date(nptMs);
+      const day = npt.getUTCDay(); // 0=Sun, 5=Fri, 6=Sat
+      if (day === 5 || day === 6) return false;
+      const hh = npt.getUTCHours();
+      const mm = npt.getUTCMinutes();
+      const mins = hh * 60 + mm;
+      return mins >= 11 * 60 && mins <= 15 * 60;
     }
 
     // ── Bull & Bear Chart ──
