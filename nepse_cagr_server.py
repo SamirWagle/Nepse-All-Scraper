@@ -40,11 +40,36 @@ from scraper.core.listing_date import ShareHubListingDateScraper
 from scraper.core.fundamentals import MerolaganiFundamentalsScraper
 _listing_scraper = ShareHubListingDateScraper()
 _fundamentals_scraper = MerolaganiFundamentalsScraper()
+_merger_meta_cache = None
 
 # ── Known listing dates (overrides scraper data) ───────────────────────────────
 LISTING_DATE_OVERRIDES = {
     "SPIL": "2023-04-03",
 }
+
+def _load_merger_meta() -> dict:
+    global _merger_meta_cache
+    if _merger_meta_cache is not None:
+        return _merger_meta_cache
+    path = Path(__file__).parent / "data" / "company_mergers.json"
+    if not path.exists():
+        _merger_meta_cache = {}
+        return _merger_meta_cache
+    try:
+        raw = json.loads(path.read_text())
+        if isinstance(raw, dict) and "entries" in raw and isinstance(raw["entries"], dict):
+            _merger_meta_cache = raw["entries"]
+        elif isinstance(raw, dict):
+            _merger_meta_cache = raw
+        else:
+            _merger_meta_cache = {}
+    except Exception:
+        _merger_meta_cache = {}
+    return _merger_meta_cache
+
+def get_merger_info(symbol: str) -> dict | None:
+    info = _load_merger_meta().get(symbol.upper())
+    return info if isinstance(info, dict) else None
 
 # ── Company search ────────────────────────────────────────────────────────────
 _companies_cache: list | None = None
@@ -110,11 +135,9 @@ def search_companies(q: str, max_results: int = 10, offset: int = 0) -> list:
     if exact:
         return exact
 
-    results = []
-    for c in companies:
-        if c["symbol"].startswith(q_up):
-            results.append(c)
-    for c in companies:
+    scored = []
+    for idx, c in enumerate(companies):
+        symbol = c["symbol"]
         name_low = c["name"].lower()
         name_norm = re.sub(r'[^a-z0-9]+', '', name_low)
         name_tokens = [t for t in re.split(r'[^a-z0-9]+', name_low) if t]
@@ -122,12 +145,40 @@ def search_companies(q: str, max_results: int = 10, offset: int = 0) -> list:
             any(nt.startswith(qt) or qt.startswith(nt) for nt in name_tokens)
             for qt in q_tokens
         ) if q_tokens else False
-        if (
-            q_low in name_low
-            or (q_norm and q_norm in name_norm)
-            or token_match
-        ) and c not in results:
-            results.append(c)
+        name_exact = q_low == name_low
+        name_sub = q_low in name_low
+        name_norm_match = bool(q_norm and q_norm in name_norm)
+        symbol_prefix = symbol.startswith(q_up)
+        symbol_sub = q_up in symbol
+
+        score = None
+        if name_exact:
+          score = 0
+        elif name_sub:
+          score = 1
+        elif name_norm_match:
+          score = 2
+        elif token_match:
+          score = 3
+        elif symbol == q_up:
+          score = 4
+        elif symbol_prefix:
+          score = 5
+        elif symbol_sub:
+          score = 6
+
+        if score is not None:
+          scored.append((score, idx, c))
+
+    scored.sort(key=lambda t: (t[0], t[1]))
+    results = []
+    seen = set()
+    for _, _, c in scored:
+        sym = c["symbol"]
+        if sym in seen:
+            continue
+        seen.add(sym)
+        results.append(c)
     return results[offset:offset + max_results]
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -399,6 +450,20 @@ class Handler(BaseHTTPRequestHandler):
                             data["listing_date"] = _listing_scraper.get(symbol)
                         except Exception:
                             data["listing_date"] = None
+                merger_info = get_merger_info(symbol)
+                if merger_info:
+                    data["merger"] = merger_info
+                    status = merger_info.get("status", "closed")
+                    data["is_merged"] = status == "closed"
+                    data["merge_status"] = status
+                    data["merged_date"] = merger_info.get("merged_date")
+                    data["merged_to"] = merger_info.get("merged_into") or merger_info.get("merged_to")
+                    data["merged_to_name"] = merger_info.get("merged_into_name") or merger_info.get("merged_to_name")
+                    data["merged_note"] = merger_info.get("note")
+                    data["merged_from"] = merger_info.get("merged_from")
+                    data["merged_from_name"] = merger_info.get("merged_from_name")
+                    data["surviving_symbol"] = merger_info.get("surviving_symbol")
+                    data["surviving_name"] = merger_info.get("surviving_name")
                 # Attach latest day OHLC from local prices.csv
                 try:
                     csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
@@ -418,6 +483,8 @@ class Handler(BaseHTTPRequestHandler):
                 except Exception:
                     pass
                 self._send_json(data)
+        elif self.path == "/mergers":
+            self._send_json({"version": 1, "entries": _load_merger_meta()})
         else:
             self.send_response(404)
             self.end_headers()

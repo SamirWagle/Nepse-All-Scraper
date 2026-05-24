@@ -10,6 +10,7 @@ LOCK_FILE = "/tmp/nepse_daily_scraper.lock"
 
 from .history import ShareSansarHistoryScraper
 from .listing_date import ShareHubListingDateScraper
+from .mergers import run_merger_scrape
 
 logging.basicConfig(
     level=logging.INFO,
@@ -121,12 +122,13 @@ class DailyScraperManager:
     # Main entry point
     # ------------------------------------------------------------------
 
-    def run_daily_update(self, check_new_only=False, force_full=False, priority_only=True):
+    def run_daily_update(self, check_new_only=False, force_full=False, priority_only=True, update_mergers=True):
         """
         Run the daily update:
           - Refresh company ID mapping (catches new IPOs)
           - Update prices for priority companies
           - Update IPO listing dates
+          - Update merger registry
 
         :param check_new_only: Only scrape NEW companies (prices), skip existing.
         :param force_full:     Force full re-scrape of prices.
@@ -168,6 +170,15 @@ class DailyScraperManager:
         except Exception as e:
             logger.error(f"IPO listing scrape failed: {e}")
             failed_count += 1
+
+        if update_mergers:
+            # Refresh merger registry from ShareSansar
+            logger.info("--- Updating merger registry ---")
+            try:
+                run_merger_scrape()
+            except Exception as e:
+                logger.error(f"Merger registry scrape failed: {e}")
+                failed_count += 1
 
         logger.info("=== Daily Update Completed ===")
         if failed_count > 0:

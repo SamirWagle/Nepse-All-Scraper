@@ -6,12 +6,14 @@ Scrapes for ALL priority companies (company_list.json):
   1. Dividend history    -> data/company-wise/{SYMBOL}/dividend.csv
   2. Right share history -> data/company-wise/{SYMBOL}/right-share.csv
   3. Floorsheet          -> data/floorsheet_YYYY-MM-DD.csv + .json
+  4. Merger registry     -> data/company_mergers.json
 
 Usage (locally or in GitHub Actions):
   python scraper/run_github_actions.py                  # all 3
   python scraper/run_github_actions.py --dividends      # dividends only
   python scraper/run_github_actions.py --right-shares   # right shares only
   python scraper/run_github_actions.py --floorsheet     # floorsheet only
+  python scraper/run_github_actions.py --mergers        # merger registry only
   python scraper/run_github_actions.py --floorsheet --max-pages 5   # test
 """
 
@@ -27,6 +29,8 @@ import requests
 from bs4 import BeautifulSoup
 from pathlib import Path
 from datetime import date as dt_date
+
+from core.mergers import run_merger_scrape
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).resolve().parent.parent
@@ -450,6 +454,12 @@ def run_floorsheet(max_pages=None):
     log.info("=== Floorsheet complete ===")
 
 
+def run_mergers(max_pages=None):
+    log.info("=== Merger registry scrape ===")
+    run_merger_scrape(max_pages=max_pages)
+    log.info("=== Merger registry complete ===")
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # MAIN
 # ═══════════════════════════════════════════════════════════════════════════
@@ -459,11 +469,12 @@ def main():
     parser.add_argument("--dividends",    action="store_true", help="Scrape dividend history")
     parser.add_argument("--right-shares", action="store_true", help="Scrape right share history")
     parser.add_argument("--floorsheet",   action="store_true", help="Scrape today's floorsheet")
+    parser.add_argument("--mergers",      action="store_true", help="Scrape merger registry from ShareSansar")
     parser.add_argument("--max-pages",    type=int, default=None, help="Limit floorsheet pages (for testing)")
     args = parser.parse_args()
 
     # If no flag given, run all three
-    run_all = not (args.dividends or args.right_shares or args.floorsheet)
+    run_all = not (args.dividends or args.right_shares or args.floorsheet or args.mergers)
 
     if run_all or args.dividends:
         run_dividends()
@@ -473,6 +484,9 @@ def main():
 
     if run_all or args.floorsheet:
         run_floorsheet(max_pages=args.max_pages)
+
+    if run_all or args.mergers:
+        run_mergers(max_pages=args.max_pages)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "entries": {
+    "HAMA": {
+      "status": "closed",
+      "display_name": "Hama Merchant & Finance Ltd.",
+      "listing_date": "2011-10-23",
+      "merged_date": "2016-09-04",
+      "merged_into": "CBL",
+      "merged_into_name": "Civil Bank Limited",
+      "surviving_symbol": "HBL",
+      "surviving_name": "Himalayan Bank Limited",
+      "display_mode": "closed",
+      "note": "Hama Merchant & Finance Ltd. merged into Civil Bank Limited, which later merged into Himalayan Bank Limited."
+    },
+    "CBL": {
+      "status": "closed",
+      "display_name": "Civil Bank Limited",
+      "merged_date": "2023-01-10",
+      "merged_into": "HBL",
+      "merged_into_name": "Himalayan Bank Limited",
+      "display_mode": "closed",
+      "note": "Civil Bank Limited merged into Himalayan Bank Limited."
+    },
+    "PIC": {
+      "status": "closed",
+      "display_name": "Premier Insurance Co. Ltd.",
+      "merged_date": "2023-02-28",
+      "merged_into": "SPIL",
+      "merged_into_name": "Siddhartha Premier Insurance Limited",
+      "display_mode": "closed",
+      "note": "Premier Insurance Co. Ltd. merged into Siddhartha Premier Insurance Limited."
+    },
+    "API": {
+      "symbol": "API",
+      "status": "closed",
+      "display_name": "API",
+      "merged_into": "SUL",
+      "merged_into_name": "SUL",
+      "surviving_symbol": "SUL",
+      "surviving_name": "SUL",
+      "display_mode": "closed",
+      "note": "API merged into SUL.",
+      "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
+      "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
+    },
+    "SUL": {
+      "symbol": "SUL",
+      "status": "active_survivor",
+      "display_name": "SUL",
+      "merged_from": "API",
+      "merged_from_name": "API",
+      "surviving_symbol": "SUL",
+      "surviving_name": "SUL",
+      "display_mode": "survivor",
+      "note": "SUL is the surviving company after merger.",
+      "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
+      "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
+    },
+    "UMB": {
+      "symbol": "UMB",
+      "status": "active_survivor",
+      "display_name": "UMB",
+      "merged_from": "API",
+      "merged_from_name": "API",
+      "surviving_symbol": "UMB",
+      "surviving_name": "UMB",
+      "display_mode": "survivor",
+      "note": "UMB is the surviving company after merger.",
+      "source_url": "https://www.sharesansar.com/newsdetail/after-the-successful-merger-262-crore-unit-shares-of-sagarmatha-lumbini-insurance-company-salico-listed-in-nepse-for-trading-2023-05-14",
+      "source_title": "After the Successful Merger, 2.62 Crore Unit Shares of Sagarmatha Lumbini Insurance Company (SALICO) Listed in NEPSE For Trading"
+    },
+    "CMF2": {
+      "symbol": "CMF2",
+      "status": "closed",
+      "display_name": "2",
+      "merged_into": "SAMAJ",
+      "merged_into_name": "Samaj Laghubitta Bittiya Sanstha Limited",
+      "surviving_symbol": "SAMAJ",
+      "surviving_name": "Samaj Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "2 merged into Samaj Laghubitta Bittiya Sanstha Limited.",
+      "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
+      "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
+    },
+    "SEBON": {
+      "symbol": "SEBON",
+      "status": "active_survivor",
+      "display_name": "Securities Board of Nepal",
+      "merged_from": "CMF2",
+      "merged_from_name": "2",
+      "surviving_symbol": "SEBON",
+      "surviving_name": "Securities Board of Nepal",
+      "display_mode": "survivor",
+      "note": "Securities Board of Nepal is the surviving company after merger.",
+      "source_url": "https://www.sharesansar.com/index.php/newsdetail/share-trading-of-civil-bank-limited-stops-from-today-integrated-transaction-with-himalayan-bank-limited-to-start-from-falgun-12-2023-02-16",
+      "source_title": "Share Trading of Civil Bank Limited Stops from Today; Integrated Transaction With Himalayan Bank Limited to Start from Falgun 12"
+    },
+    "REGISTRAR": {
+      "symbol": "REGISTRAR",
+      "status": "active_survivor",
+      "display_name": "Office of Company Registrar",
+      "merged_from": "CMF2",
+      "merged_from_name": "2",
+      "surviving_symbol": "REGISTRAR",
+      "surviving_name": "Office of Company Registrar",
+      "display_mode": "survivor",
+      "note": "Office of Company Registrar is the surviving company after merger.",
+      "source_url": "https://www.sharesansar.com/newsdetail/after-the-successful-merger-302-crore-unit-shares-of-igi-prudential-insurance-listed-in-nepse-for-trading-2023-06-01",
+      "source_title": "After the Successful Merger, 3.02 Crore Unit Shares of IGI Prudential Insurance Listed in NEPSE For Trading"
+    },
+    "UFIL": {
+      "symbol": "UFIL",
+      "status": "active_survivor",
+      "display_name": "Unique Finance Limited",
+      "merged_from": "CMF2",
+      "merged_from_name": "2",
+      "surviving_symbol": "UFIL",
+      "surviving_name": "Unique Finance Limited",
+      "display_mode": "survivor",
+      "note": "Unique Finance Limited is the surviving company after merger.",
+      "source_url": "https://www.sharesansar.com/index.php/newsdetail/civil-bank-international-leasing-finance-joint-transaction-starts-from-today-as-civil-bank",
+      "source_title": "Civil Bank &amp; International Leasing &amp; Finance joint transaction starts from today as Civil Bank"
+    },
+    "SIC": {
+      "symbol": "SIC",
+      "status": "active_survivor",
+      "display_name": "Sagarmatha Insurance Company Limited",
+      "merged_from": "CMF2",
+      "merged_from_name": "2",
+      "surviving_symbol": "SIC",
+      "surviving_name": "Sagarmatha Insurance Company Limited",
+      "display_mode": "survivor",
+      "note": "Sagarmatha Insurance Company Limited is the surviving company after merger.",
+      "source_url": "https://www.sharesansar.com/newsdetail/after-the-successful-merger-262-crore-unit-shares-of-sagarmatha-lumbini-insurance-company-salico-listed-in-nepse-for-trading-2023-05-14",
+      "source_title": "After the Successful Merger, 2.62 Crore Unit Shares of Sagarmatha Lumbini Insurance Company (SALICO) Listed in NEPSE For Trading"
+    },
+    "SAMAJ": {
+      "symbol": "SAMAJ",
+      "status": "active_survivor",
+      "display_name": "Samaj Laghubitta Bittiya Sanstha Limited",
+      "merged_from": "CMF2",
+      "merged_from_name": "2",
+      "surviving_symbol": "SAMAJ",
+      "surviving_name": "Samaj Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "survivor",
+      "note": "Samaj Laghubitta Bittiya Sanstha Limited is the surviving company after merger.",
+      "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
+      "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
+    }
+  }
+}

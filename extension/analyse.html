@@ -451,6 +451,62 @@
       color: var(--text-3);
       font-size: 12px;
     }
+    .merge-banner {
+      display: none;
+      align-items: center;
+      gap: 14px;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 193, 7, 0.28);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255, 193, 7, 0.10), rgba(255, 193, 7, 0.04));
+    }
+    .merge-banner.show { display: flex; }
+    .merge-stamp {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 193, 7, 0.5);
+      color: #ffca28;
+      background: rgba(255, 193, 7, 0.10);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+    .merge-banner-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+    .merge-banner-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .merge-banner-sub {
+      font-size: 12px;
+      color: var(--text-2);
+    }
+    .merge-banner-sub strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+    html.light .merge-banner {
+      border-color: rgba(176, 124, 0, 0.28);
+      background: linear-gradient(180deg, rgba(255, 193, 7, 0.16), rgba(255, 193, 7, 0.08));
+    }
+    html.light .merge-stamp {
+      color: #9a6500;
+      border-color: rgba(176, 124, 0, 0.45);
+      background: rgba(255, 193, 7, 0.18);
+    }
 
     .stock-quickstats {
       display: grid;
@@ -953,6 +1009,13 @@
           <div class="stock-price"><span class="currency">Rs.</span><span id="r-price">—</span></div>
           <div class="change" id="r-change">—</div>
           <div class="stock-asof" id="r-asof">—</div>
+        </div>
+        <div class="merge-banner" id="r-merge-banner">
+          <div class="merge-stamp">Merged</div>
+          <div class="merge-banner-text">
+            <div class="merge-banner-title" id="r-merge-title">This company has been merged and is no longer actively trading.</div>
+            <div class="merge-banner-sub" id="r-merge-sub">—</div>
+          </div>
         </div>
 
         <div class="stock-quickstats">

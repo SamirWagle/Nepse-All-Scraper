@@ -17,6 +17,7 @@ def main():
     parser.add_argument("--full-scrape", action="store_true", help="Force full scraping of all existing companies (slow)")
     parser.add_argument("--incremental", action="store_true", default=True, help="Default mode: Check existing companies for NEW updates only (fast)")
     parser.add_argument("--all-companies", action="store_true", help="Scrape ALL companies found, ignoring the priority list.")
+    parser.add_argument("--skip-mergers", action="store_true", help="Skip refreshing the merger registry during the daily run.")
     
     args = parser.parse_args()
     
@@ -26,13 +27,13 @@ def main():
     
     if args.new_only:
         print("Running NEW COMPANY detection only...")
-        manager.run_daily_update(check_new_only=True, priority_only=priority_only)
+        manager.run_daily_update(check_new_only=True, priority_only=priority_only, update_mergers=not args.skip_mergers)
     elif args.full_scrape:
         print("Running FULL SCRAPE for companies...")
-        manager.run_daily_update(force_full=True, priority_only=priority_only)
+        manager.run_daily_update(force_full=True, priority_only=priority_only, update_mergers=not args.skip_mergers)
     else:
         print("Running STANDARD DAILY UPDATE (New Companies + Incremental Updates)...")
-        manager.run_daily_update(force_full=False, priority_only=priority_only)
+        manager.run_daily_update(force_full=False, priority_only=priority_only, update_mergers=not args.skip_mergers)
 
     # Sync listing dates for any new symbols not yet in ipo_listings.csv
     print("\nChecking for new symbols missing listing dates...")

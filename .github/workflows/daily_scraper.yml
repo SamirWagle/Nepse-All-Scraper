@@ -41,6 +41,9 @@ jobs:
       - name: Run floorsheet scraper
         run: python scraper/run_github_actions.py --floorsheet
 
+      - name: Run merger registry scraper
+        run: python scraper/run_github_actions.py --mergers
+
 
       - name: Commit and push updated data
         run: |

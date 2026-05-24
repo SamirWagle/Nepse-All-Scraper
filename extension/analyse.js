@@ -1,6 +1,20 @@
     // ── Page switching ──
     const backDestination = { buffett: 'nexttop', nexttop: 'bullbear' };
     let lastSearchedSymbol = null;
+    const MERGED_COMPANIES = {
+      HAMA: {
+        merged_date: '2016-09-04',
+        merged_to: 'CBL',
+        merged_to_name: 'Civil Bank Limited',
+        note: 'Hama Merchant & Finance Limited merged into Civil Bank Limited.'
+      },
+      CBL: {
+        merged_date: '2023-01-10',
+        merged_to: 'HBL',
+        merged_to_name: 'Himalayan Bank Limited',
+        note: 'Civil Bank Limited merged into Himalayan Bank Limited.'
+      }
+    };
     async function switchPage(name) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + name).classList.add('active');
@@ -756,6 +770,10 @@
     function showFundamentals(d) {
       document.getElementById('page-status').textContent = '';
       document.getElementById('results-area').style.display = 'block';
+      const merger = d.merger || (d.is_merged ? d : MERGED_COMPANIES[String(d.symbol || '').toUpperCase()] || null);
+      const mergeStatus = d.merge_status || merger?.status || (d.is_merged ? 'closed' : null);
+      const isClosedMerged = mergeStatus === 'closed' || (!!merger && !mergeStatus);
+      const isSurvivor = mergeStatus === 'active_survivor';
 
       // Hero
       const name = (d.company_name || d.symbol || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
@@ -791,8 +809,8 @@
       const pill = document.getElementById('r-mkt-pill');
       if (pill) {
         const isOpen = isMarketOpen();
-        pill.classList.toggle('closed', !isOpen);
-        setText('r-mkt-status', isOpen ? 'Market open' : 'Market closed');
+        pill.classList.toggle('closed', !isOpen || isClosedMerged);
+        setText('r-mkt-status', isClosedMerged ? 'Merged' : (isSurvivor ? 'Survivor' : (isOpen ? 'Market open' : 'Market closed')));
       }
 
       // Quick stats
@@ -800,38 +818,38 @@
       if (d.latest_day && d.latest_day.high && d.latest_day.low) {
         dayRange = `${fmt(d.latest_day.low)} – ${fmt(d.latest_day.high)}`;
       }
-      setText('r-day-range', dayRange);
+      setText('r-day-range', isClosedMerged ? '—' : dayRange);
       setText('r-52w-range', (d.high_52w && d.low_52w)
         ? `${fmt(d.low_52w)} – ${fmt(d.high_52w)}`
         : '—');
-      setText('r-avg-vol', d.avg_volume_30d != null
+      setText('r-avg-vol', isClosedMerged ? '—' : (d.avg_volume_30d != null
         ? Number(d.avg_volume_30d).toLocaleString('en-IN', { maximumFractionDigits: 0 })
-        : '—');
-      setText('r-1y-yield', d.year_yield_pct != null ? d.year_yield_pct.toFixed(2) + '%' : '—');
+        : '—'));
+      setText('r-1y-yield', isClosedMerged ? '—' : (d.year_yield_pct != null ? d.year_yield_pct.toFixed(2) + '%' : '—'));
 
       // FY meta header
-      setText('r-fy-meta', d.eps_fy ? `FY ${d.eps_fy}` : 'Latest data');
+      setText('r-fy-meta', isClosedMerged ? 'Merged company' : (isSurvivor ? 'Surviving company' : (d.eps_fy ? `FY ${d.eps_fy}` : 'Latest data')));
 
       // Key metrics cards
-      setText('r-mkt-cap', d.market_cap != null ? 'Rs. ' + fmtCompact(d.market_cap) : '—');
+      setText('r-mkt-cap', isClosedMerged ? 'Merged' : (d.market_cap != null ? 'Rs. ' + fmtCompact(d.market_cap) : '—'));
       setText('r-mkt-cap-sub', d.shares_outstanding != null
         ? `${fmtCompact(d.shares_outstanding)} shares × Rs. ${fmt(d.market_price || 0)}`
         : '');
 
       const paidUp = d.shares_outstanding != null ? d.shares_outstanding * 100 : null;
-      setText('r-paid-up', paidUp != null ? 'Rs. ' + fmtCompact(paidUp) : '—');
-      setText('r-paid-up-sub', d.shares_outstanding != null
+      setText('r-paid-up', isClosedMerged ? 'Merged' : (paidUp != null ? 'Rs. ' + fmtCompact(paidUp) : '—'));
+      setText('r-paid-up-sub', isClosedMerged ? 'Merged company' : (d.shares_outstanding != null
         ? `${fmtCompact(d.shares_outstanding)} shares · Rs. 100 face value`
-        : '');
+        : ''));
 
-      setText('r-pe', d.pe_ratio != null ? d.pe_ratio.toFixed(2) + '×' : '—');
-      setText('r-pe-sub', d.pbv != null ? `P/B ${d.pbv.toFixed(2)}×` : '');
+      setText('r-pe', isClosedMerged ? '—' : (d.pe_ratio != null ? d.pe_ratio.toFixed(2) + '×' : '—'));
+      setText('r-pe-sub', isClosedMerged ? 'Merged company' : (d.pbv != null ? `P/B ${d.pbv.toFixed(2)}×` : ''));
 
-      setText('r-eps', d.eps != null ? 'Rs. ' + d.eps.toFixed(2) : '—');
-      setText('r-eps-sub', d.eps_fy ? `FY ${d.eps_fy}` : '');
+      setText('r-eps', isClosedMerged ? '—' : (d.eps != null ? 'Rs. ' + d.eps.toFixed(2) : '—'));
+      setText('r-eps-sub', isClosedMerged ? 'Merged company' : (d.eps_fy ? `FY ${d.eps_fy}` : ''));
 
-      setText('r-bvps', d.book_value != null ? 'Rs. ' + d.book_value.toFixed(2) : '—');
-      setText('r-bvps-sub', d.pbv != null ? `Price-to-Book ${d.pbv.toFixed(2)}×` : '');
+      setText('r-bvps', isClosedMerged ? '—' : (d.book_value != null ? 'Rs. ' + d.book_value.toFixed(2) : '—'));
+      setText('r-bvps-sub', isClosedMerged ? 'Merged company' : (d.pbv != null ? `Price-to-Book ${d.pbv.toFixed(2)}×` : ''));
 
       setText('r-listing', d.listing_date || '—');
       let listingSub = '';
@@ -839,7 +857,62 @@
         const yrs = (new Date() - new Date(d.listing_date)) / (1000 * 60 * 60 * 24 * 365.25);
         if (!isNaN(yrs) && yrs > 0) listingSub = `${yrs.toFixed(1)} years on NEPSE`;
       }
+      if (isClosedMerged && (d.merged_date || merger.merged_date)) listingSub = `Merged on ${d.merged_date || merger.merged_date}`;
+      if (isSurvivor && (d.merged_date || merger.merged_date)) listingSub = `Survived merger on ${d.merged_date || merger.merged_date}`;
       setText('r-listing-sub', listingSub);
+
+      const mergeBanner = document.getElementById('r-merge-banner');
+      if (mergeBanner) {
+        if (isClosedMerged) {
+          const mergedTo = d.merged_to_name || merger.merged_to_name || d.merged_to || merger.merged_to || 'another company';
+          const mergedSub = [
+            d.listing_date ? `Listed <strong>${d.listing_date}</strong>` : null,
+            (d.merged_date || merger.merged_date) ? `Merged <strong>${d.merged_date || merger.merged_date}</strong>` : null,
+            `Merged to <strong>${mergedTo}</strong>${d.merged_to ? ` (${d.merged_to})` : ''}`
+          ].filter(Boolean).join(' · ');
+          const title = document.getElementById('r-merge-title');
+          const sub = document.getElementById('r-merge-sub');
+          if (title) title.textContent = d.merged_note || merger.note || 'This company has been merged and is no longer actively trading.';
+          if (sub) sub.innerHTML = mergedSub;
+          mergeBanner.classList.add('show');
+        } else if (isSurvivor) {
+          const title = document.getElementById('r-merge-title');
+          const sub = document.getElementById('r-merge-sub');
+          if (title) title.textContent = d.merged_note || merger.note || 'This company survived a merger and remains active.';
+          if (sub) sub.innerHTML = [
+            d.merged_date || merger.merged_date ? `Merger date <strong>${d.merged_date || merger.merged_date}</strong>` : null,
+            d.merged_from_name || merger.merged_from_name || d.merged_from || merger.merged_from ? `Merged from <strong>${d.merged_from_name || merger.merged_from_name || d.merged_from || merger.merged_from}</strong>` : null,
+            d.surviving_name || merger.surviving_name ? `Now operating as <strong>${d.surviving_name || merger.surviving_name}</strong>` : null,
+          ].filter(Boolean).join(' · ');
+          mergeBanner.classList.add('show');
+        } else {
+          mergeBanner.classList.remove('show');
+        }
+      }
+
+      if (isClosedMerged) {
+        setText('r-price', 'Merged');
+        const changeEl = document.getElementById('r-change');
+        if (changeEl) {
+          changeEl.textContent = 'Closed';
+          changeEl.className = 'change down';
+        }
+        setText('r-asof', d.merged_date || merger.merged_date ? `Merged on ${d.merged_date || merger.merged_date}` : 'Merged');
+        const dayRange = document.getElementById('r-day-range');
+        const w52Range = document.getElementById('r-52w-range');
+        const avgVol = document.getElementById('r-avg-vol');
+        const yYield = document.getElementById('r-1y-yield');
+        if (dayRange) dayRange.textContent = '—';
+        if (w52Range) w52Range.textContent = '—';
+        if (avgVol) avgVol.textContent = '—';
+        if (yYield) yYield.textContent = '—';
+      } else if (isSurvivor) {
+        const changeEl = document.getElementById('r-change');
+        if (changeEl) {
+          changeEl.textContent = 'Active survivor';
+          changeEl.className = 'change up';
+        }
+      }
 
       // Shareholding donut
       renderShareholdingDonut(d);
