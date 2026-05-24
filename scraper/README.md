@@ -60,6 +60,16 @@ python scraper/run_github_actions.py --mergers
 python scraper/run_github_actions.py --floorsheet --max-pages 3
 ```
 
+### Merger registry import
+
+```bash
+# Additive import, only fills missing fields
+python scraper/import_mergers.py merged_rows.json --merge-only
+
+# Same additive behavior, shorthand alias
+python scraper/import_mergers.py merged_rows.csv --additive
+```
+
 ### Price history (run locally)
 
 ```bash

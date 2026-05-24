@@ -11,7 +11,10 @@
       "surviving_symbol": "HBL",
       "surviving_name": "Himalayan Bank Limited",
       "display_mode": "closed",
-      "note": "Hama Merchant & Finance Ltd. merged into Civil Bank Limited, which later merged into Himalayan Bank Limited."
+      "note": "Hama Merchant & Finance Ltd. merged into Civil Bank Limited, which later merged into Himalayan Bank Limited.",
+      "symbol": "HAMA",
+      "source_url": "https://www.sharesansar.com/company/hama",
+      "source_title": "ShareSansar company page (HAMA)"
     },
     "CBL": {
       "status": "closed",
@@ -20,16 +23,63 @@
       "merged_into": "HBL",
       "merged_into_name": "Himalayan Bank Limited",
       "display_mode": "closed",
-      "note": "Civil Bank Limited merged into Himalayan Bank Limited."
+      "note": "Civil Bank Limited merged into Himalayan Bank Limited.",
+      "symbol": "CBL",
+      "source_url": "https://www.sharesansar.com/company/cbl",
+      "source_title": "ShareSansar company page (CBL)"
+    },
+    "CCBL": {
+      "status": "closed",
+      "display_name": "Century Commercial Bank Ltd.",
+      "merged_date": "2023-01-10",
+      "merged_into": "PRVU",
+      "merged_into_name": "Prabhu Bank Limited",
+      "surviving_symbol": "PRVU",
+      "surviving_name": "Prabhu Bank Limited",
+      "display_mode": "closed",
+      "note": "Century Commercial Bank Ltd. merged into Prabhu Bank Limited.",
+      "symbol": "CCBL",
+      "source_url": "https://www.sharesansar.com/company/ccbl",
+      "source_title": "ShareSansar company page (CCBL)"
+    },
+    "MEGA": {
+      "status": "closed",
+      "display_name": "Mega Bank Nepal Limited",
+      "merged_date": "2023-01-10",
+      "merged_into": "NIMB",
+      "merged_into_name": "Nepal Investment Mega Bank Limited",
+      "surviving_symbol": "NIMB",
+      "surviving_name": "Nepal Investment Mega Bank Limited",
+      "display_mode": "closed",
+      "note": "Mega Bank Nepal Limited merged into Nepal Investment Mega Bank Limited.",
+      "symbol": "MEGA",
+      "source_url": "https://www.sharesansar.com/company/mega",
+      "source_title": "ShareSansar company page (MEGA)"
+    },
+    "NIMB": {
+      "status": "active_survivor",
+      "display_name": "Nepal Investment Mega Bank Limited",
+      "merged_date": "2023-01-10",
+      "merged_from": "MEGA",
+      "merged_from_name": "Mega Bank Nepal Limited",
+      "surviving_symbol": "NIMB",
+      "surviving_name": "Nepal Investment Mega Bank Limited",
+      "display_mode": "survivor",
+      "note": "Nepal Investment Mega Bank Limited is the surviving company after merging with Mega Bank Nepal Limited."
     },
     "PIC": {
       "status": "closed",
       "display_name": "Premier Insurance Co. Ltd.",
-      "merged_date": "2023-02-28",
+      "merged_date": "2023-03-01",
       "merged_into": "SPIL",
       "merged_into_name": "Siddhartha Premier Insurance Limited",
+      "surviving_symbol": "SPIL",
+      "surviving_name": "Siddhartha Premier Insurance Limited",
       "display_mode": "closed",
-      "note": "Premier Insurance Co. Ltd. merged into Siddhartha Premier Insurance Limited."
+      "note": "Premier Insurance Co. Ltd. merged into Siddhartha Premier Insurance Limited, with integrated joint transactions starting on 2023-03-01.",
+      "symbol": "PIC",
+      "source_url": "https://www.sharesansar.com/company/pic",
+      "source_title": "ShareSansar company page (PIC)"
     },
     "API": {
       "symbol": "API",
@@ -44,32 +94,6 @@
       "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
       "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
     },
-    "SUL": {
-      "symbol": "SUL",
-      "status": "active_survivor",
-      "display_name": "SUL",
-      "merged_from": "API",
-      "merged_from_name": "API",
-      "surviving_symbol": "SUL",
-      "surviving_name": "SUL",
-      "display_mode": "survivor",
-      "note": "SUL is the surviving company after merger.",
-      "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
-      "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
-    },
-    "UMB": {
-      "symbol": "UMB",
-      "status": "active_survivor",
-      "display_name": "UMB",
-      "merged_from": "API",
-      "merged_from_name": "API",
-      "surviving_symbol": "UMB",
-      "surviving_name": "UMB",
-      "display_mode": "survivor",
-      "note": "UMB is the surviving company after merger.",
-      "source_url": "https://www.sharesansar.com/newsdetail/after-the-successful-merger-262-crore-unit-shares-of-sagarmatha-lumbini-insurance-company-salico-listed-in-nepse-for-trading-2023-05-14",
-      "source_title": "After the Successful Merger, 2.62 Crore Unit Shares of Sagarmatha Lumbini Insurance Company (SALICO) Listed in NEPSE For Trading"
-    },
     "CMF2": {
       "symbol": "CMF2",
       "status": "closed",
@@ -83,70 +107,1949 @@
       "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
       "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
     },
-    "SEBON": {
-      "symbol": "SEBON",
-      "status": "active_survivor",
-      "display_name": "Securities Board of Nepal",
-      "merged_from": "CMF2",
-      "merged_from_name": "2",
-      "surviving_symbol": "SEBON",
-      "surviving_name": "Securities Board of Nepal",
-      "display_mode": "survivor",
-      "note": "Securities Board of Nepal is the surviving company after merger.",
-      "source_url": "https://www.sharesansar.com/index.php/newsdetail/share-trading-of-civil-bank-limited-stops-from-today-integrated-transaction-with-himalayan-bank-limited-to-start-from-falgun-12-2023-02-16",
-      "source_title": "Share Trading of Civil Bank Limited Stops from Today; Integrated Transaction With Himalayan Bank Limited to Start from Falgun 12"
+    "ABBL": {
+      "symbol": "ABBL",
+      "status": "closed",
+      "display_name": "Annapurna Bikash Bank Limited",
+      "display_mode": "closed",
+      "note": "Annapurna Bikash Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/abbl",
+      "source_title": "ShareSansar company page (ABBL)"
     },
-    "REGISTRAR": {
-      "symbol": "REGISTRAR",
-      "status": "active_survivor",
-      "display_name": "Office of Company Registrar",
-      "merged_from": "CMF2",
-      "merged_from_name": "2",
-      "surviving_symbol": "REGISTRAR",
-      "surviving_name": "Office of Company Registrar",
-      "display_mode": "survivor",
-      "note": "Office of Company Registrar is the surviving company after merger.",
-      "source_url": "https://www.sharesansar.com/newsdetail/after-the-successful-merger-302-crore-unit-shares-of-igi-prudential-insurance-listed-in-nepse-for-trading-2023-06-01",
-      "source_title": "After the Successful Merger, 3.02 Crore Unit Shares of IGI Prudential Insurance Listed in NEPSE For Trading"
+    "ACEDBL": {
+      "symbol": "ACEDBL",
+      "status": "closed",
+      "display_name": "Ace Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Ace Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/acedbl",
+      "source_title": "ShareSansar company page (ACEDBL)"
     },
-    "UFIL": {
-      "symbol": "UFIL",
-      "status": "active_survivor",
-      "display_name": "Unique Finance Limited",
-      "merged_from": "CMF2",
-      "merged_from_name": "2",
-      "surviving_symbol": "UFIL",
-      "surviving_name": "Unique Finance Limited",
-      "display_mode": "survivor",
-      "note": "Unique Finance Limited is the surviving company after merger.",
-      "source_url": "https://www.sharesansar.com/index.php/newsdetail/civil-bank-international-leasing-finance-joint-transaction-starts-from-today-as-civil-bank",
-      "source_title": "Civil Bank &amp; International Leasing &amp; Finance joint transaction starts from today as Civil Bank"
+    "ADLB": {
+      "symbol": "ADLB",
+      "status": "closed",
+      "display_name": "Adarsha Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Adarsha Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/adlb",
+      "source_title": "ShareSansar company page (ADLB)"
     },
-    "SIC": {
-      "symbol": "SIC",
-      "status": "active_survivor",
-      "display_name": "Sagarmatha Insurance Company Limited",
-      "merged_from": "CMF2",
-      "merged_from_name": "2",
-      "surviving_symbol": "SIC",
-      "surviving_name": "Sagarmatha Insurance Company Limited",
-      "display_mode": "survivor",
-      "note": "Sagarmatha Insurance Company Limited is the surviving company after merger.",
-      "source_url": "https://www.sharesansar.com/newsdetail/after-the-successful-merger-262-crore-unit-shares-of-sagarmatha-lumbini-insurance-company-salico-listed-in-nepse-for-trading-2023-05-14",
-      "source_title": "After the Successful Merger, 2.62 Crore Unit Shares of Sagarmatha Lumbini Insurance Company (SALICO) Listed in NEPSE For Trading"
+    "AEFL": {
+      "symbol": "AEFL",
+      "status": "closed",
+      "display_name": "Alpic Everest Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Alpic Everest Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/aefl",
+      "source_title": "ShareSansar company page (AEFL)"
+    },
+    "AFL": {
+      "symbol": "AFL",
+      "status": "closed",
+      "display_name": "Api Finance Limtied",
+      "display_mode": "closed",
+      "note": "Api Finance Limtied is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/afl",
+      "source_title": "ShareSansar company page (AFL)"
+    },
+    "AIC": {
+      "symbol": "AIC",
+      "status": "closed",
+      "display_name": "Alliance Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Alliance Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/aic",
+      "source_title": "ShareSansar company page (AIC)"
+    },
+    "AIL": {
+      "symbol": "AIL",
+      "status": "closed",
+      "display_name": "Ajod Insurance Limited",
+      "display_mode": "closed",
+      "note": "Ajod Insurance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ail",
+      "source_title": "ShareSansar company page (AIL)"
+    },
+    "AKBSL": {
+      "symbol": "AKBSL",
+      "status": "closed",
+      "display_name": "Adhikhola Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Adhikhola Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/akbsl",
+      "source_title": "ShareSansar company page (AKBSL)"
+    },
+    "ALDBL": {
+      "symbol": "ALDBL",
+      "status": "closed",
+      "display_name": "Alpine Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Alpine Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/aldbl",
+      "source_title": "ShareSansar company page (ALDBL)"
+    },
+    "AMFI": {
+      "symbol": "AMFI",
+      "status": "closed",
+      "display_name": "Aarambha Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Aarambha Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/amfi",
+      "source_title": "ShareSansar company page (AMFI)"
+    },
+    "APEX": {
+      "symbol": "APEX",
+      "status": "closed",
+      "display_name": "Apex Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Apex Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/apex",
+      "source_title": "ShareSansar company page (APEX)"
+    },
+    "ARDBL": {
+      "symbol": "ARDBL",
+      "status": "closed",
+      "display_name": "Araniko Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Araniko Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ardbl",
+      "source_title": "ShareSansar company page (ARDBL)"
+    },
+    "AXIS": {
+      "symbol": "AXIS",
+      "status": "closed",
+      "display_name": "Axis Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Axis Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/axis",
+      "source_title": "ShareSansar company page (AXIS)"
+    },
+    "BBBL": {
+      "symbol": "BBBL",
+      "status": "closed",
+      "display_name": "Bhrikuti Vikash Bank Limited",
+      "display_mode": "closed",
+      "note": "Bhrikuti Vikash Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bbbl",
+      "source_title": "ShareSansar company page (BBBL)"
+    },
+    "BBBLN": {
+      "symbol": "BBBLN",
+      "status": "closed",
+      "display_name": "Bageshowori Dev.elopment Bank Limited",
+      "display_mode": "closed",
+      "note": "Bageshowori Dev.elopment Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bbbln",
+      "source_title": "ShareSansar company page (BBBLN)"
+    },
+    "BDBL": {
+      "symbol": "BDBL",
+      "status": "closed",
+      "display_name": "Business Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Business Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bdbl",
+      "source_title": "ShareSansar company page (BDBL)"
+    },
+    "BFCL": {
+      "symbol": "BFCL",
+      "status": "closed",
+      "display_name": "Bhaktapur Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Bhaktapur Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bfcl",
+      "source_title": "ShareSansar company page (BFCL)"
+    },
+    "BFIL": {
+      "symbol": "BFIL",
+      "status": "closed",
+      "display_name": "Bhajuratna Finance & Saving Company Limited",
+      "display_mode": "closed",
+      "note": "Bhajuratna Finance & Saving Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bfil",
+      "source_title": "ShareSansar company page (BFIL)"
+    },
+    "BFL": {
+      "symbol": "BFL",
+      "status": "closed",
+      "display_name": "Butwal Finance Limited",
+      "display_mode": "closed",
+      "note": "Butwal Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bfl",
+      "source_title": "ShareSansar company page (BFL)"
+    },
+    "BGDBL": {
+      "symbol": "BGDBL",
+      "status": "closed",
+      "display_name": "Bagmati Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Bagmati Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bgdbl",
+      "source_title": "ShareSansar company page (BGDBL)"
+    },
+    "BHBL": {
+      "symbol": "BHBL",
+      "status": "closed",
+      "display_name": "Bhargav Bikash Bank Limited",
+      "display_mode": "closed",
+      "note": "Bhargav Bikash Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bhbl",
+      "source_title": "ShareSansar company page (BHBL)"
+    },
+    "BLDBL": {
+      "symbol": "BLDBL",
+      "status": "closed",
+      "display_name": "Biratlaxmi Bikash Bank Limited",
+      "display_mode": "closed",
+      "note": "Biratlaxmi Bikash Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bldbl",
+      "source_title": "ShareSansar company page (BLDBL)"
+    },
+    "BOAN": {
+      "symbol": "BOAN",
+      "status": "closed",
+      "display_name": "Bank of Asia Nepal Limited",
+      "display_mode": "closed",
+      "note": "Bank of Asia Nepal Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/boan",
+      "source_title": "ShareSansar company page (BOAN)"
+    },
+    "BOK": {
+      "symbol": "BOK",
+      "status": "closed",
+      "display_name": "(Former) Bank of Kathmandu Limited",
+      "display_mode": "closed",
+      "note": "(Former) Bank of Kathmandu Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bok",
+      "source_title": "ShareSansar company page (BOK)"
+    },
+    "BOKL": {
+      "symbol": "BOKL",
+      "status": "closed",
+      "display_name": "Bank of Kathmandu Limited",
+      "display_mode": "closed",
+      "note": "Bank of Kathmandu Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bokl",
+      "source_title": "ShareSansar company page (BOKL)"
+    },
+    "BPW": {
+      "symbol": "BPW",
+      "status": "closed",
+      "display_name": "BPW Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "BPW Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bpw",
+      "source_title": "ShareSansar company page (BPW)"
+    },
+    "BRTBL": {
+      "symbol": "BRTBL",
+      "status": "closed",
+      "display_name": "Bright Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Bright Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/brtbl",
+      "source_title": "ShareSansar company page (BRTBL)"
+    },
+    "BSBL": {
+      "symbol": "BSBL",
+      "status": "closed",
+      "display_name": "Bishwa Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Bishwa Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/bsbl",
+      "source_title": "ShareSansar company page (BSBL)"
+    },
+    "BUDBL": {
+      "symbol": "BUDBL",
+      "status": "closed",
+      "display_name": "Business Universal Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Business Universal Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/budbl",
+      "source_title": "ShareSansar company page (BUDBL)"
+    },
+    "CDBL": {
+      "symbol": "CDBL",
+      "status": "closed",
+      "display_name": "City Development Bank Limited",
+      "display_mode": "closed",
+      "note": "City Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/cdbl",
+      "source_title": "ShareSansar company page (CDBL)"
+    },
+    "CEDBL": {
+      "symbol": "CEDBL",
+      "status": "closed",
+      "display_name": "Clean Energy Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Clean Energy Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/cedbl",
+      "source_title": "ShareSansar company page (CEDBL)"
+    },
+    "CEFL": {
+      "symbol": "CEFL",
+      "status": "closed",
+      "display_name": "City Express Finance Limited (former Kuber Merchant Finance)",
+      "display_mode": "closed",
+      "note": "City Express Finance Limited (former Kuber Merchant Finance) is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/cefl",
+      "source_title": "ShareSansar company page (CEFL)"
+    },
+    "CHLBS": {
+      "symbol": "CHLBS",
+      "status": "closed",
+      "display_name": "Chautari Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Chautari Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/chlbs",
+      "source_title": "ShareSansar company page (CHLBS)"
+    },
+    "CIVIC": {
+      "symbol": "CIVIC",
+      "status": "closed",
+      "display_name": "Civic Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Civic Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/civic",
+      "source_title": "ShareSansar company page (CIVIC)"
+    },
+    "CMBF": {
+      "symbol": "CMBF",
+      "status": "closed",
+      "display_name": "CMB Finance Limited",
+      "display_mode": "closed",
+      "note": "CMB Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/cmbf",
+      "source_title": "ShareSansar company page (CMBF)"
+    },
+    "CMBSL": {
+      "symbol": "CMBSL",
+      "status": "closed",
+      "display_name": "Civil Merchant Bittiya Santha Limited",
+      "display_mode": "closed",
+      "note": "Civil Merchant Bittiya Santha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/cmbsl",
+      "source_title": "ShareSansar company page (CMBSL)"
+    },
+    "CNDBL": {
+      "symbol": "CNDBL",
+      "status": "closed",
+      "display_name": "Country Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Country Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/cndbl",
+      "source_title": "ShareSansar company page (CNDBL)"
+    },
+    "CSDBL": {
+      "symbol": "CSDBL",
+      "status": "closed",
+      "display_name": "Cosmos Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Cosmos Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/csdbl",
+      "source_title": "ShareSansar company page (CSDBL)"
+    },
+    "CTBNL": {
+      "symbol": "CTBNL",
+      "status": "closed",
+      "display_name": "Commerz & Trust Bank Nepal Limited",
+      "display_mode": "closed",
+      "note": "Commerz & Trust Bank Nepal Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ctbnl",
+      "source_title": "ShareSansar company page (CTBNL)"
+    },
+    "DBBL": {
+      "symbol": "DBBL",
+      "status": "closed",
+      "display_name": "Deva Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Deva Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/dbbl",
+      "source_title": "ShareSansar company page (DBBL)"
+    },
+    "DIYALO": {
+      "symbol": "DIYALO",
+      "status": "closed",
+      "display_name": "Diyalo Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Diyalo Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/diyalo",
+      "source_title": "ShareSansar company page (DIYALO)"
+    },
+    "EFL": {
+      "symbol": "EFL",
+      "status": "closed",
+      "display_name": "Everest Finance Limited",
+      "display_mode": "closed",
+      "note": "Everest Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/efl",
+      "source_title": "ShareSansar company page (EFL)"
+    },
+    "EIC": {
+      "symbol": "EIC",
+      "status": "closed",
+      "display_name": "Everest Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Everest Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/eic",
+      "source_title": "ShareSansar company page (EIC)"
+    },
+    "EKBL": {
+      "symbol": "EKBL",
+      "status": "closed",
+      "display_name": "Ekata Bikash Bank Limited",
+      "display_mode": "closed",
+      "note": "Ekata Bikash Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ekbl",
+      "source_title": "ShareSansar company page (EKBL)"
+    },
+    "FBBL": {
+      "symbol": "FBBL",
+      "status": "closed",
+      "display_name": "Fewa Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Fewa Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/fbbl",
+      "source_title": "ShareSansar company page (FBBL)"
+    },
+    "FFCL": {
+      "symbol": "FFCL",
+      "status": "closed",
+      "display_name": "Fewa Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Fewa Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ffcl",
+      "source_title": "ShareSansar company page (FFCL)"
+    },
+    "GABL": {
+      "symbol": "GABL",
+      "status": "closed",
+      "display_name": "Gaumukhee Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Gaumukhee Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/gabl",
+      "source_title": "ShareSansar company page (GABL)"
+    },
+    "GBL": {
+      "symbol": "GBL",
+      "status": "closed",
+      "display_name": "Global Bank Limited",
+      "display_mode": "closed",
+      "note": "Global Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/gbl",
+      "source_title": "ShareSansar company page (GBL)"
+    },
+    "GDBL": {
+      "symbol": "GDBL",
+      "status": "closed",
+      "display_name": "Gandaki Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Gandaki Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/gdbl",
+      "source_title": "ShareSansar company page (GDBL)"
+    },
+    "GDBNL": {
+      "symbol": "GDBNL",
+      "status": "closed",
+      "display_name": "Gurkha Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Gurkha Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/gdbnl",
+      "source_title": "ShareSansar company page (GDBNL)"
+    },
+    "GFLK": {
+      "symbol": "GFLK",
+      "status": "closed",
+      "display_name": "Gorkha Finance Limited",
+      "display_mode": "closed",
+      "note": "Gorkha Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/gflk",
+      "source_title": "ShareSansar company page (GFLK)"
+    },
+    "GGBSL": {
+      "symbol": "GGBSL",
+      "status": "closed",
+      "display_name": "Ghodighoda Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Ghodighoda Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ggbsl",
+      "source_title": "ShareSansar company page (GGBSL)"
+    },
+    "GIC": {
+      "symbol": "GIC",
+      "status": "closed",
+      "display_name": "General Insurance Company Nepal Limited",
+      "display_mode": "closed",
+      "note": "General Insurance Company Nepal Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/gic",
+      "source_title": "ShareSansar company page (GIC)"
+    },
+    "GLICL": {
+      "symbol": "GLICL",
+      "status": "closed",
+      "display_name": "Gurans Life Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Gurans Life Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/glicl",
+      "source_title": "ShareSansar company page (GLICL)"
+    },
+    "GRAND": {
+      "symbol": "GRAND",
+      "status": "closed",
+      "display_name": "Grand Bank Nepal Limited",
+      "display_mode": "closed",
+      "note": "Grand Bank Nepal Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/grand",
+      "source_title": "ShareSansar company page (GRAND)"
+    },
+    "GSDBL": {
+      "symbol": "GSDBL",
+      "status": "closed",
+      "display_name": "Gaurishankar Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Gaurishankar Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/gsdbl",
+      "source_title": "ShareSansar company page (GSDBL)"
+    },
+    "GULMI": {
+      "symbol": "GULMI",
+      "status": "closed",
+      "display_name": "Gulmi Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Gulmi Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/gulmi",
+      "source_title": "ShareSansar company page (GULMI)"
+    },
+    "HAMRO": {
+      "symbol": "HAMRO",
+      "status": "closed",
+      "display_name": "Hamro Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Hamro Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/hamro",
+      "source_title": "ShareSansar company page (HAMRO)"
+    },
+    "HATH": {
+      "symbol": "HATH",
+      "status": "closed",
+      "display_name": "Hathway Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Hathway Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/hath",
+      "source_title": "ShareSansar company page (HATH)"
+    },
+    "HFL": {
+      "symbol": "HFL",
+      "status": "closed",
+      "display_name": "Himalayan Finance Limited (Bittiya Sanstha)",
+      "display_mode": "closed",
+      "note": "Himalayan Finance Limited (Bittiya Sanstha) is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/hfl",
+      "source_title": "ShareSansar company page (HFL)"
+    },
+    "HGI": {
+      "symbol": "HGI",
+      "status": "closed",
+      "display_name": "Himalayan General Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Himalayan General Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/hgi",
+      "source_title": "ShareSansar company page (HGI)"
+    },
+    "IDBL": {
+      "symbol": "IDBL",
+      "status": "closed",
+      "display_name": "Infrastructure Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Infrastructure Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/idbl",
+      "source_title": "ShareSansar company page (IDBL)"
+    },
+    "IFIL": {
+      "symbol": "IFIL",
+      "status": "closed",
+      "display_name": "Imperial Financial Instittuon Limited",
+      "display_mode": "closed",
+      "note": "Imperial Financial Instittuon Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ifil",
+      "source_title": "ShareSansar company page (IFIL)"
+    },
+    "IGIL": {
+      "symbol": "IGIL",
+      "status": "closed",
+      "display_name": "IME General Insurance Limited",
+      "display_mode": "closed",
+      "note": "IME General Insurance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/igil",
+      "source_title": "ShareSansar company page (IGIL)"
+    },
+    "ILFC": {
+      "symbol": "ILFC",
+      "status": "closed",
+      "display_name": "International Leasing & Finance Company Limited",
+      "display_mode": "closed",
+      "note": "International Leasing & Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ilfc",
+      "source_title": "ShareSansar company page (ILFC)"
+    },
+    "IMEFI": {
+      "symbol": "IMEFI",
+      "status": "closed",
+      "display_name": "IME Financial Institution Limited",
+      "display_mode": "closed",
+      "note": "IME Financial Institution Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/imefi",
+      "source_title": "ShareSansar company page (IMEFI)"
+    },
+    "INDB": {
+      "symbol": "INDB",
+      "status": "closed",
+      "display_name": "Innovative Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Innovative Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/indb",
+      "source_title": "ShareSansar company page (INDB)"
+    },
+    "INDBL": {
+      "symbol": "INDBL",
+      "status": "closed",
+      "display_name": "International Development Bank Limited",
+      "display_mode": "closed",
+      "note": "International Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/indbl",
+      "source_title": "ShareSansar company page (INDBL)"
+    },
+    "JALPA": {
+      "symbol": "JALPA",
+      "status": "closed",
+      "display_name": "Jalpa Samudayik Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Jalpa Samudayik Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/jalpa",
+      "source_title": "ShareSansar company page (JALPA)"
+    },
+    "JBNL": {
+      "symbol": "JBNL",
+      "status": "closed",
+      "display_name": "Janata Bank Nepal Limited",
+      "display_mode": "closed",
+      "note": "Janata Bank Nepal Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/jbnl",
+      "source_title": "ShareSansar company page (JBNL)"
+    },
+    "JEFL": {
+      "symbol": "JEFL",
+      "status": "closed",
+      "display_name": "Jebils Finance Limited",
+      "display_mode": "closed",
+      "note": "Jebils Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/jefl",
+      "source_title": "ShareSansar company page (JEFL)"
+    },
+    "JHBL": {
+      "symbol": "JHBL",
+      "status": "closed",
+      "display_name": "Jhimruk Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Jhimruk Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/jhbl",
+      "source_title": "ShareSansar company page (JHBL)"
+    },
+    "JLI": {
+      "symbol": "JLI",
+      "status": "closed",
+      "display_name": "Jyoti Life Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Jyoti Life Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/jli",
+      "source_title": "ShareSansar company page (JLI)"
+    },
+    "KADBL": {
+      "symbol": "KADBL",
+      "status": "closed",
+      "display_name": "Kanchan Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Kanchan Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kadbl",
+      "source_title": "ShareSansar company page (KADBL)"
+    },
+    "KAFIL": {
+      "symbol": "KAFIL",
+      "status": "closed",
+      "display_name": "Kaski Finance Limited",
+      "display_mode": "closed",
+      "note": "Kaski Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kafil",
+      "source_title": "ShareSansar company page (KAFIL)"
+    },
+    "KBBL": {
+      "symbol": "KBBL",
+      "status": "closed",
+      "display_name": "Kailash Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Kailash Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kbbl",
+      "source_title": "ShareSansar company page (KBBL)"
+    },
+    "KCDBL": {
+      "symbol": "KCDBL",
+      "status": "closed",
+      "display_name": "Kalinchowk Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Kalinchowk Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kcdbl",
+      "source_title": "ShareSansar company page (KCDBL)"
+    },
+    "KDBL": {
+      "symbol": "KDBL",
+      "status": "closed",
+      "display_name": "Kasthamandap Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Kasthamandap Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kdbl",
+      "source_title": "ShareSansar company page (KDBL)"
+    },
+    "KEBL": {
+      "symbol": "KEBL",
+      "status": "closed",
+      "display_name": "Kabeli Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Kabeli Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kebl",
+      "source_title": "ShareSansar company page (KEBL)"
+    },
+    "KFL": {
+      "symbol": "KFL",
+      "status": "closed",
+      "display_name": "Kathmandu Finance Limited.",
+      "display_mode": "closed",
+      "note": "Kathmandu Finance Limited. is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kfl",
+      "source_title": "ShareSansar company page (KFL)"
+    },
+    "KHDBL": {
+      "symbol": "KHDBL",
+      "status": "closed",
+      "display_name": "Khandbari Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Khandbari Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/khdbl",
+      "source_title": "ShareSansar company page (KHDBL)"
+    },
+    "KIST": {
+      "symbol": "KIST",
+      "status": "closed",
+      "display_name": "KIST Bank Limited",
+      "display_mode": "closed",
+      "note": "KIST Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kist",
+      "source_title": "ShareSansar company page (KIST)"
+    },
+    "KKBL": {
+      "symbol": "KKBL",
+      "status": "closed",
+      "display_name": "Kankrebihar Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Kankrebihar Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kkbl",
+      "source_title": "ShareSansar company page (KKBL)"
+    },
+    "KLBS": {
+      "symbol": "KLBS",
+      "status": "closed",
+      "display_name": "Khaptad Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Khaptad Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/klbs",
+      "source_title": "ShareSansar company page (KLBS)"
+    },
+    "KLBSL": {
+      "symbol": "KLBSL",
+      "status": "closed",
+      "display_name": "Kisan Laghubitta Bittiya Sanstha Limited(Former NRN Laghubitta Bittiya Sanstha Limited)",
+      "display_mode": "closed",
+      "note": "Kisan Laghubitta Bittiya Sanstha Limited(Former NRN Laghubitta Bittiya Sanstha Limited) is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/klbsl",
+      "source_title": "ShareSansar company page (KLBSL)"
+    },
+    "KMBL": {
+      "symbol": "KMBL",
+      "status": "closed",
+      "display_name": "Kamana Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Kamana Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kmbl",
+      "source_title": "ShareSansar company page (KMBL)"
+    },
+    "KMFL": {
+      "symbol": "KMFL",
+      "status": "closed",
+      "display_name": "Kisan Microfinance Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Kisan Microfinance Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/kmfl",
+      "source_title": "ShareSansar company page (KMFL)"
+    },
+    "KNBL": {
+      "symbol": "KNBL",
+      "status": "closed",
+      "display_name": "Kankai Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Kankai Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/knbl",
+      "source_title": "ShareSansar company page (KNBL)"
+    },
+    "LBFIL": {
+      "symbol": "LBFIL",
+      "status": "closed",
+      "display_name": "Lord Buddha Finance Limited",
+      "display_mode": "closed",
+      "note": "Lord Buddha Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/lbfil",
+      "source_title": "ShareSansar company page (LBFIL)"
+    },
+    "LBL": {
+      "symbol": "LBL",
+      "status": "closed",
+      "display_name": "Laxmi Bank Limited",
+      "display_mode": "closed",
+      "note": "Laxmi Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/lbl",
+      "source_title": "ShareSansar company page (LBL)"
+    },
+    "LFC": {
+      "symbol": "LFC",
+      "status": "closed",
+      "display_name": "Lalitpur Finance Limited",
+      "display_mode": "closed",
+      "note": "Lalitpur Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/lfc",
+      "source_title": "ShareSansar company page (LFC)"
+    },
+    "LFLC": {
+      "symbol": "LFLC",
+      "status": "closed",
+      "display_name": "Lumbini Finance and Leasing Company Limited",
+      "display_mode": "closed",
+      "note": "Lumbini Finance and Leasing Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/lflc",
+      "source_title": "ShareSansar company page (LFLC)"
+    },
+    "LGIL": {
+      "symbol": "LGIL",
+      "status": "closed",
+      "display_name": "Lumbini General Insurance Limited",
+      "display_mode": "closed",
+      "note": "Lumbini General Insurance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/lgil",
+      "source_title": "ShareSansar company page (LGIL)"
+    },
+    "LUBL": {
+      "symbol": "LUBL",
+      "status": "closed",
+      "display_name": "Lumbini Bank Limited",
+      "display_mode": "closed",
+      "note": "Lumbini Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/lubl",
+      "source_title": "ShareSansar company page (LUBL)"
+    },
+    "MBBL": {
+      "symbol": "MBBL",
+      "status": "closed",
+      "display_name": "Mahakali Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Mahakali Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/mbbl",
+      "source_title": "ShareSansar company page (MBBL)"
+    },
+    "MDBL": {
+      "symbol": "MDBL",
+      "status": "closed",
+      "display_name": "Malika Bikash Bank Limited",
+      "display_mode": "closed",
+      "note": "Malika Bikash Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/mdbl",
+      "source_title": "ShareSansar company page (MDBL)"
+    },
+    "METRO": {
+      "symbol": "METRO",
+      "status": "closed",
+      "display_name": "Metro Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Metro Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/metro",
+      "source_title": "ShareSansar company page (METRO)"
+    },
+    "MFL": {
+      "symbol": "MFL",
+      "status": "closed",
+      "display_name": "Mahalaxmi Finance Limited",
+      "display_mode": "closed",
+      "note": "Mahalaxmi Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/mfl",
+      "source_title": "ShareSansar company page (MFL)"
+    },
+    "MIDBL": {
+      "symbol": "MIDBL",
+      "status": "closed",
+      "display_name": "Mission Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Mission Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/midbl",
+      "source_title": "ShareSansar company page (MIDBL)"
+    },
+    "MKDBL": {
+      "symbol": "MKDBL",
+      "status": "closed",
+      "display_name": "Manakamana Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Manakamana Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/mkdbl",
+      "source_title": "ShareSansar company page (MKDBL)"
+    },
+    "MKLB": {
+      "symbol": "MKLB",
+      "status": "closed",
+      "display_name": "Manakamana Smart Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Manakamana Smart Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/mklb",
+      "source_title": "ShareSansar company page (MKLB)"
+    },
+    "MMDBL": {
+      "symbol": "MMDBL",
+      "status": "closed",
+      "display_name": "Mount Makalu Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Mount Makalu Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/mmdbl",
+      "source_title": "ShareSansar company page (MMDBL)"
+    },
+    "MMFDB": {
+      "symbol": "MMFDB",
+      "status": "closed",
+      "display_name": "Mirmire Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Mirmire Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/mmfdb",
+      "source_title": "ShareSansar company page (MMFDB)"
+    },
+    "MSBBL": {
+      "symbol": "MSBBL",
+      "status": "closed",
+      "display_name": "Manaslu Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Manaslu Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/msbbl",
+      "source_title": "ShareSansar company page (MSBBL)"
+    },
+    "MSMBS": {
+      "symbol": "MSMBS",
+      "status": "closed",
+      "display_name": "Mahila Sahayatra Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Mahila Sahayatra Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/msmbs",
+      "source_title": "ShareSansar company page (MSMBS)"
+    },
+    "MTBL": {
+      "symbol": "MTBL",
+      "status": "closed",
+      "display_name": "Matribhumi Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Matribhumi Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/mtbl",
+      "source_title": "ShareSansar company page (MTBL)"
+    },
+    "NABB": {
+      "symbol": "NABB",
+      "status": "closed",
+      "display_name": "Nepal Aawas Finance Limited",
+      "display_mode": "closed",
+      "note": "Nepal Aawas Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nabb",
+      "source_title": "ShareSansar company page (NABB)"
+    },
+    "NAGRO": {
+      "symbol": "NAGRO",
+      "status": "closed",
+      "display_name": "Nepal Agro Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Nepal Agro Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nagro",
+      "source_title": "ShareSansar company page (NAGRO)"
+    },
+    "NBB": {
+      "symbol": "NBB",
+      "status": "closed",
+      "display_name": "Nepal Bangladesh Bank Limited",
+      "display_mode": "closed",
+      "note": "Nepal Bangladesh Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nbb",
+      "source_title": "ShareSansar company page (NBB)"
+    },
+    "NBBL": {
+      "symbol": "NBBL",
+      "status": "closed",
+      "display_name": "Nagbeli Laghubitta Bikash Bank Limited",
+      "display_mode": "closed",
+      "note": "Nagbeli Laghubitta Bikash Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nbbl",
+      "source_title": "ShareSansar company page (NBBL)"
+    },
+    "NBSL": {
+      "symbol": "NBSL",
+      "status": "closed",
+      "display_name": "Namaste Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Namaste Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nbsl",
+      "source_title": "ShareSansar company page (NBSL)"
+    },
+    "NCCB": {
+      "symbol": "NCCB",
+      "status": "closed",
+      "display_name": "Nepal Credit and Commerce Bank Limited",
+      "display_mode": "closed",
+      "note": "Nepal Credit and Commerce Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nccb",
+      "source_title": "ShareSansar company page (NCCB)"
+    },
+    "NCDB": {
+      "symbol": "NCDB",
+      "status": "closed",
+      "display_name": "Nepal Community Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Nepal Community Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ncdb",
+      "source_title": "ShareSansar company page (NCDB)"
+    },
+    "NCDBL": {
+      "symbol": "NCDBL",
+      "status": "closed",
+      "display_name": "Nepal Consumer Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Nepal Consumer Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ncdbl",
+      "source_title": "ShareSansar company page (NCDBL)"
+    },
+    "NCM": {
+      "symbol": "NCM",
+      "status": "closed",
+      "display_name": "NIDC Capital Markets Limited",
+      "display_mode": "closed",
+      "note": "NIDC Capital Markets Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ncm",
+      "source_title": "ShareSansar company page (NCM)"
+    },
+    "NDEP": {
+      "symbol": "NDEP",
+      "status": "closed",
+      "display_name": "NDEP Development Bank Limited",
+      "display_mode": "closed",
+      "note": "NDEP Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ndep",
+      "source_title": "ShareSansar company page (NDEP)"
+    },
+    "NDFL": {
+      "symbol": "NDFL",
+      "status": "closed",
+      "display_name": "Nava Durga Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Nava Durga Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ndfl",
+      "source_title": "ShareSansar company page (NDFL)"
+    },
+    "NEFL": {
+      "symbol": "NEFL",
+      "status": "closed",
+      "display_name": "Nepal Express Finance Limited",
+      "display_mode": "closed",
+      "note": "Nepal Express Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nefl",
+      "source_title": "ShareSansar company page (NEFL)"
+    },
+    "NGBL": {
+      "symbol": "NGBL",
+      "status": "closed",
+      "display_name": "Nilgiri Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Nilgiri Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ngbl",
+      "source_title": "ShareSansar company page (NGBL)"
+    },
+    "NHMF": {
+      "symbol": "NHMF",
+      "status": "closed",
+      "display_name": "Nepal Housing & Merchant Finance Limited",
+      "display_mode": "closed",
+      "note": "Nepal Housing & Merchant Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nhmf",
+      "source_title": "ShareSansar company page (NHMF)"
+    },
+    "NIB": {
+      "symbol": "NIB",
+      "status": "closed",
+      "display_name": "Nepal Investment Bank Limited",
+      "display_mode": "closed",
+      "note": "Nepal Investment Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nib",
+      "source_title": "ShareSansar company page (NIB)"
+    },
+    "NICB": {
+      "symbol": "NICB",
+      "status": "closed",
+      "display_name": "Nepal Industrial & Company Bank Limited",
+      "display_mode": "closed",
+      "note": "Nepal Industrial & Company Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nicb",
+      "source_title": "ShareSansar company page (NICB)"
+    },
+    "NIDC": {
+      "symbol": "NIDC",
+      "status": "closed",
+      "display_name": "NIDC Development Bank Limited",
+      "display_mode": "closed",
+      "note": "NIDC Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nidc",
+      "source_title": "ShareSansar company page (NIDC)"
+    },
+    "NLBBL": {
+      "symbol": "NLBBL",
+      "status": "closed",
+      "display_name": "Nerude Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Nerude Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nlbbl",
+      "source_title": "ShareSansar company page (NLBBL)"
+    },
+    "NNFC": {
+      "symbol": "NNFC",
+      "status": "closed",
+      "display_name": "Narayani National Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Narayani National Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nnfc",
+      "source_title": "ShareSansar company page (NNFC)"
+    },
+    "NNLB": {
+      "symbol": "NNLB",
+      "status": "closed",
+      "display_name": "Naya Nepal Laghubitta Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Naya Nepal Laghubitta Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nnlb",
+      "source_title": "ShareSansar company page (NNLB)"
+    },
+    "NSEWA": {
+      "symbol": "NSEWA",
+      "status": "closed",
+      "display_name": "Nepal Seva Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Nepal Seva Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nsewa",
+      "source_title": "ShareSansar company page (NSEWA)"
+    },
+    "NSLB": {
+      "symbol": "NSLB",
+      "status": "closed",
+      "display_name": "Naya Sarathi Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Naya Sarathi Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/nslb",
+      "source_title": "ShareSansar company page (NSLB)"
+    },
+    "ODBL": {
+      "symbol": "ODBL",
+      "status": "closed",
+      "display_name": "Om Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Om Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/odbl",
+      "source_title": "ShareSansar company page (ODBL)"
+    },
+    "OFL": {
+      "symbol": "OFL",
+      "status": "closed",
+      "display_name": "Om Finance Limited",
+      "display_mode": "closed",
+      "note": "Om Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ofl",
+      "source_title": "ShareSansar company page (OFL)"
+    },
+    "PADBL": {
+      "symbol": "PADBL",
+      "status": "closed",
+      "display_name": "Pacific Development Bank Limitied",
+      "display_mode": "closed",
+      "note": "Pacific Development Bank Limitied is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/padbl",
+      "source_title": "ShareSansar company page (PADBL)"
+    },
+    "PBSL": {
+      "symbol": "PBSL",
+      "status": "closed",
+      "display_name": "Pathibhara Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Pathibhara Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pbsl",
+      "source_title": "ShareSansar company page (PBSL)"
+    },
+    "PDB": {
+      "symbol": "PDB",
+      "status": "closed",
+      "display_name": "Public Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Public Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pdb",
+      "source_title": "ShareSansar company page (PDB)"
+    },
+    "PDBL": {
+      "symbol": "PDBL",
+      "status": "closed",
+      "display_name": "Paschimanchal Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Paschimanchal Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pdbl",
+      "source_title": "ShareSansar company page (PDBL)"
+    },
+    "PFC": {
+      "symbol": "PFC",
+      "status": "closed",
+      "display_name": "Paschimanchal Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Paschimanchal Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pfc",
+      "source_title": "ShareSansar company page (PFC)"
+    },
+    "PFCL": {
+      "symbol": "PFCL",
+      "status": "closed",
+      "display_name": "Peoples Finance Limited.",
+      "display_mode": "closed",
+      "note": "Peoples Finance Limited. is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pfcl",
+      "source_title": "ShareSansar company page (PFCL)"
+    },
+    "PFCLL": {
+      "symbol": "PFCLL",
+      "status": "closed",
+      "display_name": "Premier Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Premier Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pfcll",
+      "source_title": "ShareSansar company page (PFCLL)"
+    },
+    "PFIL": {
+      "symbol": "PFIL",
+      "status": "closed",
+      "display_name": "Prudential Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Prudential Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pfil",
+      "source_title": "ShareSansar company page (PFIL)"
+    },
+    "PFLBS": {
+      "symbol": "PFLBS",
+      "status": "closed",
+      "display_name": "Patan Finance Limited",
+      "display_mode": "closed",
+      "note": "Patan Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pflbs",
+      "source_title": "ShareSansar company page (PFLBS)"
+    },
+    "PICL": {
+      "symbol": "PICL",
+      "status": "closed",
+      "display_name": "Prudential Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Prudential Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/picl",
+      "source_title": "ShareSansar company page (PICL)"
+    },
+    "PLI": {
+      "symbol": "PLI",
+      "status": "closed",
+      "display_name": "Prabhu Life Insurance Limited",
+      "display_mode": "closed",
+      "note": "Prabhu Life Insurance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/pli",
+      "source_title": "ShareSansar company page (PLI)"
+    },
+    "PLIC": {
+      "symbol": "PLIC",
+      "status": "closed",
+      "display_name": "Prime Life Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Prime Life Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/plic",
+      "source_title": "ShareSansar company page (PLIC)"
+    },
+    "PRBBL": {
+      "symbol": "PRBBL",
+      "status": "closed",
+      "display_name": "Prabhu Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Prabhu Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/prbbl",
+      "source_title": "ShareSansar company page (PRBBL)"
+    },
+    "PRBL": {
+      "symbol": "PRBL",
+      "status": "closed",
+      "display_name": "Professional Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Professional Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/prbl",
+      "source_title": "ShareSansar company page (PRBL)"
+    },
+    "PRDBL": {
+      "symbol": "PRDBL",
+      "status": "closed",
+      "display_name": "Professional Diyalo Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Professional Diyalo Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/prdbl",
+      "source_title": "ShareSansar company page (PRDBL)"
+    },
+    "PRFL": {
+      "symbol": "PRFL",
+      "status": "closed",
+      "display_name": "Prabhu Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Prabhu Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/prfl",
+      "source_title": "ShareSansar company page (PRFL)"
+    },
+    "PSDBL": {
+      "symbol": "PSDBL",
+      "status": "closed",
+      "display_name": "Pashupati Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Pashupati Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/psdbl",
+      "source_title": "ShareSansar company page (PSDBL)"
+    },
+    "PURBL": {
+      "symbol": "PURBL",
+      "status": "closed",
+      "display_name": "Purnima Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Purnima Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/purbl",
+      "source_title": "ShareSansar company page (PURBL)"
+    },
+    "RARA": {
+      "symbol": "RARA",
+      "status": "closed",
+      "display_name": "Rara Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Rara Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rara",
+      "source_title": "ShareSansar company page (RARA)"
+    },
+    "RBBBL": {
+      "symbol": "RBBBL",
+      "status": "closed",
+      "display_name": "Raptibheri Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Raptibheri Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rbbbl",
+      "source_title": "ShareSansar company page (RBBBL)"
+    },
+    "RBSL": {
+      "symbol": "RBSL",
+      "status": "closed",
+      "display_name": "Resunga Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Resunga Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rbsl",
+      "source_title": "ShareSansar company page (RBSL)"
+    },
+    "RDBL": {
+      "symbol": "RDBL",
+      "status": "closed",
+      "display_name": "Rising Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Rising Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rdbl",
+      "source_title": "ShareSansar company page (RDBL)"
+    },
+    "REDBL": {
+      "symbol": "REDBL",
+      "status": "closed",
+      "display_name": "Reliable Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Reliable Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/redbl",
+      "source_title": "ShareSansar company page (REDBL)"
+    },
+    "RHPC": {
+      "symbol": "RHPC",
+      "status": "closed",
+      "display_name": "Ridi Hydropower Development Company Limited",
+      "display_mode": "closed",
+      "note": "Ridi Hydropower Development Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rhpc",
+      "source_title": "ShareSansar company page (RHPC)"
+    },
+    "RIBSL": {
+      "symbol": "RIBSL",
+      "status": "closed",
+      "display_name": "Reliable Finance Limited",
+      "display_mode": "closed",
+      "note": "Reliable Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ribsl",
+      "source_title": "ShareSansar company page (RIBSL)"
+    },
+    "RLI": {
+      "symbol": "RLI",
+      "status": "closed",
+      "display_name": "Reliance Life Insurance Limited",
+      "display_mode": "closed",
+      "note": "Reliance Life Insurance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rli",
+      "source_title": "ShareSansar company page (RLI)"
+    },
+    "RMBFI": {
+      "symbol": "RMBFI",
+      "status": "closed",
+      "display_name": "Royal Merchant Bank & Fin Limited",
+      "display_mode": "closed",
+      "note": "Royal Merchant Bank & Fin Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rmbfi",
+      "source_title": "ShareSansar company page (RMBFI)"
+    },
+    "RMDC": {
+      "symbol": "RMDC",
+      "status": "closed",
+      "display_name": "RMDC Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "RMDC Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rmdc",
+      "source_title": "ShareSansar company page (RMDC)"
+    },
+    "RRHP": {
+      "symbol": "RRHP",
+      "status": "closed",
+      "display_name": "Rairang Hydropower Development Company Limited.",
+      "display_mode": "closed",
+      "note": "Rairang Hydropower Development Company Limited. is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rrhp",
+      "source_title": "ShareSansar company page (RRHP)"
+    },
+    "RULB": {
+      "symbol": "RULB",
+      "status": "closed",
+      "display_name": "Rastra Utthan Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Rastra Utthan Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/rulb",
+      "source_title": "ShareSansar company page (RULB)"
+    },
+    "SABSL": {
+      "symbol": "SABSL",
+      "status": "closed",
+      "display_name": "Sabaiko Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Sabaiko Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sabsl",
+      "source_title": "ShareSansar company page (SABSL)"
+    },
+    "SABSLP": {
+      "symbol": "SABSLP",
+      "status": "closed",
+      "display_name": "Sabaiko Laghubitta Bittiya Sanstha Limited Promoter",
+      "display_mode": "closed",
+      "note": "Sabaiko Laghubitta Bittiya Sanstha Limited Promoter is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sabslp",
+      "source_title": "ShareSansar company page (SABSLP)"
+    },
+    "SAFL": {
+      "symbol": "SAFL",
+      "status": "closed",
+      "display_name": "Sagarmatha Finance Limited",
+      "display_mode": "closed",
+      "note": "Sagarmatha Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/safl",
+      "source_title": "ShareSansar company page (SAFL)"
+    },
+    "SAJHA": {
+      "symbol": "SAJHA",
+      "status": "closed",
+      "display_name": "Sajha Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Sajha Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sajha",
+      "source_title": "ShareSansar company page (SAJHA)"
     },
     "SAMAJ": {
       "symbol": "SAMAJ",
-      "status": "active_survivor",
+      "status": "closed",
       "display_name": "Samaj Laghubitta Bittiya Sanstha Limited",
-      "merged_from": "CMF2",
-      "merged_from_name": "2",
-      "surviving_symbol": "SAMAJ",
-      "surviving_name": "Samaj Laghubitta Bittiya Sanstha Limited",
-      "display_mode": "survivor",
-      "note": "Samaj Laghubitta Bittiya Sanstha Limited is the surviving company after merger.",
-      "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
-      "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
+      "display_mode": "closed",
+      "note": "Samaj Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/samaj",
+      "source_title": "ShareSansar company page (SAMAJ)"
+    },
+    "SBBLJ": {
+      "symbol": "SBBLJ",
+      "status": "closed",
+      "display_name": "Sahayogi Vikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Sahayogi Vikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sbblj",
+      "source_title": "ShareSansar company page (SBBLJ)"
+    },
+    "SBSL": {
+      "symbol": "SBSL",
+      "status": "closed",
+      "display_name": "Shikhar Finance Limited",
+      "display_mode": "closed",
+      "note": "Shikhar Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sbsl",
+      "source_title": "ShareSansar company page (SBSL)"
+    },
+    "SDBL": {
+      "symbol": "SDBL",
+      "status": "closed",
+      "display_name": "Siddhartha Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Siddhartha Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sdbl",
+      "source_title": "ShareSansar company page (SDBL)"
+    },
+    "SDESI": {
+      "symbol": "SDESI",
+      "status": "closed",
+      "display_name": "Swadeshi Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Swadeshi Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sdesi",
+      "source_title": "ShareSansar company page (SDESI)"
+    },
+    "SDFL": {
+      "symbol": "SDFL",
+      "status": "closed",
+      "display_name": "Suryadarshan Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Suryadarshan Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sdfl",
+      "source_title": "ShareSansar company page (SDFL)"
+    },
+    "SDLBSL": {
+      "symbol": "SDLBSL",
+      "status": "closed",
+      "display_name": "Sadhana Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Sadhana Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sdlbsl",
+      "source_title": "ShareSansar company page (SDLBSL)"
+    },
+    "SDLBSLP": {
+      "symbol": "SDLBSLP",
+      "status": "closed",
+      "display_name": "Sadhana Laghubitta Bittiya Sanstha Limited Promoter Shares",
+      "display_mode": "closed",
+      "note": "Sadhana Laghubitta Bittiya Sanstha Limited Promoter Shares is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sdlbslp",
+      "source_title": "ShareSansar company page (SDLBSLP)"
+    },
+    "SETI": {
+      "symbol": "SETI",
+      "status": "closed",
+      "display_name": "Seti Finance Limited",
+      "display_mode": "closed",
+      "note": "Seti Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/seti",
+      "source_title": "ShareSansar company page (SETI)"
+    },
+    "SEWA": {
+      "symbol": "SEWA",
+      "status": "closed",
+      "display_name": "Sewa Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Sewa Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sewa",
+      "source_title": "ShareSansar company page (SEWA)"
+    },
+    "SFFIL": {
+      "symbol": "SFFIL",
+      "status": "closed",
+      "display_name": "Srijana Finance Limited",
+      "display_mode": "closed",
+      "note": "Srijana Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sffil",
+      "source_title": "ShareSansar company page (SFFIL)"
+    },
+    "SFL": {
+      "symbol": "SFL",
+      "status": "closed",
+      "display_name": "Siddhartha Finance Limited",
+      "display_mode": "closed",
+      "note": "Siddhartha Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sfl",
+      "source_title": "ShareSansar company page (SFL)"
+    },
+    "SGI": {
+      "symbol": "SGI",
+      "status": "closed",
+      "display_name": "Sanima General Insurance Limited",
+      "display_mode": "closed",
+      "note": "Sanima General Insurance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sgi",
+      "source_title": "ShareSansar company page (SGI)"
+    },
+    "SHBL": {
+      "symbol": "SHBL",
+      "status": "closed",
+      "display_name": "Sahara Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Sahara Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/shbl",
+      "source_title": "ShareSansar company page (SHBL)"
+    },
+    "SHDBL": {
+      "symbol": "SHDBL",
+      "status": "closed",
+      "display_name": "Shine Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Shine Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/shdbl",
+      "source_title": "ShareSansar company page (SHDBL)"
+    },
+    "SIC": {
+      "symbol": "SIC",
+      "status": "closed",
+      "display_name": "Sagarmatha Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Sagarmatha Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sic",
+      "source_title": "ShareSansar company page (SIC)"
+    },
+    "SIL": {
+      "symbol": "SIL",
+      "status": "closed",
+      "display_name": "Siddhartha Insurance Limited",
+      "display_mode": "closed",
+      "note": "Siddhartha Insurance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sil",
+      "source_title": "ShareSansar company page (SIL)"
+    },
+    "SKDBL": {
+      "symbol": "SKDBL",
+      "status": "closed",
+      "display_name": "Saptakoshi Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Saptakoshi Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/skdbl",
+      "source_title": "ShareSansar company page (SKDBL)"
+    },
+    "SLBS": {
+      "symbol": "SLBS",
+      "status": "closed",
+      "display_name": "Suryodaya Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Suryodaya Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/slbs",
+      "source_title": "ShareSansar company page (SLBS)"
+    },
+    "SLFL": {
+      "symbol": "SLFL",
+      "status": "closed",
+      "display_name": "Subha Laxmi Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Subha Laxmi Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/slfl",
+      "source_title": "ShareSansar company page (SLFL)"
+    },
+    "SLI": {
+      "symbol": "SLI",
+      "status": "closed",
+      "display_name": "Sanima Life Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Sanima Life Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sli",
+      "source_title": "ShareSansar company page (SLI)"
+    },
+    "SLICL": {
+      "symbol": "SLICL",
+      "status": "closed",
+      "display_name": "Surya Life Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Surya Life Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/slicl",
+      "source_title": "ShareSansar company page (SLICL)"
+    },
+    "SMBF": {
+      "symbol": "SMBF",
+      "status": "closed",
+      "display_name": "Sagarmatha Merchant Banking & Finance Limited",
+      "display_mode": "closed",
+      "note": "Sagarmatha Merchant Banking & Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/smbf",
+      "source_title": "ShareSansar company page (SMBF)"
+    },
+    "SMF": {
+      "symbol": "SMF",
+      "status": "closed",
+      "display_name": "Swastik Merchant Finance Company Limited",
+      "display_mode": "closed",
+      "note": "Swastik Merchant Finance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/smf",
+      "source_title": "ShareSansar company page (SMF)"
+    },
+    "SMFDB": {
+      "symbol": "SMFDB",
+      "status": "closed",
+      "display_name": "Summit Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Summit Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/smfdb",
+      "source_title": "ShareSansar company page (SMFDB)"
+    },
+    "SODBL": {
+      "symbol": "SODBL",
+      "status": "closed",
+      "display_name": "Society Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Society Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/sodbl",
+      "source_title": "ShareSansar company page (SODBL)"
+    },
+    "SPARS": {
+      "symbol": "SPARS",
+      "status": "closed",
+      "display_name": "Sparsha Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Sparsha Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/spars",
+      "source_title": "ShareSansar company page (SPARS)"
+    },
+    "SRBL": {
+      "symbol": "SRBL",
+      "status": "closed",
+      "display_name": "Sunrise Bank Limited",
+      "display_mode": "closed",
+      "note": "Sunrise Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/srbl",
+      "source_title": "ShareSansar company page (SRBL)"
+    },
+    "STFL": {
+      "symbol": "STFL",
+      "status": "closed",
+      "display_name": "Standard Finance Limited",
+      "display_mode": "closed",
+      "note": "Standard Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/stfl",
+      "source_title": "ShareSansar company page (STFL)"
+    },
+    "SUBBL": {
+      "symbol": "SUBBL",
+      "status": "closed",
+      "display_name": "Subhechha Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Subhechha Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/subbl",
+      "source_title": "ShareSansar company page (SUBBL)"
+    },
+    "SUPRME": {
+      "symbol": "SUPRME",
+      "status": "closed",
+      "display_name": "Supreme Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Supreme Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/suprme",
+      "source_title": "ShareSansar company page (SUPRME)"
+    },
+    "SYFL": {
+      "symbol": "SYFL",
+      "status": "closed",
+      "display_name": "Synergy Finance Limited",
+      "display_mode": "closed",
+      "note": "Synergy Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/syfl",
+      "source_title": "ShareSansar company page (SYFL)"
+    },
+    "TBBL": {
+      "symbol": "TBBL",
+      "status": "closed",
+      "display_name": "Triveni Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Triveni Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/tbbl",
+      "source_title": "ShareSansar company page (TBBL)"
+    },
+    "TDBL": {
+      "symbol": "TDBL",
+      "status": "closed",
+      "display_name": "Tourism Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Tourism Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/tdbl",
+      "source_title": "ShareSansar company page (TDBL)"
+    },
+    "TMDBL": {
+      "symbol": "TMDBL",
+      "status": "closed",
+      "display_name": "Tinau Mission Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Tinau Mission Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/tmdbl",
+      "source_title": "ShareSansar company page (TMDBL)"
+    },
+    "TNBL": {
+      "symbol": "TNBL",
+      "status": "closed",
+      "display_name": "Tinau Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Tinau Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/tnbl",
+      "source_title": "ShareSansar company page (TNBL)"
+    },
+    "UBBL": {
+      "symbol": "UBBL",
+      "status": "closed",
+      "display_name": "Udhyam Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Udhyam Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ubbl",
+      "source_title": "ShareSansar company page (UBBL)"
+    },
+    "UFCL": {
+      "symbol": "UFCL",
+      "status": "closed",
+      "display_name": "Union Finance Limited",
+      "display_mode": "closed",
+      "note": "Union Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ufcl",
+      "source_title": "ShareSansar company page (UFCL)"
+    },
+    "UFIL": {
+      "symbol": "UFIL",
+      "status": "closed",
+      "display_name": "Unique Finance Limited",
+      "display_mode": "closed",
+      "note": "Unique Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ufil",
+      "source_title": "ShareSansar company page (UFIL)"
+    },
+    "UFL": {
+      "symbol": "UFL",
+      "status": "closed",
+      "display_name": "United Finance Limited",
+      "display_mode": "closed",
+      "note": "United Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/ufl",
+      "source_title": "ShareSansar company page (UFL)"
+    },
+    "UFLK": {
+      "symbol": "UFLK",
+      "status": "closed",
+      "display_name": "Universal Finance Limited",
+      "display_mode": "closed",
+      "note": "Universal Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/uflk",
+      "source_title": "ShareSansar company page (UFLK)"
+    },
+    "UIC": {
+      "symbol": "UIC",
+      "status": "closed",
+      "display_name": "United Insurance Company (Nepal) Limited",
+      "display_mode": "closed",
+      "note": "United Insurance Company (Nepal) Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/uic",
+      "source_title": "ShareSansar company page (UIC)"
+    },
+    "ULI": {
+      "symbol": "ULI",
+      "status": "closed",
+      "display_name": "Union Life Insurance Company Limited",
+      "display_mode": "closed",
+      "note": "Union Life Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/uli",
+      "source_title": "ShareSansar company page (ULI)"
+    },
+    "UMB": {
+      "symbol": "UMB",
+      "status": "closed",
+      "display_name": "Unnati Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Unnati Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/umb",
+      "source_title": "ShareSansar company page (UMB)"
+    },
+    "VBBL": {
+      "symbol": "VBBL",
+      "status": "closed",
+      "display_name": "Vibor Bikas Bank Limited",
+      "display_mode": "closed",
+      "note": "Vibor Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/vbbl",
+      "source_title": "ShareSansar company page (VBBL)"
+    },
+    "VFL": {
+      "symbol": "VFL",
+      "status": "closed",
+      "display_name": "Valley Finance Limtied",
+      "display_mode": "closed",
+      "note": "Valley Finance Limtied is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/vfl",
+      "source_title": "ShareSansar company page (VFL)"
+    },
+    "VSDBL": {
+      "symbol": "VSDBL",
+      "status": "closed",
+      "display_name": "Vibor Society Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Vibor Society Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/vsdbl",
+      "source_title": "ShareSansar company page (VSDBL)"
+    },
+    "WDBL": {
+      "symbol": "WDBL",
+      "status": "closed",
+      "display_name": "Western Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Western Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/wdbl",
+      "source_title": "ShareSansar company page (WDBL)"
+    },
+    "WOMI": {
+      "symbol": "WOMI",
+      "status": "closed",
+      "display_name": "Womi Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Womi Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/womi",
+      "source_title": "ShareSansar company page (WOMI)"
+    },
+    "YETI": {
+      "symbol": "YETI",
+      "status": "closed",
+      "display_name": "Yeti Development Bank Limited",
+      "display_mode": "closed",
+      "note": "Yeti Development Bank Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/yeti",
+      "source_title": "ShareSansar company page (YETI)"
+    },
+    "YFL": {
+      "symbol": "YFL",
+      "status": "closed",
+      "display_name": "Yeti Finance Limited",
+      "display_mode": "closed",
+      "note": "Yeti Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/yfl",
+      "source_title": "ShareSansar company page (YFL)"
+    },
+    "ZFL": {
+      "symbol": "ZFL",
+      "status": "closed",
+      "display_name": "Zenith Finance Limited",
+      "display_mode": "closed",
+      "note": "Zenith Finance Limited is marked as Merged on ShareSansar company page.",
+      "source_url": "https://www.sharesansar.com/company/zfl",
+      "source_title": "ShareSansar company page (ZFL)"
     }
   }
 }

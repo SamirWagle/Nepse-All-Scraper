@@ -13,6 +13,32 @@
         merged_to: 'HBL',
         merged_to_name: 'Himalayan Bank Limited',
         note: 'Civil Bank Limited merged into Himalayan Bank Limited.'
+      },
+      CCBL: {
+        merged_date: '2023-01-10',
+        merged_to: 'PRVU',
+        merged_to_name: 'Prabhu Bank Limited',
+        note: 'Century Commercial Bank Ltd. merged into Prabhu Bank Limited.'
+      },
+      PRVU: {
+        merged_date: '2023-01-10',
+        merged_from: 'CCBL',
+        merged_from_name: 'Century Commercial Bank Ltd.',
+        surviving_name: 'Prabhu Bank Limited',
+        note: 'Prabhu Bank Limited is the surviving company after merging with Century Commercial Bank Ltd.'
+      },
+      MEGA: {
+        merged_date: '2023-01-10',
+        merged_to: 'NIMB',
+        merged_to_name: 'Nepal Investment Mega Bank Limited',
+        note: 'Mega Bank Nepal Limited merged into Nepal Investment Mega Bank Limited.'
+      },
+      NIMB: {
+        merged_date: '2023-01-10',
+        merged_from: 'MEGA',
+        merged_from_name: 'Mega Bank Nepal Limited',
+        surviving_name: 'Nepal Investment Mega Bank Limited',
+        note: 'Nepal Investment Mega Bank Limited is the surviving company after merging with Mega Bank Nepal Limited.'
       }
     };
     async function switchPage(name) {

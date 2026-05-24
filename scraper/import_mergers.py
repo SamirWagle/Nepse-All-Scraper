@@ -44,6 +44,19 @@ def normalize_entry(row: dict[str, str]) -> dict[str, Any]:
     return entry
 
 
+def merge_entry(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
+    """
+    Preserve existing values and only fill in missing fields from incoming data.
+    """
+    merged = dict(existing)
+    for key, value in incoming.items():
+        if value is None:
+            continue
+        if key not in merged or merged[key] in (None, "", [], {}):
+            merged[key] = value
+    return merged
+
+
 def import_csv(path: Path, registry: dict[str, Any]) -> dict[str, Any]:
     with path.open(newline="") as f:
         reader = csv.DictReader(f)
@@ -52,7 +65,7 @@ def import_csv(path: Path, registry: dict[str, Any]) -> dict[str, Any]:
             symbol = row.pop("symbol", "").upper()
             if not symbol:
                 continue
-            registry["entries"][symbol] = row
+            registry["entries"][symbol] = merge_entry(registry["entries"].get(symbol, {}), row)
     return registry
 
 
@@ -60,7 +73,8 @@ def import_json(path: Path, registry: dict[str, Any]) -> dict[str, Any]:
     data = json.loads(path.read_text())
     entries = data.get("entries", data)
     for symbol, entry in entries.items():
-        registry["entries"][symbol.upper()] = entry
+        symbol = symbol.upper()
+        registry["entries"][symbol] = merge_entry(registry["entries"].get(symbol, {}), entry)
     return registry
 
 
@@ -68,6 +82,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Import merger registry data.")
     parser.add_argument("source", help="CSV or JSON file containing merger metadata")
     parser.add_argument("--out", default=str(REGISTRY_PATH), help="Output registry path")
+    parser.add_argument(
+        "--merge-only",
+        "--additive",
+        action="store_true",
+        help="Only fill missing fields in existing entries; never overwrite non-empty values",
+    )
     args = parser.parse_args()
 
     source = Path(args.source)
@@ -79,6 +99,11 @@ def main() -> None:
         registry = import_json(source, registry)
     else:
         raise SystemExit("Input must be .csv or .json")
+
+    if not args.merge_only:
+        # Default mode still behaves additively now, but we keep the flag for
+        # explicit intent and future one-off import modes.
+        pass
 
     out_path = Path(args.out)
     out_path.write_text(json.dumps(registry, indent=2, ensure_ascii=False))

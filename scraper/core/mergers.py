@@ -33,8 +33,11 @@ BASE_URL = "https://www.sharesansar.com"
 CATEGORY_URLS = [
     f"{BASE_URL}/merger-acquisition",
     f"{BASE_URL}/category/mergeracquistion",
+    f"{BASE_URL}/merged-companies",
 ]
 KNOWN_SEED_URLS = [
+    "https://www.sharesansar.com/merged-companies",
+    "https://www.sharesansar.com/merger-acquisition",
     "https://www.sharesansar.com/index.php/newsdetail/share-trading-of-civil-bank-limited-stops-from-today-integrated-transaction-with-himalayan-bank-limited-to-start-from-falgun-12-2023-02-16",
     "https://www.sharesansar.com/newsdetail/global-ime-bank-inks-final-merger-deal-with-bank-of-kathmandu-becoming-largest-bank-in-the-nation-thus-amalgamating-21-bfis-so-far-2022-11-15",
     "https://www.sharesansar.com/index.php/newsdetail/global-ime-bank-and-bank-of-kathmandu-begin-joint-transaction-after-successful-merger-becomes-biggest-bank-in-the-nation-in-almost-every-parameter-2023-01-10",
@@ -111,6 +114,18 @@ class ShareSansarMergerScraper:
 
     def _save_registry(self, registry: dict) -> None:
         self.registry_path.write_text(json.dumps(registry, indent=2, ensure_ascii=False))
+
+    def _merge_entry(self, existing: dict, new: dict) -> dict:
+        """
+        Keep already-saved values intact and only fill gaps from newer data.
+        """
+        merged = dict(existing)
+        for key, value in new.items():
+            if value is None:
+                continue
+            if key not in merged or merged[key] in (None, "", [], {}):
+                merged[key] = value
+        return merged
 
     def _normalize_text(self, text: str) -> str:
         return re.sub(r"\s+", " ", text).strip()
@@ -190,6 +205,176 @@ class ShareSansarMergerScraper:
                         names.append(part)
         return list(dict.fromkeys(names))
 
+    def _scrape_merged_company_pages(self, symbols: list[str] | None = None, max_symbols: int | None = None) -> list[MergerRecord]:
+        """
+        Fallback coverage: scan ShareSansar company pages and keep symbols whose
+        visible page label says Sector: Merged.
+        """
+        records: list[MergerRecord] = []
+        if symbols is None:
+            symbols = sorted(self._symbols)
+        else:
+            symbols = [sym.upper() for sym in symbols if sym]
+        if max_symbols:
+            symbols = symbols[:max_symbols]
+
+        for sym in symbols:
+            try:
+                resp = self._session.get(f"{BASE_URL}/company/{sym.lower()}", timeout=20)
+                resp.raise_for_status()
+            except Exception:
+                continue
+
+            text = self._normalize_text(BeautifulSoup(resp.text, "html.parser").get_text(" ", strip=True))
+            if not re.search(r"\bSector\b\s*[:|]\s*Merged\b|\bSector:\s*Merged\b", text, re.I):
+                continue
+
+            name_match = re.search(r"#\s*([^(]+?)\s*\(\s*([A-Z0-9]+)\s*\)", text)
+            display_name = self._symbol_name_map.get(sym)
+            if name_match:
+                display_name = self._normalize_text(name_match.group(1))
+
+            records.append(MergerRecord(
+                symbol=sym,
+                status="closed",
+                display_name=display_name or self._symbol_name_map.get(sym) or sym,
+                display_mode="closed",
+                note=f"{display_name or sym} is marked as Merged on ShareSansar company page.",
+                source_url=f"{BASE_URL}/company/{sym.lower()}",
+                source_title=f"ShareSansar company page ({sym})",
+            ))
+
+        return records
+
+    def _scrape_merged_companies_page(self, url: str) -> list[MergerRecord]:
+        """
+        Best-effort parser for ShareSansar's merged-companies listing page.
+
+        The page may be server-rendered or partially hydrated. We only act when
+        we can identify a stable row shape with company names and a joint date.
+        """
+        try:
+            resp = self._session.get(url, timeout=30)
+            resp.raise_for_status()
+        except Exception as exc:
+            logger.warning("Merged-companies page fetch failed for %s: %s", url, exc)
+            return []
+
+        soup = BeautifulSoup(resp.text, "html.parser")
+        records: list[MergerRecord] = []
+
+        def emit(absorbed_name: str | None, survivor_name: str | None, joined_date: str | None, action: str = "") -> None:
+            if not absorbed_name:
+                return
+            absorbed_sym = self._symbol_for_company_name(absorbed_name)
+            survivor_sym = self._symbol_for_company_name(survivor_name) if survivor_name else None
+            if not absorbed_sym:
+                return
+            records.append(MergerRecord(
+                symbol=absorbed_sym,
+                status="closed",
+                display_name=self._symbol_name_map.get(absorbed_sym) or absorbed_name,
+                merged_date=joined_date,
+                merged_into=survivor_sym or survivor_name,
+                merged_into_name=self._symbol_name_map.get(survivor_sym) or survivor_name,
+                surviving_symbol=survivor_sym,
+                surviving_name=self._symbol_name_map.get(survivor_sym) or survivor_name,
+                display_mode="closed",
+                note=f"{absorbed_name} listed as merged on ShareSansar merged-companies page.",
+                source_url=url,
+                source_title=f"ShareSansar merged companies ({action})".strip(),
+            ))
+            if survivor_sym:
+                records.append(MergerRecord(
+                    symbol=survivor_sym,
+                    status="active_survivor",
+                    display_name=self._symbol_name_map.get(survivor_sym) or survivor_name,
+                    merged_date=joined_date,
+                    merged_from=absorbed_sym,
+                    merged_from_name=self._symbol_name_map.get(absorbed_sym) or absorbed_name,
+                    surviving_symbol=survivor_sym,
+                    surviving_name=self._symbol_name_map.get(survivor_sym) or survivor_name,
+                    display_mode="survivor",
+                    note=f"{survivor_name} listed as the surviving merged entity on ShareSansar merged-companies page.",
+                    source_url=url,
+                    source_title=f"ShareSansar merged companies ({action})".strip(),
+                ))
+
+        for table in soup.find_all("table"):
+            headers = [self._normalize_text(th.get_text(" ", strip=True)) for th in table.find_all("th")]
+            header_map = {h.lower(): i for i, h in enumerate(headers)}
+            for tr in table.find_all("tr"):
+                cells = [self._normalize_text(td.get_text(" ", strip=True)) for td in tr.find_all("td")]
+                if not cells:
+                    continue
+                row_text = " ".join(cells)
+                if not re.search(r"\bmerger\b|\bmerged\b", row_text, re.I):
+                    continue
+
+                joined_date = None
+                m_date = re.search(r"\b(20\d{2}-\d{2}-\d{2})\b", row_text)
+                if m_date:
+                    joined_date = m_date.group(1)
+
+                absorbed_name = None
+                survivor_name = None
+                action = ""
+
+                if header_map:
+                    def cell_for(*labels: str) -> str | None:
+                        for label in labels:
+                            idx = header_map.get(label)
+                            if idx is not None and idx < len(cells):
+                                return cells[idx]
+                        return None
+
+                    absorbed_name = cell_for("company name", "name", "merged company")
+                    survivor_name = cell_for("company name (after merged)", "company name after merged", "after merged", "merged entity", "new company name")
+                    action = cell_for("action") or ""
+
+                if not absorbed_name and cells:
+                    absorbed_name = cells[0]
+                if not survivor_name and len(cells) > 1:
+                    survivor_name = cells[1]
+                if len(cells) > 3 and not action:
+                    action = cells[3]
+
+                if absorbed_name and survivor_name:
+                    emit(absorbed_name, survivor_name, joined_date, action)
+
+        return records
+
+    def _build_richer_merger_index(self, max_pages: int | None = None) -> dict[str, dict]:
+        """
+        Build a lightweight lookup of symbols -> richer merger metadata from
+        the merged-companies page and merger articles.
+
+        This is used to enrich company-page detections that only say "Merged".
+        """
+        index: dict[str, dict] = {}
+
+        def store(record: MergerRecord) -> None:
+            sym = record.symbol.upper()
+            current = index.get(sym, {})
+            payload = {k: v for k, v in asdict(record).items() if v is not None}
+            index[sym] = self._merge_entry(current, payload)
+
+        for rec in self._scrape_merged_companies_page(f"{BASE_URL}/merged-companies"):
+            store(rec)
+
+        links = list(dict.fromkeys(KNOWN_SEED_URLS + self._discover_article_links(max_pages=max_pages)))
+        for url in links:
+            try:
+                resp = self._session.get(url, timeout=30)
+                resp.raise_for_status()
+                title, body = self._extract_title_and_body(resp.text)
+                for rec in self._infer_record(title, body, url):
+                    store(rec)
+            except Exception:
+                continue
+
+        return index
+
     def _infer_record(self, title: str, body: str, url: str) -> list[MergerRecord]:
         text = f"{title}\n{body}"
         syms = self._candidate_symbols(text)
@@ -261,6 +446,31 @@ class ShareSansarMergerScraper:
         registry = self._load_existing_registry()
         entries = registry.setdefault("entries", {})
         registry["version"] = 1
+        richer_index = self._build_richer_merger_index(max_pages=max_pages)
+
+        # Scan the full symbol universe so merged companies are discovered
+        # automatically from ShareSansar company pages instead of being added
+        # by hand one symbol at a time.
+        company_page_records = self._scrape_merged_company_pages()
+        logger.info("Merged company pages yielded %s record(s)", len(company_page_records))
+        for rec in company_page_records:
+            symbol = rec.symbol.upper()
+            new_entry = {k: v for k, v in asdict(rec).items() if v is not None}
+            rich = richer_index.get(symbol, {})
+            new_entry = self._merge_entry(new_entry, rich)
+            entries[symbol] = self._merge_entry(entries.get(symbol, {}), new_entry)
+
+        merged_page_records = self._scrape_merged_companies_page(f"{BASE_URL}/merged-companies")
+        if merged_page_records:
+            logger.info("Merged-companies page yielded %s record(s)", len(merged_page_records))
+        for rec in merged_page_records:
+            if rec.status in {"closed", "active_survivor"}:
+                symbol = rec.symbol.upper()
+                new_entry = {k: v for k, v in asdict(rec).items() if v is not None}
+                rich = richer_index.get(symbol, {})
+                new_entry = self._merge_entry(new_entry, rich)
+                entries[symbol] = self._merge_entry(entries.get(symbol, {}), new_entry)
+
         links = list(dict.fromkeys(KNOWN_SEED_URLS + self._discover_article_links(max_pages=max_pages)))
         logger.info("Discovered %s merger-related article links", len(links))
 
@@ -274,7 +484,11 @@ class ShareSansarMergerScraper:
                     continue
                 for rec in records:
                     if rec.status == "closed":
-                        entries[rec.symbol.upper()] = {k: v for k, v in asdict(rec).items() if v is not None}
+                        symbol = rec.symbol.upper()
+                        new_entry = {k: v for k, v in asdict(rec).items() if v is not None}
+                        rich = richer_index.get(symbol, {})
+                        new_entry = self._merge_entry(new_entry, rich)
+                        entries[symbol] = self._merge_entry(entries.get(symbol, {}), new_entry)
                 logger.info("[%s/%s] %s -> %s record(s)", i, len(links), url, len(records))
             except Exception as exc:
                 logger.warning("Merger scrape failed for %s: %s", url, exc)
@@ -282,7 +496,7 @@ class ShareSansarMergerScraper:
         registry["entries"] = {
             sym: rec
             for sym, rec in entries.items()
-            if rec.get("status") == "closed"
+            if rec.get("status") in {"closed", "active_survivor"}
         }
         self._save_registry(registry)
         return registry
