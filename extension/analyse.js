@@ -38,6 +38,7 @@
       }
       lastSearchedSymbol = results[0].symbol;
       document.getElementById('search-input').value = results[0].symbol;
+
       switchPage('bullbear');
     }
 
@@ -230,8 +231,8 @@
       const dataMap = {};
       fetched.forEach(r => { dataMap[r.num] = r.data; });
       renderBullBoxes(symbol, dataMap, listingDate);
-    }
 
+    }
     function renderBullBoxes(symbol, dataMap, listingDate) {
       const container = document.getElementById('bull-cycle-results');
       const boxes = BULL_CYCLES_DEF.map(cycle => {
