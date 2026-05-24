@@ -33,6 +33,14 @@ import pandas as pd
 # Configuration
 # ─────────────────────────────────────────────
 FACE_VALUE = 100          # Rs. face value for most NEPSE stocks
+
+# Mutual funds and others with Rs. 10 face value
+FACE_VALUE_OVERRIDES = {
+    "SEF": 10,
+    "NIBLSF": 10,
+    "NMBSF": 10,
+    "LEMF": 10,
+}
 DEFAULT_INVESTMENT = 100_000  # Rs.
 DEFAULT_DATA_DIR = Path(__file__).parent / "data"  # override with --data-dir
 DAYS_PER_YEAR = 365.25    # accounts for leap years
@@ -185,6 +193,7 @@ def calculate_cagr(
         raise ValueError(f"Start date {start_date} must be before end date {reference_end}.")
 
     prices    = load_prices(symbol, data_dir)
+    face_value = FACE_VALUE_OVERRIDES.get(symbol.upper(), FACE_VALUE)
     dividends = load_dividends(symbol, data_dir)
     rights    = load_right_shares(symbol, data_dir)
 
@@ -283,7 +292,7 @@ def calculate_cagr(
             # This matches SS Pro behaviour: the dividend is declared on existing holdings,
             # and the bonus shares are new units you receive separately.
             if cash_pct > 0:
-                cash_rs = units * FACE_VALUE * cash_pct
+                cash_rs = units * face_value * cash_pct
                 total_cash_dividends += cash_rs
                 event_label = f"Cash div {cash_pct*100:.4f}%  [{fiscal_yr}]"
                 if verbose:
