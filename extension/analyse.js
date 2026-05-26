@@ -1184,14 +1184,17 @@
       document.getElementById('cagr-years-btn').classList.add('active');
       document.getElementById('cagr-date-btn').classList.remove('active');
       document.getElementById('cagr-years').style.display = '';
-      document.getElementById('cagr-date').style.display = 'none';
+      document.getElementById('cagr-date-section').style.display = 'none';
     };
     document.getElementById('cagr-date-btn').onclick = () => {
       cagrUseYears = false;
       document.getElementById('cagr-date-btn').classList.add('active');
       document.getElementById('cagr-years-btn').classList.remove('active');
       document.getElementById('cagr-years').style.display = 'none';
-      document.getElementById('cagr-date').style.display = '';
+      document.getElementById('cagr-date-section').style.display = 'block';
+    };
+    document.getElementById('cagr-end-clear').onclick = () => {
+      document.getElementById('cagr-end-date').value = '';
     };
 
     // ── CAGR calculate ──
@@ -1244,8 +1247,13 @@
       document.getElementById('cagr-symbol').value = symbol;
       const investment = parseFloat(document.getElementById('cagr-invest').value) || 100000;
       const payload = { symbol, investment };
-      if (cagrUseYears) payload.years = parseFloat(document.getElementById('cagr-years').value) || 5;
-      else payload.start_date = document.getElementById('cagr-date').value;
+      if (cagrUseYears) {
+        payload.years = parseFloat(document.getElementById('cagr-years').value) || 5;
+      } else {
+        payload.start_date = document.getElementById('cagr-date').value;
+        const endDateVal = document.getElementById('cagr-end-date').value;
+        if (endDateVal) payload.end_date = endDateVal;
+      }
 
       document.getElementById('cagr-status').textContent = '⏳ Calculating...';
       document.getElementById('cagr-results-area').style.display = 'none';

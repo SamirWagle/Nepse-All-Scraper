@@ -1300,12 +1300,24 @@
             <button id="cagr-date-btn">From date</button>
           </div>
           <input type="number" class="opt-input" id="cagr-years" value="5" min="1" max="30">
-          <input type="date" class="opt-input" id="cagr-date" style="display:none;width:130px">
         </div>
         <div class="opt-group">
           <span class="opt-label">Investment</span>
           <span style="color:var(--text-3);font-size:13px">Rs.</span>
           <input type="number" class="opt-input" id="cagr-invest" value="100000" min="1000" style="width:100px">
+        </div>
+      </div>
+      <div id="cagr-date-section" style="display:none;text-align:center;margin-top:8px">
+        <div style="display:inline-block;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:8px 14px;text-align:left">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:11px;color:var(--text-3);min-width:32px">From</span>
+            <input type="date" id="cagr-date" style="padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface-2);color:var(--text);font:inherit;font-size:12px">
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;color:var(--text-3);min-width:32px">To</span>
+            <input type="date" id="cagr-end-date" style="padding:3px 6px;border:1px solid var(--border);border-radius:6px;background:var(--surface-2);color:var(--text);font:inherit;font-size:12px">
+            <button id="cagr-end-clear" style="padding:2px 8px;border:1px solid var(--border);border-radius:5px;background:none;color:var(--text-3);font-size:10px;cursor:pointer;white-space:nowrap">↩ today</button>
+          </div>
         </div>
       </div>
     </div>
