@@ -78,6 +78,7 @@
       }
       lastSearchedSymbol = results[0].symbol;
       document.getElementById('search-input').value = results[0].symbol;
+      document.getElementById('page-status').textContent = '';
 
       switchPage('bullbear');
     }
@@ -538,7 +539,7 @@
       const port = await findPort();
       if (!port) return { error: 'Server not running.' };
       try {
-        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=30`);
+        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=30`, { signal: AbortSignal.timeout(5000) });
         const data = await resp.json();
         if (data.error) return { error: data.error };
         return { results: data.results || [] };
@@ -551,7 +552,7 @@
       const port = await findPort();
       if (!port) return { error: 'Server not running.' };
       try {
-        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=${limit}&offset=${offset}`);
+        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=${limit}&offset=${offset}`, { signal: AbortSignal.timeout(5000) });
         const data = await resp.json();
         if (data.error) return { error: data.error };
         return { results: data.results || [] };
