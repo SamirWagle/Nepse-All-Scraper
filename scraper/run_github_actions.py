@@ -464,17 +464,37 @@ def run_mergers(max_pages=None):
 # MAIN
 # ═══════════════════════════════════════════════════════════════════════════
 
+def run_backfill_missing():
+    """Scrape dividends for every company-wise dir that has prices.csv but no dividend.csv."""
+    missing = sorted([
+        d.name for d in COMPANY_WISE.iterdir()
+        if d.is_dir()
+        and (d / "prices.csv").exists()
+        and not (d / "dividend.csv").exists()
+    ])
+    log.info(f"=== Backfill missing dividends: {len(missing)} companies ===")
+    for i, sym in enumerate(missing, 1):
+        log.info(f"[{i}/{len(missing)}] {sym}")
+        try:
+            update_dividends(sym)
+        except Exception as e:
+            log.error(f"  [{sym}] Error: {e}")
+        time.sleep(random.uniform(0.8, 1.5))
+    log.info("=== Backfill complete ===")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Nepsy GitHub Actions Daily Scraper")
-    parser.add_argument("--dividends",    action="store_true", help="Scrape dividend history")
-    parser.add_argument("--right-shares", action="store_true", help="Scrape right share history")
-    parser.add_argument("--floorsheet",   action="store_true", help="Scrape today's floorsheet")
-    parser.add_argument("--mergers",      action="store_true", help="Scrape merger registry from ShareSansar")
-    parser.add_argument("--max-pages",    type=int, default=None, help="Limit floorsheet pages (for testing)")
+    parser.add_argument("--dividends",        action="store_true", help="Scrape dividend history")
+    parser.add_argument("--right-shares",     action="store_true", help="Scrape right share history")
+    parser.add_argument("--floorsheet",       action="store_true", help="Scrape today's floorsheet")
+    parser.add_argument("--mergers",          action="store_true", help="Scrape merger registry from ShareSansar")
+    parser.add_argument("--backfill-missing", action="store_true", help="Scrape dividends for company-wise dirs missing dividend.csv")
+    parser.add_argument("--max-pages",        type=int, default=None, help="Limit floorsheet pages (for testing)")
     args = parser.parse_args()
 
-    # If no flag given, run all three
-    run_all = not (args.dividends or args.right_shares or args.floorsheet or args.mergers)
+    # If no flag given, run all
+    run_all = not (args.dividends or args.right_shares or args.floorsheet or args.mergers or args.backfill_missing)
 
     if run_all or args.dividends:
         run_dividends()
@@ -487,6 +507,9 @@ def main():
 
     if run_all or args.mergers:
         run_mergers(max_pages=args.max_pages)
+
+    if args.backfill_missing:
+        run_backfill_missing()
 
 
 if __name__ == "__main__":
