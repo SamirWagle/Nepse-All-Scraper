@@ -107,6 +107,10 @@
       e.stopPropagation();
       openBullBearFromQuery(document.getElementById('search-input').value.trim());
     });
+    document.getElementById('menu-technical').addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchPage('technical');
+    });
     document.getElementById('nexttop-btn').addEventListener('click', () => {
       switchPage('nexttop');
     });
