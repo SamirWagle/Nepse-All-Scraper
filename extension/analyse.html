@@ -31,6 +31,7 @@
       --pos:          #2ecc71;
       --bull:         #2ecc71;
       --bear:         #ff5a5a;
+      --bull-box-bg:  #1a2e1c;
       --btn-text:     #0a0e16;
       --accent2:      #4a8cef;
       --row-even:     #0d1320;
@@ -870,7 +871,7 @@
     @media (max-width: 860px) { .bull-boxes-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 560px) { .bull-boxes-grid { grid-template-columns: repeat(2, 1fr); } }
     .bull-box {
-      background: var(--surface);
+      background: var(--bull-box-bg, var(--surface));
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 14px 12px;
