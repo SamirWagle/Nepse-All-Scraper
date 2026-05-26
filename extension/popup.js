@@ -321,6 +321,19 @@ function handleResult(data) {
   // Events table
   const tbody = document.getElementById('events-body');
   tbody.innerHTML = '';
+
+  // Initial purchase row
+  if (!data.is_index && data.units_bought > 0) {
+    const initTr = document.createElement('tr');
+    initTr.innerHTML = `
+      <td>${data.start_date}</td>
+      <td><span class="badge" style="background:rgba(78,205,196,0.15);color:var(--accent)">Purchase @ Rs.${fmt(data.start_price)}</span></td>
+      <td>${Number(data.units_bought).toFixed(4)}</td>
+      <td>—</td>
+    `;
+    tbody.appendChild(initTr);
+  }
+
   if (data.events && data.events.length > 0) {
     data.events.forEach(ev => {
       const tr = document.createElement('tr');
