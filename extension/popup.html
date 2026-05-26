@@ -185,6 +185,23 @@
       font-size: 12px;
     }
     #date-input-wrap { display: none; margin-bottom: 14px; }
+    .date-range-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .date-range-row:last-child { margin-bottom: 0; }
+    .date-range-label { color: var(--label); font-size: 12px; min-width: 36px; flex-shrink: 0; }
+    .date-range-row input[type="date"] { flex: 1; }
+    .end-date-clear {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--label);
+      font-size: 11px;
+      padding: 6px 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .end-date-clear:hover { color: var(--text); border-color: var(--accent); }
+    .date-hint { font-size: 11px; color: var(--label); margin-top: 4px; text-align: right; }
 
     /* ── Investment ── */
     .investment-row {
@@ -408,7 +425,16 @@
 
     <!-- Date input -->
     <div id="date-input-wrap">
-      <input type="date" id="date-input">
+      <div class="date-range-row">
+        <span class="date-range-label">From</span>
+        <input type="date" id="date-input">
+      </div>
+      <div class="date-range-row">
+        <span class="date-range-label">To</span>
+        <input type="date" id="end-date-input">
+        <button type="button" id="end-date-clear" class="end-date-clear" title="Set to today's date">Today</button>
+      </div>
+      <div class="date-hint">Leave "To" empty or click "Today" to use today's date</div>
     </div>
 
     <!-- Investment -->

@@ -5,6 +5,8 @@
 const symbolInput     = document.getElementById('symbol-input');
 const yearsInput      = document.getElementById('years-input');
 const dateInput       = document.getElementById('date-input');
+const endDateInput    = document.getElementById('end-date-input');
+const endDateClear    = document.getElementById('end-date-clear');
 const investmentInput = document.getElementById('investment-input');
 const calcBtn         = document.getElementById('calc-btn');
 const statusEl        = document.getElementById('status');
@@ -41,6 +43,10 @@ toggleDate.onclick = () => {
   toggleYears.classList.remove('active');
   yearsWrap.style.display = 'none';
   dateWrap.style.display = 'block';
+};
+endDateClear.onclick = () => {
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  endDateInput.value = today;
 };
 
 // ── Resolve name/ticker → symbol via server search ────────────────────────────
@@ -229,8 +235,13 @@ async function runCalc(symbol) {
   setStatus('⏳ Calculating...');
 
   const payload = { symbol, investment };
-  if (useYears) payload.years = years;
-  else payload.start_date = startDate;
+  if (useYears) {
+    payload.years = years;
+  } else {
+    payload.start_date = startDate;
+    const endDateVal = endDateInput.value;
+    if (endDateVal) payload.end_date = endDateVal;
+  }
 
   // ── Try direct fetch first (engine already running) ───────────────────────
   let enginePort = await findEnginePort();
