@@ -42,25 +42,22 @@ def get_company_name(session: requests.Session, symbol: str) -> str | None:
 
         soup = BeautifulSoup(resp.text, "html.parser")
 
-        # Try <h1> or <title> — sharesansar puts company name in page <h1>
-        for selector in [
-            "h1.company-title",
-            "h1",
-            "title",
-        ]:
+        # Page title is usually "<SYMBOL> - <Full Name> | ShareSansar".
+        # Only strip the leading "<SYMBOL> -" prefix — never the inner dashes
+        # of names like "Citizens Mutual Fund - 2".
+        sym_up = symbol.upper()
+        for selector in ["h1.company-title", "h1", "title"]:
             tag = soup.select_one(selector)
-            if tag:
-                text = tag.get_text(strip=True)
-                # Title format is usually "NABIL - Nabil Bank Limited | ShareSansar"
-                if "|" in text:
-                    text = text.split("|")[0].strip()
-                if "-" in text:
-                    # take the part after the dash (full name)
-                    parts = text.split("-", 1)
-                    if len(parts[1].strip()) > 2:
-                        text = parts[1].strip()
-                if text and text.upper() != symbol:
-                    return text
+            if not tag:
+                continue
+            text = tag.get_text(strip=True)
+            if "|" in text:
+                text = text.split("|")[0].strip()
+            prefix = f"{sym_up} -"
+            if text.upper().startswith(prefix):
+                text = text[len(prefix):].strip()
+            if text and text.upper() != sym_up and len(text) > 2:
+                return text
 
         logger.warning(f"  {symbol:<16} name not found in page")
         return None

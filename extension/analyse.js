@@ -890,11 +890,11 @@
       const mergeBanner = document.getElementById('r-merge-banner');
       if (mergeBanner) {
         if (isClosedMerged) {
-          const mergedTo = d.merged_to_name || merger.merged_to_name || d.merged_to || merger.merged_to || 'another company';
+          const survivorName = d.merged_to_name || merger.merged_to_name || d.merged_to || merger.merged_to || null;
           const mergedSub = [
             d.listing_date ? `Listed <strong>${d.listing_date}</strong>` : null,
             (d.merged_date || merger.merged_date) ? `Merged <strong>${d.merged_date || merger.merged_date}</strong>` : null,
-            `Merged to <strong>${mergedTo}</strong>${d.merged_to ? ` (${d.merged_to})` : ''}`
+            survivorName ? `Merged to <strong>${survivorName}</strong>${d.merged_to && d.merged_to !== survivorName ? ` (${d.merged_to})` : ''}` : null
           ].filter(Boolean).join(' · ');
           const title = document.getElementById('r-merge-title');
           const sub = document.getElementById('r-merge-sub');
