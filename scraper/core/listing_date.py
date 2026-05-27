@@ -18,6 +18,9 @@ class ShareHubListingDateScraper:
     Scrapes listing dates from ShareHubNepal company pages:
         https://sharehubnepal.com/company/{SYMBOL}
 
+    Falls back to Sharepaati if ShareHubNepal does not have the date:
+        https://sharepaati.com/company/{SYMBOL}
+
     Saves results to:
         data/ipo_listings.csv
 
@@ -25,6 +28,7 @@ class ShareHubListingDateScraper:
     """
 
     BASE_URL = "https://sharehubnepal.com/company"
+    SHAREPAATI_BASE_URL = "https://sharepaati.com/company"
     OUTPUT_FILE = "ipo_listings.csv"
     FIELDNAMES = ["symbol", "listing_date"]
 
@@ -69,9 +73,18 @@ class ShareHubListingDateScraper:
 
     def fetch_listing_date(self, symbol):
         """
-        Fetch listing date for a single symbol from ShareHubNepal.
+        Fetch listing date for a single symbol.
+        Tries ShareHubNepal first, falls back to Sharepaati.
         Returns date string (YYYY-MM-DD) or None if not found.
         """
+        date = self._fetch_from_sharehub(symbol)
+        if date:
+            return date
+        logger.info(f"  {symbol}: ShareHubNepal miss — trying Sharepaati")
+        return self._fetch_from_sharepaati(symbol)
+
+    def _fetch_from_sharehub(self, symbol):
+        """Fetch listing date from ShareHubNepal. Returns YYYY-MM-DD or None."""
         url = f"{self.BASE_URL}/{symbol}"
         try:
             r = requests.get(
@@ -80,7 +93,7 @@ class ShareHubListingDateScraper:
                 timeout=20
             )
             if r.status_code != 200:
-                logger.warning(f"  {symbol}: HTTP {r.status_code}")
+                logger.warning(f"  {symbol}: ShareHubNepal HTTP {r.status_code}")
                 return None
 
             soup = BeautifulSoup(r.text, 'html.parser')
@@ -91,11 +104,43 @@ class ShareHubListingDateScraper:
                     date = tds[1].get_text(strip=True)
                     if date:
                         return date
-            logger.warning(f"  {symbol}: 'Listing Date' field not found on page")
+            logger.warning(f"  {symbol}: 'Listing Date' not found on ShareHubNepal")
             return None
 
         except Exception as e:
-            logger.error(f"  {symbol}: {e}")
+            logger.error(f"  {symbol} (ShareHubNepal): {e}")
+            return None
+
+    def _fetch_from_sharepaati(self, symbol):
+        """
+        Fetch listing date from Sharepaati as fallback.
+        Page uses <dt>Listing Date:</dt><dd>YYYY-MM-DD</dd> structure.
+        Returns YYYY-MM-DD or None.
+        """
+        url = f"{self.SHAREPAATI_BASE_URL}/{symbol}"
+        try:
+            r = requests.get(
+                url,
+                headers={"User-Agent": "Mozilla/5.0 Chrome/120.0.0.0 Safari/537.36"},
+                timeout=20
+            )
+            if r.status_code != 200:
+                logger.warning(f"  {symbol}: Sharepaati HTTP {r.status_code}")
+                return None
+
+            soup = BeautifulSoup(r.text, 'html.parser')
+            for dt in soup.find_all('dt'):
+                if 'Listing Date' in dt.get_text():
+                    dd = dt.find_next_sibling('dd')
+                    if dd:
+                        date = dd.get_text(strip=True)
+                        if date:
+                            return date
+            logger.warning(f"  {symbol}: 'Listing Date' not found on Sharepaati")
+            return None
+
+        except Exception as e:
+            logger.error(f"  {symbol} (Sharepaati): {e}")
             return None
 
     # ------------------------------------------------------------------
