@@ -87,9 +87,13 @@
       "status": "closed",
       "display_name": "Annapurna Bikash Bank Limited",
       "display_mode": "closed",
-      "note": "Annapurna Bikash Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/abbl",
-      "source_title": "ShareSansar company page (ABBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 SUPRME",
+      "merged_into": "SUPRME",
+      "merged_into_name": "Supreme Development Bank Limited",
+      "surviving_symbol": "SUPRME",
+      "surviving_name": "Supreme Development Bank Limited",
+      "merged_date": "2012-07-08"
     },
     "ACEDBL": {
       "symbol": "ACEDBL",
@@ -152,7 +156,7 @@
       "status": "closed",
       "display_name": "Alliance Insurance Company Limited",
       "display_mode": "closed",
-      "note": "Alliance Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "note": "Alliance Insurance Company Limited is marked as Merged on ShareSansar but specific merger date and partner could not be determined from publicly available sources.",
       "source_url": "https://www.sharesansar.com/company/aic",
       "source_title": "ShareSansar company page (AIC)"
     },
@@ -203,9 +207,13 @@
       "status": "closed",
       "display_name": "Aarambha Laghubitta Bittiya Sanstha Limited",
       "display_mode": "closed",
-      "note": "Aarambha Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/amfi",
-      "source_title": "ShareSansar company page (AMFI)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 ACLBSL",
+      "merged_into": "ACLBSL",
+      "merged_into_name": "Aarambha Chautari Laghubitta Bittiya Sanstha Limited",
+      "surviving_symbol": "ACLBSL",
+      "surviving_name": "Aarambha Chautari Laghubitta Bittiya Sanstha Limited",
+      "merged_date": "2020-07-12"
     },
     "APEX": {
       "symbol": "APEX",
@@ -240,36 +248,52 @@
       "status": "closed",
       "display_name": "Axis Development Bank Limited",
       "display_mode": "closed",
-      "note": "Axis Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/axis",
-      "source_title": "ShareSansar company page (AXIS)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 CBL",
+      "merged_into": "CBL",
+      "merged_into_name": "Civil Bank Limited",
+      "surviving_symbol": "CBL",
+      "surviving_name": "Civil Bank Limited",
+      "merged_date": "2014-04-06"
     },
     "BBBL": {
       "symbol": "BBBL",
       "status": "closed",
       "display_name": "Bhrikuti Vikash Bank Limited",
       "display_mode": "closed",
-      "note": "Bhrikuti Vikash Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/bbbl",
-      "source_title": "ShareSansar company page (BBBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 NMB",
+      "merged_into": "NMB",
+      "merged_into_name": "NMB Bank Limited",
+      "surviving_symbol": "NMB",
+      "surviving_name": "NMB Bank Limited",
+      "merged_date": "2015-10-18"
     },
     "BBBLN": {
       "symbol": "BBBLN",
       "status": "closed",
       "display_name": "Bageshowori Dev.elopment Bank Limited",
       "display_mode": "closed",
-      "note": "Bageshowori Dev.elopment Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/bbbln",
-      "source_title": "ShareSansar company page (BBBLN)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A announcement \u2192 SADBL",
+      "merged_into": "SADBL",
+      "merged_into_name": "Shangrila Development Bank Limited",
+      "surviving_symbol": "SADBL",
+      "surviving_name": "Shangrila Development Bank Limited",
+      "merged_date": "2014-07-14"
     },
     "BDBL": {
       "symbol": "BDBL",
       "status": "closed",
       "display_name": "Business Development Bank Limited",
       "display_mode": "closed",
-      "note": "Business Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/bdbl",
-      "source_title": "ShareSansar company page (BDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 BUDBL",
+      "merged_into": "BUDBL",
+      "merged_into_name": "Business Universal Development Bank Limited",
+      "surviving_symbol": "BUDBL",
+      "surviving_name": "Business Universal Development Bank Limited",
+      "merged_date": "2012-02-13"
     },
     "BFCL": {
       "symbol": "BFCL",
@@ -290,9 +314,13 @@
       "status": "closed",
       "display_name": "Bhajuratna Finance & Saving Company Limited",
       "display_mode": "closed",
-      "note": "Bhajuratna Finance & Saving Company Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/bfil",
-      "source_title": "ShareSansar company page (BFIL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 VBBL",
+      "merged_into": "VBBL",
+      "merged_into_name": "Vibor Bikas Bank Limited",
+      "surviving_symbol": "VBBL",
+      "surviving_name": "Vibor Bikas Bank Limited",
+      "merged_date": "2012-09-02"
     },
     "BFL": {
       "symbol": "BFL",
@@ -411,54 +439,78 @@
       "status": "closed",
       "display_name": "Bright Development Bank Limited",
       "display_mode": "closed",
-      "note": "Bright Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/brtbl",
-      "source_title": "ShareSansar company page (BRTBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 TBBL",
+      "merged_into": "TBBL",
+      "merged_into_name": "Triveni Bikas Bank Limited",
+      "surviving_symbol": "TBBL",
+      "surviving_name": "Triveni Bikas Bank Limited",
+      "merged_date": "2015-04-23"
     },
     "BSBL": {
       "symbol": "BSBL",
       "status": "closed",
       "display_name": "Bishwa Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Bishwa Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/bsbl",
-      "source_title": "ShareSansar company page (BSBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 FBBL",
+      "merged_into": "FBBL",
+      "merged_into_name": "Fewa Bikas Bank Limited",
+      "surviving_symbol": "FBBL",
+      "surviving_name": "Fewa Bikas Bank Limited",
+      "merged_date": "2015-07-02"
     },
     "BUDBL": {
       "symbol": "BUDBL",
       "status": "closed",
       "display_name": "Business Universal Development Bank Limited",
       "display_mode": "closed",
-      "note": "Business Universal Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/budbl",
-      "source_title": "ShareSansar company page (BUDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 SBL",
+      "merged_into": "SBL",
+      "merged_into_name": "Siddhartha Bank Limited",
+      "surviving_symbol": "SBL",
+      "surviving_name": "Siddhartha Bank Limited",
+      "merged_date": "2016-06-05"
     },
     "CDBL": {
       "symbol": "CDBL",
       "status": "closed",
       "display_name": "City Development Bank Limited",
       "display_mode": "closed",
-      "note": "City Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/cdbl",
-      "source_title": "ShareSansar company page (CDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 ODBL",
+      "merged_into": "ODBL",
+      "merged_into_name": "Om Development Bank Limited",
+      "surviving_symbol": "ODBL",
+      "surviving_name": "Om Development Bank Limited",
+      "merged_date": "2016-03-16"
     },
     "CEDBL": {
       "symbol": "CEDBL",
       "status": "closed",
       "display_name": "Clean Energy Development Bank Limited",
       "display_mode": "closed",
-      "note": "Clean Energy Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/cedbl",
-      "source_title": "ShareSansar company page (CEDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 NMB",
+      "merged_into": "NMB",
+      "merged_into_name": "NMB Bank Limited",
+      "surviving_symbol": "NMB",
+      "surviving_name": "NMB Bank Limited",
+      "merged_date": "2015-09-23"
     },
     "CEFL": {
       "symbol": "CEFL",
       "status": "closed",
       "display_name": "City Express Finance Limited (former Kuber Merchant Finance)",
       "display_mode": "closed",
-      "note": "City Express Finance Limited (former Kuber Merchant Finance) is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/cefl",
-      "source_title": "ShareSansar company page (CEFL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 NIB",
+      "merged_into": "NIB",
+      "merged_into_name": "Nepal Investment Bank Limited",
+      "surviving_symbol": "NIB",
+      "surviving_name": "Nepal Investment Bank Limited",
+      "merged_date": "2020-09-02"
     },
     "CHLBS": {
       "symbol": "CHLBS",
@@ -479,9 +531,13 @@
       "status": "closed",
       "display_name": "Civic Development Bank Limited",
       "display_mode": "closed",
-      "note": "Civic Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/civic",
-      "source_title": "ShareSansar company page (CIVIC)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 MNBBL",
+      "merged_into": "MNBBL",
+      "merged_into_name": "Muktinath Bikas Bank Limited",
+      "surviving_symbol": "MNBBL",
+      "surviving_name": "Muktinath Bikas Bank Limited",
+      "merged_date": "2015-07-09"
     },
     "CMBF": {
       "symbol": "CMBF",
@@ -502,9 +558,13 @@
       "status": "closed",
       "display_name": "Civil Merchant Bittiya Santha Limited",
       "display_mode": "closed",
-      "note": "Civil Merchant Bittiya Santha Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/cmbsl",
-      "source_title": "ShareSansar company page (CMBSL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 CBL",
+      "merged_into": "CBL",
+      "merged_into_name": "Civil Bank Limited",
+      "surviving_symbol": "CBL",
+      "surviving_name": "Civil Bank Limited",
+      "merged_date": "2014-04-06"
     },
     "CNDBL": {
       "symbol": "CNDBL",
@@ -539,9 +599,13 @@
       "status": "closed",
       "display_name": "Commerz & Trust Bank Nepal Limited",
       "display_mode": "closed",
-      "note": "Commerz & Trust Bank Nepal Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/ctbnl",
-      "source_title": "ShareSansar company page (CTBNL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 GBIME",
+      "merged_into": "GBIME",
+      "merged_into_name": "Global IME Bank Limited",
+      "surviving_symbol": "GBIME",
+      "surviving_name": "Global IME Bank Limited",
+      "merged_date": "2014-04-03"
     },
     "DBBL": {
       "symbol": "DBBL",
@@ -562,9 +626,13 @@
       "status": "closed",
       "display_name": "Diyalo Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Diyalo Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/diyalo",
-      "source_title": "ShareSansar company page (DIYALO)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 PRDBL",
+      "merged_into": "PRDBL",
+      "merged_into_name": "Professional Diyalo Bikas Bank Limited",
+      "surviving_symbol": "PRDBL",
+      "surviving_name": "Professional Diyalo Bikas Bank Limited",
+      "merged_date": "2013-06-17"
     },
     "EFL": {
       "symbol": "EFL",
@@ -585,12 +653,12 @@
       "status": "closed",
       "display_name": "Everest Insurance Company Limited",
       "display_mode": "closed",
-      "merged_into": "HGI",
-      "merged_into_name": "Himalayan General Insurance Co. Ltd.",
-      "surviving_symbol": "HGI",
+      "merged_into": "HEI",
+      "merged_into_name": "Himalayan Everest Insurance Limited",
+      "surviving_symbol": "HEI",
       "surviving_name": "Himalayan Everest Insurance Limited",
       "merged_date": "2022-07-17",
-      "note": "Everest Insurance Company Limited merged into Himalayan General Insurance Co. Ltd. Joint operations started Shrawan 1, 2079 BS (July 17, 2022) under the name Himalayan Everest Insurance Limited.",
+      "note": "EIC merged with HGI on Shrawan 1, 2079 BS (July 17, 2022). Combined entity trades as HEI (Himalayan Everest Insurance Limited).",
       "source_url": "https://www.sharesansar.com/newsdetail/himalayan-general-and-everest-insurance-company-completes-merger-process-in-72-days-starts-integrated-transactions-from-today-2022-07-17",
       "source_title": "ShareSansar news: HGI-EIC merger completion (2022-07-17)"
     },
@@ -599,18 +667,26 @@
       "status": "closed",
       "display_name": "Ekata Bikash Bank Limited",
       "display_mode": "closed",
-      "note": "Ekata Bikash Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/ekbl",
-      "source_title": "ShareSansar company page (EKBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 SDBL",
+      "merged_into": "SDBL",
+      "merged_into_name": "Siddhartha Development Bank Limited",
+      "surviving_symbol": "SDBL",
+      "surviving_name": "Siddhartha Development Bank Limited",
+      "merged_date": "2016-06-11"
     },
     "FBBL": {
       "symbol": "FBBL",
       "status": "closed",
       "display_name": "Fewa Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Fewa Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/fbbl",
-      "source_title": "ShareSansar company page (FBBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 GDBL",
+      "merged_into": "GDBL",
+      "merged_into_name": "Gandaki Bikas Bank Limited",
+      "surviving_symbol": "GDBL",
+      "surviving_name": "Gandaki Bikas Bank Limited",
+      "merged_date": "2017-07-05"
     },
     "FFCL": {
       "symbol": "FFCL",
@@ -631,7 +707,7 @@
       "status": "closed",
       "display_name": "Gaumukhee Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Gaumukhee Bikas Bank Limited is marked as Merged on ShareSansar company page.",
+      "note": "Gaumukhee Bikas Bank Limited is marked as Merged on ShareSansar but specific merger date and partner could not be determined from publicly available sources.",
       "source_url": "https://www.sharesansar.com/company/gabl",
       "source_title": "ShareSansar company page (GABL)"
     },
@@ -668,16 +744,20 @@
       "status": "closed",
       "display_name": "Gurkha Development Bank Limited",
       "display_mode": "closed",
-      "note": "Gurkha Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/gdbnl",
-      "source_title": "ShareSansar company page (GDBNL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 GUFL",
+      "merged_into": "GUFL",
+      "merged_into_name": "Gurkhas Finance Limited",
+      "surviving_symbol": "GUFL",
+      "surviving_name": "Gurkhas Finance Limited",
+      "merged_date": "2016-04-10"
     },
     "GFLK": {
       "symbol": "GFLK",
       "status": "closed",
       "display_name": "Gorkha Finance Limited",
       "display_mode": "closed",
-      "note": "Gorkha Finance Limited is marked as Merged on ShareSansar company page.",
+      "note": "Gorkha Finance Limited is marked as Merged on ShareSansar but specific merger date and partner could not be determined from publicly available sources.",
       "source_url": "https://www.sharesansar.com/company/gflk",
       "source_title": "ShareSansar company page (GFLK)"
     },
@@ -742,18 +822,26 @@
       "status": "closed",
       "display_name": "Gaurishankar Development Bank Limited",
       "display_mode": "closed",
-      "note": "Gaurishankar Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/gsdbl",
-      "source_title": "ShareSansar company page (GSDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 PRVU",
+      "merged_into": "PRVU",
+      "merged_into_name": "Prabhu Bank Limited",
+      "surviving_symbol": "PRVU",
+      "surviving_name": "Prabhu Bank Limited",
+      "merged_date": "2014-08-06"
     },
     "GULMI": {
       "symbol": "GULMI",
       "status": "closed",
       "display_name": "Gulmi Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Gulmi Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/gulmi",
-      "source_title": "ShareSansar company page (GULMI)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 GBIME",
+      "merged_into": "GBIME",
+      "merged_into_name": "Global IME Bank Limited",
+      "surviving_symbol": "GBIME",
+      "surviving_name": "Global IME Bank Limited",
+      "merged_date": "2013-07-09"
     },
     "HAMRO": {
       "symbol": "HAMRO",
@@ -788,7 +876,7 @@
       "status": "closed",
       "display_name": "Himalayan Finance Limited (Bittiya Sanstha)",
       "display_mode": "closed",
-      "note": "Himalayan Finance Limited (Bittiya Sanstha) is marked as Merged on ShareSansar company page.",
+      "note": "Himalayan Finance Limited (Bittiya Sanstha) is marked as Merged on ShareSansar but specific merger date and partner could not be determined from publicly available sources.",
       "source_url": "https://www.sharesansar.com/company/hfl",
       "source_title": "ShareSansar company page (HFL)"
     },
@@ -797,9 +885,14 @@
       "status": "closed",
       "display_name": "Himalayan General Insurance Company Limited",
       "display_mode": "closed",
-      "note": "Himalayan General Insurance Company Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/hgi",
-      "source_title": "ShareSansar company page (HGI)"
+      "merged_into": "HEI",
+      "merged_into_name": "Himalayan Everest Insurance Limited",
+      "surviving_symbol": "HEI",
+      "surviving_name": "Himalayan Everest Insurance Limited",
+      "merged_date": "2022-07-17",
+      "note": "HGI merged with EIC on Shrawan 1, 2079 BS (July 17, 2022). Combined entity trades as HEI (Himalayan Everest Insurance Limited). Merger ratio 85 HGI : 100 EIC.",
+      "source_url": "https://www.sharesansar.com/newsdetail/himalayan-general-and-everest-insurance-company-completes-merger-process-in-72-days-starts-integrated-transactions-from-today-2022-07-17",
+      "source_title": "ShareSansar news: HGI-EIC merger completion (2022-07-17)"
     },
     "IDBL": {
       "symbol": "IDBL",
@@ -820,9 +913,13 @@
       "status": "closed",
       "display_name": "Imperial Financial Instittuon Limited",
       "display_mode": "closed",
-      "note": "Imperial Financial Instittuon Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/ifil",
-      "source_title": "ShareSansar company page (IFIL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 SFL",
+      "merged_into": "SFL",
+      "merged_into_name": "Siddhartha Finance Limited",
+      "surviving_symbol": "SFL",
+      "surviving_name": "Siddhartha Finance Limited",
+      "merged_date": "2014-04-04"
     },
     "IGIL": {
       "symbol": "IGIL",
@@ -843,18 +940,26 @@
       "status": "closed",
       "display_name": "International Leasing & Finance Company Limited",
       "display_mode": "closed",
-      "note": "International Leasing & Finance Company Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/ilfc",
-      "source_title": "ShareSansar company page (ILFC)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 CBL",
+      "merged_into": "CBL",
+      "merged_into_name": "Civil Bank Limited",
+      "surviving_symbol": "CBL",
+      "surviving_name": "Civil Bank Limited",
+      "merged_date": "2016-09-27"
     },
     "IMEFI": {
       "symbol": "IMEFI",
       "status": "closed",
       "display_name": "IME Financial Institution Limited",
       "display_mode": "closed",
-      "note": "IME Financial Institution Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/imefi",
-      "source_title": "ShareSansar company page (IMEFI)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 GBIME",
+      "merged_into": "GBIME",
+      "merged_into_name": "Global IME Bank Limited",
+      "surviving_symbol": "GBIME",
+      "surviving_name": "Global IME Bank Limited",
+      "merged_date": "2012-07-09"
     },
     "INDB": {
       "symbol": "INDB",
@@ -917,18 +1022,26 @@
       "status": "closed",
       "display_name": "Jebils Finance Limited",
       "display_mode": "closed",
-      "note": "Jebils Finance Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/jefl",
-      "source_title": "ShareSansar company page (JEFL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 NIB",
+      "merged_into": "NIB",
+      "merged_into_name": "Nepal Investment Bank Limited",
+      "surviving_symbol": "NIB",
+      "surviving_name": "Nepal Investment Bank Limited",
+      "merged_date": "2019-07-10"
     },
     "JHBL": {
       "symbol": "JHBL",
       "status": "closed",
       "display_name": "Jhimruk Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Jhimruk Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/jhbl",
-      "source_title": "ShareSansar company page (JHBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 JBBL",
+      "merged_into": "JBBL",
+      "merged_into_name": "Jyoti Bikash Bank Limited",
+      "surviving_symbol": "JBBL",
+      "surviving_name": "Jyoti Bikash Bank Limited",
+      "merged_date": "2016-08-01"
     },
     "JLI": {
       "symbol": "JLI",
@@ -1047,9 +1160,13 @@
       "status": "closed",
       "display_name": "Khandbari Development Bank Limited",
       "display_mode": "closed",
-      "note": "Khandbari Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/khdbl",
-      "source_title": "ShareSansar company page (KHDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A announcement \u2192 BLBL",
+      "merged_into": "BLBL",
+      "merged_into_name": "Birat Laxmi Bikas Bank Limited",
+      "surviving_symbol": "BLBL",
+      "surviving_name": "Birat Laxmi Bikas Bank Limited",
+      "merged_date": "2014-05-14"
     },
     "KIST": {
       "symbol": "KIST",
@@ -1070,9 +1187,13 @@
       "status": "closed",
       "display_name": "Kankrebihar Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Kankrebihar Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/kkbl",
-      "source_title": "ShareSansar company page (KKBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 KBL",
+      "merged_into": "KBL",
+      "merged_into_name": "Kumari Bank Limited",
+      "surviving_symbol": "KBL",
+      "surviving_name": "Kumari Bank Limited",
+      "merged_date": "2017-06-30"
     },
     "KLBS": {
       "symbol": "KLBS",
@@ -1121,9 +1242,13 @@
       "status": "closed",
       "display_name": "Kisan Microfinance Bittiya Sanstha Limited",
       "display_mode": "closed",
-      "note": "Kisan Microfinance Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/kmfl",
-      "source_title": "ShareSansar company page (KMFL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 KLBSL",
+      "merged_into": "KLBSL",
+      "merged_into_name": "Kisan Laghubitta Bittiya Sanstha Limited(Former NRN Laghubitta Bittiya Sanstha Limited)",
+      "surviving_symbol": "KLBSL",
+      "surviving_name": "Kisan Laghubitta Bittiya Sanstha Limited(Former NRN Laghubitta Bittiya Sanstha Limited)",
+      "merged_date": "2020-06-11"
     },
     "KNBL": {
       "symbol": "KNBL",
@@ -1228,27 +1353,39 @@
       "status": "closed",
       "display_name": "Mahakali Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Mahakali Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/mbbl",
-      "source_title": "ShareSansar company page (MBBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 KBL",
+      "merged_into": "KBL",
+      "merged_into_name": "Kumari Bank Limited",
+      "surviving_symbol": "KBL",
+      "surviving_name": "Kumari Bank Limited",
+      "merged_date": "2017-06-26"
     },
     "MDBL": {
       "symbol": "MDBL",
       "status": "closed",
       "display_name": "Malika Bikash Bank Limited",
       "display_mode": "closed",
-      "note": "Malika Bikash Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/mdbl",
-      "source_title": "ShareSansar company page (MDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 MLBL",
+      "merged_into": "MLBL",
+      "merged_into_name": "Mahalaxmi Bikas Bank Limited",
+      "surviving_symbol": "MLBL",
+      "surviving_name": "Mahalaxmi Bikas Bank Limited",
+      "merged_date": "2016-08-17"
     },
     "METRO": {
       "symbol": "METRO",
       "status": "closed",
       "display_name": "Metro Development Bank Limited",
       "display_mode": "closed",
-      "note": "Metro Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/metro",
-      "source_title": "ShareSansar company page (METRO)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 KBBL",
+      "merged_into": "KBBL",
+      "merged_into_name": "Kailash Bikas Bank Limited",
+      "surviving_symbol": "KBBL",
+      "surviving_name": "Kailash Bikas Bank Limited",
+      "merged_date": "2015-05-18"
     },
     "MFL": {
       "symbol": "MFL",
@@ -1283,9 +1420,13 @@
       "status": "closed",
       "display_name": "Manakamana Development Bank Limited",
       "display_mode": "closed",
-      "note": "Manakamana Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/mkdbl",
-      "source_title": "ShareSansar company page (MKDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 YETI",
+      "merged_into": "YETI",
+      "merged_into_name": "Yeti Development Bank Limited",
+      "surviving_symbol": "YETI",
+      "surviving_name": "Yeti Development Bank Limited",
+      "merged_date": "2013-07-15"
     },
     "MKLB": {
       "symbol": "MKLB",
@@ -1376,9 +1517,13 @@
       "status": "closed",
       "display_name": "Nepal Aawas Finance Limited",
       "display_mode": "closed",
-      "note": "Nepal Aawas Finance Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/nabb",
-      "source_title": "ShareSansar company page (NABB)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 SDBL",
+      "merged_into": "SDBL",
+      "merged_into_name": "Siddhartha Development Bank Limited",
+      "surviving_symbol": "SDBL",
+      "surviving_name": "Siddhartha Development Bank Limited",
+      "merged_date": "2016-06-11"
     },
     "NAGRO": {
       "symbol": "NAGRO",
@@ -1413,9 +1558,13 @@
       "status": "closed",
       "display_name": "Nagbeli Laghubitta Bikash Bank Limited",
       "display_mode": "closed",
-      "note": "Nagbeli Laghubitta Bikash Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/nbbl",
-      "source_title": "ShareSansar company page (NBBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 MMFDB",
+      "merged_into": "MMFDB",
+      "merged_into_name": "Mirmire Laghubitta Bittiya Sanstha Limited",
+      "surviving_symbol": "MMFDB",
+      "surviving_name": "Mirmire Laghubitta Bittiya Sanstha Limited",
+      "merged_date": "2020-08-19"
     },
     "NBSL": {
       "symbol": "NBSL",
@@ -1464,18 +1613,26 @@
       "status": "closed",
       "display_name": "Nepal Consumer Development Bank Limited",
       "display_mode": "closed",
-      "note": "Nepal Consumer Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/ncdbl",
-      "source_title": "ShareSansar company page (NCDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 REDBL",
+      "merged_into": "REDBL",
+      "merged_into_name": "Reliable Development Bank Limited",
+      "surviving_symbol": "REDBL",
+      "surviving_name": "Reliable Development Bank Limited",
+      "merged_date": "2014-04-04"
     },
     "NCM": {
       "symbol": "NCM",
       "status": "closed",
       "display_name": "NIDC Capital Markets Limited",
       "display_mode": "closed",
-      "note": "NIDC Capital Markets Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/ncm",
-      "source_title": "ShareSansar company page (NCM)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 SRBL",
+      "merged_into": "SRBL",
+      "merged_into_name": "Sunrise Bank Limited",
+      "surviving_symbol": "SRBL",
+      "surviving_name": "Sunrise Bank Limited",
+      "merged_date": "2017-01-26"
     },
     "NDEP": {
       "symbol": "NDEP",
@@ -1496,9 +1653,13 @@
       "status": "closed",
       "display_name": "Nava Durga Finance Company Limited",
       "display_mode": "closed",
-      "note": "Nava Durga Finance Company Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/ndfl",
-      "source_title": "ShareSansar company page (NDFL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 LUBL",
+      "merged_into": "LUBL",
+      "merged_into_name": "Lumbini Bank Limited",
+      "surviving_symbol": "LUBL",
+      "surviving_name": "Lumbini Bank Limited",
+      "merged_date": "2014-06-18"
     },
     "NEFL": {
       "symbol": "NEFL",
@@ -1533,9 +1694,13 @@
       "status": "closed",
       "display_name": "Nepal Housing & Merchant Finance Limited",
       "display_mode": "closed",
-      "note": "Nepal Housing & Merchant Finance Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/nhmf",
-      "source_title": "ShareSansar company page (NHMF)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 CZBIL",
+      "merged_into": "CZBIL",
+      "merged_into_name": "Citizens Bank International Limited",
+      "surviving_symbol": "CZBIL",
+      "surviving_name": "Citizens Bank International Limited",
+      "merged_date": "2015-04-09"
     },
     "NIB": {
       "symbol": "NIB",
@@ -1556,9 +1721,13 @@
       "status": "closed",
       "display_name": "Nepal Industrial & Company Bank Limited",
       "display_mode": "closed",
-      "note": "Nepal Industrial & Company Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/nicb",
-      "source_title": "ShareSansar company page (NICB)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 NICA",
+      "merged_into": "NICA",
+      "merged_into_name": "NIC Asia Bank Limited",
+      "surviving_symbol": "NICA",
+      "surviving_name": "NIC Asia Bank Limited",
+      "merged_date": "2013-06-30"
     },
     "NIDC": {
       "symbol": "NIDC",
@@ -1607,9 +1776,13 @@
       "status": "closed",
       "display_name": "Naya Nepal Laghubitta Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Naya Nepal Laghubitta Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/nnlb",
-      "source_title": "ShareSansar company page (NNLB)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 NSLB",
+      "merged_into": "NSLB",
+      "merged_into_name": "Naya Sarathi Laghubitta Bittiya Sanstha Limited",
+      "surviving_symbol": "NSLB",
+      "surviving_name": "Naya Sarathi Laghubitta Bittiya Sanstha Limited",
+      "merged_date": "2020-09-21"
     },
     "NSEWA": {
       "symbol": "NSEWA",
@@ -1672,9 +1845,13 @@
       "status": "closed",
       "display_name": "Pacific Development Bank Limitied",
       "display_mode": "closed",
-      "note": "Pacific Development Bank Limitied is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/padbl",
-      "source_title": "ShareSansar company page (PADBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 GBIME",
+      "merged_into": "GBIME",
+      "merged_into_name": "Global IME Bank Limited",
+      "surviving_symbol": "GBIME",
+      "surviving_name": "Global IME Bank Limited",
+      "merged_date": "2017-02-12"
     },
     "PBSL": {
       "symbol": "PBSL",
@@ -1695,18 +1872,26 @@
       "status": "closed",
       "display_name": "Public Development Bank Limited",
       "display_mode": "closed",
-      "note": "Public Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/pdb",
-      "source_title": "ShareSansar company page (PDB)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 TBBL",
+      "merged_into": "TBBL",
+      "merged_into_name": "Triveni Bikas Bank Limited",
+      "surviving_symbol": "TBBL",
+      "surviving_name": "Triveni Bikas Bank Limited",
+      "merged_date": "2015-04-23"
     },
     "PDBL": {
       "symbol": "PDBL",
       "status": "closed",
       "display_name": "Paschimanchal Development Bank Limited",
       "display_mode": "closed",
-      "note": "Paschimanchal Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/pdbl",
-      "source_title": "ShareSansar company page (PDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 MEGA",
+      "merged_into": "MEGA",
+      "merged_into_name": "Mega Bank Nepal Limited",
+      "surviving_symbol": "MEGA",
+      "surviving_name": "Mega Bank Nepal Limited",
+      "merged_date": "2016-04-12"
     },
     "PFC": {
       "symbol": "PFC",
@@ -1825,27 +2010,39 @@
       "status": "closed",
       "display_name": "Prabhu Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Prabhu Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/prbbl",
-      "source_title": "ShareSansar company page (PRBBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 PRVU",
+      "merged_into": "PRVU",
+      "merged_into_name": "Prabhu Bank Limited",
+      "surviving_symbol": "PRVU",
+      "surviving_name": "Prabhu Bank Limited",
+      "merged_date": "2014-08-06"
     },
     "PRBL": {
       "symbol": "PRBL",
       "status": "closed",
       "display_name": "Professional Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Professional Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/prbl",
-      "source_title": "ShareSansar company page (PRBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 PRDBL",
+      "merged_into": "PRDBL",
+      "merged_into_name": "Professional Diyalo Bikas Bank Limited",
+      "surviving_symbol": "PRDBL",
+      "surviving_name": "Professional Diyalo Bikas Bank Limited",
+      "merged_date": "2013-06-17"
     },
     "PRDBL": {
       "symbol": "PRDBL",
       "status": "closed",
       "display_name": "Professional Diyalo Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Professional Diyalo Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/prdbl",
-      "source_title": "ShareSansar company page (PRDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 LBL",
+      "merged_into": "LBL",
+      "merged_into_name": "Laxmi Bank Limited",
+      "surviving_symbol": "LBL",
+      "surviving_name": "Laxmi Bank Limited",
+      "merged_date": "2016-12-26"
     },
     "PRFL": {
       "symbol": "PRFL",
@@ -1866,9 +2063,13 @@
       "status": "closed",
       "display_name": "Pashupati Development Bank Limited",
       "display_mode": "closed",
-      "note": "Pashupati Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/psdbl",
-      "source_title": "ShareSansar company page (PSDBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 AXIS",
+      "merged_into": "AXIS",
+      "merged_into_name": "Axis Development Bank Limited",
+      "surviving_symbol": "AXIS",
+      "surviving_name": "Axis Development Bank Limited",
+      "merged_date": "2012-07-08"
     },
     "PURBL": {
       "symbol": "PURBL",
@@ -1889,9 +2090,13 @@
       "status": "closed",
       "display_name": "Rara Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Rara Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/rara",
-      "source_title": "ShareSansar company page (RARA)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 APEX",
+      "merged_into": "APEX",
+      "merged_into_name": "Apex Development Bank Limited",
+      "surviving_symbol": "APEX",
+      "surviving_name": "Apex Development Bank Limited",
+      "merged_date": "2013-07-09"
     },
     "RBBBL": {
       "symbol": "RBBBL",
@@ -1912,9 +2117,13 @@
       "status": "closed",
       "display_name": "Resunga Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Resunga Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/rbsl",
-      "source_title": "ShareSansar company page (RBSL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 SHINE",
+      "merged_into": "SHINE",
+      "merged_into_name": "Shine Resunga Development Bank Limited",
+      "surviving_symbol": "SHINE",
+      "surviving_name": "Shine Resunga Development Bank Limited",
+      "merged_date": "2013-04-26"
     },
     "RDBL": {
       "symbol": "RDBL",
@@ -1991,9 +2200,13 @@
       "status": "closed",
       "display_name": "Royal Merchant Bank & Fin Limited",
       "display_mode": "closed",
-      "note": "Royal Merchant Bank & Fin Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/rmbfi",
-      "source_title": "ShareSansar company page (RMBFI)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 APEX",
+      "merged_into": "APEX",
+      "merged_into_name": "Apex Development Bank Limited",
+      "surviving_symbol": "APEX",
+      "surviving_name": "Apex Development Bank Limited",
+      "merged_date": "2013-07-09"
     },
     "RMDC": {
       "symbol": "RMDC",
@@ -2168,9 +2381,13 @@
       "status": "closed",
       "display_name": "Suryadarshan Finance Company Limited",
       "display_mode": "closed",
-      "note": "Suryadarshan Finance Company Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/sdfl",
-      "source_title": "ShareSansar company page (SDFL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 SUPRME",
+      "merged_into": "SUPRME",
+      "merged_into_name": "Supreme Development Bank Limited",
+      "surviving_symbol": "SUPRME",
+      "surviving_name": "Supreme Development Bank Limited",
+      "merged_date": "2012-07-08"
     },
     "SDLBSL": {
       "symbol": "SDLBSL",
@@ -2328,12 +2545,19 @@
     },
     "SKDBL": {
       "symbol": "SKDBL",
-      "status": "closed",
+      "status": "active_survivor",
       "display_name": "Saptakoshi Development Bank Limited",
-      "display_mode": "closed",
-      "note": "Saptakoshi Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/skdbl",
-      "source_title": "ShareSansar company page (SKDBL)"
+      "display_mode": "active",
+      "note": "Saptakoshi Development Bank merged with Kabeli Bikas Bank on 2019-06-12; SKDBL is the surviving symbol.",
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 SKDBL (survivor)",
+      "merged_date": "2019-06-12",
+      "merged_from": [
+        "KABDB"
+      ],
+      "merged_from_names": [
+        "Kabeli Bikas Bank Limited"
+      ]
     },
     "SLBS": {
       "symbol": "SLBS",
@@ -2354,9 +2578,13 @@
       "status": "closed",
       "display_name": "Subha Laxmi Finance Company Limited",
       "display_mode": "closed",
-      "note": "Subha Laxmi Finance Company Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/slfl",
-      "source_title": "ShareSansar company page (SLFL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 REDBL",
+      "merged_into": "REDBL",
+      "merged_into_name": "Reliable Development Bank Limited",
+      "surviving_symbol": "REDBL",
+      "surviving_name": "Reliable Development Bank Limited",
+      "merged_date": "2014-04-04"
     },
     "SLI": {
       "symbol": "SLI",
@@ -2391,9 +2619,13 @@
       "status": "closed",
       "display_name": "Sagarmatha Merchant Banking & Finance Limited",
       "display_mode": "closed",
-      "note": "Sagarmatha Merchant Banking & Finance Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/smbf",
-      "source_title": "ShareSansar company page (SMBF)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 SAFL",
+      "merged_into": "SAFL",
+      "merged_into_name": "Sagarmatha Finance Limited",
+      "surviving_symbol": "SAFL",
+      "surviving_name": "Sagarmatha Finance Limited",
+      "merged_date": "2015-07-09"
     },
     "SMF": {
       "symbol": "SMF",
@@ -2428,9 +2660,13 @@
       "status": "closed",
       "display_name": "Society Development Bank Limited",
       "display_mode": "closed",
-      "note": "Society Development Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/sodbl",
-      "source_title": "ShareSansar company page (SODBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 LBBL",
+      "merged_into": "LBBL",
+      "merged_into_name": "Lumbini Bikas Bank Limited",
+      "surviving_symbol": "LBBL",
+      "surviving_name": "Lumbini Bikas Bank Limited",
+      "merged_date": "2017-07-09"
     },
     "SPARS": {
       "symbol": "SPARS",
@@ -2479,9 +2715,13 @@
       "status": "closed",
       "display_name": "Subhechha Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Subhechha Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/subbl",
-      "source_title": "ShareSansar company page (SUBBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 GBBL",
+      "merged_into": "GBBL",
+      "merged_into_name": "Garima Bikas Bank Limited",
+      "surviving_symbol": "GBBL",
+      "surviving_name": "Garima Bikas Bank Limited",
+      "merged_date": "2016-06-18"
     },
     "SUPRME": {
       "symbol": "SUPRME",
@@ -2572,9 +2812,13 @@
       "status": "closed",
       "display_name": "Udhyam Bikas Bank Limited",
       "display_mode": "closed",
-      "note": "Udhyam Bikas Bank Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/ubbl",
-      "source_title": "ShareSansar company page (UBBL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "Manual curation: ShareSansar M&A + news \u2192 AXIS",
+      "merged_into": "AXIS",
+      "merged_into_name": "Axis Development Bank Limited",
+      "surviving_symbol": "AXIS",
+      "surviving_name": "Axis Development Bank Limited",
+      "merged_date": "2012-07-13"
     },
     "UFCL": {
       "symbol": "UFCL",
@@ -2665,9 +2909,13 @@
       "status": "closed",
       "display_name": "Unnati Laghubitta Bittiya Sanstha Limited",
       "display_mode": "closed",
-      "note": "Unnati Laghubitta Bittiya Sanstha Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/umb",
-      "source_title": "ShareSansar company page (UMB)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 USLB",
+      "merged_into": "USLB",
+      "merged_into_name": "Unnati Sahakarya Laghubitta Bittiya Sanstha Limited",
+      "surviving_symbol": "USLB",
+      "surviving_name": "Unnati Sahakarya Laghubitta Bittiya Sanstha Limited",
+      "merged_date": "2020-07-10"
     },
     "VBBL": {
       "symbol": "VBBL",
@@ -2772,9 +3020,13 @@
       "status": "closed",
       "display_name": "Zenith Finance Limited",
       "display_mode": "closed",
-      "note": "Zenith Finance Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/zfl",
-      "source_title": "ShareSansar company page (ZFL)"
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed \u2192 PRVU",
+      "merged_into": "PRVU",
+      "merged_into_name": "Prabhu Bank Limited",
+      "surviving_symbol": "PRVU",
+      "surviving_name": "Prabhu Bank Limited",
+      "merged_date": "2014-08-06"
     },
     "SMATA": {
       "symbol": "SMATA",
@@ -3349,6 +3601,24 @@
       "note": "Samriddhi Capital Limited merged into Prabhu Capital Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
       "source_title": "ShareSansar M&A feed \u2192 PRABHU"
+    },
+    "HEI": {
+      "symbol": "HEI",
+      "status": "active_survivor",
+      "display_name": "Himalayan Everest Insurance Limited",
+      "display_mode": "active",
+      "merged_from": [
+        "EIC",
+        "HGI"
+      ],
+      "merged_from_names": [
+        "Everest Insurance Company Limited",
+        "Himalayan General Insurance Company Limited"
+      ],
+      "merged_date": "2022-07-17",
+      "note": "HEI is the surviving merged entity from HGI + EIC merger on Shrawan 1, 2079 BS (July 17, 2022). First non-life insurance merger in Nepal.",
+      "source_url": "https://www.sharesansar.com/company/hei",
+      "source_title": "ShareSansar company page (HEI)"
     }
   }
 }
