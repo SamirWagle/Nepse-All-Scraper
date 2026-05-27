@@ -585,9 +585,14 @@
       "status": "closed",
       "display_name": "Everest Insurance Company Limited",
       "display_mode": "closed",
-      "note": "Everest Insurance Company Limited is marked as Merged on ShareSansar company page.",
-      "source_url": "https://www.sharesansar.com/company/eic",
-      "source_title": "ShareSansar company page (EIC)"
+      "merged_into": "HGI",
+      "merged_into_name": "Himalayan General Insurance Co. Ltd.",
+      "surviving_symbol": "HGI",
+      "surviving_name": "Himalayan Everest Insurance Limited",
+      "merged_date": "2022-07-17",
+      "note": "Everest Insurance Company Limited merged into Himalayan General Insurance Co. Ltd. Joint operations started Shrawan 1, 2079 BS (July 17, 2022) under the name Himalayan Everest Insurance Limited.",
+      "source_url": "https://www.sharesansar.com/newsdetail/himalayan-general-and-everest-insurance-company-completes-merger-process-in-72-days-starts-integrated-transactions-from-today-2022-07-17",
+      "source_title": "ShareSansar news: HGI-EIC merger completion (2022-07-17)"
     },
     "EKBL": {
       "symbol": "EKBL",
@@ -2783,7 +2788,7 @@
       "display_mode": "closed",
       "note": "Samata Gharelu Laghubitta Bittiya Sanstha Limited merged into Samata Laghubitta Bittiya Sanstha Limited Promoter Share.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → SMATAP"
+      "source_title": "ShareSansar M&A feed \u2192 SMATAP"
     },
     "MKLBP": {
       "symbol": "MKLBP",
@@ -2797,7 +2802,7 @@
       "display_mode": "closed",
       "note": "Manakamana Smart Laghubitta Bittiya Sanstha Limited Promoter Share merged into Samata Laghubitta Bittiya Sanstha Limited Promoter Share.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → SMATAP"
+      "source_title": "ShareSansar M&A feed \u2192 SMATAP"
     },
     "KLBSLP": {
       "symbol": "KLBSLP",
@@ -2811,7 +2816,7 @@
       "display_mode": "closed",
       "note": "Kisan Laghubitta Bittiya Sanstha Limited Promoter Share merged into Matribhumi Laghubitta Bittiya Sanstha Limited Promoter Share.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → MATRIP"
+      "source_title": "ShareSansar M&A feed \u2192 MATRIP"
     },
     "JALPAP": {
       "symbol": "JALPAP",
@@ -2825,7 +2830,7 @@
       "display_mode": "closed",
       "note": "Jalpa Samudayik Laghubitta Bittiya Sanstha Limited Promoter Share merged into Matribhumi Laghubitta Bittiya Sanstha Limited Promoter Share.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → MATRIP"
+      "source_title": "ShareSansar M&A feed \u2192 MATRIP"
     },
     "NIBLACE": {
       "symbol": "NIBLACE",
@@ -2839,7 +2844,7 @@
       "display_mode": "closed",
       "note": "NIBL Ace Capital Limited merged into NIMB Ace Capital Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NIMBAC"
+      "source_title": "ShareSansar M&A feed \u2192 NIMBAC"
     },
     "MCML": {
       "symbol": "MCML",
@@ -2853,7 +2858,7 @@
       "display_mode": "closed",
       "note": "Mega Capital Markets Limited merged into NIMB Ace Capital Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NIMBAC"
+      "source_title": "ShareSansar M&A feed \u2192 NIMBAC"
     },
     "CCML": {
       "symbol": "CCML",
@@ -2867,7 +2872,7 @@
       "display_mode": "closed",
       "note": "Century Capital Markets Limited merged into Prabhu Capital Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → PRABHU"
+      "source_title": "ShareSansar M&A feed \u2192 PRABHU"
     },
     "NBCL": {
       "symbol": "NBCL",
@@ -2881,7 +2886,7 @@
       "display_mode": "closed",
       "note": "Nepal Bangladesh Capital Limited merged into Nabil Investment Banking Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NABILINV"
+      "source_title": "ShareSansar M&A feed \u2192 NABILINV"
     },
     "NMLBS": {
       "symbol": "NMLBS",
@@ -2895,7 +2900,7 @@
       "display_mode": "closed",
       "note": "National Microfinance Laghubitta Bittiya Sanstha Limited merged into National Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NMFBS"
+      "source_title": "ShareSansar M&A feed \u2192 NMFBS"
     },
     "NCCBPO": {
       "symbol": "NCCBPO",
@@ -2909,7 +2914,7 @@
       "display_mode": "closed",
       "note": "Nepal Credit and Commerce Bank Limited Promoter Share merged into Kumari Bank Limited Promotor Share.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → KBLPO"
+      "source_title": "ShareSansar M&A feed \u2192 KBLPO"
     },
     "MLICL": {
       "symbol": "MLICL",
@@ -2923,7 +2928,7 @@
       "display_mode": "closed",
       "note": "Mahalaxmi Life Insurance Company Limited merged into Prabhu Mahalaxmi Life Insurance Company Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → PMLI"
+      "source_title": "ShareSansar M&A feed \u2192 PMLI"
     },
     "SLICLP": {
       "symbol": "SLICLP",
@@ -2937,7 +2942,7 @@
       "display_mode": "closed",
       "note": "Surya Life Insurance Company Limited Promoter Share merged into SuryaJyoti Life Insurance Company Limited Promoter.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → SJLICP"
+      "source_title": "ShareSansar M&A feed \u2192 SJLICP"
     },
     "NIBPO": {
       "symbol": "NIBPO",
@@ -2951,7 +2956,7 @@
       "display_mode": "closed",
       "note": "Nepal Investment Bank Limited Promoter Share merged into Nepal Investment Mega Bank Ltd. Promoter Share.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NIMBPO"
+      "source_title": "ShareSansar M&A feed \u2192 NIMBPO"
     },
     "MEGAPO": {
       "symbol": "MEGAPO",
@@ -2965,7 +2970,7 @@
       "display_mode": "closed",
       "note": "Mega Bank Nepal Limited Promoter Share merged into Nepal Investment Mega Bank Ltd. Promoter Share.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NIMBPO"
+      "source_title": "ShareSansar M&A feed \u2192 NIMBPO"
     },
     "EICPO": {
       "symbol": "EICPO",
@@ -2979,7 +2984,7 @@
       "display_mode": "closed",
       "note": "Everest Insurance Company Limited Promoter Share merged into Himalayan Everest Insurance Limited Promoter.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → HEIP"
+      "source_title": "ShareSansar M&A feed \u2192 HEIP"
     },
     "HGIPO": {
       "symbol": "HGIPO",
@@ -2993,7 +2998,7 @@
       "display_mode": "closed",
       "note": "Himalayan General Insurance Co. Ltd Promoter Share merged into Himalayan Everest Insurance Limited Promoter.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → HEIP"
+      "source_title": "ShareSansar M&A feed \u2192 HEIP"
     },
     "GBBL": {
       "symbol": "GBBL",
@@ -3007,7 +3012,7 @@
       "display_mode": "closed",
       "note": "Garima Bikas Bank Limited merged into Garima Capital Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → GCL"
+      "source_title": "ShareSansar M&A feed \u2192 GCL"
     },
     "BJLBSL": {
       "symbol": "BJLBSL",
@@ -3021,7 +3026,7 @@
       "display_mode": "closed",
       "note": "Buddha Jyoti Laghubitta Bittiya Sanstha Limited merged into Mirmire Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → MMFDB"
+      "source_title": "ShareSansar M&A feed \u2192 MMFDB"
     },
     "SUHL": {
       "symbol": "SUHL",
@@ -3035,7 +3040,7 @@
       "display_mode": "closed",
       "note": "Surikhola Hydropower Limited merged into Makar Jitumaya Suri Hydropower Company Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → MAKAR"
+      "source_title": "ShareSansar M&A feed \u2192 MAKAR"
     },
     "SHALIGRAM": {
       "symbol": "SHALIGRAM",
@@ -3049,7 +3054,7 @@
       "display_mode": "closed",
       "note": "Shaligram Laghubitta Bittiya Sanstha Limited merged into CYC Nepal Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → CYCL"
+      "source_title": "ShareSansar M&A feed \u2192 CYCL"
     },
     "GHLBSL": {
       "symbol": "GHLBSL",
@@ -3063,7 +3068,7 @@
       "display_mode": "closed",
       "note": "Gharelu Laghubitta Bittiya Sanstha Limited merged into Samata Gharelu Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → SMATA"
+      "source_title": "ShareSansar M&A feed \u2192 SMATA"
     },
     "GRSLBSL": {
       "symbol": "GRSLBSL",
@@ -3077,7 +3082,7 @@
       "display_mode": "closed",
       "note": "Grameen Swayamsewak Laghubitta Bittiya Sanstha Limited merged into Womi Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → WOMI"
+      "source_title": "ShareSansar M&A feed \u2192 WOMI"
     },
     "WLBS": {
       "symbol": "WLBS",
@@ -3091,7 +3096,7 @@
       "display_mode": "closed",
       "note": "WEAN Laghubitta Bittiya Sanstha Limited merged into Wean Nepal Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → WNLB"
+      "source_title": "ShareSansar M&A feed \u2192 WNLB"
     },
     "MSLBS": {
       "symbol": "MSLBS",
@@ -3105,7 +3110,7 @@
       "display_mode": "closed",
       "note": "Mahuli Samudayik Laghubitta Bittiya Sanstha Limited merged into Mahuli Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → MSLB"
+      "source_title": "ShareSansar M&A feed \u2192 MSLB"
     },
     "NAVKIRAN": {
       "symbol": "NAVKIRAN",
@@ -3119,7 +3124,7 @@
       "display_mode": "closed",
       "note": "Navkiran Laghubitta Bittiya Sanstha Limited merged into Mahuli Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → MSLB"
+      "source_title": "ShareSansar M&A feed \u2192 MSLB"
     },
     "SARATHI": {
       "symbol": "SARATHI",
@@ -3133,7 +3138,7 @@
       "display_mode": "closed",
       "note": "Sarathi Laghubitta Bittiya Sanstha Limited merged into Naya Sarathi Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NSLB"
+      "source_title": "ShareSansar M&A feed \u2192 NSLB"
     },
     "SWEDA": {
       "symbol": "SWEDA",
@@ -3147,7 +3152,7 @@
       "display_mode": "closed",
       "note": "Sweda Laghubitta Bittiya Sanstha Limited merged into Mirmire Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → MMFDB"
+      "source_title": "ShareSansar M&A feed \u2192 MMFDB"
     },
     "GNLBSL": {
       "symbol": "GNLBSL",
@@ -3161,7 +3166,7 @@
       "display_mode": "closed",
       "note": "Garibi Niunikaran Laghubitta Bittiya Sanstha Limited merged into Jeevan Bikas Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → JBLB"
+      "source_title": "ShareSansar M&A feed \u2192 JBLB"
     },
     "SOLBSL": {
       "symbol": "SOLBSL",
@@ -3175,7 +3180,7 @@
       "display_mode": "closed",
       "note": "Solve Laghubitta Bittiya Sanstha Limited merged into Jeevan Bikas Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → JBLB"
+      "source_title": "ShareSansar M&A feed \u2192 JBLB"
     },
     "CRLBSL": {
       "symbol": "CRLBSL",
@@ -3189,7 +3194,7 @@
       "display_mode": "closed",
       "note": "Creative Laghubitta Bittiya Sanstha Limited merged into Kisan Laghubitta Bittiya Sanstha Limited(Former NRN Laghubitta Bittiya Sanstha Limited).",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → KLBSL"
+      "source_title": "ShareSansar M&A feed \u2192 KLBSL"
     },
     "SKLBSL": {
       "symbol": "SKLBSL",
@@ -3203,7 +3208,7 @@
       "display_mode": "closed",
       "note": "Sahakarya Laghubitta Bittiya Sanstha Limited merged into Unnati Sahakarya Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → USLB"
+      "source_title": "ShareSansar M&A feed \u2192 USLB"
     },
     "TLBSL": {
       "symbol": "TLBSL",
@@ -3217,7 +3222,7 @@
       "display_mode": "closed",
       "note": "Trilok Laghubitta Bittiya Sanstha Limited merged into Suryodaya Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → SLBS"
+      "source_title": "ShareSansar M&A feed \u2192 SLBS"
     },
     "JLBS": {
       "symbol": "JLBS",
@@ -3231,7 +3236,7 @@
       "display_mode": "closed",
       "note": "Janasewi Laghubitta Bittiya Sanstha Limited merged into Kalika Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → KMCDB"
+      "source_title": "ShareSansar M&A feed \u2192 KMCDB"
     },
     "SATYA": {
       "symbol": "SATYA",
@@ -3245,7 +3250,7 @@
       "display_mode": "closed",
       "note": "Satyawoti Laghubitta Bittiya Sanstha Limited merged into Sarathi Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → SARATHI"
+      "source_title": "ShareSansar M&A feed \u2192 SARATHI"
     },
     "ARTHIK": {
       "symbol": "ARTHIK",
@@ -3259,7 +3264,7 @@
       "display_mode": "closed",
       "note": "Aarthik Samriddhi Laghubitta Bittiya Sanstha Limited merged into Sadhana Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → SDLBSL"
+      "source_title": "ShareSansar M&A feed \u2192 SDLBSL"
     },
     "NAGARIK": {
       "symbol": "NAGARIK",
@@ -3273,7 +3278,7 @@
       "display_mode": "closed",
       "note": "Nagarik Laghubitta Bittiya Sanstha Limited merged into Womi Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → WOMI"
+      "source_title": "ShareSansar M&A feed \u2192 WOMI"
     },
     "NIBLC": {
       "symbol": "NIBLC",
@@ -3287,7 +3292,7 @@
       "display_mode": "closed",
       "note": "NIBL Capital Markets Limited merged into NIBL Ace Capital Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NIBLACE"
+      "source_title": "ShareSansar M&A feed \u2192 NIBLACE"
     },
     "ACECAP": {
       "symbol": "ACECAP",
@@ -3301,7 +3306,7 @@
       "display_mode": "closed",
       "note": "Ace Capital Limited merged into NIBL Ace Capital Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → NIBLACE"
+      "source_title": "ShareSansar M&A feed \u2192 NIBLACE"
     },
     "NDB": {
       "symbol": "NDB",
@@ -3315,7 +3320,7 @@
       "display_mode": "closed",
       "note": "Nepal Development Bank Limited merged into Prabhu Bank Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → PRVU"
+      "source_title": "ShareSansar M&A feed \u2192 PRVU"
     },
     "PGBL": {
       "symbol": "PGBL",
@@ -3329,7 +3334,7 @@
       "display_mode": "closed",
       "note": "Purwanchal Grameen Bikash Bank Limited merged into Grameen Bikas Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → GBLBS"
+      "source_title": "ShareSansar M&A feed \u2192 GBLBS"
     },
     "SCL": {
       "symbol": "SCL",
@@ -3343,7 +3348,7 @@
       "display_mode": "closed",
       "note": "Samriddhi Capital Limited merged into Prabhu Capital Limited.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → PRABHU"
+      "source_title": "ShareSansar M&A feed \u2192 PRABHU"
     }
   }
 }
