@@ -75,13 +75,47 @@ class ShareHubListingDateScraper:
         """
         Fetch listing date for a single symbol.
         Tries ShareHubNepal first, falls back to Sharepaati.
+        Cross-checks against prices.csv first trading date — if the scraped date
+        is AFTER the first observed trade, it's wrong (impossible to trade before
+        listing), so we override with the first-trade date and log a warning.
         Returns date string (YYYY-MM-DD) or None if not found.
         """
-        date = self._fetch_from_sharehub(symbol)
-        if date:
-            return date
-        logger.info(f"  {symbol}: ShareHubNepal miss — trying Sharepaati")
-        return self._fetch_from_sharepaati(symbol)
+        scraped = self._fetch_from_sharehub(symbol)
+        if not scraped:
+            logger.info(f"  {symbol}: ShareHubNepal miss — trying Sharepaati")
+            scraped = self._fetch_from_sharepaati(symbol)
+
+        if not scraped:
+            return None
+
+        # Cross-check against prices.csv first row (ground truth)
+        first_trade = self._first_trade_date(symbol)
+        if first_trade and scraped > first_trade:
+            logger.warning(
+                f"  {symbol}: scraped listing_date {scraped} > first_trade {first_trade} "
+                f"— scraper source has wrong data. Overriding with first_trade."
+            )
+            return first_trade
+
+        return scraped
+
+    def _first_trade_date(self, symbol):
+        """Return earliest date string from data/company-wise/{SYMBOL}/prices.csv, or None."""
+        prices_path = self.data_dir / "company-wise" / symbol / "prices.csv"
+        if not prices_path.exists():
+            return None
+        earliest = None
+        try:
+            with open(prices_path, newline='') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    d = row.get('date')
+                    if d and (earliest is None or d < earliest):
+                        earliest = d
+        except Exception as e:
+            logger.warning(f"  {symbol}: could not read prices.csv for cross-check: {e}")
+            return None
+        return earliest
 
     def _fetch_from_sharehub(self, symbol):
         """Fetch listing date from ShareHubNepal. Returns YYYY-MM-DD or None."""
