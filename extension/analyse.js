@@ -21,6 +21,7 @@
         note: 'Century Commercial Bank Ltd. merged into Prabhu Bank Limited.'
       },
       PRVU: {
+        status: 'active_survivor',
         merged_date: '2023-01-10',
         merged_from: 'CCBL',
         merged_from_name: 'Century Commercial Bank Ltd.',
@@ -34,6 +35,7 @@
         note: 'Mega Bank Nepal Limited merged into Nepal Investment Mega Bank Limited.'
       },
       NIMB: {
+        status: 'active_survivor',
         merged_date: '2023-01-10',
         merged_from: 'MEGA',
         merged_from_name: 'Mega Bank Nepal Limited',
@@ -805,6 +807,9 @@
       const mergeStatus = d.merge_status || merger?.status || (d.is_merged ? 'closed' : null);
       const isClosedMerged = mergeStatus === 'closed' || (!!merger && !mergeStatus);
       const isSurvivor = mergeStatus === 'active_survivor';
+      const isAcquisition = (d.event_type || merger?.event_type) === 'acquisition';
+      const closedLabel = isAcquisition ? 'Acquired' : 'Merged';
+      const closedPrep = isAcquisition ? 'Acquired by' : 'Merged to';
 
       // Hero
       const name = (d.company_name || d.symbol || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
@@ -841,7 +846,7 @@
       if (pill) {
         const isOpen = isMarketOpen();
         pill.classList.toggle('closed', !isOpen || isClosedMerged);
-        setText('r-mkt-status', isClosedMerged ? 'Merged' : (isSurvivor ? 'Survivor' : (isOpen ? 'Market open' : 'Market closed')));
+        setText('r-mkt-status', isClosedMerged ? closedLabel : (isSurvivor ? 'Survivor' : (isOpen ? 'Market open' : 'Market closed')));
       }
 
       // Quick stats
@@ -859,28 +864,28 @@
       setText('r-1y-yield', isClosedMerged ? '—' : (d.year_yield_pct != null ? d.year_yield_pct.toFixed(2) + '%' : '—'));
 
       // FY meta header
-      setText('r-fy-meta', isClosedMerged ? 'Merged company' : (isSurvivor ? 'Surviving company' : (d.eps_fy ? `FY ${d.eps_fy}` : 'Latest data')));
+      setText('r-fy-meta', isClosedMerged ? `${closedLabel} company` : (isSurvivor ? 'Surviving company' : (d.eps_fy ? `FY ${d.eps_fy}` : 'Latest data')));
 
       // Key metrics cards
-      setText('r-mkt-cap', isClosedMerged ? 'Merged' : (d.market_cap != null ? 'Rs. ' + fmtCompact(d.market_cap) : '—'));
+      setText('r-mkt-cap', isClosedMerged ? closedLabel : (d.market_cap != null ? 'Rs. ' + fmtCompact(d.market_cap) : '—'));
       setText('r-mkt-cap-sub', d.shares_outstanding != null
         ? `${fmtCompact(d.shares_outstanding)} shares × Rs. ${fmt(d.market_price || 0)}`
         : '');
 
       const paidUp = d.shares_outstanding != null ? d.shares_outstanding * 100 : null;
-      setText('r-paid-up', isClosedMerged ? 'Merged' : (paidUp != null ? 'Rs. ' + fmtCompact(paidUp) : '—'));
-      setText('r-paid-up-sub', isClosedMerged ? 'Merged company' : (d.shares_outstanding != null
+      setText('r-paid-up', isClosedMerged ? closedLabel : (paidUp != null ? 'Rs. ' + fmtCompact(paidUp) : '—'));
+      setText('r-paid-up-sub', isClosedMerged ? `${closedLabel} company` : (d.shares_outstanding != null
         ? `${fmtCompact(d.shares_outstanding)} shares · Rs. 100 face value`
         : ''));
 
       setText('r-pe', isClosedMerged ? '—' : (d.pe_ratio != null ? d.pe_ratio.toFixed(2) + '×' : '—'));
-      setText('r-pe-sub', isClosedMerged ? 'Merged company' : (d.pbv != null ? `P/B ${d.pbv.toFixed(2)}×` : ''));
+      setText('r-pe-sub', isClosedMerged ? `${closedLabel} company` : (d.pbv != null ? `P/B ${d.pbv.toFixed(2)}×` : ''));
 
       setText('r-eps', isClosedMerged ? '—' : (d.eps != null ? 'Rs. ' + d.eps.toFixed(2) : '—'));
-      setText('r-eps-sub', isClosedMerged ? 'Merged company' : (d.eps_fy ? `FY ${d.eps_fy}` : ''));
+      setText('r-eps-sub', isClosedMerged ? `${closedLabel} company` : (d.eps_fy ? `FY ${d.eps_fy}` : ''));
 
       setText('r-bvps', isClosedMerged ? '—' : (d.book_value != null ? 'Rs. ' + d.book_value.toFixed(2) : '—'));
-      setText('r-bvps-sub', isClosedMerged ? 'Merged company' : (d.pbv != null ? `Price-to-Book ${d.pbv.toFixed(2)}×` : ''));
+      setText('r-bvps-sub', isClosedMerged ? `${closedLabel} company` : (d.pbv != null ? `Price-to-Book ${d.pbv.toFixed(2)}×` : ''));
 
       setText('r-listing', d.listing_date || '—');
       let listingSub = '';
@@ -888,7 +893,7 @@
         const yrs = (new Date() - new Date(d.listing_date)) / (1000 * 60 * 60 * 24 * 365.25);
         if (!isNaN(yrs) && yrs > 0) listingSub = `${yrs.toFixed(1)} years on NEPSE`;
       }
-      if (isClosedMerged && (d.merged_date || merger.merged_date)) listingSub = `Merged on ${d.merged_date || merger.merged_date}`;
+      if (isClosedMerged && (d.merged_date || merger.merged_date)) listingSub = `${closedLabel} on ${d.merged_date || merger.merged_date}`;
       if (isSurvivor && (d.merged_date || merger.merged_date)) listingSub = `Survived merger on ${d.merged_date || merger.merged_date}`;
       setText('r-listing-sub', listingSub);
 
@@ -898,12 +903,12 @@
           const survivorName = d.merged_to_name || merger.merged_to_name || d.merged_to || merger.merged_to || null;
           const mergedSub = [
             d.listing_date ? `Listed <strong>${d.listing_date}</strong>` : null,
-            (d.merged_date || merger.merged_date) ? `Merged <strong>${d.merged_date || merger.merged_date}</strong>` : null,
-            survivorName ? `Merged to <strong>${survivorName}</strong>${d.merged_to && d.merged_to !== survivorName ? ` (${d.merged_to})` : ''}` : null
+            (d.merged_date || merger.merged_date) ? `${closedLabel} <strong>${d.merged_date || merger.merged_date}</strong>` : null,
+            survivorName ? `${closedPrep} <strong>${survivorName}</strong>${d.merged_to && d.merged_to !== survivorName ? ` (${d.merged_to})` : ''}` : null
           ].filter(Boolean).join(' · ');
           const title = document.getElementById('r-merge-title');
           const sub = document.getElementById('r-merge-sub');
-          if (title) title.textContent = d.merged_note || merger.note || 'This company has been merged and is no longer actively trading.';
+          if (title) title.textContent = d.merged_note || merger.note || (isAcquisition ? 'This company was acquired and is no longer actively trading.' : 'This company has been merged and is no longer actively trading.');
           if (sub) sub.innerHTML = mergedSub;
           mergeBanner.classList.add('show');
         } else if (isSurvivor) {
@@ -922,13 +927,13 @@
       }
 
       if (isClosedMerged) {
-        setText('r-price', 'Merged');
+        setText('r-price', closedLabel);
         const changeEl = document.getElementById('r-change');
         if (changeEl) {
           changeEl.textContent = 'Closed';
           changeEl.className = 'change down';
         }
-        setText('r-asof', d.merged_date || merger.merged_date ? `Merged on ${d.merged_date || merger.merged_date}` : 'Merged');
+        setText('r-asof', d.merged_date || merger.merged_date ? `${closedLabel} on ${d.merged_date || merger.merged_date}` : closedLabel);
         const dayRange = document.getElementById('r-day-range');
         const w52Range = document.getElementById('r-52w-range');
         const avgVol = document.getElementById('r-avg-vol');

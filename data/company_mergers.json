@@ -1542,9 +1542,10 @@
     "NBB": {
       "symbol": "NBB",
       "status": "closed",
+      "event_type": "acquisition",
       "display_name": "Nepal Bangladesh Bank Limited",
       "display_mode": "closed",
-      "note": "Nepal Bangladesh Bank Limited is marked as Merged on ShareSansar company page.",
+      "note": "Nepal Bangladesh Bank Limited was acquired by Nabil Bank Limited; all NBB branches began operating as Nabil Bank from 2022-07-11.",
       "source_url": "https://www.sharesansar.com/company/nbb",
       "source_title": "ShareSansar company page (NBB)",
       "merged_date": "2022-07-11",
@@ -2851,9 +2852,10 @@
     "UFL": {
       "symbol": "UFL",
       "status": "closed",
+      "event_type": "acquisition",
       "display_name": "United Finance Limited",
       "display_mode": "closed",
-      "note": "United Finance Limited is marked as Merged on ShareSansar company page.",
+      "note": "United Finance Limited was acquired by Nabil Bank Limited; integrated operations began 2021-07-11.",
       "source_url": "https://www.sharesansar.com/company/ufl",
       "source_title": "ShareSansar company page (UFL)",
       "merged_date": "2021-07-11",

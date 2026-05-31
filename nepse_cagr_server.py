@@ -456,6 +456,7 @@ class Handler(BaseHTTPRequestHandler):
                     status = merger_info.get("status", "closed")
                     data["is_merged"] = status == "closed"
                     data["merge_status"] = status
+                    data["event_type"] = merger_info.get("event_type")
                     data["merged_date"] = merger_info.get("merged_date")
                     data["merged_to"] = merger_info.get("merged_into") or merger_info.get("merged_to")
                     data["merged_to_name"] = merger_info.get("merged_into_name") or merger_info.get("merged_to_name")
