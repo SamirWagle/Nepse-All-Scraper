@@ -47,6 +47,63 @@ LISTING_DATE_OVERRIDES = {
     "SPIL": "2023-04-03",
 }
 
+# ── Sub-index ticker aliases → data/index/{slug}/history.csv ──────────────────
+INDEX_ALIASES = {
+    "NEPSE":             "nepse",
+    "SENSITIVE":         "sensitive",
+    "SENSITIVEFLOAT":    "sensitive_float",
+    "SFLOAT":            "sensitive_float",
+    "FLOAT":             "float",
+    "BANKEX":            "banking",
+    "BANKING":           "banking",
+    "DEVBANKEX":         "development_bank",
+    "DEVBANK":           "development_bank",
+    "FINEX":             "finance",
+    "FINANCE":           "finance",
+    "HOTLEX":            "hotels_tourism",
+    "HOTEL":             "hotels_tourism",
+    "HYDROEX":           "hydropower",
+    "HYDRO":             "hydropower",
+    "INSURE":            "insurance",
+    "INSURANCE":         "insurance",
+    "INVEST":            "investment",
+    "INVESTMENT":        "investment",
+    "LIFEINSURE":        "life_insurance",
+    "LIFEINSURANCE":     "life_insurance",
+    "MANUIND":           "manufacturing",
+    "MANUFACTUREIND":    "manufacturing",
+    "MANUFACTURING":     "manufacturing",
+    "MICROEX":           "microfinance",
+    "MICROFINANCE":      "microfinance",
+    "MFEX":              "mutual_fund",
+    "MUTUALFUND":        "mutual_fund",
+    "NONLIFEINSURE":     "non_life_insurance",
+    "NONLIFEINSURANCE":  "non_life_insurance",
+    "OTHERS":            "others",
+    "TRADING":           "trading",
+}
+
+INDEX_DISPLAY_NAMES = {
+    "nepse":              "NEPSE",
+    "sensitive":          "Sensitive Index",
+    "sensitive_float":    "Sensitive Float Index",
+    "float":              "Float Index",
+    "banking":            "Banking SubIndex",
+    "development_bank":   "Development Bank Index",
+    "finance":            "Finance Index",
+    "hotels_tourism":     "Hotels & Tourism",
+    "hydropower":         "HydroPower Index",
+    "insurance":          "Insurance",
+    "investment":         "Investment",
+    "life_insurance":     "Life Insurance",
+    "manufacturing":      "Manufacturing & Processing",
+    "microfinance":       "Microfinance Index",
+    "mutual_fund":        "Mutual Fund",
+    "non_life_insurance": "Non Life Insurance",
+    "others":             "Others Index",
+    "trading":            "Trading Index",
+}
+
 def _load_merger_meta() -> dict:
     global _merger_meta_cache
     if _merger_meta_cache is not None:
@@ -299,14 +356,15 @@ def _build_events(symbol: str, initial_units: float,
     return events
 
 
-# ── NEPSE index CAGR (price-only, no corporate actions) ──────────────────────
+# ── Index CAGR (price-only, no corporate actions) ────────────────────────────
 def calculate_index_cagr(start_date: date, initial_investment: float,
-                         end_date: date = None) -> dict:
-    csv_path = DATA_DIR / "index" / "nepse" / "history.csv"
+                         end_date: date = None, index_slug: str = "nepse") -> dict:
+    csv_path = DATA_DIR / "index" / index_slug / "history.csv"
+    display_name = INDEX_DISPLAY_NAMES.get(index_slug, index_slug.upper())
     try:
         df = pd.read_csv(csv_path, parse_dates=["date"])
     except FileNotFoundError:
-        return {"error": "NEPSE index history not found"}
+        return {"error": f"{display_name} index history not found"}
 
     df = df.sort_values("date").reset_index(drop=True)
 
@@ -322,7 +380,7 @@ def calculate_index_cagr(start_date: date, initial_investment: float,
 
     end_rows = df[df["date"].dt.date <= effective_end]
     if end_rows.empty:
-        return {"error": f"No NEPSE data on or before {effective_end}"}
+        return {"error": f"No {display_name} data on or before {effective_end}"}
     end_row    = end_rows.iloc[-1]
     actual_end = end_row["date"].date()
     end_price  = float(end_row["close"])
@@ -335,7 +393,7 @@ def calculate_index_cagr(start_date: date, initial_investment: float,
     cagr_pct    = ((final_value / initial_investment) ** (1.0 / years) - 1) * 100
 
     return {
-        "symbol":               "NEPSE",
+        "symbol":               display_name,
         "is_index":             True,
         "start_date":           str(actual_start),
         "end_date":             str(actual_end),
@@ -429,7 +487,17 @@ class Handler(BaseHTTPRequestHandler):
             qs = parse_qs(urlparse(self.path).query)
             symbol = qs.get("symbol", [""])[0].strip().upper()
             if symbol and _SYMBOL_RE.match(symbol):
-                self._send_json(get_company_trading_range(symbol))
+                if symbol in INDEX_ALIASES:
+                    slug = INDEX_ALIASES[symbol]
+                    csv_path = DATA_DIR / "index" / slug / "history.csv"
+                    try:
+                        df = pd.read_csv(csv_path, usecols=["date"])
+                        dates = sorted(df["date"].dropna().tolist())
+                        self._send_json({"symbol": symbol, "first_date": dates[0], "last_date": dates[-1]})
+                    except Exception:
+                        self._send_json({"symbol": symbol, "first_date": None, "last_date": None})
+                else:
+                    self._send_json(get_company_trading_range(symbol))
             else:
                 self._send_json({"error": "Invalid symbol"})
         elif self.path.startswith("/search"):
@@ -539,7 +607,7 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"error": "Invalid symbol. Use letters and digits only (e.g. NABIL)."})
                 return
 
-            if symbol == "NEPSE":
+            if symbol in INDEX_ALIASES:
                 if start_date_str:
                     try:
                         start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
@@ -559,7 +627,7 @@ class Handler(BaseHTTPRequestHandler):
                     except ValueError:
                         self._send_json({"error": "Invalid end_date format. Use YYYY-MM-DD."})
                         return
-                self._send_json(calculate_index_cagr(start_date, investment, end_date))
+                self._send_json(calculate_index_cagr(start_date, investment, end_date, INDEX_ALIASES[symbol]))
                 return
 
             if start_date_str:

@@ -43,6 +43,43 @@
         note: 'Nepal Investment Mega Bank Limited is the surviving company after merging with Mega Bank Nepal Limited.'
       }
     };
+
+    // ── Sub-index tickers recognised by the app ──
+    const INDEX_SYMBOL_MAP = {
+      NEPSE: 'NEPSE',
+      SENSITIVE: 'Sensitive Index',
+      SENSITIVEFLOAT: 'Sensitive Float Index',
+      SFLOAT: 'Sensitive Float Index',
+      FLOAT: 'Float Index',
+      BANKEX: 'Banking SubIndex',
+      BANKING: 'Banking SubIndex',
+      DEVBANKEX: 'Development Bank Index',
+      DEVBANK: 'Development Bank Index',
+      FINEX: 'Finance Index',
+      FINANCE: 'Finance Index',
+      HOTLEX: 'Hotels & Tourism',
+      HOTEL: 'Hotels & Tourism',
+      HYDROEX: 'HydroPower Index',
+      HYDRO: 'HydroPower Index',
+      INSURE: 'Insurance',
+      INSURANCE: 'Insurance',
+      INVEST: 'Investment',
+      INVESTMENT: 'Investment',
+      LIFEINSURE: 'Life Insurance',
+      LIFEINSURANCE: 'Life Insurance',
+      MANUIND: 'Manufacturing & Processing',
+      MANUFACTUREIND: 'Manufacturing & Processing',
+      MANUFACTURING: 'Manufacturing & Processing',
+      MICROEX: 'Microfinance Index',
+      MICROFINANCE: 'Microfinance Index',
+      MFEX: 'Mutual Fund',
+      MUTUALFUND: 'Mutual Fund',
+      NONLIFEINSURE: 'Non Life Insurance',
+      NONLIFEINSURANCE: 'Non Life Insurance',
+      OTHERS: 'Others Index',
+      TRADING: 'Trading Index',
+    };
+
     async function switchPage(name) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + name).classList.add('active');
@@ -107,7 +144,13 @@
       e.stopPropagation();
       document.getElementById('analyse-menu').classList.remove('open');
       document.getElementById('analyse-trigger').classList.remove('open');
-      doSearch();
+      const q = document.getElementById('search-input').value.trim().toUpperCase();
+      if (INDEX_SYMBOL_MAP[q]) {
+        // Indexes have no fundamentals — send to bull/bear instead
+        runIndexBullBear(q);
+      } else {
+        doSearch();
+      }
     });
     document.getElementById('menu-bullbear').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -243,15 +286,17 @@
       const tradingRange = await getTradingRange(symbol);
       const lastTradingDate = tradingRange.last_date || null;
 
-      // Fetch listing date from ipo_listings.csv via server
+      // Indexes have no IPO listing date — skip the fetch
       let listingDate = null;
-      try {
-        if (port) {
-          const r = await fetch(`http://localhost:${port}/listing_date?symbol=${symbol}`);
-          const d = await r.json();
-          if (d && d.listing_date) listingDate = d.listing_date;
-        }
-      } catch(_) {}
+      if (!INDEX_SYMBOL_MAP[symbol]) {
+        try {
+          if (port) {
+            const r = await fetch(`http://localhost:${port}/listing_date?symbol=${symbol}`);
+            const d = await r.json();
+            if (d && d.listing_date) listingDate = d.listing_date;
+          }
+        } catch(_) {}
+      }
 
       const fetchable = BULL_CYCLES_DEF.filter(c => !c.blank);
 
@@ -728,9 +773,25 @@
       return { results: results || [] };
     }
 
+    async function runIndexBullBear(symbol) {
+      lastSearchedSymbol = symbol;
+      document.getElementById('search-input').value = symbol;
+      document.getElementById('page-status').textContent = '';
+      switchPage('bullbear');
+      doBullSearch(symbol);
+    }
+
     async function doSearch() {
       const query = document.getElementById('search-input').value.trim();
       if (!query) return;
+
+      // Index tickers bypass fundamentals and go straight to bull/bear
+      const upper = query.toUpperCase();
+      if (INDEX_SYMBOL_MAP[upper]) {
+        runIndexBullBear(upper);
+        return;
+      }
+
       document.getElementById('page-status').textContent = '⏳ Resolving...';
       document.getElementById('results-area').style.display = 'none';
 

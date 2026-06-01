@@ -195,6 +195,22 @@ class DailyScraperManager:
         else:
             logger.info("--- Skipping interest rates (not month-end) ---")
 
+        # Incrementally update all sub-index history CSVs daily
+        logger.info("--- Updating index/sub-index history ---")
+        try:
+            import sys as _sys
+            _scraper_dir = str(Path(__file__).resolve().parent.parent)
+            if _scraper_dir not in _sys.path:
+                _sys.path.insert(0, _scraper_dir)
+            from index_history import run_all as _run_index_history_all
+            _run_index_history_all(
+                from_date=None, to_date=None,
+                data_dir=str(self.data_dir.parent),
+                incremental=True,
+            )
+        except Exception as e:
+            logger.error(f"Index history scrape failed: {e}")
+
         logger.info("=== Daily Update Completed ===")
         if failed_count > 0:
             logger.error(f"{failed_count} company/companies failed — exiting with code 1")
