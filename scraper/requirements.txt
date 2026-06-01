@@ -6,3 +6,4 @@ apscheduler
 python-dotenv
 pytz
 
+openpyxl>=3.1

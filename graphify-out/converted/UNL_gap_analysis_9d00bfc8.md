@@ -1,0 +1,114 @@
+<!-- converted from UNL_gap_analysis.xlsx -->
+
+## Sheet: UNL Gap Analysis
+| # | Last Trade Date | Resume Date | Gap (days) | Category | Explanation |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 2011-04-05 | 2011-04-18 | 13 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 2 | 2011-04-19 | 2011-05-16 | 27 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 3 | 2011-05-16 | 2011-05-31 | 15 | Public Holiday | Short public holiday or bridge day closure |
+| 4 | 2011-06-16 | 2011-07-03 | 17 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 5 | 2011-07-07 | 2011-09-07 | 62 | Sparse Early Data | UNL was thinly traded in 2011; likely no trades, not a NEPSE closure |
+| 6 | 2011-09-08 | 2011-09-19 | 11 | Indra Jatra / Constitution Day | Indra Jatra festival or Constitution Day (Sep 19) break |
+| 7 | 2011-09-19 | 2011-11-13 | 55 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 8 | 2011-11-22 | 2011-12-13 | 21 | Holiday / Low Liquidity | Extended public holiday or period of no trades for this stock |
+| 9 | 2011-12-13 | 2011-12-27 | 14 | Winter Break | Year-end holiday period |
+| 10 | 2012-01-12 | 2012-02-08 | 27 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 11 | 2012-02-14 | 2012-02-26 | 12 | Shivratri / Fagu Purnima | Maha Shivratri and/or Holi (Fagu Purnima) holiday |
+| 12 | 2012-04-08 | 2012-04-19 | 11 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 13 | 2012-04-19 | 2012-04-29 | 10 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 14 | 2012-04-29 | 2012-05-17 | 18 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 15 | 2012-06-13 | 2012-06-25 | 12 | Public Holiday | Short public holiday or bridge day closure |
+| 16 | 2012-06-25 | 2012-07-03 | 8 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 17 | 2012-07-03 | 2012-07-16 | 13 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 18 | 2012-07-24 | 2012-08-06 | 13 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 19 | 2012-09-20 | 2012-10-02 | 12 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 20 | 2012-10-02 | 2012-10-10 | 8 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 21 | 2012-10-10 | 2012-11-25 | 46 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 22 | 2012-11-25 | 2012-12-03 | 8 | Public Holiday | Short public holiday or bridge day closure |
+| 23 | 2012-12-06 | 2012-12-18 | 12 | Winter Break | Year-end holiday period |
+| 24 | 2012-12-27 | 2013-01-07 | 11 | Winter / New Year Break | Christmas, western New Year, and miscellaneous winter holidays |
+| 25 | 2013-01-07 | 2013-01-15 | 8 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 26 | 2013-03-06 | 2013-03-24 | 18 | Holiday / Low Liquidity | Extended public holiday or period of no trades for this stock |
+| 27 | 2013-03-28 | 2013-04-16 | 19 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 28 | 2013-04-21 | 2013-05-02 | 11 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 29 | 2013-05-02 | 2013-05-14 | 12 | Public Holiday | Short public holiday or bridge day closure |
+| 30 | 2013-05-19 | 2013-05-27 | 8 | Public Holiday | Short public holiday or bridge day closure |
+| 31 | 2013-06-06 | 2013-06-16 | 10 | Public Holiday | Short public holiday or bridge day closure |
+| 32 | 2013-07-11 | 2013-07-21 | 10 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 33 | 2013-07-25 | 2013-08-12 | 18 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 34 | 2013-08-20 | 2013-08-29 | 9 | Teej / Indra Jatra | Teej (women's festival) and Indra Jatra festival closures |
+| 35 | 2013-09-09 | 2013-09-23 | 14 | Public Holiday | Short public holiday or bridge day closure |
+| 36 | 2013-10-29 | 2013-11-06 | 8 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 37 | 2013-11-06 | 2013-12-10 | 34 | Extended Dashain / Tihar | Multi-week closure spanning Dashain and Tihar back-to-back |
+| 38 | 2013-12-12 | 2013-12-26 | 14 | Winter Break | Year-end holiday period |
+| 39 | 2013-12-26 | 2014-01-13 | 18 | Winter / New Year Break | Christmas, western New Year, and miscellaneous winter holidays |
+| 40 | 2014-01-22 | 2014-02-17 | 26 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 41 | 2014-02-17 | 2014-04-07 | 49 | Holiday / Low Liquidity | Extended public holiday or period of no trades for this stock |
+| 42 | 2014-06-05 | 2014-06-15 | 10 | Public Holiday | Short public holiday or bridge day closure |
+| 43 | 2014-07-01 | 2014-07-14 | 13 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 44 | 2014-08-04 | 2014-08-13 | 9 | Teej / Indra Jatra | Teej (women's festival) and Indra Jatra festival closures |
+| 45 | 2014-08-13 | 2014-08-25 | 12 | Teej / Indra Jatra | Teej (women's festival) and Indra Jatra festival closures |
+| 46 | 2014-09-15 | 2014-09-30 | 15 | Public Holiday | Short public holiday or bridge day closure |
+| 47 | 2014-09-30 | 2014-10-13 | 13 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 48 | 2014-11-17 | 2014-11-25 | 8 | Tihar / Chhath | Tihar and/or Chhath Puja festival closure |
+| 49 | 2014-12-04 | 2014-12-23 | 19 | Winter Break | Year-end holiday period |
+| 50 | 2014-12-23 | 2015-01-08 | 16 | Winter / New Year Break | Christmas, western New Year, and miscellaneous winter holidays |
+| 51 | 2015-01-12 | 2015-01-22 | 10 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 52 | 2015-01-25 | 2015-02-11 | 17 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 53 | 2015-02-12 | 2015-02-22 | 10 | Shivratri / Fagu Purnima | Maha Shivratri and/or Holi (Fagu Purnima) holiday |
+| 54 | 2015-02-25 | 2015-03-22 | 25 | Shivratri / Fagu Purnima | Maha Shivratri and/or Holi (Fagu Purnima) holiday |
+| 55 | 2015-03-30 | 2015-04-08 | 9 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 56 | 2015-04-16 | 2015-05-25 | 39 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 57 | 2015-05-31 | 2015-06-08 | 8 | Public Holiday | Short public holiday or bridge day closure |
+| 58 | 2015-07-16 | 2015-08-03 | 18 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 59 | 2015-09-16 | 2015-10-01 | 15 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 60 | 2015-10-18 | 2015-11-03 | 16 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 61 | 2015-12-06 | 2015-12-20 | 14 | Winter Break | Year-end holiday period |
+| 62 | 2015-12-22 | 2016-01-03 | 12 | Winter / New Year Break | Christmas, western New Year, and miscellaneous winter holidays |
+| 63 | 2016-01-04 | 2016-01-18 | 14 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 64 | 2016-01-19 | 2016-01-28 | 9 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 65 | 2016-02-07 | 2016-02-17 | 10 | Shivratri / Fagu Purnima | Maha Shivratri and/or Holi (Fagu Purnima) holiday |
+| 66 | 2016-03-03 | 2016-03-24 | 21 | Holiday / Low Liquidity | Extended public holiday or period of no trades for this stock |
+| 67 | 2016-07-12 | 2016-07-21 | 9 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 68 | 2016-08-14 | 2016-08-23 | 9 | Teej / Indra Jatra | Teej (women's festival) and Indra Jatra festival closures |
+| 69 | 2016-09-04 | 2016-09-21 | 17 | Holiday / Low Liquidity | Extended public holiday or period of no trades for this stock |
+| 70 | 2016-10-05 | 2016-11-07 | 33 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 71 | 2016-11-15 | 2016-12-12 | 27 | Extended Dashain / Tihar | Multi-week closure spanning Dashain and Tihar back-to-back |
+| 72 | 2016-12-22 | 2017-01-01 | 10 | Winter / New Year Break | Christmas, western New Year, and miscellaneous winter holidays |
+| 73 | 2017-01-01 | 2017-01-18 | 17 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 74 | 2017-01-31 | 2017-02-22 | 22 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 75 | 2017-03-13 | 2017-03-30 | 17 | Holiday / Low Liquidity | Extended public holiday or period of no trades for this stock |
+| 76 | 2017-05-02 | 2017-05-18 | 16 | Holiday / Low Liquidity | Extended public holiday or period of no trades for this stock |
+| 77 | 2017-05-18 | 2017-05-28 | 10 | Public Holiday | Short public holiday or bridge day closure |
+| 78 | 2017-05-28 | 2017-06-05 | 8 | Public Holiday | Short public holiday or bridge day closure |
+| 79 | 2017-06-14 | 2017-07-02 | 18 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 80 | 2017-09-14 | 2017-10-23 | 39 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 81 | 2017-11-30 | 2017-12-12 | 12 | Public Holiday | Short public holiday or bridge day closure |
+| 82 | 2018-01-28 | 2018-02-08 | 11 | Winter / Shivratri | Post-New Year break; occasionally overlaps with Maha Shivratri |
+| 83 | 2018-04-17 | 2018-05-02 | 15 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 84 | 2018-05-08 | 2018-05-16 | 8 | Public Holiday | Short public holiday or bridge day closure |
+| 85 | 2018-05-16 | 2018-05-28 | 12 | Public Holiday | Short public holiday or bridge day closure |
+| 86 | 2018-07-10 | 2018-07-29 | 19 | Eid / Monsoon Festivals | Eid al-Adha or other mid-year festival closure |
+| 87 | 2018-08-23 | 2018-09-03 | 11 | Teej / Indra Jatra | Teej (women's festival) and Indra Jatra festival closures |
+| 88 | 2018-09-11 | 2018-09-20 | 9 | Indra Jatra / Constitution Day | Indra Jatra festival or Constitution Day (Sep 19) break |
+| 89 | 2018-09-20 | 2018-09-30 | 10 | Indra Jatra / Constitution Day | Indra Jatra festival or Constitution Day (Sep 19) break |
+| 90 | 2018-09-30 | 2018-10-14 | 14 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 91 | 2018-11-06 | 2018-11-25 | 19 | Tihar / Chhath | Tihar and/or Chhath Puja festival closure |
+| 92 | 2018-11-25 | 2019-01-21 | 57 | Extended Dashain / Tihar | Multi-week closure spanning Dashain and Tihar back-to-back |
+| 93 | 2019-03-17 | 2019-03-25 | 8 | Public Holiday | Short public holiday or bridge day closure |
+| 94 | 2019-03-31 | 2019-04-09 | 9 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 95 | 2019-04-11 | 2019-04-22 | 11 | Nepali New Year / Spring Festivals | Nepali New Year (Baisakh 1) + Bisket Jatra; NEPSE typically closes ~2 weeks |
+| 96 | 2019-08-06 | 2019-08-25 | 19 | Teej / Indra Jatra | Teej (women's festival) and Indra Jatra festival closures |
+| 97 | 2019-09-09 | 2019-09-17 | 8 | Indra Jatra / Constitution Day | Indra Jatra festival or Constitution Day (Sep 19) break |
+| 98 | 2019-10-10 | 2019-11-17 | 38 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 99 | 2019-11-21 | 2019-12-11 | 20 | Holiday / Low Liquidity | Extended public holiday or period of no trades for this stock |
+| 100 | 2019-12-24 | 2020-01-06 | 13 | Winter / New Year Break | Christmas, western New Year, and miscellaneous winter holidays |
+| 101 | 2020-03-05 | 2020-03-16 | 11 | Public Holiday | Short public holiday or bridge day closure |
+| 102 | 2020-03-17 | 2020-07-01 | 106 | COVID-19 Lockdown | NEPSE closed nationwide for ~3.5 months due to government-mandated lockdown |
+| 103 | 2022-09-29 | 2022-10-09 | 10 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 104 | 2022-10-23 | 2022-10-31 | 8 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 105 | 2023-10-19 | 2023-10-29 | 10 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 106 | 2023-11-09 | 2023-11-20 | 11 | Tihar / Chhath | Tihar and/or Chhath Puja festival closure |
+| 107 | 2025-09-08 | 2025-09-18 | 10 | Indra Jatra / Constitution Day | Indra Jatra festival or Constitution Day (Sep 19) break |
+| 108 | 2025-09-28 | 2025-10-07 | 9 | Dashain / Tihar | Annual festival break — NEPSE's longest closure of the year |
+| 109 | 2026-03-03 | 2026-03-11 | 8 | Public Holiday | Short public holiday or bridge day closure |

@@ -11,6 +11,7 @@ LOCK_FILE = "/tmp/nepse_daily_scraper.lock"
 from .history import ShareSansarHistoryScraper
 from .listing_date import ShareHubListingDateScraper
 from .mergers import run_merger_scrape
+from .interest_rates import run_interest_rate_scrape
 
 logging.basicConfig(
     level=logging.INFO,
@@ -179,6 +180,20 @@ class DailyScraperManager:
             except Exception as e:
                 logger.error(f"Merger registry scrape failed: {e}")
                 failed_count += 1
+
+        # Refresh bank interest-rate (WADR / FD) series — monthly, on the last
+        # day of the (Gregorian) month only. Best-effort, never fatal.
+        from datetime import date, timedelta
+        today = date.today()
+        is_month_end = (today + timedelta(days=1)).month != today.month
+        if is_month_end:
+            logger.info("--- Updating interest rates (month-end) ---")
+            try:
+                run_interest_rate_scrape()
+            except Exception as e:
+                logger.error(f"Interest-rate scrape failed: {e}")
+        else:
+            logger.info("--- Skipping interest rates (not month-end) ---")
 
         logger.info("=== Daily Update Completed ===")
         if failed_count > 0:

@@ -191,6 +191,36 @@ DATA_DIR           = Path(__file__).parent / "data"
 _SYMBOL_RE = re.compile(r'^[A-Z0-9]{1,15}$')
 
 
+def _load_interest_rates() -> dict:
+    """Read data/interest_rates/fd_rates.csv → {"rates": [...]}.
+
+    Each row: {date, rate (float), metric, source}. Returns sorted by date.
+    Fails soft to an empty list if the file is missing or unreadable.
+    """
+    import csv as _csv
+    path = DATA_DIR / "interest_rates" / "fd_rates.csv"
+    if not path.exists():
+        return {"rates": []}
+    try:
+        with open(path, newline="") as f:
+            rows = list(_csv.DictReader(f))
+        parsed = []
+        for r in rows:
+            try:
+                parsed.append({
+                    "date": r.get("date", ""),
+                    "rate": float(r.get("rate", "") or 0),
+                    "metric": r.get("metric", ""),
+                    "source": r.get("source", ""),
+                })
+            except (ValueError, TypeError):
+                continue
+        parsed.sort(key=lambda x: x["date"])
+        return {"rates": parsed}
+    except Exception:
+        return {"rates": []}
+
+
 # ── Events list builder (server-only, for extension UI display) ───────────────
 def _build_events(symbol: str, initial_units: float,
                   actual_start: date, effective_end: date) -> list:
@@ -486,6 +516,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json(data)
         elif self.path == "/mergers":
             self._send_json({"version": 1, "entries": _load_merger_meta()})
+        elif self.path == "/interest_rates":
+            self._send_json(_load_interest_rates())
         else:
             self.send_response(404)
             self.end_headers()

@@ -1,5 +1,5 @@
     // ── Page switching ──
-    const backDestination = { buffett: 'nexttop', nexttop: 'bullbear' };
+    const backDestination = { buffett: 'nexttop', nexttop: 'bullbear', fdrates: 'nexttop' };
     let lastSearchedSymbol = null;
     const MERGED_COMPANIES = {
       HAMA: {
@@ -52,6 +52,9 @@
       if (name === 'bullbear') {
         buildChart();
         if (lastSearchedSymbol) doBullSearch(lastSearchedSymbol);
+      }
+      if (name === 'fdrates') {
+        buildFdChart();
       }
     }
 
@@ -173,6 +176,10 @@
     document.getElementById('buffett-link').addEventListener('click', (e) => {
       e.preventDefault();
       switchPage('buffett');
+    });
+    document.getElementById('fdrates-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      switchPage('fdrates');
     });
     document.addEventListener('click', () => {
       document.getElementById('analyse-menu').classList.remove('open');
@@ -1180,6 +1187,114 @@
             y: {
               ticks: { color: textColor, callback: v => v.toLocaleString() },
               grid: { color: gridColor }
+            }
+          }
+        }
+      });
+    }
+
+    // ── FD interest-rate overlay chart ──
+    let fdChart = null;
+
+    async function fetchInterestRates() {
+      try {
+        const port = await findPort();
+        if (!port) return [];
+        const resp = await fetch(`http://localhost:${port}/interest_rates`, { signal: AbortSignal.timeout(5000) });
+        if (!resp.ok) return [];
+        const data = await resp.json();
+        return Array.isArray(data.rates) ? data.rates : [];
+      } catch (_) {
+        return [];
+      }
+    }
+
+    async function buildFdChart() {
+      if (fdChart) { fdChart.destroy(); fdChart = null; }
+      const lineColor = isDark ? '#4ecdc4' : '#2aa198';
+      const estColor  = isDark ? 'rgba(78,205,196,0.5)' : 'rgba(42,161,152,0.5)';
+      const fdColor   = isDark ? '#f0a500' : '#e07b39';
+      const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+      const textColor = isDark ? '#7a9bb5' : '#657b83';
+
+      const allLabels = [...estLabels, ...chartLabels];
+      const estData    = [...estValues, ...chartLabels.map(() => null)];
+      const actualData = [...estLabels.map(() => null), ...chartValues];
+
+      // Map each FD rate onto the nearest chart label index (forward-fill axis).
+      const rates = await fetchInterestRates();
+      const fdData = allLabels.map(() => null);
+      rates.forEach(r => {
+        if (!r.date) return;
+        let idx = allLabels.findIndex(l => l >= r.date);
+        if (idx === -1) idx = allLabels.length - 1;
+        fdData[idx] = r.rate;
+      });
+
+      const noteEl = document.getElementById('fd-rates-note');
+      if (rates.length === 0 && noteEl) {
+        noteEl.textContent = '⚠️ No interest-rate data available (server offline or empty dataset).';
+      }
+
+      fdChart = new Chart(document.getElementById('fd-chart'), {
+        type: 'line',
+        plugins: [bullCyclePlugin],
+        data: {
+          labels: allLabels,
+          datasets: [
+            {
+              label: 'NEPSE Index', data: actualData, borderColor: lineColor,
+              borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, fill: true,
+              backgroundColor: isDark ? 'rgba(78,205,196,0.04)' : 'rgba(42,161,152,0.04)',
+              tension: 0.3, spanGaps: false, yAxisID: 'y',
+            },
+            {
+              label: 'FD / Deposit Rate (%)', data: fdData, borderColor: fdColor,
+              backgroundColor: 'transparent', borderWidth: 2,
+              pointRadius: 0, pointHoverRadius: 4,
+              tension: 0.3, spanGaps: true, yAxisID: 'y1',
+            },
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { display: true, labels: { color: textColor, usePointStyle: true, boxWidth: 8 } },
+            tooltip: {
+              callbacks: {
+                title: ctx => ctx[0].label,
+                label: ctx => {
+                  if (ctx.parsed.y == null) return null;
+                  if (ctx.datasetIndex === 0) return ' NEPSE: ' + ctx.parsed.y.toLocaleString();
+                  if (ctx.datasetIndex === 1) return ' Deposit rate: ' + ctx.parsed.y + '%';
+                  return null;
+                },
+                filter: item => item.parsed.y !== null
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: textColor, maxTicksLimit: 14, maxRotation: 0,
+                callback: (val, idx) => { const d = allLabels[idx]; return d ? d.substring(0, 7) : ''; }
+              },
+              grid: { color: gridColor }
+            },
+            y: {
+              position: 'left',
+              ticks: { color: textColor, callback: v => v.toLocaleString() },
+              grid: { color: gridColor },
+              title: { display: true, text: 'NEPSE Index', color: textColor }
+            },
+            y1: {
+              position: 'right',
+              ticks: { color: fdColor, callback: v => v + '%' },
+              grid: { drawOnChartArea: false },
+              title: { display: true, text: 'Deposit Rate %', color: fdColor },
+              suggestedMin: 0, suggestedMax: 14,
             }
           }
         }

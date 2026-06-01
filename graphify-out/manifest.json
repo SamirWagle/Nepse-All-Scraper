@@ -1,35 +1,71 @@
 {
-  "/Users/karmagurung/CodingProjects/Nepse-CAGR/run_index_history.py": {
-    "mtime": 1778094172.2679555,
-    "hash": "027b0885e3ef702103a2558ae873a96e"
-  },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_cagr.py": {
-    "mtime": 1777893511.4596002,
-    "hash": "04ed125bc5fd76970fa1a65a2ce5e177"
+    "mtime": 1779599844.7276497,
+    "hash": "e739f9eb6025d7c78343f5891fa56035"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_cagr_server.py": {
-    "mtime": 1777880637.0,
-    "hash": "53b998c90f40542c502fbfe75bdd4380"
+    "mtime": 1780205343.2572162,
+    "hash": "6ed388480426eeabdbfec4d3c0cd00d0"
   },
-  "/Users/karmagurung/CodingProjects/Nepse-CAGR/index_history.py": {
-    "mtime": 1778131331.608525,
-    "hash": "9bf46a31fa8646647afbb0d2743ffba3"
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_cagr_modified12.py": {
+    "mtime": 1779376735.01665,
+    "hash": "5d9e49be3c4cb9d8841fea652597174c"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_cagr_modified_13 yrs_backup copy.py": {
+    "mtime": 1779289614.1425097,
+    "hash": "5cae65703aba9852cf9a2fc23edbdf9c"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_host.py": {
-    "mtime": 1777888128.7669067,
-    "hash": "f03f7ff29b12a8ece20dbd978454b2e8"
+    "mtime": 1778947216.0167007,
+    "hash": "ae8f140208f96cb34ca9d751119cda46"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/run_daily.py": {
-    "mtime": 1777869511.8658264,
-    "hash": "afa50a2cf4d4a2c159bd161e6636be71"
+    "mtime": 1779602587.4990976,
+    "hash": "cd5a76af7e0395c304cea416af824fdf"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/import_mergers.py": {
+    "mtime": 1779612317.091189,
+    "hash": "354d1024a1afd1b70953a53d3afcf4d3"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/fetch_company_names.py": {
+    "mtime": 1779811982.9133692,
+    "hash": "bc22d03043895562b8f7d6191320731c"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/run_github_actions.py": {
-    "mtime": 1777869511.8659241,
-    "hash": "92d3a9e2774d5f33d4358d17d6186435"
+    "mtime": 1779815488.3660583,
+    "hash": "43225b2673be1e463c99c77f0583f802"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/backfill_merged_listing_dates.py": {
+    "mtime": 1779823441.013314,
+    "hash": "aefd57e4b57e66cb768cc0bb9892c6df"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/verify_mergers.py": {
+    "mtime": 1779612317.0913277,
+    "hash": "ac65536341cae590b79ad9ea8a8e555d"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/index_history.py": {
+    "mtime": 1778947216.0183206,
+    "hash": "b2ad008898a4fb70ee3b127bfd27ec9a"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/audit_listing_dates.py": {
+    "mtime": 1779987450.6995037,
+    "hash": "4ce66542182c20b5b009a05b6e080e9c"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/daily_prices.py": {
-    "mtime": 1777869511.8649397,
-    "hash": "5b9a60b2143f331a01129d2c764e0de8"
+    "mtime": 1778991015.5493708,
+    "hash": "2d5372f1ddcfa4fd8492e8ed9bfd92f5"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/interest_rates.py": {
+    "mtime": 1780206232.2836657,
+    "hash": "84c8e685462cafe86b4c83c6c6d6f62a"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/listing_date.py": {
+    "mtime": 1779987450.699687,
+    "hash": "377e0dcb6a416e9dd6c93bfa3c0d755c"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/fundamentals.py": {
+    "mtime": 1779597355.4905684,
+    "hash": "291d252e51e7768ac2573ab1a285e092"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/__init__.py": {
     "mtime": 1777869511.864606,
@@ -39,17 +75,21 @@
     "mtime": 1777869511.8651035,
     "hash": "e8d451baac2ea81cbbf8e18755f11248"
   },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/mergers.py": {
+    "mtime": 1779811982.9132202,
+    "hash": "b59b0b2b0009c3f16d41356fa6af3232"
+  },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/daily.py": {
-    "mtime": 1777869511.8648357,
-    "hash": "75851d0c16ddd1110c0063ecf7568815"
+    "mtime": 1780205742.763317,
+    "hash": "129d124697fb10dcf9b454ead9b3fd1f"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/history.py": {
     "mtime": 1777869511.865281,
     "hash": "72edd8c73ad43a50ab7033a6f3f39ffb"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/popup.js": {
-    "mtime": 1777880514.0,
-    "hash": "281bf2f25b5b8b7af424df12b2482b89"
+    "mtime": 1779819728.6870215,
+    "hash": "ffd5c64e6f4a8ec8b01f986b7ac30c89"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/background.js": {
     "mtime": 1777880585.0,
@@ -60,12 +100,40 @@
     "hash": "283d65ad75eca387c3fc8d0f8d37ae3b"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/analyse.js": {
-    "mtime": 1778244438.0566733,
-    "hash": "a7927260cb7a7fb2decc0ef2d4ddba2e"
+    "mtime": 1780205446.183217,
+    "hash": "2045856f67e3965039b7997d2a7e08fa"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/analysis/find_new_listings_and _listing date_interactive.py": {
+    "mtime": 1779030080.2946131,
+    "hash": "2a419e7418bb006d1cccbb3fb07cc61b"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/analysis/nepse_cagr_modified_13 yrs_backup.py": {
+    "mtime": 1779277032.2354093,
+    "hash": "153efc5b88947352240a44230ef05002"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/analysis/nepse_cagr_modified_13 yrs.py": {
+    "mtime": 1779288301.9031146,
+    "hash": "de0ad7745358a07c1fd46a29a20064cb"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/analysis/find_new_listings.py": {
+    "mtime": 1778947216.0113194,
+    "hash": "e48f5a8dbc18274bd593e0c7a0349ba6"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/analysis/nepse_cagr_modified13x.py": {
+    "mtime": 1779294138.5544062,
+    "hash": "6d314f73bddfd27da17b0d782929c70e"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/analysis/nepse_bull_bear_analyser.py": {
+    "mtime": 1779131270.962129,
+    "hash": "79a3a253b6b2d482deea7be9a1ac31b6"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/analysis/nepse_price_lookup.py": {
+    "mtime": 1779195265.6601987,
+    "hash": "ce9088cc287c98bb87ab551bd3fc9f5e"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/requirements.txt": {
-    "mtime": 1777869511.863978,
-    "hash": "9b5653579ae9b88dd4fac58fee4b522c"
+    "mtime": 1779811982.9130182,
+    "hash": "4ec6bf143c16aa920479531015f19f1e"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/SETUP.md": {
     "mtime": 1777864152.0,
@@ -75,33 +143,253 @@
     "mtime": 1777909503.7108939,
     "hash": "c560a89b350bbbcc27d0a50464d00310"
   },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/AGENTS.md": {
+    "mtime": 1779612317.0875528,
+    "hash": "2cb73ba0306c2839bd614dc45fd14352"
+  },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/CLAUDE.md": {
     "mtime": 1777888811.9316332,
     "hash": "8ee39dcfe68a23b3797b02648930d699"
   },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/Nepse Best PerformersX_eaa546f5.md": {
+    "mtime": 1780230633.2415493,
+    "hash": "10b039328a45a2d7d1916f14798fe275"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/trying_ff8ea070.md": {
+    "mtime": 1780230633.259621,
+    "hash": "6eef81832fe4de7c31599362d5194811"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull3_bull4_bull5_full_0abec7e4.md": {
+    "mtime": 1780230633.2629087,
+    "hash": "d36984f7434dd92e618e257cbbc49e2e"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/all_full_e317fd6f.md": {
+    "mtime": 1780230633.265598,
+    "hash": "16f9fc6d0183c582b2fb35ac6d096e82"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/listing60_today_325c9de7.md": {
+    "mtime": 1780230633.283374,
+    "hash": "5748d3ac7653d269620e585d15ffb0af"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/nlic all bulls_ea0dbe80.md": {
+    "mtime": 1780230633.2865398,
+    "hash": "7a67bf2947cfadf6a4988dc623a4e749"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bear4_full_4c1e2a90.md": {
+    "mtime": 1780230633.4859128,
+    "hash": "85a8611635c0d6e43ea692a613d2852f"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull4_both_069a5ed8.md": {
+    "mtime": 1780230633.5050256,
+    "hash": "fad541438062976bec387d789ed54835"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bear2_full_25ff90cc.md": {
+    "mtime": 1780230633.5108693,
+    "hash": "fba57be225d2ddca1177f4c0b13d2747"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull2_bull3_bull4_bull5_full_8af5c94a.md": {
+    "mtime": 1780230633.5141296,
+    "hash": "0b2d857543fdfeb77d472369c23447df"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/Bull 5 All stocks_a090b720.md": {
+    "mtime": 1780230633.5421114,
+    "hash": "5e62b2b8ee9b69bbced60bd62231d6ef"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull4_analysis copy_7a49adb3.md": {
+    "mtime": 1780230633.5613387,
+    "hash": "f994426c20bc4e92169786458f2a123e"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull4_analysis_formatted_492f7017.md": {
+    "mtime": 1780230633.5783837,
+    "hash": "c31a6988938817c7a2768ce2dc3bc53b"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull4_analysis_21776cde.md": {
+    "mtime": 1780230633.594027,
+    "hash": "224db0ed0ead52c51eac6f740f31e9d2"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bwull4_full_4af15ae6.md": {
+    "mtime": 1780230633.6045704,
+    "hash": "b859a28961e59991f743f18a263b6f41"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull3_all_stocks_Analyse-updated_245c36b4.md": {
+    "mtime": 1780230633.6139352,
+    "hash": "805cf15dfd64a5de8ed28b4c8c213a8f"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bear edited_09c969ab.md": {
+    "mtime": 1780230633.6281366,
+    "hash": "d8d263e7437733eede10609ae245e27c"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bear4_97a32c0d.md": {
+    "mtime": 1780230633.640624,
+    "hash": "649b74bc52a7c9655035bc5888b037f0"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bear4_full_56804b9b.md": {
+    "mtime": 1780230633.6648417,
+    "hash": "8fd7b171f52c16590a35623da1c3cf54"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/UNL_gap_analysis_v2_1afd90bd.md": {
+    "mtime": 1780230633.672433,
+    "hash": "d4599c809ff8fcf25987be70f3ae910b"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/UNL_gap_analysis_9d00bfc8.md": {
+    "mtime": 1780230633.6791186,
+    "hash": "4602125c7d842fa8377f2940171ec2b1"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull1_bull2_bull3_bull4_full_216ff05d.md": {
+    "mtime": 1780230633.6819217,
+    "hash": "3dc2a4f89b6732da3a71ad5f04b0eb6c"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull1_bull2_bull3_bull4_full_09565f90.md": {
+    "mtime": 1780230633.7343366,
+    "hash": "4085970eb9cf78afcba9065f7a3cc5cf"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull1_bull2_bull3_full_42ad5b43.md": {
+    "mtime": 1780230633.7445767,
+    "hash": "4797475199107aa2ea7af7a864a8bfc4"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/ipo_performance tracker_4a82f738.md": {
+    "mtime": 1780230633.765628,
+    "hash": "3e33cb0a865f13ea3033c2cbadec6bc7"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull3_bull4_bull5_full_9a3f7688.md": {
+    "mtime": 1780230633.7849374,
+    "hash": "91574f2c57de45ab5a4b8dc669693613"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/UPPER_3027b8ed.md": {
+    "mtime": 1780230633.7892544,
+    "hash": "1a805505236d65f880b74cebac1a2ddd"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/13 year compounders_733bc16c.md": {
+    "mtime": 1780230633.7966068,
+    "hash": "58971f6ca37ef3e4284bc878dfb74930"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/Nabil_full_03bd7cce.md": {
+    "mtime": 1780230634.05477,
+    "hash": "4322d9556379463d72b6b3149b93fcb2"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull3_bull4_bull5_full_6f637dac.md": {
+    "mtime": 1780230634.0579672,
+    "hash": "bc76fae44ddac507097815d62660bc21"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/Nabil_e8dc66cc.md": {
+    "mtime": 1780230634.0602205,
+    "hash": "7b2cfeabe9fbf5d07bfbda281851cff0"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull3_4_5ongoing_1bdd18cf.md": {
+    "mtime": 1780230634.0626955,
+    "hash": "ef8c5f218a365ba4f44ea004cc39a0de"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/Nabil1_full_3d68381e.md": {
+    "mtime": 1780230634.148603,
+    "hash": "eae07d3a3c11bc9a54c4c7fc0b189b93"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/bull1_bull2_bull3_bull4_bull5_full_172a428d.md": {
+    "mtime": 1780230634.1559892,
+    "hash": "74ca60f6064f23433efa3e6d4cd51323"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/graphify-out/converted/nlic all bulls_b2eb991a.md": {
+    "mtime": 1780230634.1593485,
+    "hash": "7a67bf2947cfadf6a4988dc623a4e749"
+  },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/requirements.txt": {
-    "mtime": 1777869511.8657522,
-    "hash": "50ca90123c0037682f48d3b9cb01c874"
+    "mtime": 1780230577.178869,
+    "hash": "91e7cfb1a06ba8548e29ced98a102b03"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/README.md": {
-    "mtime": 1777869511.8642468,
-    "hash": "b1c33543465e0f2f9b249e5a2d3a35c0"
+    "mtime": 1779612317.0907123,
+    "hash": "bb150922d1de4130483d2a32471a4c5a"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/analyse.html": {
-    "mtime": 1778244438.056355,
-    "hash": "f33a7d75121f192a103be55e97e3873f"
+    "mtime": 1780205375.7728417,
+    "hash": "19d69a699f0ad5e399a4b4c0babaae8e"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/popup.html": {
-    "mtime": 1777880488.0,
-    "hash": "b952a76081853b1783f93494c0faab7b"
+    "mtime": 1779814541.1204944,
+    "hash": "bac56f6890ad1b5b271e001e096f27f7"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/CORBL/Gap in trading CORBL.pdf": {
+    "mtime": 1779198559.4431381,
+    "hash": "8b444bc2edb6695f87d57b47bbcd5042"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/CORBL/CORBL-no good bank.pdf": {
+    "mtime": 1779202719.7237585,
+    "hash": "555e1d51995d0426db422b6d81734c0c"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/FD/FD Rates in Nepal.pdf": {
+    "mtime": 1779298767.7746542,
+    "hash": "7c039dc14d690e27684820dd38bd6049"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/BNL/BNL Balaju.pdf": {
+    "mtime": 1779207014.6038094,
+    "hash": "76635353e25ebac7cc5d7a6fe295bfb0"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/BNL/BNL Chart.pdf": {
+    "mtime": 1779208004.668858,
+    "hash": "70a5e33c74d2149a3c48bc357544b218"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/Nabil/Nabil Cagr since 2011 March.pdf": {
+    "mtime": 1778987510.2692463,
+    "hash": "ca9005098738b53ce154a1abf391480e"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/CIT/bull3 31x CIT.pdf": {
+    "mtime": 1779124721.153044,
+    "hash": "21ea2c537bc204e86b1a80fcd729a712"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/CIT/full structured analysis.pdf": {
+    "mtime": 1779125442.8039832,
+    "hash": "cfa51f2c5992be30526d48ab3377cd7b"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/CIT/My CIT Bull5 thesis.pdf": {
+    "mtime": 1779123647.084524,
+    "hash": "fe2a6aedf52c1da8fd85893034504e21"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/CIT/CIT BOnus History.pdf": {
+    "mtime": 1779128003.6624873,
+    "hash": "a815aa6da8d1f776c46d70adf3ecca54"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/buffett-indicator.pdf": {
     "mtime": 1778244438.0580604,
     "hash": "88f6d32583b6b2dbd0dd712bd707b691"
   },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/data_backup/Links/Buffet Indicator.pdf": {
+    "mtime": 1778910001.0438013,
+    "hash": "88f6d32583b6b2dbd0dd712bd707b691"
+  },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/data/Links/Buffet Indicator.pdf": {
     "mtime": 1778244438.019101,
     "hash": "88f6d32583b6b2dbd0dd712bd707b691"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/STC/Screenshot 2026-05-20 at 10.41.17\u202fPM.png": {
+    "mtime": 1779296177.6861846,
+    "hash": "a11476dab82899f3f39551bbef6a0bf3"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/NTC/NTC.png": {
+    "mtime": 1779296424.1738076,
+    "hash": "f9a08a9979f8689f91344024a9fc2adc"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/SBI/SBI.png": {
+    "mtime": 1779296543.394789,
+    "hash": "d542f45408e2077e2c9bb2d3b5033390"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/BNL/Screenshot 2026-05-19 at 10.00.16\u202fPM.png": {
+    "mtime": 1779207321.811586,
+    "hash": "3beae28a6b37005aae154b773575f0c4"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/BNL/BNL.png": {
+    "mtime": 1779208048.3353956,
+    "hash": "5ae303c51be31ce08d804cac310e3a5d"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/BNL/BNL_2026-05-19_21-07-43.png": {
+    "mtime": 1779204163.54612,
+    "hash": "31e6bbfdf2c6857bfa1891d42fa9c9d6"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/Nabil/Bull/Nabil Bull3 4 5.png": {
+    "mtime": 1779019343.0900435,
+    "hash": "2638c2bec74b3012afc2ff273f0ca8d9"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/Research/Nabil/Bull/Bull 3 4 5.png": {
+    "mtime": 1779023247.048251,
+    "hash": "6dc64ea02648bb6fd1e6fd8e50929abe"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/icons/icon16.png": {
     "mtime": 1777865290.0,
@@ -118,6 +406,10 @@
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/icons/icon32.png": {
     "mtime": 1777865290.0,
     "hash": "899de6b04544ec1b0b5926e899f4564d"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/data_backup/index/nepse/Nepse Graph.png": {
+    "mtime": 1778910002.1026118,
+    "hash": "ca74406f24f9591043e40a8c9026bad0"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/data/index/nepse/Nepse Graph.png": {
     "mtime": 1778244438.0557704,
