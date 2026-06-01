@@ -22,10 +22,10 @@
   "market_cap": 42918600000.0,
   "scraped_at": "2026-06-01T21:51:15",
   "source": "merolagani.com",
-  "promoter_shares": 0.0,
-  "public_shares": 920700.0,
-  "promoter_pct": 0.0,
-  "public_pct": 100.0,
+  "promoter_shares": 782850.0,
+  "public_shares": 138150.0,
+  "promoter_pct": 85.0,
+  "public_pct": 15.0,
   "all_time_high": 56805.8,
   "all_time_high_date": "2024-07-21T00:00:00"
 }

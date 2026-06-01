@@ -101,15 +101,29 @@ def _fetch_shareholding(symbol, session, timeout=15):
         ath_date = _str("allTimeHighDate")
 
         out = {}
-        if promoter is not None:
-            out["promoter_shares"] = promoter
-        if public is not None:
-            out["public_shares"] = public
-        if promoter is not None and public is not None:
-            total = promoter + public
-            if total > 0:
-                out["promoter_pct"] = round(promoter / total * 100, 2)
-                out["public_pct"] = round(public / total * 100, 2)
+        # ShareHubNepal sometimes reports promoterShares:0 for listed companies
+        # (e.g. UNL), which is bad data — a listed firm with a real public float
+        # still has promoter holding. Treat promoter==0 alongside public>0 as
+        # unreliable and skip, rather than overwriting good data with 100% public.
+        shareholding_unreliable = (
+            promoter is not None and promoter == 0
+            and public is not None and public > 0
+        )
+        if shareholding_unreliable:
+            logger.warning(
+                "Skipping shareholding for %s: promoterShares=0 (likely bad source data)",
+                symbol,
+            )
+        else:
+            if promoter is not None:
+                out["promoter_shares"] = promoter
+            if public is not None:
+                out["public_shares"] = public
+            if promoter is not None and public is not None:
+                total = promoter + public
+                if total > 0:
+                    out["promoter_pct"] = round(promoter / total * 100, 2)
+                    out["public_pct"] = round(public / total * 100, 2)
         if ath is not None:
             out["all_time_high"] = ath
         if ath_date:
