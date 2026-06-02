@@ -97,6 +97,12 @@
 
     async function openBullBearFromQuery(query) {
       if (!query) return;
+      // Index tickers bypass company symbol resolution
+      const upperQ = query.toUpperCase();
+      if (INDEX_SYMBOL_MAP[upperQ]) {
+        runIndexBullBear(upperQ);
+        return;
+      }
       document.getElementById('page-status').textContent = '⏳ Resolving...';
       const { results, error } = await resolveBullSymbol(query);
       if (error) {
