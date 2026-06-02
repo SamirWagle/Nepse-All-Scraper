@@ -1006,7 +1006,7 @@
             d.listing_date ? `Listed <strong>${d.listing_date}</strong>` : null,
             (d.merged_date || merger.merged_date) ? `${closedLabel} <strong>${d.merged_date || merger.merged_date}</strong>` : null,
             survivorName ? `${closedPrep} <strong>${survivorName}</strong>${d.merged_to && d.merged_to !== survivorName ? ` (${d.merged_to})` : ''}` : null,
-            showFinal ? `Now part of <strong>${finalName || finalSym}</strong> (${finalSym})` : null
+            showFinal ? `Now part of <strong>${finalName || finalSym}</strong> (${finalSym})${d.final_survivor_date ? ` since <strong>${d.final_survivor_date}</strong>` : ''}` : null
           ].filter(Boolean).join(' · ');
           const title = document.getElementById('r-merge-title');
           const sub = document.getElementById('r-merge-sub');

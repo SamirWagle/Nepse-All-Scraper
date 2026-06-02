@@ -165,16 +165,22 @@ def resolve_final_survivor(symbol: str) -> dict | None:
 
     chain = []
     seen = {symbol.upper()}
-    current = info
-    final_symbol = current.get("surviving_symbol") or current.get("merged_into")
-    final_name = current.get("surviving_name") or current.get("merged_into_name")
+    from_info = info  # entity that merges INTO the next hop (carries the merge date)
+    final_symbol = from_info.get("surviving_symbol") or from_info.get("merged_into")
+    final_name = from_info.get("surviving_name") or from_info.get("merged_into_name")
 
     while final_symbol and final_symbol.upper() not in seen:
         seen.add(final_symbol.upper())
-        chain.append({"symbol": final_symbol, "name": final_name})
+        # Date of this hop = merge date of the entity that merged into final_symbol.
+        chain.append({
+            "symbol": final_symbol,
+            "name": final_name,
+            "merged_date": from_info.get("merged_date"),
+        })
         nxt = meta.get(final_symbol.upper())
         if not isinstance(nxt, dict) or nxt.get("status") != "closed":
             break  # terminal: not in chain or still trading
+        from_info = nxt
         final_symbol = nxt.get("surviving_symbol") or nxt.get("merged_into")
         final_name = nxt.get("surviving_name") or nxt.get("merged_into_name")
 
@@ -625,6 +631,7 @@ class Handler(BaseHTTPRequestHandler):
                     if final:
                         data["final_survivor_symbol"] = final["symbol"]
                         data["final_survivor_name"] = final["name"]
+                        data["final_survivor_date"] = final["chain"][-1].get("merged_date")
                         data["merger_chain"] = final["chain"]
                 # Attach latest day OHLC from local prices.csv
                 try:
