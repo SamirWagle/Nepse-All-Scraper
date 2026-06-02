@@ -150,6 +150,42 @@ def get_merger_info(symbol: str) -> dict | None:
     info = _load_merger_meta().get(symbol.upper())
     return info if isinstance(info, dict) else None
 
+def resolve_final_survivor(symbol: str) -> dict | None:
+    """Walk the merger chain to the terminal surviving entity still trading.
+
+    Many NEPSE symbols merged in multiple steps (e.g. BOK -> BOKL -> GBIME).
+    Returns {"symbol", "name", "chain"} of the final survivor, or None if the
+    given symbol did not merge. The final survivor is the last symbol in the
+    chain that has no further merger entry.
+    """
+    meta = _load_merger_meta()
+    info = meta.get(symbol.upper())
+    if not isinstance(info, dict):
+        return None
+
+    chain = []
+    seen = {symbol.upper()}
+    current = info
+    final_symbol = current.get("surviving_symbol") or current.get("merged_into")
+    final_name = current.get("surviving_name") or current.get("merged_into_name")
+
+    while final_symbol and final_symbol.upper() not in seen:
+        seen.add(final_symbol.upper())
+        chain.append({"symbol": final_symbol, "name": final_name})
+        nxt = meta.get(final_symbol.upper())
+        if not isinstance(nxt, dict) or nxt.get("status") != "closed":
+            break  # terminal: not in chain or still trading
+        final_symbol = nxt.get("surviving_symbol") or nxt.get("merged_into")
+        final_name = nxt.get("surviving_name") or nxt.get("merged_into_name")
+
+    if not chain:
+        return None
+    return {
+        "symbol": chain[-1]["symbol"],
+        "name": chain[-1]["name"],
+        "chain": chain,
+    }
+
 # ── Company search ────────────────────────────────────────────────────────────
 _companies_cache: list | None = None
 
@@ -585,6 +621,11 @@ class Handler(BaseHTTPRequestHandler):
                     data["merged_from_name"] = merger_info.get("merged_from_name")
                     data["surviving_symbol"] = merger_info.get("surviving_symbol")
                     data["surviving_name"] = merger_info.get("surviving_name")
+                    final = resolve_final_survivor(symbol)
+                    if final:
+                        data["final_survivor_symbol"] = final["symbol"]
+                        data["final_survivor_name"] = final["name"]
+                        data["merger_chain"] = final["chain"]
                 # Attach latest day OHLC from local prices.csv
                 try:
                     csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"

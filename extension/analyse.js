@@ -997,10 +997,16 @@
       if (mergeBanner) {
         if (isClosedMerged) {
           const survivorName = d.merged_to_name || merger.merged_to_name || d.merged_to || merger.merged_to || null;
+          // Final survivor after walking multi-step merger chain (e.g. BOK -> BOKL -> GBIME).
+          const hasChain = Array.isArray(d.merger_chain) && d.merger_chain.length > 1;
+          const finalName = d.final_survivor_name || null;
+          const finalSym = d.final_survivor_symbol || null;
+          const showFinal = hasChain && finalSym && finalSym !== d.merged_to;
           const mergedSub = [
             d.listing_date ? `Listed <strong>${d.listing_date}</strong>` : null,
             (d.merged_date || merger.merged_date) ? `${closedLabel} <strong>${d.merged_date || merger.merged_date}</strong>` : null,
-            survivorName ? `${closedPrep} <strong>${survivorName}</strong>${d.merged_to && d.merged_to !== survivorName ? ` (${d.merged_to})` : ''}` : null
+            survivorName ? `${closedPrep} <strong>${survivorName}</strong>${d.merged_to && d.merged_to !== survivorName ? ` (${d.merged_to})` : ''}` : null,
+            showFinal ? `Now part of <strong>${finalName || finalSym}</strong> (${finalSym})` : null
           ].filter(Boolean).join(' · ');
           const title = document.getElementById('r-merge-title');
           const sub = document.getElementById('r-merge-sub');
