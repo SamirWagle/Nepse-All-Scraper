@@ -81,6 +81,8 @@
       LIFEINSURE: 'Life Insurance',
       LIFEINSURANCE: 'Life Insurance',
       LIFEINSURANCEIND: 'Life Insurance',
+      LIFEINSUIND: 'Life Insurance',
+      LIFEIND: 'Life Insurance',
       MANUIND: 'Manufacturing & Processing',
       MANUFACTUREIND: 'Manufacturing & Processing',
       MANUFACTURING: 'Manufacturing & Processing',

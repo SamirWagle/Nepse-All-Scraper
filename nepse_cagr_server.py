@@ -84,6 +84,8 @@ INDEX_ALIASES = {
     "LIFEINSURE":        "life_insurance",
     "LIFEINSURANCE":     "life_insurance",
     "LIFEINSURANCEIND":  "life_insurance",
+    "LIFEINSUIND":       "life_insurance",
+    "LIFEIND":           "life_insurance",
     "MANUIND":           "manufacturing",
     "MANUFACTUREIND":    "manufacturing",
     "MANUFACTURING":     "manufacturing",
