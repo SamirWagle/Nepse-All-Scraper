@@ -50,37 +50,56 @@ LISTING_DATE_OVERRIDES = {
 # ── Sub-index ticker aliases → data/index/{slug}/history.csv ──────────────────
 INDEX_ALIASES = {
     "NEPSE":             "nepse",
+    "NEPSEIND":          "nepse",
     "SENSITIVE":         "sensitive",
+    "SENSITIVEIND":      "sensitive",
     "SENSITIVEFLOAT":    "sensitive_float",
     "SFLOAT":            "sensitive_float",
+    "SFLOATIND":         "sensitive_float",
     "FLOAT":             "float",
+    "FLOATIND":          "float",
     "BANKEX":            "banking",
     "BANKING":           "banking",
+    "BANKINGIND":        "banking",
     "DEVBANKEX":         "development_bank",
     "DEVBANK":           "development_bank",
+    "DEVBANKIND":        "development_bank",
     "FINEX":             "finance",
     "FINANCE":           "finance",
+    "FINANCEIND":        "finance",
     "HOTLEX":            "hotels_tourism",
     "HOTEL":             "hotels_tourism",
+    "HOTELIND":          "hotels_tourism",
     "HYDROEX":           "hydropower",
     "HYDRO":             "hydropower",
+    "HYDROIND":          "hydropower",
+    "HYDROPOWERIND":     "hydropower",
     "INSURE":            "insurance",
     "INSURANCE":         "insurance",
+    "INSURANCEIND":      "insurance",
     "INVEST":            "investment",
     "INVESTMENT":        "investment",
+    "INVESTMENTIND":     "investment",
     "LIFEINSURE":        "life_insurance",
     "LIFEINSURANCE":     "life_insurance",
+    "LIFEINSURANCEIND":  "life_insurance",
     "MANUIND":           "manufacturing",
     "MANUFACTUREIND":    "manufacturing",
     "MANUFACTURING":     "manufacturing",
+    "MANUFACTURINGIND":  "manufacturing",
     "MICROEX":           "microfinance",
     "MICROFINANCE":      "microfinance",
+    "MICROFINANCEIND":   "microfinance",
     "MFEX":              "mutual_fund",
     "MUTUALFUND":        "mutual_fund",
+    "MUTUALFUNDIND":     "mutual_fund",
     "NONLIFEINSURE":     "non_life_insurance",
     "NONLIFEINSURANCE":  "non_life_insurance",
+    "NONLIFEIND":        "non_life_insurance",
     "OTHERS":            "others",
+    "OTHERSIND":         "others",
     "TRADING":           "trading",
+    "TRADINGIND":        "trading",
 }
 
 INDEX_DISPLAY_NAMES = {
@@ -245,7 +264,7 @@ DATA_DIR           = Path(__file__).parent / "data"
 
 # NEPSE symbols are 1-15 uppercase alphanumeric characters.
 # Validated before any filesystem access to prevent path traversal.
-_SYMBOL_RE = re.compile(r'^[A-Z0-9]{1,15}$')
+_SYMBOL_RE = re.compile(r'^[A-Z0-9]{1,20}$')
 
 
 def _load_interest_rates() -> dict:
