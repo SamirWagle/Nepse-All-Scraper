@@ -74,6 +74,7 @@ INDEX_ALIASES = {
     "HYDRO":             "hydropower",
     "HYDROIND":          "hydropower",
     "HYDROPOWERIND":     "hydropower",
+    "HYDROPOWIND":       "hydropower",
     "INSURE":            "insurance",
     "INSURANCE":         "insurance",
     "INSURANCEIND":      "insurance",

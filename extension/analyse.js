@@ -71,6 +71,7 @@
       HYDRO: 'HydroPower Index',
       HYDROIND: 'HydroPower Index',
       HYDROPOWERIND: 'HydroPower Index',
+      HYDROPOWIND: 'HydroPower Index',
       INSURE: 'Insurance',
       INSURANCE: 'Insurance',
       INSURANCEIND: 'Insurance',
