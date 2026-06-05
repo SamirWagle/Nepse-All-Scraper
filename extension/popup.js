@@ -24,7 +24,7 @@ const dateWrap        = document.getElementById('date-input-wrap');
 let isDark = true;
 themeBtn.onclick = () => {
   isDark = !isDark;
-  document.body.classList.toggle('light', !isDark);
+  document.documentElement.classList.toggle('light', !isDark);
   themeBtn.textContent = isDark ? '☀️' : '🌙';
 };
 

@@ -564,6 +564,44 @@ class Handler(BaseHTTPRequestHandler):
                     self._send_json(get_company_trading_range(symbol))
             else:
                 self._send_json({"error": "Invalid symbol"})
+        elif self.path.startswith("/price"):
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            symbol = qs.get("symbol", [""])[0].strip().upper()
+            date_str = qs.get("date", [""])[0].strip()
+            if not symbol or not _SYMBOL_RE.match(symbol):
+                self._send_json({"error": "Invalid symbol"})
+            elif not date_str:
+                self._send_json({"error": "Missing date parameter (YYYY-MM-DD)"})
+            else:
+                try:
+                    lookup_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+                except ValueError:
+                    self._send_json({"error": "Invalid date format. Use YYYY-MM-DD."})
+                    return
+                try:
+                    if symbol in INDEX_ALIASES:
+                        slug = INDEX_ALIASES[symbol]
+                        csv_path = DATA_DIR / "index" / slug / "history.csv"
+                    else:
+                        csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
+                    df = pd.read_csv(csv_path, parse_dates=["date"]).sort_values("date")
+                    before = df[df["date"].dt.date <= lookup_date]
+                    if before.empty:
+                        self._send_json({"error": f"No price data on or before {date_str} for {symbol}"})
+                    else:
+                        row = before.iloc[-1]
+                        price_col = "close" if "close" in row.index else "ltp"
+                        self._send_json({
+                            "symbol": symbol,
+                            "requested_date": date_str,
+                            "actual_date": str(row["date"].date()),
+                            "close": round(float(row[price_col]), 2),
+                        })
+                except FileNotFoundError:
+                    self._send_json({"error": f"No price data found for {symbol}"})
+                except Exception as ex:
+                    self._send_json({"error": str(ex)})
         elif self.path.startswith("/search"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)

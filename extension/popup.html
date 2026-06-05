@@ -1,61 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEPSE CAGR Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Dark mode (default) — matches screenshot */
-      --bg:          #0d1f2d;
-      --card-bg:     #112233;
-      --input-bg:    #1a2e3f;
-      --border:      #1e3a4f;
-      --text:        #cdd9e5;
-      --label:       #7a9bb5;
-      --accent:      #4ecdc4;
-      --accent-dark: #38b2aa;
-      --btn-bg:      #2a4a5e;
-      --btn-text:    #cdd9e5;
-      --toggle-bg:   #1a2e3f;
-      --toggle-on:   #4ecdc4;
-      --result-bg:   #0a1a28;
-      --cagr-color:  #4ecdc4;
-      --positive:    #4ecdc4;
-      --negative:    #ff6b6b;
-      --row-even:    #0f1e2b;
-      --row-odd:     #112233;
+      --bg:          #0a0e16;
+      --card-bg:     #111723;
+      --input-bg:    #161d2c;
+      --border:      #1f2738;
+      --border-strong:#2a3346;
+      --text:        #e7ecf3;
+      --label:       #6c768a;
+      --accent:      #5b9cff;
+      --accent-dark: #4a8cef;
+      --btn-bg:      #161d2c;
+      --btn-text:    #e7ecf3;
+      --toggle-bg:   #161d2c;
+      --toggle-on:   #5b9cff;
+      --result-bg:   #0d1320;
+      --cagr-color:  #5b9cff;
+      --positive:    #2ecc71;
+      --negative:    #ff5a5a;
+      --row-even:    #0d1320;
+      --row-odd:     #111723;
+      --shadow:      0 1px 0 rgba(0,0,0,.4), 0 1px 3px rgba(0,0,0,.25);
     }
 
-    body.light {
-      /* Solarized Light */
-      --bg:          #fdf6e3;
-      --card-bg:     #eee8d5;
-      --input-bg:    #fdf6e3;
-      --border:      #ccc4a8;
-      --text:        #657b83;
-      --label:       #839496;
-      --accent:      #2aa198;
-      --accent-dark: #1d8a82;
-      --btn-bg:      #d4c9b0;
-      --btn-text:    #073642;
-      --toggle-bg:   #d4c9b0;
-      --toggle-on:   #2aa198;
-      --result-bg:   #fdf6e3;
-      --cagr-color:  #2aa198;
-      --positive:    #2aa198;
-      --negative:    #dc322f;
-      --row-even:    #eee8d5;
-      --row-odd:     #fdf6e3;
+    html.light {
+      --bg:          #f6f7f9;
+      --card-bg:     #ffffff;
+      --input-bg:    #fafbfc;
+      --border:      #e6e8ec;
+      --border-strong:#d4d8de;
+      --text:        #0b1220;
+      --label:       #8b93a1;
+      --accent:      #2a6fdb;
+      --accent-dark: #1d5cc4;
+      --btn-bg:      #fafbfc;
+      --btn-text:    #0b1220;
+      --toggle-bg:   #fafbfc;
+      --toggle-on:   #2a6fdb;
+      --result-bg:   #fafbfc;
+      --cagr-color:  #2a6fdb;
+      --positive:    #0a8a4a;
+      --negative:    #c63b3b;
+      --row-even:    #fafbfc;
+      --row-odd:     #ffffff;
+      --shadow:      0 1px 0 rgba(15,23,42,.04), 0 1px 3px rgba(15,23,42,.06);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
 
     body {
       width: 400px;
       min-height: 200px;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       font-size: 13px;
+      -webkit-font-smoothing: antialiased;
       transition: background 0.3s, color 0.3s;
     }
 
@@ -104,7 +117,7 @@
     /* ── Analyse badge ── */
     .analyse-badge {
       background: var(--accent);
-      color: #0d1f2d;
+      color: #fff;
       font-size: 10px;
       font-weight: 700;
       padding: 3px 8px;
@@ -167,7 +180,7 @@
     }
     .period-toggle button.active {
       background: var(--accent);
-      color: #0d1f2d;
+      color: #fff;
     }
 
     .period-input-row {
@@ -248,13 +261,19 @@
     }
     #calc-btn:hover:not(:disabled) {
       background: var(--accent);
-      color: #0d1f2d;
+      color: #fff;
       border-color: var(--accent);
     }
     #calc-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
+    #calc-btn:active:not(:disabled) { transform: scale(0.98); }
+
+    .period-toggle button:active,
+    .end-date-clear:active,
+    .theme-toggle:active,
+    .analyse-badge:active { transform: scale(0.97); }
 
     /* ── Status ── */
     #status {
@@ -383,12 +402,9 @@
       font-size: 10px;
       font-weight: 700;
     }
-    .badge-bonus { background: #1a3a5c; color: #4ecdc4; }
-    .badge-cash  { background: #1a3a2a; color: #51cf66; }
-    .badge-right { background: #b45309; color: #fff; }
-    body.light .badge-bonus { background: #d0eae8; color: #2aa198; }
-    body.light .badge-cash  { background: #d0ead5; color: #22863a; }
-    body.light .badge-right { background: #f59e0b; color: #1a1a1a; }
+    .badge-bonus { background: color-mix(in srgb, var(--accent) 18%, transparent); color: var(--accent); }
+    .badge-cash  { background: color-mix(in srgb, var(--positive) 18%, transparent); color: var(--positive); }
+    .badge-right { background: color-mix(in srgb, #f0a500 18%, transparent); color: #f0a500; }
   </style>
 </head>
 <body>
