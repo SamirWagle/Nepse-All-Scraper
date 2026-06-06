@@ -602,6 +602,31 @@ class Handler(BaseHTTPRequestHandler):
                     self._send_json({"error": f"No price data found for {symbol}"})
                 except Exception as ex:
                     self._send_json({"error": str(ex)})
+        elif self.path.startswith("/series"):
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            symbol = qs.get("symbol", [""])[0].strip().upper()
+            if not symbol or not _SYMBOL_RE.match(symbol):
+                self._send_json({"error": "Invalid symbol"})
+            else:
+                try:
+                    if symbol in INDEX_ALIASES:
+                        slug = INDEX_ALIASES[symbol]
+                        csv_path = DATA_DIR / "index" / slug / "history.csv"
+                    else:
+                        csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
+                    df = pd.read_csv(csv_path, parse_dates=["date"]).sort_values("date")
+                    price_col = "close" if "close" in df.columns else "ltp"
+                    points = [
+                        {"date": str(d.date()), "close": round(float(c), 2)}
+                        for d, c in zip(df["date"], df[price_col])
+                        if pd.notna(c)
+                    ]
+                    self._send_json({"symbol": symbol, "points": points})
+                except FileNotFoundError:
+                    self._send_json({"error": f"No price data found for {symbol}"})
+                except Exception as ex:
+                    self._send_json({"error": str(ex)})
         elif self.path.startswith("/search"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
