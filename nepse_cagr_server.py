@@ -32,6 +32,7 @@ from nepse_cagr import (
     load_dividends,
     load_right_shares,
     FACE_VALUE,
+    FACE_VALUE_OVERRIDES,
     DAYS_PER_YEAR,
 )
 
@@ -491,6 +492,64 @@ def get_company_trading_range(symbol: str) -> dict:
         return {"symbol": symbol, "first_date": None, "last_date": None}
 
 
+def build_adjusted_series(symbol: str, df: pd.DataFrame) -> list:
+    """Bonus/right/cash-adjusted wealth-index series for a company.
+
+    Returns a list of {date, close} where `close` is the value of a holding
+    that started as 1 unit at the first price, accumulating bonus + right
+    units and cash dividends over time. Anchored so the first point equals
+    the first raw price, then diverges upward as corporate actions accrue —
+    making the line visually match the CAGR (total-return) story.
+
+    Cash dividends mirror nepse_cagr.calculate_cagr: declared on units held
+    BEFORE that year's bonus, not reinvested (added as a cash component).
+    Right-share cost is ignored here (rights add units only); fine for STC
+    which has none, and a small approximation otherwise.
+    """
+    face_value = FACE_VALUE_OVERRIDES.get(symbol.upper(), FACE_VALUE)
+
+    # Build a date-sorted action list: (date, kind, payload)
+    actions = []
+    for _, row in load_dividends(symbol, DATA_DIR).iterrows():
+        d = row.get("book_closure_date")
+        if pd.isna(d):
+            continue
+        actions.append((d.date(), "dividend", row))
+    for _, row in load_right_shares(symbol, DATA_DIR).iterrows():
+        d = row.get("closing_date")
+        if pd.isna(d):
+            continue
+        actions.append((d.date(), "right", row))
+    actions.sort(key=lambda a: a[0])
+
+    units = 1.0
+    cum_cash = 0.0
+    ai = 0  # pointer into sorted actions
+
+    points = []
+    for d, c in zip(df["date"], df[df.attrs["price_col"]]):
+        if pd.isna(c):
+            continue
+        row_date = d.date()
+        # Apply all corporate actions on or before this price date.
+        while ai < len(actions) and actions[ai][0] <= row_date:
+            _, kind, payload = actions[ai]
+            if kind == "right":
+                units += units * float(payload["ratio_multiplier"])
+            else:  # dividend
+                cash_pct = float(payload.get("cash_dividend", 0) or 0)
+                bonus_pct = float(payload.get("bonus_share", 0) or 0)
+                if cash_pct > 0:
+                    cum_cash += units * face_value * cash_pct
+                if bonus_pct > 0:
+                    units += units * bonus_pct
+            ai += 1
+        value = units * float(c) + cum_cash
+        points.append({"date": str(row_date), "close": round(value, 2)})
+
+    return points
+
+
 # ── Server-facing CAGR wrapper ────────────────────────────────────────────────
 def calculate_cagr(symbol: str, start_date: date,
                    initial_investment: float, end_date: date = None) -> dict:
@@ -606,23 +665,30 @@ class Handler(BaseHTTPRequestHandler):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
             symbol = qs.get("symbol", [""])[0].strip().upper()
+            adjusted = qs.get("adjusted", ["0"])[0] in ("1", "true", "yes")
             if not symbol or not _SYMBOL_RE.match(symbol):
                 self._send_json({"error": "Invalid symbol"})
             else:
                 try:
-                    if symbol in INDEX_ALIASES:
+                    is_index = symbol in INDEX_ALIASES
+                    if is_index:
                         slug = INDEX_ALIASES[symbol]
                         csv_path = DATA_DIR / "index" / slug / "history.csv"
                     else:
                         csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
                     df = pd.read_csv(csv_path, parse_dates=["date"]).sort_values("date")
                     price_col = "close" if "close" in df.columns else "ltp"
-                    points = [
-                        {"date": str(d.date()), "close": round(float(c), 2)}
-                        for d, c in zip(df["date"], df[price_col])
-                        if pd.notna(c)
-                    ]
-                    self._send_json({"symbol": symbol, "points": points})
+                    # Indices have no corporate actions — adjusted == raw.
+                    if adjusted and not is_index:
+                        df.attrs["price_col"] = price_col
+                        points = build_adjusted_series(symbol, df)
+                    else:
+                        points = [
+                            {"date": str(d.date()), "close": round(float(c), 2)}
+                            for d, c in zip(df["date"], df[price_col])
+                            if pd.notna(c)
+                        ]
+                    self._send_json({"symbol": symbol, "points": points, "adjusted": adjusted and not is_index})
                 except FileNotFoundError:
                     self._send_json({"error": f"No price data found for {symbol}"})
                 except Exception as ex:

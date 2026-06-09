@@ -1349,7 +1349,7 @@
       try {
         const port = await findPort();
         if (!port) throw new Error('Server not running');
-        const resp = await fetch(`http://localhost:${port}/series?symbol=${encodeURIComponent(sym)}`, { signal: AbortSignal.timeout(8000) });
+        const resp = await fetch(`http://localhost:${port}/series?symbol=${encodeURIComponent(sym)}&adjusted=1`, { signal: AbortSignal.timeout(8000) });
         const data = await resp.json();
         if (data.error) throw new Error(data.error);
         const points = data.points || [];
@@ -1367,7 +1367,7 @@
           position: 'right',
           ticks: { color: TICKER_OVERLAY_COLOR, callback: v => v.toLocaleString() },
           grid: { drawOnChartArea: false },
-          title: { display: true, text: `${sym} price`, color: TICKER_OVERLAY_COLOR },
+          title: { display: true, text: `${sym} adj. (bonus+div)`, color: TICKER_OVERLAY_COLOR },
         };
         bbChart.data.datasets.push({
           label: TICKER_OVERLAY_LABEL,
