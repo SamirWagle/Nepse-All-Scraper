@@ -312,6 +312,17 @@ function handleResult(data) {
   document.getElementById('cagr-meta').textContent =
     `${data.start_date} → ${data.end_date}  (${data.years} yrs)`;
 
+  const investmentVal = parseFloat(document.getElementById('investment-input').value) || 0;
+  const multiplierEl = document.getElementById('cagr-multiplier');
+  if (investmentVal > 0 && data.market_value > 0) {
+    const mult = data.market_value / investmentVal;
+    multiplierEl.textContent = mult.toFixed(2) + 'x';
+    multiplierEl.className = 'cagr-multiplier ' + (cagr >= 0 ? 'positive' : 'negative');
+    multiplierEl.style.display = '';
+  } else {
+    multiplierEl.style.display = 'none';
+  }
+
   // Summary cells
   document.getElementById('res-units').textContent  = data.is_index ? '— (Index)' : data.total_units_today + ' kitta';
   document.getElementById('res-ltp').textContent    = (data.is_index ? '' : 'Rs. ') + fmt(data.ltp);
