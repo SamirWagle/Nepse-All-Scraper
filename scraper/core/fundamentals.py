@@ -74,6 +74,66 @@ def _extract_fy(raw):
     return m.group(1) if m else None
 
 
+def _parse_nepali_fy(raw):
+    """Normalise Nepali fiscal year string to sortable form '082-083'.
+
+    Accepts: '082/083', '082-083', '2082/83', '2081-082', '081/82', etc.
+    Returns None for unrecognisable strings.
+    """
+    if not raw:
+        return None
+    s = str(raw).strip()
+    m = re.search(r'(\d{2,4})[/-](\d{2,3})', s)
+    if not m:
+        return None
+    left, right = m.group(1), m.group(2)
+
+    def to3(n):
+        n = int(n)
+        if n > 1000:
+            n %= 100
+        return f"{n:03d}"
+    return f"{to3(left)}-{to3(right)}"
+
+
+def _update_eps_history(symbol_dir: Path, eps: float, eps_fy: str) -> None:
+    """Append current EPS to eps_history.csv when this fiscal year is new.
+
+    File columns: fiscal_year (e.g. '082-083'), eps (float).
+    Idempotent — calling multiple times for the same FY is safe.
+    """
+    import csv as _csv
+    fy_norm = _parse_nepali_fy(eps_fy)
+    if not fy_norm or eps is None or eps <= 0:
+        return
+
+    csv_path = symbol_dir / "eps_history.csv"
+    existing: dict = {}
+    if csv_path.exists():
+        try:
+            with open(csv_path, newline="") as f:
+                for row in _csv.DictReader(f):
+                    try:
+                        existing[row["fiscal_year"]] = float(row["eps"])
+                    except (KeyError, ValueError):
+                        pass
+        except OSError:
+            pass
+
+    if fy_norm in existing:
+        return
+
+    write_header = not existing
+    try:
+        with open(csv_path, "a", newline="") as f:
+            writer = _csv.writer(f)
+            if write_header:
+                writer.writerow(["fiscal_year", "eps"])
+            writer.writerow([fy_norm, round(eps, 2)])
+    except OSError as exc:
+        logger.warning("Could not write eps_history for %s: %s", symbol_dir.name, exc)
+
+
 def _fetch_shareholding(symbol, session, timeout=15):
     """Scrape promoter/public share counts from ShareHubNepal.
 
@@ -232,6 +292,9 @@ class MerolaganiFundamentalsScraper:
             "scraped_at": datetime.now().isoformat(timespec="seconds"),
             "source": "merolagani.com",
         }
+        # Accumulate EPS history for Shiller P/E — appends to eps_history.csv
+        if result.get("eps") and result.get("eps_fy"):
+            _update_eps_history(Path(self.data_dir) / result["symbol"], result["eps"], result["eps_fy"])
         # Best-effort: merge shareholding + ATH from ShareHubNepal (free)
         result.update(_fetch_shareholding(symbol, self.session))
         return result
