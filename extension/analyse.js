@@ -1008,6 +1008,17 @@
       setText('r-pe', isClosedMerged ? '—' : (d.pe_ratio != null ? d.pe_ratio.toFixed(2) + '×' : '—'));
       setText('r-pe-sub', isClosedMerged ? `${closedLabel} company` : (d.pbv != null ? `P/B ${d.pbv.toFixed(2)}×` : ''));
 
+      if (isClosedMerged) {
+        setText('r-shiller-pe', '—');
+        setText('r-shiller-pe-sub', `${closedLabel} company`);
+      } else if (d.shiller_pe != null) {
+        setText('r-shiller-pe', d.shiller_pe.toFixed(2) + '×');
+        setText('r-shiller-pe-sub', `${d.shiller_pe_years}-yr avg EPS · nominal (unadj.)`);
+      } else {
+        setText('r-shiller-pe', '—');
+        setText('r-shiller-pe-sub', 'No EPS history available');
+      }
+
       setText('r-eps', isClosedMerged ? '—' : (d.eps != null ? 'Rs. ' + d.eps.toFixed(2) : '—'));
       setText('r-eps-sub', isClosedMerged ? `${closedLabel} company` : (d.eps_fy ? `FY ${d.eps_fy}` : ''));
 

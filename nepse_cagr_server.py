@@ -762,6 +762,26 @@ class Handler(BaseHTTPRequestHandler):
                         data["final_survivor_name"] = final["name"]
                         data["final_survivor_date"] = final["chain"][-1].get("merged_date")
                         data["merger_chain"] = final["chain"]
+                # Shiller P/E (CAPE) — current price / avg(eps, up to 10 years)
+                # Reads from eps_history.csv which accumulates yearly EPS per symbol.
+                import csv as _csv
+                eps_csv = DATA_DIR / "company-wise" / symbol / "eps_history.csv"
+                price = data.get("market_price")
+                if price and eps_csv.exists():
+                    try:
+                        with open(eps_csv, newline="") as _f:
+                            rows = [
+                                (r["fiscal_year"], float(r["eps"]))
+                                for r in _csv.DictReader(_f)
+                                if r.get("eps") and float(r["eps"]) > 0
+                            ]
+                        rows.sort(key=lambda x: x[0])
+                        recent = [e for _, e in rows[-10:]]
+                        if recent:
+                            data["shiller_pe"] = round(price / (sum(recent) / len(recent)), 2)
+                            data["shiller_pe_years"] = len(recent)
+                    except Exception:
+                        pass
                 # Attach latest day OHLC from local prices.csv
                 try:
                     csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
