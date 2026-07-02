@@ -1,5 +1,6 @@
 /**
  * popup.js — NEPSE CAGR Calculator Extension
+ * Depends on common.js (esc, fmt, findPort, localResolveCandidates, theme helpers).
  */
 
 const symbolInput     = document.getElementById('symbol-input');
@@ -21,9 +22,12 @@ const yearsWrap       = document.getElementById('years-input-wrap');
 const dateWrap        = document.getElementById('date-input-wrap');
 
 // ── Theme ─────────────────────────────────────────────────────────────────────
-let isDark = true;
+let isDark = loadThemeIsDark();
+document.documentElement.classList.toggle('light', !isDark);
+themeBtn.textContent = isDark ? '☀️' : '🌙';
 themeBtn.onclick = () => {
   isDark = !isDark;
+  saveThemeIsDark(isDark);
   document.documentElement.classList.toggle('light', !isDark);
   themeBtn.textContent = isDark ? '☀️' : '🌙';
 };
@@ -51,16 +55,18 @@ endDateClear.onclick = () => {
 
 // ── Resolve name/ticker → symbol via server search ────────────────────────────
 async function resolveSymbol(query) {
-  for (let p = 5758; p <= 5768; p++) {
-    try {
-      const probe = await fetch(`http://localhost:${p}/ping`, { signal: AbortSignal.timeout(300) });
-      if (!probe.ok) continue;
-      const resp = await fetch(`http://localhost:${p}/search?q=${encodeURIComponent(query)}&max_results=30`);
-      const data = await resp.json();
-      return { port: p, results: data.results || [] };
-    } catch(_) { continue; }
+  const port = await findPort();
+  if (!port) return { port: null, results: [] };
+  try {
+    const resp = await fetch(
+      `http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=30`,
+      { signal: AbortSignal.timeout(5000) }
+    );
+    const data = await resp.json();
+    return { port, results: data.results || [] };
+  } catch (_) {
+    return { port: null, results: [] };
   }
-  return { port: null, results: [] };
 }
 
 function normalizeQueryFallback(query) {
@@ -71,55 +77,9 @@ function looksLikeTicker(query) {
   return /^[A-Za-z0-9]{1,15}$/.test(query.trim());
 }
 
-const LOCAL_NAME_ALIASES = [
-  { pattern: /\beverest\b/i, symbol: 'EBL' },
-  { pattern: /\bnabil\b/i, symbol: 'NABIL' },
-  { pattern: /\bnepal life\b/i, symbol: 'NLIC' },
-  { pattern: /\bnic asia\b/i, symbol: 'NICA' },
-  { pattern: /\bglobal ime\b/i, symbol: 'GBIME' },
-  { pattern: /\bhimalayan bank\b/i, symbol: 'HBL' },
-  { pattern: /\bstandard chartered\b/i, symbol: 'SCB' },
-  { pattern: /\bprabhu bank\b/i, symbol: 'PRVU' },
-  { pattern: /\bmachhapuchchhre\b/i, symbol: 'MBL' },
-  { pattern: /\bkumari bank\b/i, symbol: 'KBL' },
-  { pattern: /\bmuktinath\b/i, symbol: 'MNBBL' },
-];
-
-const LOCAL_NAME_GROUPS = [
-  {
-    pattern: /\bhimalayan\b/i,
-    items: [
-      { symbol: 'HBL', name: 'Himalayan Bank Limited' },
-      { symbol: 'HDL', name: 'Himalayan Distillery Limited' },
-      { symbol: 'HEI', name: 'Himalayan Everest Insurance Limited' },
-      { symbol: 'HEIP', name: 'Himalayan Everest Insurance Limited Promoter' },
-      { symbol: 'HHL', name: 'Himalayan Hydropower Limited' },
-      { symbol: 'HLBSL', name: 'Himalayan Laghubitta Bittiya Sanstha Limited' },
-      { symbol: 'HLI', name: 'Himalayan Life Insurance Limited' },
-      { symbol: 'HPPL', name: 'Himalayan Power Partner Limited' },
-      { symbol: 'HRL', name: 'Himalayan Reinsurance Limited' },
-    ],
-  },
-];
-
-function localResolveSymbol(query) {
-  const q = query.trim();
-  const hit = LOCAL_NAME_ALIASES.find(item => item.pattern.test(q));
-  return hit ? hit.symbol : null;
-}
-
-function localResolveCandidates(query) {
-  const q = query.trim();
-  const grouped = LOCAL_NAME_GROUPS.find(item => item.pattern.test(q));
-  if (grouped) return grouped.items;
-  return LOCAL_NAME_ALIASES
-    .filter(item => item.pattern.test(q))
-    .map(item => ({ symbol: item.symbol, name: item.symbol }));
-}
-
 function showPickerInStatus(candidates, onSelect, onMore, hasMore = false) {
   const list = candidates.map(c =>
-    `<div class="picker-item" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</div>`
+    `<div class="picker-item" data-symbol="${esc(c.symbol)}"><strong>${esc(c.symbol)}</strong> — ${esc(c.name)}</div>`
   ).join('');
   const moreBtn = hasMore
     ? `<button class="picker-more-btn" type="button">Show 10 more</button>`
@@ -140,39 +100,38 @@ function showPickerInStatus(candidates, onSelect, onMore, hasMore = false) {
   }
 }
 
+function openAnalysePage(symbol) {
+  const url = chrome.runtime.getURL('analyse.html')
+    + (symbol ? '?symbol=' + encodeURIComponent(symbol) : '');
+  chrome.tabs.create({ url });
+}
+
 // ── Analyse Stock button — opens full-page analysis ───────────────────────────
 analyseBtn.onclick = async () => {
   const query = symbolInput.value.trim();
   if (!query) {
-    chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') });
+    openAnalysePage(null);
     return;
   }
   const { results } = await resolveSymbol(query);
   if (results.length === 0) {
     const localResults = localResolveCandidates(query);
     if (localResults.length === 1) {
-      const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(localResults[0].symbol);
-      chrome.tabs.create({ url });
+      openAnalysePage(localResults[0].symbol);
       return;
     } else if (localResults.length > 1) {
-    showPickerInStatus(localResults, sym => {
-      chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(sym) });
-    }, null, false);
+      showPickerInStatus(localResults, sym => openAnalysePage(sym), null, false);
       return;
     }
     if (looksLikeTicker(query)) {
-      const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(normalizeQueryFallback(query));
-      chrome.tabs.create({ url });
+      openAnalysePage(normalizeQueryFallback(query));
     } else {
       setStatus(`No company found for "${query}"`);
     }
   } else if (results.length === 1) {
-    const url = chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(results[0].symbol);
-    chrome.tabs.create({ url });
+    openAnalysePage(results[0].symbol);
   } else {
-    showPickerInStatus(results, sym => {
-      chrome.tabs.create({ url: chrome.runtime.getURL('analyse.html') + '?symbol=' + encodeURIComponent(sym) });
-    }, null, false);
+    showPickerInStatus(results, sym => openAnalysePage(sym), null, false);
   }
 };
 
@@ -199,7 +158,7 @@ calcBtn.onclick = async () => {
       return;
     } else if (localResults.length > 1) {
       calcBtn.disabled = false;
-    showPickerInStatus(localResults, sym => { symbolInput.value = sym; calcBtn.click(); }, null, false);
+      showPickerInStatus(localResults, sym => { symbolInput.value = sym; calcBtn.click(); }, null, false);
       return;
     }
     if (looksLikeTicker(query)) {
@@ -244,14 +203,15 @@ async function runCalc(symbol) {
   }
 
   // ── Try direct fetch first (engine already running) ───────────────────────
-  let enginePort = await findEnginePort();
+  const enginePort = await findPort();
 
   if (enginePort) {
     try {
       const resp = await fetch(`http://localhost:${enginePort}/cagr`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(10000)
       });
       const data = await resp.json();
       handleResult(data);
@@ -276,20 +236,6 @@ async function runCalc(symbol) {
     }
     calcBtn.disabled = false;
   });
-}
-
-// ── Find engine port ──────────────────────────────────────────────────────────
-async function findEnginePort() {
-  for (let p = 5758; p <= 5768; p++) {
-    try {
-      const probe = await fetch(`http://localhost:${p}/ping`, {
-        method: 'GET',
-        signal: AbortSignal.timeout(300)
-      });
-      if (probe.ok) return p;
-    } catch (_) { continue; }
-  }
-  return null;
 }
 
 // ── Display results ───────────────────────────────────────────────────────────
@@ -337,7 +283,7 @@ function handleResult(data) {
   if (!data.is_index && data.units_bought > 0) {
     const initTr = document.createElement('tr');
     initTr.innerHTML = `
-      <td>${data.start_date}</td>
+      <td>${esc(data.start_date)}</td>
       <td><span class="badge" style="background:rgba(78,205,196,0.15);color:var(--accent)">Purchase @ Rs.${fmt(data.start_price)}</span></td>
       <td>${Number(data.units_bought).toFixed(4)}</td>
       <td>—</td>
@@ -352,14 +298,14 @@ function handleResult(data) {
       if (ev.type === 'bonus') {
         badge = `<span class="badge badge-bonus">Bonus ${(ev.pct * 100).toFixed(0)}%</span>`;
       } else if (ev.type === 'right') {
-        badge = `<span class="badge badge-right">Rights ${ev.ratio} @ Rs.${ev.issue_price}</span>`;
+        badge = `<span class="badge badge-right">Rights ${esc(ev.ratio)} @ Rs.${esc(ev.issue_price)}</span>`;
       } else {
         badge = `<span class="badge badge-cash">Cash ${(ev.pct * 100).toFixed(1)}%</span>`;
       }
       const cashCol = ev.type === 'cash' ? 'Rs. ' + fmt(ev.cash_rs) : '—';
       tr.innerHTML = `
-        <td>${ev.date}</td>
-        <td>${badge} ${ev.fiscal_year || ''}</td>
+        <td>${esc(ev.date)}</td>
+        <td>${badge} ${esc(ev.fiscal_year || '')}</td>
         <td>${ev.units_after.toFixed(4)}</td>
         <td>${cashCol}</td>
       `;
@@ -368,10 +314,6 @@ function handleResult(data) {
   } else {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--label);padding:12px">No bonus/dividend events in this period</td></tr>';
   }
-}
-
-function fmt(n) {
-  return Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 });
 }
 
 function setStatus(msg) {

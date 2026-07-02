@@ -4,9 +4,7 @@
   "version": "1.0",
   "description": "Calculate CAGR of any NEPSE stock directly from your browser.",
   "permissions": [
-    "activeTab",
-    "nativeMessaging",
-    "tabs"
+    "nativeMessaging"
   ],
   "background": {
     "service_worker": "background.js"
@@ -27,12 +25,7 @@
     "128": "icons/icon128.png"
   },
   "host_permissions": [
-    "http://localhost/*"
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": ["buffett-indicator.pdf"],
-      "matches": ["<all_urls>"]
-    }
+    "http://localhost/*",
+    "https://api.coingecko.com/*"
   ]
 }

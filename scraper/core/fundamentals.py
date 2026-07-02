@@ -157,21 +157,24 @@ def _fetch_shareholding(symbol, session, timeout=15):
 
         promoter = _num("promoterShares")
         public = _num("publicShares")
+        listed = _num("listedShares")
         ath = _num("allTimeHigh")
         ath_date = _str("allTimeHighDate")
 
         out = {}
-        # ShareHubNepal sometimes reports promoterShares:0 for listed companies
-        # (e.g. UNL), which is bad data — a listed firm with a real public float
-        # still has promoter holding. Treat promoter==0 alongside public>0 as
-        # unreliable and skip, rather than overwriting good data with 100% public.
+        # ShareHubNepal sometimes reports promoterShares:0 when it has no data.
+        # Detect bad data by checking promoter+public != listedShares (mismatch means unreliable).
+        # If they sum correctly, promoter=0 is genuine (100% public company, e.g. AKJCL).
         shareholding_unreliable = (
-            promoter is not None and promoter == 0
-            and public is not None and public > 0
+            promoter is not None and public is not None and listed is not None
+            and abs((promoter + public) - listed) > 1
+        ) or (
+            promoter is not None and public is not None
+            and promoter == 0 and public == 0
         )
         if shareholding_unreliable:
             logger.warning(
-                "Skipping shareholding for %s: promoterShares=0 (likely bad source data)",
+                "Skipping shareholding for %s: promoter+public doesn't match listedShares (bad source data)",
                 symbol,
             )
         else:

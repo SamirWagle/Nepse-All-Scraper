@@ -1,5 +1,5 @@
     // ── Page switching ──
-    const backDestination = { buffett: 'nexttop', nexttop: 'bullbear', fdrates: 'nexttop' };
+    const backDestination = { buffett: 'nexttop', nexttop: 'bullbear', fdrates: 'nexttop', btc: 'bullbear' };
     let lastSearchedSymbol = null;
     const MERGED_COMPANIES = {
       HAMA: {
@@ -109,11 +109,14 @@
       document.getElementById('analyse-trigger').classList.remove('open');
       document.getElementById('back-btn').style.display = name === 'analyse' ? 'none' : 'inline-block';
       if (name === 'bullbear') {
-        buildChart();
+        if (!bbChart) buildChart();
         if (lastSearchedSymbol) doBullSearch(lastSearchedSymbol);
       }
       if (name === 'fdrates') {
         buildFdChart();
+      }
+      if (name === 'btc') {
+        buildBtcChart();
       }
     }
 
@@ -185,10 +188,15 @@
       e.stopPropagation();
       openBullBearFromQuery(document.getElementById('search-input').value.trim());
     });
+    document.getElementById('menu-btc').addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchPage('btc');
+    });
     document.getElementById('menu-technical').addEventListener('click', (e) => {
       e.stopPropagation();
       switchPage('technical');
     });
+    document.getElementById('btc-circle-btn').addEventListener('click', () => switchPage('btc'));
     document.getElementById('nexttop-btn').addEventListener('click', () => {
       switchPage('nexttop');
     });
@@ -224,22 +232,17 @@
       modalOverlay.style.display = 'flex';
     }
 
+    // Derived from the same bullTops/bearBottoms arrays the chart uses — single source of truth
     document.getElementById('show-bull-tops').addEventListener('click', () => {
-      showCycleModal('🐂 Bull Tops', [
-        { date: '2000-11-23', index: '545.82' },
-        { date: '2008-08-31', index: '1,175.38' },
-        { date: '2016-07-27', index: '1,881.45' },
-        { date: '2021-08-18', index: '3,198.60' },
-      ], 'bull');
+      showCycleModal('🐂 Bull Tops',
+        bullTops.filter(b => b.label.includes('Top')).map(b => ({ date: b.date, index: fmt(b.value) })),
+        'bull');
     });
 
     document.getElementById('show-bear-bottoms').addEventListener('click', () => {
-      showCycleModal('🐻 Bear Bottoms', [
-        { date: '2002-03-15', index: '186.22' },
-        { date: '2012-03-29', index: '298.90' },
-        { date: '2019-03-05', index: '1,098.95' },
-        { date: '2022-09-25', index: '1,815.13' },
-      ], 'bear');
+      showCycleModal('🐻 Bear Bottoms',
+        bearBottoms.map(b => ({ date: b.date, index: fmt(b.value) })),
+        'bear');
     });
 
     document.getElementById('cycle-modal-close').addEventListener('click', () => {
@@ -257,10 +260,12 @@
       if (!dateVal) { resultEl.textContent = 'Pick a date'; return; }
       resultEl.textContent = '⏳';
       try {
-        const resp = await fetch(`http://localhost:5758/price?symbol=${encodeURIComponent(sym)}&date=${encodeURIComponent(dateVal)}`);
+        const port = await findPort();
+        if (!port) { resultEl.textContent = '❌ Server not running'; return; }
+        const resp = await fetch(`http://localhost:${port}/price?symbol=${encodeURIComponent(sym)}&date=${encodeURIComponent(dateVal)}`, { signal: AbortSignal.timeout(10000) });
         const d = await resp.json();
         if (d.error) { resultEl.textContent = '❌ ' + d.error; return; }
-        resultEl.innerHTML = `<span style="color:var(--accent)">${sym}</span> · Rs. ${Number(d.close).toLocaleString('en-IN', { maximumFractionDigits: 2 })} <span style="color:var(--text-3);font-weight:400">(${d.actual_date})</span>`;
+        resultEl.innerHTML = `<span style="color:var(--accent)">${esc(sym)}</span> · Rs. ${Number(d.close).toLocaleString('en-IN', { maximumFractionDigits: 2 })} <span style="color:var(--text-3);font-weight:400">(${esc(d.actual_date)})</span>`;
       } catch (e) {
         resultEl.textContent = '❌ Server error';
       }
@@ -282,16 +287,22 @@
     });
 
     // ── Theme ──
-    let isDark = true;
+    let isDark = loadThemeIsDark();
+    document.documentElement.classList.toggle('light', !isDark);
+    document.getElementById('theme-btn').textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
     function toggleTheme() {
       isDark = !isDark;
-      if (isDark) {
-        document.documentElement.classList.remove('light');
-      } else {
-        document.documentElement.classList.add('light');
-      }
+      saveThemeIsDark(isDark);
+      document.documentElement.classList.toggle('light', !isDark);
       document.getElementById('theme-btn').textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
-      if (bbChart) { bbChart.destroy(); bbChart = null; buildChart(); }
+      // Destroy all charts so each rebuilds with new theme colors on next view
+      if (bbChart)  { bbChart.destroy();  bbChart = null; }
+      if (fdChart)  { fdChart.destroy();  fdChart = null; }
+      if (btcChart) { btcChart.destroy(); btcChart = null; }
+      const active = document.querySelector('.page.active').id.replace('page-', '');
+      if (active === 'bullbear') buildChart();
+      if (active === 'fdrates')  buildFdChart();
+      if (active === 'btc')      buildBtcChart();
     }
     document.getElementById('theme-btn').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -301,8 +312,11 @@
     document.getElementById('quit-btn').addEventListener('click', async (e) => {
       e.stopPropagation();
       const port = await findPort();
-      if (!port) { alert('Server not running.'); return; }
-      try { await fetch(`http://localhost:${port}/quit`); } catch(_) {}
+      if (!port) {
+        document.getElementById('quit-btn').textContent = '⚠️ Server not running';
+        return;
+      }
+      try { await fetch(`http://localhost:${port}/quit`, { signal: AbortSignal.timeout(3000) }); } catch(_) {}
       document.getElementById('quit-btn').textContent = '✓ Stopped';
       document.getElementById('quit-btn').disabled = true;
     });
@@ -343,7 +357,7 @@
       if (!INDEX_SYMBOL_MAP[symbol]) {
         try {
           if (port) {
-            const r = await fetch(`http://localhost:${port}/listing_date?symbol=${symbol}`);
+            const r = await fetch(`http://localhost:${port}/listing_date?symbol=${encodeURIComponent(symbol)}`, { signal: AbortSignal.timeout(10000) });
             const d = await r.json();
             if (d && d.listing_date) listingDate = d.listing_date;
           }
@@ -368,6 +382,7 @@
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload),
+              signal: AbortSignal.timeout(15000),
             });
             return { num: cycle.num, data: await resp.json() };
           } else {
@@ -403,7 +418,7 @@
             <div class="bull-box-title">${cycle.label}</div>
             <div class="bull-box-period">${cycle.period}</div>
             <div class="bull-box-na">—</div>
-            <div class="bull-box-note">Merged<br><span style="font-size:10px">Last traded: ${mergedDate}</span></div>
+            <div class="bull-box-note">Merged<br><span style="font-size:10px">Last traded: ${esc(mergedDate)}</span></div>
           </div>`;
         }
         if (!d || d.error) {
@@ -412,7 +427,7 @@
             <div class="bull-box-title">${cycle.label}</div>
             <div class="bull-box-period">${cycle.period}</div>
             <div class="bull-box-na">—</div>
-            <div class="bull-box-note">${noDataForCycle ? 'No data for this cycle' : (d?.error || 'No data')}</div>
+            <div class="bull-box-note">${noDataForCycle ? 'No data for this cycle' : esc(d?.error || 'No data')}</div>
           </div>`;
         }
         const ratio = d.todays_value / d.initial_investment;
@@ -429,14 +444,14 @@
               if (ev.type === 'bonus') {
                 badge = `<span class="badge badge-bonus">Bonus ${(ev.pct * 100).toFixed(0)}%</span>`;
               } else if (ev.type === 'right') {
-                badge = `<span class="badge badge-right">Rights ${ev.ratio} @ Rs.${ev.issue_price}</span>`;
+                badge = `<span class="badge badge-right">Rights ${esc(ev.ratio)} @ Rs.${esc(ev.issue_price)}</span>`;
               } else {
                 badge = `<span class="badge badge-cash">Cash ${(ev.pct * 100).toFixed(1)}%</span>`;
               }
               const cashCol = ev.type === 'cash' ? 'Rs. ' + fmt(ev.cash_rs) : '—';
               return `<tr>
-                <td>${ev.date}</td>
-                <td>${badge} <span class="ev-fy">${ev.fiscal_year || ''}</span></td>
+                <td>${esc(ev.date)}</td>
+                <td>${badge} <span class="ev-fy">${esc(ev.fiscal_year || '')}</span></td>
                 <td>${ev.units_after.toFixed(4)}</td>
                 <td>${cashCol}</td>
               </tr>`;
@@ -445,8 +460,8 @@
 
         return `<div class="bull-box">
           <div class="bull-box-title">${cycle.label}</div>
-          <div class="bull-box-period">${d.start_date} → ${d.end_date}</div>
-          <div class="bull-box-symbol">${symbol}</div>
+          <div class="bull-box-period">${esc(d.start_date)} → ${esc(d.end_date)}</div>
+          <div class="bull-box-symbol">${esc(symbol)}</div>
           <div class="bull-box-cagr" style="color:${cagrColor}">${d.cagr_pct >= 0 ? '+' : ''}${d.cagr_pct.toFixed(1)}% CAGR</div>
           <div class="bull-box-duration">⏱ ${d.years.toFixed(1)} yrs</div>
           <div class="bull-box-multi">📈 Investment ${verb} ~${multX}${soFar}</div>
@@ -499,44 +514,34 @@
       }).join('');
 
       const listedStr = listingDate
-        ? `<span style="font-size:11px;font-weight:500;color:var(--label);opacity:0.8;">🗓 Listed: ${listingDate}</span>`
+        ? `<span style="font-size:11px;font-weight:500;color:var(--label);opacity:0.8;">🗓 Listed: ${esc(listingDate)}</span>`
         : '';
       container.innerHTML = `
         <div class="bull-cycle-header" style="display:flex;align-items:center;justify-content:space-between;">
-          <span>📊 ${symbol} — Performance Across Bull Cycles</span>
+          <span>📊 ${esc(symbol)} — Performance Across Bull Cycles</span>
           ${listedStr}
         </div>
         <div class="bull-boxes-grid" id="stock-bull-cards-row">${boxes}</div>`;
 
-      // Compare to NEPSE button
+      // container.innerHTML above wiped any previous button/row — always recreate
       const hdr = container.querySelector('.bull-cycle-header');
-      let btn = document.getElementById('compare-nepse-btn');
-      if (!btn) {
-        btn = document.createElement('button');
-        btn.id = 'compare-nepse-btn';
-        btn.style.cssText = 'background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:20px;padding:4px 14px;font-size:0.78rem;font-weight:600;letter-spacing:0.03em;cursor:pointer;opacity:0.85;transition:opacity 0.2s;';
-        btn.onmouseenter = () => btn.style.opacity = 1;
-        btn.onmouseleave = () => btn.style.opacity = 0.85;
-        hdr.insertBefore(btn, hdr.lastElementChild);
-      }
+      const btn = document.createElement('button');
+      btn.id = 'compare-nepse-btn';
+      btn.style.cssText = 'background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:20px;padding:4px 14px;font-size:0.78rem;font-weight:600;letter-spacing:0.03em;cursor:pointer;opacity:0.85;transition:opacity 0.2s;';
+      btn.onmouseenter = () => btn.style.opacity = 1;
+      btn.onmouseleave = () => btn.style.opacity = 0.85;
+      hdr.insertBefore(btn, hdr.lastElementChild);
       btn.textContent = '📈 Compare to NEPSE';
-      btn.onclick = () => toggleNepseComparison(symbol, dataMap);
+      btn.onclick = () => toggleNepseComparison(symbol);
 
-      // Nepse row container
-      let nepseRow = document.getElementById('nepse-comparison-row');
-      if (!nepseRow) {
-        nepseRow = document.createElement('div');
-        nepseRow.id = 'nepse-comparison-row';
-        nepseRow.style.cssText = 'display:none;margin-top:10px;';
-        nepseRow.innerHTML = '<div style="font-size:11px;font-weight:700;color:var(--label);letter-spacing:0.08em;margin-bottom:8px;">NEPSE INDEX</div><div class="bull-boxes-grid" id="nepse-bull-cards-row"></div>';
-        container.appendChild(nepseRow);
-      } else {
-        nepseRow.style.display = 'none';
-        btn.textContent = '📈 Compare to NEPSE';
-      }
+      const nepseRow = document.createElement('div');
+      nepseRow.id = 'nepse-comparison-row';
+      nepseRow.style.cssText = 'display:none;margin-top:10px;';
+      nepseRow.innerHTML = '<div style="font-size:11px;font-weight:700;color:var(--label);letter-spacing:0.08em;margin-bottom:8px;">NEPSE INDEX</div><div class="bull-boxes-grid" id="nepse-bull-cards-row"></div>';
+      container.appendChild(nepseRow);
     }
 
-    async function toggleNepseComparison(symbol, dataMap) {
+    async function toggleNepseComparison(symbol) {
       const row = document.getElementById('nepse-comparison-row');
       const btn = document.getElementById('compare-nepse-btn');
       if (row.style.display !== 'none') {
@@ -557,7 +562,8 @@
           let data;
           if (port) {
             const resp = await fetch(`http://localhost:${port}/cagr`, {
-              method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload)
+              method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload),
+              signal: AbortSignal.timeout(15000)
             });
             data = await resp.json();
           } else {
@@ -606,7 +612,7 @@
             <div class="bull-box-title">${cycle.label}</div>
             <div class="bull-box-period">${cycle.period}</div>
             <div class="bull-box-na">—</div>
-            <div class="bull-box-note">${noDataForCycle ? 'No data for this cycle' : (d?.error || 'No data')}</div>
+            <div class="bull-box-note">${noDataForCycle ? 'No data for this cycle' : esc(d?.error || 'No data')}</div>
           </div>`;
         }
         const cagrColor = d.cagr_pct >= 0 ? 'var(--accent)' : 'var(--down)';
@@ -671,7 +677,7 @@
       const port = await findPort();
       if (!port) return { first_date: null, last_date: null };
       try {
-        const resp = await fetch(`http://localhost:${port}/trading_range?symbol=${encodeURIComponent(symbol)}`);
+        const resp = await fetch(`http://localhost:${port}/trading_range?symbol=${encodeURIComponent(symbol)}`, { signal: AbortSignal.timeout(10000) });
         const data = await resp.json();
         return data || { first_date: null, last_date: null };
       } catch(_) {
@@ -679,69 +685,9 @@
       }
     }
 
-    async function resolveSymbolPage(query, offset, limit) {
-      const port = await findPort();
-      if (!port) return { error: 'Server not running.' };
-      try {
-        const resp = await fetch(`http://localhost:${port}/search?q=${encodeURIComponent(query)}&max_results=${limit}&offset=${offset}`);
-        const data = await resp.json();
-        if (data.error) return { error: data.error };
-        return { results: data.results || [] };
-      } catch(e) {
-        return { error: e.message };
-      }
-    }
-
-    const LOCAL_NAME_ALIASES = [
-      { pattern: /\beverest\b/i, symbol: 'EBL' },
-      { pattern: /\bnabil\b/i, symbol: 'NABIL' },
-      { pattern: /\bnepal life\b/i, symbol: 'NLIC' },
-      { pattern: /\bnic asia\b/i, symbol: 'NICA' },
-      { pattern: /\bglobal ime\b/i, symbol: 'GBIME' },
-      { pattern: /\bhimalayan bank\b/i, symbol: 'HBL' },
-      { pattern: /\bstandard chartered\b/i, symbol: 'SCB' },
-      { pattern: /\bprabhu bank\b/i, symbol: 'PRVU' },
-      { pattern: /\bmachhapuchchhre\b/i, symbol: 'MBL' },
-      { pattern: /\bkumari bank\b/i, symbol: 'KBL' },
-      { pattern: /\bmuktinath\b/i, symbol: 'MNBBL' },
-    ];
-
-    const LOCAL_NAME_GROUPS = [
-      {
-        pattern: /\bhimalayan\b/i,
-        items: [
-          { symbol: 'HBL', name: 'Himalayan Bank Limited' },
-          { symbol: 'HDL', name: 'Himalayan Distillery Limited' },
-          { symbol: 'HEI', name: 'Himalayan Everest Insurance Limited' },
-          { symbol: 'HEIP', name: 'Himalayan Everest Insurance Limited Promoter' },
-          { symbol: 'HHL', name: 'Himalayan Hydropower Limited' },
-          { symbol: 'HLBSL', name: 'Himalayan Laghubitta Bittiya Sanstha Limited' },
-          { symbol: 'HLI', name: 'Himalayan Life Insurance Limited' },
-          { symbol: 'HPPL', name: 'Himalayan Power Partner Limited' },
-          { symbol: 'HRL', name: 'Himalayan Reinsurance Limited' },
-        ],
-      },
-    ];
-
-    function localResolveSymbol(query) {
-      const q = query.trim();
-      const hit = LOCAL_NAME_ALIASES.find(item => item.pattern.test(q));
-      return hit ? hit.symbol : null;
-    }
-
-    function localResolveCandidates(query) {
-      const q = query.trim();
-      const grouped = LOCAL_NAME_GROUPS.find(item => item.pattern.test(q));
-      if (grouped) return grouped.items;
-      return LOCAL_NAME_ALIASES
-        .filter(item => item.pattern.test(q))
-        .map(item => ({ symbol: item.symbol, name: item.symbol }));
-    }
-
-    function showSymbolPicker(candidates, onSelect) {
-      const statusEl = document.getElementById('page-status');
+    function showSymbolPicker(candidates, onSelect, statusEl = document.getElementById('page-status')) {
       const list = candidates.map(c =>
-        `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+        `<button class="picker-btn" data-symbol="${esc(c.symbol)}"><strong>${esc(c.symbol)}</strong> — ${esc(c.name)}</button>`
       ).join('');
       statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
       statusEl.querySelectorAll('.picker-btn').forEach(btn => {
@@ -764,39 +710,7 @@
           return;
         }
         const list = results.map(c =>
-          `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
-        ).join('');
-        const moreBtn = results.length === pageSize ? `<button class="picker-btn picker-more-btn" data-more="1">Show 10 more</button>` : '';
-        statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}${moreBtn}</div>`;
-        statusEl.querySelectorAll('.picker-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            if (btn.dataset.more) {
-              offset += pageSize;
-              render();
-              return;
-            }
-            statusEl.innerHTML = '';
-            onSelect(btn.dataset.symbol);
-          });
-        });
-      }
-
-      render();
-    }
-
-    function showPagedPicker(fetchPage, onSelect) {
-      const statusEl = document.getElementById('page-status');
-      let offset = 0;
-      const pageSize = 10;
-
-      async function render() {
-        const { results, error } = await fetchPage(offset, pageSize);
-        if (error) {
-          statusEl.textContent = '❌ ' + error;
-          return;
-        }
-        const list = results.map(c =>
-          `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
+          `<button class="picker-btn" data-symbol="${esc(c.symbol)}"><strong>${esc(c.symbol)}</strong> — ${esc(c.name)}</button>`
         ).join('');
         const moreBtn = results.length === pageSize ? `<button class="picker-btn picker-more-btn" data-more="1">Show 10 more</button>` : '';
         statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}${moreBtn}</div>`;
@@ -835,8 +749,7 @@
       showLtpWidget();
       document.getElementById('search-input').value = symbol;
       document.getElementById('page-status').textContent = '';
-      switchPage('bullbear');
-      doBullSearch(symbol);
+      switchPage('bullbear'); // switchPage already triggers doBullSearch for lastSearchedSymbol
     }
 
     async function doSearch() {
@@ -891,7 +804,7 @@
       }
       let data;
       try {
-        const resp = await fetch(`http://localhost:${port}/fundamentals?symbol=${encodeURIComponent(symbol)}`);
+        const resp = await fetch(`http://localhost:${port}/fundamentals?symbol=${encodeURIComponent(symbol)}`, { signal: AbortSignal.timeout(15000) });
         data = await resp.json();
       } catch (e) {
         document.getElementById('page-status').textContent = '❌ ' + e.message;
@@ -904,23 +817,7 @@
       showFundamentals(data);
     }
 
-    async function findPort() {
-      for (let p = 5758; p <= 5768; p++) {
-        try { const r = await fetch(`http://localhost:${p}/ping`, { signal: AbortSignal.timeout(300) }); if (r.ok) return p; } catch(_) {}
-      }
-      return null;
-    }
-
-    function fmt(n) { return Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 }); }
-
-    function fmtCompact(n) {
-      if (n == null || isNaN(n)) return '—';
-      const abs = Math.abs(n);
-      if (abs >= 1e9) return (n / 1e9).toFixed(2) + ' Arba';
-      if (abs >= 1e7) return (n / 1e7).toFixed(2) + ' Cr';
-      if (abs >= 1e5) return (n / 1e5).toFixed(2) + ' Lakh';
-      return Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 });
-    }
+    // findPort / fmt / fmtCompact now provided by common.js
 
     function setText(id, value) {
       const el = document.getElementById(id);
@@ -937,6 +834,9 @@
       const isAcquisition = (d.event_type || merger?.event_type) === 'acquisition';
       const closedLabel = isAcquisition ? 'Acquired' : 'Merged';
       const closedPrep = isAcquisition ? 'Acquired by' : 'Merged to';
+      // Null-safe view of merger for display code — server may send merge_status
+      // without a merger object for symbols not in MERGED_COMPANIES
+      const m = merger || {};
 
       // Hero
       const name = (d.company_name || d.symbol || '').replace(/\s*\([^)]*\)\s*$/, '').trim();
@@ -1031,38 +931,38 @@
         const yrs = (new Date() - new Date(d.listing_date)) / (1000 * 60 * 60 * 24 * 365.25);
         if (!isNaN(yrs) && yrs > 0) listingSub = `${yrs.toFixed(1)} years on NEPSE`;
       }
-      if (isClosedMerged && (d.merged_date || merger.merged_date)) listingSub = `${closedLabel} on ${d.merged_date || merger.merged_date}`;
-      if (isSurvivor && (d.merged_date || merger.merged_date)) listingSub = `Survived merger on ${d.merged_date || merger.merged_date}`;
+      if (isClosedMerged && (d.merged_date || m.merged_date)) listingSub = `${closedLabel} on ${d.merged_date || m.merged_date}`;
+      if (isSurvivor && (d.merged_date || m.merged_date)) listingSub = `Survived merger on ${d.merged_date || m.merged_date}`;
       setText('r-listing-sub', listingSub);
 
       const mergeBanner = document.getElementById('r-merge-banner');
       if (mergeBanner) {
         if (isClosedMerged) {
-          const survivorName = d.merged_to_name || merger.merged_to_name || d.merged_to || merger.merged_to || null;
+          const survivorName = d.merged_to_name || m.merged_to_name || d.merged_to || m.merged_to || null;
           // Final survivor after walking multi-step merger chain (e.g. BOK -> BOKL -> GBIME).
           const hasChain = Array.isArray(d.merger_chain) && d.merger_chain.length > 1;
           const finalName = d.final_survivor_name || null;
           const finalSym = d.final_survivor_symbol || null;
           const showFinal = hasChain && finalSym && finalSym !== d.merged_to;
           const mergedSub = [
-            d.listing_date ? `Listed <strong>${d.listing_date}</strong>` : null,
-            (d.merged_date || merger.merged_date) ? `${closedLabel} <strong>${d.merged_date || merger.merged_date}</strong>` : null,
-            survivorName ? `${closedPrep} <strong>${survivorName}</strong>${d.merged_to && d.merged_to !== survivorName ? ` (${d.merged_to})` : ''}` : null,
-            showFinal ? `Now part of <strong>${finalName || finalSym}</strong> (${finalSym})${d.final_survivor_date ? ` since <strong>${d.final_survivor_date}</strong>` : ''}` : null
+            d.listing_date ? `Listed <strong>${esc(d.listing_date)}</strong>` : null,
+            (d.merged_date || m.merged_date) ? `${closedLabel} <strong>${esc(d.merged_date || m.merged_date)}</strong>` : null,
+            survivorName ? `${closedPrep} <strong>${esc(survivorName)}</strong>${d.merged_to && d.merged_to !== survivorName ? ` (${esc(d.merged_to)})` : ''}` : null,
+            showFinal ? `Now part of <strong>${esc(finalName || finalSym)}</strong> (${esc(finalSym)})${d.final_survivor_date ? ` since <strong>${esc(d.final_survivor_date)}</strong>` : ''}` : null
           ].filter(Boolean).join(' · ');
           const title = document.getElementById('r-merge-title');
           const sub = document.getElementById('r-merge-sub');
-          if (title) title.textContent = d.merged_note || merger.note || (isAcquisition ? 'This company was acquired and is no longer actively trading.' : 'This company has been merged and is no longer actively trading.');
+          if (title) title.textContent = d.merged_note || m.note || (isAcquisition ? 'This company was acquired and is no longer actively trading.' : 'This company has been merged and is no longer actively trading.');
           if (sub) sub.innerHTML = mergedSub;
           mergeBanner.classList.add('show');
         } else if (isSurvivor) {
           const title = document.getElementById('r-merge-title');
           const sub = document.getElementById('r-merge-sub');
-          if (title) title.textContent = d.merged_note || merger.note || 'This company survived a merger and remains active.';
+          if (title) title.textContent = d.merged_note || m.note || 'This company survived a merger and remains active.';
           if (sub) sub.innerHTML = [
-            d.merged_date || merger.merged_date ? `Merger date <strong>${d.merged_date || merger.merged_date}</strong>` : null,
-            d.merged_from_name || merger.merged_from_name || d.merged_from || merger.merged_from ? `Merged from <strong>${d.merged_from_name || merger.merged_from_name || d.merged_from || merger.merged_from}</strong>` : null,
-            d.surviving_name || merger.surviving_name ? `Now operating as <strong>${d.surviving_name || merger.surviving_name}</strong>` : null,
+            d.merged_date || m.merged_date ? `Merger date <strong>${esc(d.merged_date || m.merged_date)}</strong>` : null,
+            d.merged_from_name || m.merged_from_name || d.merged_from || m.merged_from ? `Merged from <strong>${esc(d.merged_from_name || m.merged_from_name || d.merged_from || m.merged_from)}</strong>` : null,
+            d.surviving_name || m.surviving_name ? `Now operating as <strong>${esc(d.surviving_name || m.surviving_name)}</strong>` : null,
           ].filter(Boolean).join(' · ');
           mergeBanner.classList.add('show');
         } else {
@@ -1077,7 +977,7 @@
           changeEl.textContent = 'Closed';
           changeEl.className = 'change down';
         }
-        setText('r-asof', d.merged_date || merger.merged_date ? `${closedLabel} on ${d.merged_date || merger.merged_date}` : closedLabel);
+        setText('r-asof', d.merged_date || m.merged_date ? `${closedLabel} on ${d.merged_date || m.merged_date}` : closedLabel);
         const dayRange = document.getElementById('r-day-range');
         const w52Range = document.getElementById('r-52w-range');
         const avgVol = document.getElementById('r-avg-vol');
@@ -1155,7 +1055,7 @@
       const hh = npt.getUTCHours();
       const mm = npt.getUTCMinutes();
       const mins = hh * 60 + mm;
-      return mins >= 11 * 60 && mins <= 15 * 60;
+      return mins >= 11 * 60 && mins < 15 * 60;
     }
 
     // ── Bull & Bear Chart ──
@@ -1222,6 +1122,11 @@
 
     function buildChart() {
       if (bbChart) { bbChart.destroy(); bbChart = null; }
+      // Rebuild drops any ticker overlay dataset — reset the toggle button to match
+      const overlayBtn = document.getElementById('overlay-ticker-btn');
+      overlayBtn.style.background = 'transparent';
+      overlayBtn.style.color = TICKER_OVERLAY_COLOR;
+      overlayBtn.textContent = '📈 Overlay current ticker';
       const lineColor = isDark ? '#5b9cff' : '#2a6fdb';
       const estColor  = isDark ? 'rgba(91,156,255,0.5)' : 'rgba(42,111,219,0.5)';
       const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
@@ -1354,7 +1259,11 @@
       }
 
       const sym = lastSearchedSymbol;
-      if (!sym) { alert('Search a ticker first, then overlay it.'); return; }
+      if (!sym) {
+        btn.textContent = '⚠️ Search a ticker first';
+        setTimeout(() => { btn.textContent = '📈 Overlay current ticker'; }, 2500);
+        return;
+      }
 
       btn.textContent = '⏳ Loading…';
       try {
@@ -1397,8 +1306,8 @@
         btn.style.color = '#fff';
         btn.textContent = `✕ Remove ${sym}`;
       } catch (err) {
-        btn.textContent = '📈 Overlay current ticker';
-        alert(`Could not overlay ticker: ${err.message}`);
+        btn.textContent = `❌ ${err.message}`;
+        setTimeout(() => { btn.textContent = '📈 Overlay current ticker'; }, 2500);
       }
     }
 
@@ -1511,130 +1420,239 @@
     }
 
 
-        // ── CAGR page period toggle ──
-    let cagrUseYears = true;
-    document.getElementById('cagr-years-btn').onclick = () => {
-      cagrUseYears = true;
-      document.getElementById('cagr-years-btn').classList.add('active');
-      document.getElementById('cagr-date-btn').classList.remove('active');
-      document.getElementById('cagr-years').style.display = '';
-      document.getElementById('cagr-date-section').style.display = 'none';
-    };
-    document.getElementById('cagr-date-btn').onclick = () => {
-      cagrUseYears = false;
-      document.getElementById('cagr-date-btn').classList.add('active');
-      document.getElementById('cagr-years-btn').classList.remove('active');
-      document.getElementById('cagr-years').style.display = 'none';
-      document.getElementById('cagr-date-section').style.display = 'block';
-    };
-    document.getElementById('cagr-end-clear').onclick = () => {
-      document.getElementById('cagr-end-date').value = '';
-    };
+    // ── BTC Bull & Bear Cycles ──────────────────────────────────────────────
+    const BTC_CYCLE_BOTTOMS = [
+      { label: 'Sep 2011', date: '2011-09', price: 4.71 },
+      { label: 'Apr 2015', date: '2015-04', price: 227 },
+      { label: 'Nov 2018', date: '2018-11', price: 5722 },
+      { label: 'Dec 2022', date: '2022-12', price: 16626 },
+      { label: 'Jun 2026', date: '2026-06', price: 63067, current: true },
+    ];
 
-    // ── CAGR calculate ──
-    document.getElementById('cagr-btn').onclick = doCagr;
-    document.getElementById('cagr-symbol').addEventListener('keydown', e => { if (e.key === 'Enter') doCagr(); });
+    const BTC_FORWARD_RETURNS = [
+      { label: 'Sep 2011', price: 4.71,   m6: -3,  y1: 162, y2: 2551 },
+      { label: 'Apr 2015', price: 227,    m6: 25,  y1: 106, y2: 469  },
+      { label: 'Nov 2018', price: 5722,   m6: 36,  y1: 52,  y2: 185  },
+      { label: 'Dec 2022', price: 16626,  m6: 51,  y1: 154, y2: 529  },
+      { label: 'Jun 2026', price: 63067,  current: true },
+    ];
 
-    async function doCagr() {
-      const query = document.getElementById('cagr-symbol').value.trim();
-      if (!query) return;
-      document.getElementById('cagr-status').textContent = '⏳ Resolving...';
-      document.getElementById('cagr-results-area').style.display = 'none';
+    let btcChart = null;
+    let btcDataCache = null;
 
-      const { results, error } = await resolveSymbol(query);
-      if (error) { document.getElementById('cagr-status').textContent = '❌ ' + error; return; }
-      if (!results || results.length === 0) {
-        const localResults = localResolveCandidates(query);
-        if (localResults.length === 1) {
-          runCagrCalc(localResults[0].symbol);
-          return;
-        } else if (localResults.length > 1) {
-          const statusEl = document.getElementById('cagr-status');
-          const list = localResults.map(c =>
-            `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
-          ).join('');
-          statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
-          statusEl.querySelectorAll('.picker-btn').forEach(btn => {
-            btn.addEventListener('click', () => { statusEl.innerHTML = ''; runCagrCalc(btn.dataset.symbol); });
+    async function buildBtcChart() {
+      if (btcDataCache) {
+        renderBtcChart(btcDataCache);
+        fillBtcReturnsTable();
+        return;
+      }
+      const status = document.getElementById('btc-status');
+      status.textContent = 'Loading BTC price data…';
+      try {
+        const resp = await fetch(
+          'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=max&interval=weekly',
+          { signal: AbortSignal.timeout(15000) }
+        );
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const json = await resp.json();
+        btcDataCache = json.prices;
+        status.textContent = '';
+        renderBtcChart(btcDataCache);
+        fillBtcReturnsTable();
+      } catch (e) {
+        status.textContent = '❌ Failed to load BTC data: ' + e.message;
+      }
+    }
+
+    const BTC_BULL_CYCLES = [
+      { start: '2010-07', end: '2011-06', label: 'Bull 1', color: 'rgba(78,205,196,0.13)'  },
+      { start: '2011-09', end: '2013-11', label: 'Bull 2', color: 'rgba(102,187,106,0.13)' },
+      { start: '2015-04', end: '2017-12', label: 'Bull 3', color: 'rgba(255,193,7,0.11)'   },
+      { start: '2018-11', end: '2021-11', label: 'Bull 4', color: 'rgba(171,71,188,0.13)'  },
+      { start: '2022-12', end: '2099-01', label: 'Bull 5', color: 'rgba(78,205,196,0.09)'  },
+    ];
+    const BTC_TOPS = [
+      { date: '2011-06', label: 'Bull 1 Top\n$31'    },
+      { date: '2013-11', label: 'Bull 2 Top\n$1,147' },
+      { date: '2017-12', label: 'Bull 3 Top\n$19,783'},
+      { date: '2021-11', label: 'Bull 4 Top\n$69,000'},
+    ];
+    const BTC_BOTTOMS = [
+      { date: '2011-09', label: 'Bear 1\n$4.71'    },
+      { date: '2015-04', label: 'Bear 2\n$227'     },
+      { date: '2018-11', label: 'Bear 3\n$5,722'   },
+      { date: '2022-12', label: 'Bear 4\n$16,626'  },
+      { date: '2026-06', label: 'Signal\n$63,067'  },
+    ];
+
+    function renderBtcChart(prices) {
+      if (btcChart) { btcChart.destroy(); btcChart = null; }
+      const labels = prices.map(p => new Date(p[0]).toISOString().slice(0, 10));
+      const values = prices.map(p => p[1]);
+
+      const topData    = labels.map((l, i) => BTC_TOPS.find(b => l.startsWith(b.date))    ? values[i] : null);
+      const bottomData = labels.map((l, i) => BTC_BOTTOMS.find(b => l.startsWith(b.date)) ? values[i] : null);
+
+      const isDark    = !document.documentElement.classList.contains('light');
+      const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
+      const textColor = isDark ? '#7a9bb5' : '#657b83';
+      const upColor   = isDark ? '#2ecc71' : '#0a8a4a';
+      const downColor = isDark ? '#ff5a5a' : '#c63b3b';
+
+      const btcCyclePlugin = {
+        id: 'btcCycleBg',
+        beforeDraw(chart) {
+          const { ctx, chartArea, scales: { x } } = chart;
+          if (!chartArea) return;
+          const dark = !document.documentElement.classList.contains('light');
+          BTC_BULL_CYCLES.forEach(cycle => {
+            let si = labels.findIndex(l => l >= cycle.start);
+            let ei = labels.findIndex(l => l >= cycle.end);
+            if (si === -1) si = 0;
+            if (ei === -1) ei = labels.length - 1;
+            if (si > ei) return;
+            const x0 = x.getPixelForValue(si);
+            const x1 = x.getPixelForValue(ei);
+            ctx.save();
+            ctx.fillStyle = cycle.color;
+            ctx.fillRect(x0, chartArea.top, x1 - x0, chartArea.height);
+            ctx.fillStyle = dark ? 'rgba(205,217,229,0.55)' : 'rgba(7,54,66,0.45)';
+            ctx.font = 'bold 11px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(cycle.label, (x0 + x1) / 2, chartArea.top + 16);
+            ctx.restore();
           });
-          return;
+        },
+      };
+
+      btcChart = new Chart(document.getElementById('btc-chart'), {
+        type: 'line',
+        plugins: [btcCyclePlugin],
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'BTC/USD',
+              data: values,
+              borderColor: '#f7931a',
+              borderWidth: 1.5,
+              pointRadius: 0,
+              pointHoverRadius: 3,
+              fill: true,
+              backgroundColor: isDark ? 'rgba(247,147,26,0.04)' : 'rgba(247,147,26,0.07)',
+              tension: 0.3,
+              spanGaps: false,
+            },
+            {
+              label: 'Bull Top',
+              data: topData,
+              borderColor: 'transparent',
+              backgroundColor: upColor,
+              pointRadius: 8,
+              pointStyle: 'triangle',
+              rotation: 0,
+              pointHoverRadius: 10,
+              showLine: false,
+            },
+            {
+              label: 'Bear Bottom',
+              data: bottomData,
+              borderColor: 'transparent',
+              backgroundColor: downColor,
+              pointRadius: 8,
+              pointStyle: 'triangle',
+              rotation: 180,
+              pointHoverRadius: 10,
+              showLine: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          animation: { duration: 600 },
+          scales: {
+            x: {
+              ticks: {
+                color: textColor,
+                maxTicksLimit: 12,
+                maxRotation: 0,
+                callback(val) {
+                  const l = this.getLabelForValue(val);
+                  return l ? l.slice(0, 7) : '';
+                },
+              },
+              grid: { color: gridColor },
+            },
+            y: {
+              type: 'logarithmic',
+              ticks: {
+                color: textColor,
+                callback(v) {
+                  if (v >= 1000000) return '$' + (v / 1000000).toFixed(0) + 'M';
+                  if (v >= 1000)    return '$' + (v / 1000).toFixed(0) + 'k';
+                  if (v >= 1)       return '$' + v.toFixed(0);
+                  return '$' + v.toFixed(2);
+                },
+              },
+              grid: { color: gridColor },
+            },
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label(ctx) {
+                  const v = ctx.parsed.y;
+                  return ' $' + (v >= 1
+                    ? v.toLocaleString('en-US', { maximumFractionDigits: 0 })
+                    : v.toFixed(4));
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+
+    function fillBtcReturnsTable() {
+      const tbody = document.getElementById('btc-returns-body');
+      if (!tbody) return;
+      const fmtPct = (v) => `<span class="${v >= 0 ? 'val-bull' : 'val-bear'}">${v >= 0 ? '+' : ''}${v}%</span>`;
+      const fmtPrice = (p) => '$' + p.toLocaleString('en-US', { maximumFractionDigits: 0 });
+      let html = '';
+      BTC_FORWARD_RETURNS.forEach(row => {
+        if (row.current) {
+          html += `<tr style="border-top:1px solid var(--border);background:rgba(247,147,26,0.06);">
+            <td style="padding:10px 14px;font-weight:600;color:#f7931a;">${row.label} ▶ now</td>
+            <td style="padding:10px 14px;text-align:right;">${fmtPrice(row.price)}</td>
+            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">in progress</td>
+            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">in progress</td>
+            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">in progress</td>
+          </tr>`;
+        } else {
+          html += `<tr style="border-top:1px solid var(--border);">
+            <td style="padding:10px 14px;">${row.label}</td>
+            <td style="padding:10px 14px;text-align:right;">${fmtPrice(row.price)}</td>
+            <td style="padding:10px 14px;text-align:right;">${fmtPct(row.m6)}</td>
+            <td style="padding:10px 14px;text-align:right;">${fmtPct(row.y1)}</td>
+            <td style="padding:10px 14px;text-align:right;">${fmtPct(row.y2)}</td>
+          </tr>`;
         }
-        document.getElementById('cagr-status').textContent = '❌ No company found for "' + query + '"';
-        return;
-      }
-
-      if (results.length > 1) {
-        const statusEl = document.getElementById('cagr-status');
-        const list = results.map(c =>
-          `<button class="picker-btn" data-symbol="${c.symbol}"><strong>${c.symbol}</strong> — ${c.name}</button>`
-        ).join('');
-        statusEl.innerHTML = `<div class="picker-wrap"><div class="picker-label">Multiple matches — pick one:</div>${list}</div>`;
-        statusEl.querySelectorAll('.picker-btn').forEach(btn => {
-          btn.addEventListener('click', () => { statusEl.innerHTML = ''; runCagrCalc(btn.dataset.symbol); });
-        });
-        return;
-      }
-      runCagrCalc(results[0].symbol);
-    }
-
-    async function runCagrCalc(symbol) {
-      document.getElementById('cagr-symbol').value = symbol;
-      const investment = parseFloat(document.getElementById('cagr-invest').value) || 100000;
-      const payload = { symbol, investment };
-      if (cagrUseYears) {
-        payload.years = parseFloat(document.getElementById('cagr-years').value) || 5;
-      } else {
-        payload.start_date = document.getElementById('cagr-date').value;
-        const endDateVal = document.getElementById('cagr-end-date').value;
-        if (endDateVal) payload.end_date = endDateVal;
-      }
-
-      document.getElementById('cagr-status').textContent = '⏳ Calculating...';
-      document.getElementById('cagr-results-area').style.display = 'none';
-
-      let port = await findPort();
-      let data;
-      if (port) {
-        try {
-          const resp = await fetch(`http://localhost:${port}/cagr`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          data = await resp.json();
-        } catch(e) { document.getElementById('cagr-status').textContent = '❌ ' + e.message; return; }
-      } else {
-        document.getElementById('cagr-status').textContent = '⚙️ Starting engine...';
-        data = await new Promise(resolve => { chrome.runtime.sendMessage({ action: 'cagrViaNative', payload }, resolve); });
-      }
-      if (!data || data.error) { document.getElementById('cagr-status').textContent = '❌ ' + (data?.error || 'Error'); return; }
-      showCagrResults(data);
-    }
-
-    function showCagrResults(d) {
-      document.getElementById('cagr-status').textContent = '';
-      document.getElementById('cagr-results-area').style.display = 'block';
-      document.getElementById('cr-symbol').textContent = d.symbol;
-      const el = document.getElementById('cr-cagr');
-      el.textContent = (d.cagr_pct >= 0 ? '+' : '') + d.cagr_pct.toFixed(2) + '%';
-      el.className = 'cagr-hero-value ' + (d.cagr_pct >= 0 ? 'pos' : 'neg');
-      document.getElementById('cr-meta').textContent = `${d.start_date} → ${d.end_date}  (${d.years} years)`;
-      document.getElementById('cr-start-price').textContent = 'Rs. ' + fmt(d.start_price);
-      document.getElementById('cr-ltp').textContent         = 'Rs. ' + fmt(d.ltp);
-      document.getElementById('cr-units').textContent       = d.total_units_today + ' kitta';
-      document.getElementById('cr-market').textContent      = 'Rs. ' + fmt(d.market_value);
-      document.getElementById('cr-divs').textContent        = 'Rs. ' + fmt(d.total_cash_dividends);
-      document.getElementById('cr-today').textContent       = 'Rs. ' + fmt(d.todays_value);
-      document.getElementById('cr-invest').textContent      = 'Rs. ' + fmt(d.initial_investment);
-      document.getElementById('cr-years').textContent       = d.years + ' yrs';
-      const tbody = document.getElementById('cr-events');
-      tbody.innerHTML = '';
-      if (d.events && d.events.length > 0) {
-        d.events.forEach(ev => {
-          const tr = document.createElement('tr');
-          const badge = ev.type === 'bonus'
-            ? `<span class="badge badge-bonus">Bonus ${(ev.pct*100).toFixed(0)}%</span>`
-            : `<span class="badge badge-cash">Cash ${(ev.pct*100).toFixed(1)}%</span>`;
-          tr.innerHTML = `<td>${ev.date}</td><td>${badge}</td><td>${ev.fiscal_year || '—'}</td><td>${ev.units_after.toFixed(4)}</td><td>${ev.type === 'cash' ? 'Rs. ' + fmt(ev.cash_rs) : '—'}</td>`;
-          tbody.appendChild(tr);
-        });
-      } else {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--label);padding:16px">No events in this period</td></tr>';
-      }
+      });
+      html += `<tr style="border-top:2px solid var(--border-strong);background:var(--row-even);">
+        <td style="padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Median</td>
+        <td></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+31%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+130%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+499%</span></td>
+      </tr>
+      <tr style="background:var(--row-odd);">
+        <td style="padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Worst case</td>
+        <td></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bear">-3%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+52%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+185%</span></td>
+      </tr>`;
+      tbody.innerHTML = html;
     }
