@@ -134,11 +134,61 @@ def _update_eps_history(symbol_dir: Path, eps: float, eps_fy: str) -> None:
         logger.warning("Could not write eps_history for %s: %s", symbol_dir.name, exc)
 
 
+def _update_financial_history(symbol_dir: Path, record: dict) -> None:
+    """Accumulate yearly financial snapshots to financial_history.csv.
+
+    Columns: fiscal_year, net_profit, total_revenue, npl_pct, book_value, dividend_pct
+    Idempotent per fiscal_year — only appends when a new FY is seen.
+    """
+    import csv as _csv
+    fy = record.get("fiscal_year")
+    if not fy:
+        return
+    csv_path = symbol_dir / "financial_history.csv"
+    COLS = ["fiscal_year", "net_profit", "total_revenue", "npl_pct", "book_value", "dividend_pct"]
+    existing: dict = {}
+    if csv_path.exists():
+        try:
+            with open(csv_path, newline="") as f:
+                for row in _csv.DictReader(f):
+                    existing[row["fiscal_year"]] = row
+        except OSError:
+            pass
+    if fy in existing:
+        return
+    write_header = not existing
+    try:
+        with open(csv_path, "a", newline="") as f:
+            writer = _csv.DictWriter(f, fieldnames=COLS)
+            if write_header:
+                writer.writeheader()
+            writer.writerow({c: record.get(c, "") for c in COLS})
+    except OSError as exc:
+        logger.warning("Could not write financial_history for %s: %s", symbol_dir.name, exc)
+
+
+def _read_financial_history(symbol_dir: Path) -> list:
+    """Return last 3 years of financial_history.csv rows, newest first."""
+    import csv as _csv
+    csv_path = symbol_dir / "financial_history.csv"
+    if not csv_path.exists():
+        return []
+    try:
+        with open(csv_path, newline="") as f:
+            rows = list(_csv.DictReader(f))
+        rows.sort(key=lambda r: r.get("fiscal_year", ""), reverse=True)
+        return rows[:3]
+    except OSError:
+        return []
+
+
 def _fetch_shareholding(symbol, session, timeout=15):
-    """Scrape promoter/public share counts from ShareHubNepal.
+    """Scrape promoter/public share counts and financial metrics from ShareHubNepal.
 
     Returns dict with keys: promoter_shares, public_shares, promoter_pct,
-    public_pct, all_time_high, all_time_high_date. Empty dict on failure.
+    public_pct, all_time_high, all_time_high_date, and best-effort financial
+    fields: net_profit_sharehub, total_revenue_sharehub, npl_pct_sharehub.
+    Empty dict on failure.
     """
     try:
         url = f"{SHAREHUB_URL}/{symbol}"
@@ -191,6 +241,15 @@ def _fetch_shareholding(symbol, session, timeout=15):
             out["all_time_high"] = ath
         if ath_date:
             out["all_time_high_date"] = ath_date
+
+        # Extract additional fields confirmed present in sharehubnepal inline JSON.
+        paid_up = _num("paidUpCapital")
+        bonus_val = _num("bonus")
+        if paid_up is not None:
+            out["paid_up_capital"] = paid_up
+        if bonus_val is not None:
+            out["bonus_dividend_pct"] = bonus_val
+
         return out
     except Exception as exc:
         logger.warning("Shareholding scrape failed for %s: %s", symbol, exc)
@@ -298,8 +357,27 @@ class MerolaganiFundamentalsScraper:
         # Accumulate EPS history for Shiller P/E — appends to eps_history.csv
         if result.get("eps") and result.get("eps_fy"):
             _update_eps_history(Path(self.data_dir) / result["symbol"], result["eps"], result["eps_fy"])
-        # Best-effort: merge shareholding + ATH from ShareHubNepal (free)
+        # Best-effort: merge shareholding + ATH + financial metrics from ShareHubNepal
         result.update(_fetch_shareholding(symbol, self.session))
+
+        # Derived: net_profit = EPS × shares_outstanding (current FY only)
+        if result.get("eps") and result.get("shares_outstanding"):
+            result["net_profit"] = round(result["eps"] * result["shares_outstanding"], 2)
+
+        # Accumulate financial snapshot for 3-year history
+        symbol_dir = Path(self.data_dir) / result["symbol"]
+        _update_financial_history(symbol_dir, {
+            "fiscal_year":  result.get("eps_fy", ""),
+            "net_profit":   result.get("net_profit", ""),
+            "total_revenue": result.get("total_revenue", ""),
+            "npl_pct":      result.get("npl_pct", ""),
+            "book_value":   result.get("book_value", ""),
+            "dividend_pct": result.get("dividend_pct", ""),
+        })
+
+        # Attach last 3 years of accumulated history
+        result["financial_history"] = _read_financial_history(symbol_dir)
+
         return result
 
 
