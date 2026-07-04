@@ -693,6 +693,19 @@ class Handler(BaseHTTPRequestHandler):
                     self._send_json({"error": f"No price data found for {symbol}"})
                 except Exception as ex:
                     self._send_json({"error": str(ex)})
+        elif self.path == "/btc_series":
+            try:
+                df = pd.read_csv(DATA_DIR / "btc" / "history.csv")
+                points = [
+                    {"date": str(d), "close": float(c)}
+                    for d, c in zip(df["date"], df["close"])
+                    if pd.notna(c)
+                ]
+                self._send_json({"symbol": "BTC-USD", "points": points})
+            except FileNotFoundError:
+                self._send_json({"error": "No BTC data — run scraper/btc_scraper.py"})
+            except Exception as ex:
+                self._send_json({"error": str(ex)})
         elif self.path.startswith("/search"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)

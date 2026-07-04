@@ -258,21 +258,6 @@
       </div>
 
       <!-- cycle modal -->
-      <div id="cycle-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(3px);">
-        <div id="cycle-modal-box" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;min-width:300px;max-width:400px;position:relative;box-shadow:0 12px 40px rgba(0,0,0,0.5);">
-          <div id="cycle-modal-title" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:16px;"></div>
-          <table style="width:100%;border-collapse:collapse;font-size:13px;">
-            <thead><tr>
-              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-size:11px;border-bottom:1px solid var(--border);">#</th>
-              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-size:11px;border-bottom:1px solid var(--border);">Date</th>
-              <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-size:11px;border-bottom:1px solid var(--border);">Index</th>
-            </tr></thead>
-            <tbody id="cycle-modal-body"></tbody>
-          </table>
-          <button id="cycle-modal-close" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-3);font-size:20px;cursor:pointer;line-height:1;">×</button>
-        </div>
-      </div>
-
       <div id="bull-cycle-results"></div>
     </div>
   </div>
@@ -283,14 +268,19 @@
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
         <div>
           <div class="bb-title">₿ BTC Bull &amp; Bear Cycles</div>
-          <div class="bb-sub">Historical Bitcoin cycle bottoms · Data: CoinGecko + Blockware Intelligence</div>
+          <div class="bb-sub">Historical Bitcoin cycle tops &amp; bottoms · Data: Yahoo Finance</div>
+        </div>
+        <div style="display:flex;gap:8px;align-self:flex-start;flex-wrap:wrap;">
+          <button id="btc-scale-linear" style="background:transparent;border:1px solid #f7931a;color:#f7931a;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.4px;white-space:nowrap;opacity:0.45;">Regular</button>
+          <button id="btc-scale-log" style="background:transparent;border:1px solid #f7931a;color:#f7931a;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.4px;white-space:nowrap;">Logarithmic</button>
         </div>
       </div>
 
       <div class="bb-legend">
-        <div class="bb-legend-item"><div class="legend-line" style="background:#f7931a"></div> BTC/USD (log scale)</div>
-        <div class="bb-legend-item"><div class="legend-dot" style="background:var(--up)"></div> Bull top</div>
-        <div class="bb-legend-item"><div class="legend-dot" style="background:var(--down)"></div> Bear bottom · Blockware signal</div>
+        <div class="bb-legend-item"><div class="legend-line" style="background:#f7931a"></div> BTC/USD</div>
+        <div class="bb-legend-item bb-legend-btn" id="btc-show-tops" style="cursor:pointer"><div class="legend-dot" style="background:var(--up)"></div> Cycle top</div>
+        <div class="bb-legend-item bb-legend-btn" id="btc-show-bottoms" style="cursor:pointer"><div class="legend-dot" style="background:var(--down)"></div> Cycle bottom</div>
+        <div class="bb-legend-item"><div class="legend-dot" style="background:#f0b429"></div> Current, unconfirmed</div>
       </div>
 
       <div class="chart-card">
@@ -305,7 +295,7 @@
         <table style="width:100%;border-collapse:collapse;font-size:13px;">
           <thead>
             <tr style="border-bottom:1px solid var(--border);">
-              <th style="text-align:left;padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;">Signal Date</th>
+              <th style="text-align:left;padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;">Cycle Bottom</th>
               <th style="text-align:right;padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;">BTC Price</th>
               <th style="text-align:right;padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;">+6 Months</th>
               <th style="text-align:right;padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;">+1 Year</th>
@@ -317,7 +307,7 @@
       </div>
 
       <div class="bb-note" style="margin-top:16px;">
-        📌 Four on-chain conditions from <strong>Blockware Intelligence</strong> — supply in profit &lt;50%, Hash Ribbon flaring, price below 2-year cost basis, long-term holders accumulating. Every prior alignment was a cycle bottom.
+        📌 Five completed cycles since 2010. Drawdowns from each top: ~93%, ~87%, ~84%, ~78% — shrinking each cycle. Current phase: post <strong>Oct 2025 top (~$126,300)</strong>, drawdown ~51% so far; next bottom <strong>not yet confirmed</strong> (amber dot).
       </div>
     </div>
   </div>
@@ -445,6 +435,22 @@
 
   <script src="common.js"></script>
   <script src="chart.umd.js"></script>
+  <!-- Shared modal — at body level so it works from any page -->
+  <div id="cycle-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(3px);">
+    <div id="cycle-modal-box" style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;min-width:300px;max-width:400px;position:relative;box-shadow:0 12px 40px rgba(0,0,0,0.5);">
+      <div id="cycle-modal-title" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:16px;"></div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr>
+          <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-size:11px;border-bottom:1px solid var(--border);">#</th>
+          <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-size:11px;border-bottom:1px solid var(--border);">Date</th>
+          <th style="text-align:left;padding:6px 10px;color:var(--text-3);font-size:11px;border-bottom:1px solid var(--border);">Price</th>
+        </tr></thead>
+        <tbody id="cycle-modal-body"></tbody>
+      </table>
+      <button id="cycle-modal-close" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-3);font-size:20px;cursor:pointer;line-height:1;">×</button>
+    </div>
+  </div>
+
   <script src="analyse.js"></script>
 
 </body>

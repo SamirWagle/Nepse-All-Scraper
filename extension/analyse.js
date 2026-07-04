@@ -209,6 +209,8 @@
     const modalOverlay = document.getElementById('cycle-modal-overlay');
     const modalTitle   = document.getElementById('cycle-modal-title');
     const modalBody    = document.getElementById('cycle-modal-body');
+    // Ensure modal is direct child of body so position:fixed is never clipped.
+    document.body.appendChild(modalOverlay);
 
     function showCycleModal(title, rows, cls) {
       const accent = cls === 'bull' ? 'var(--bull)' : 'var(--bear)';
@@ -1421,24 +1423,28 @@
 
 
     // ── BTC Bull & Bear Cycles ──────────────────────────────────────────────
-    const BTC_CYCLE_BOTTOMS = [
-      { label: 'Sep 2011', date: '2011-09', price: 4.71 },
-      { label: 'Apr 2015', date: '2015-04', price: 227 },
-      { label: 'Nov 2018', date: '2018-11', price: 5722 },
-      { label: 'Dec 2022', date: '2022-12', price: 16626 },
-      { label: 'Jun 2026', date: '2026-06', price: 63067, current: true },
-    ];
-
+    // Forward returns computed from data/btc/history.csv (first close on/after
+    // bottom date + 6m/1y/2y). Bottom prices from the cycle framework table.
     const BTC_FORWARD_RETURNS = [
-      { label: 'Sep 2011', price: 4.71,   m6: -3,  y1: 162, y2: 2551 },
-      { label: 'Apr 2015', price: 227,    m6: 25,  y1: 106, y2: 469  },
-      { label: 'Nov 2018', price: 5722,   m6: 36,  y1: 52,  y2: 185  },
-      { label: 'Dec 2022', price: 16626,  m6: 51,  y1: 154, y2: 529  },
-      { label: 'Jun 2026', price: 63067,  current: true },
+      { label: 'Nov 2011', price: 2.14,  m6: 138, y1: 489, y2: 52704 },
+      { label: 'Jan 2015', price: 152,   m6: 88,  y1: 183, y2: 442   },
+      { label: 'Dec 2018', price: 3200,  m6: 176, y1: 124, y2: 501   },
+      { label: 'Nov 2022', price: 15500, m6: 73,  y1: 131, y2: 509   },
+      { label: 'Jul 2026', current: true },
     ];
 
     let btcChart = null;
-    let btcDataCache = null;
+    let btcDataCache = null;   // { labels: ['YYYY-MM-DD'], values: [close] }
+    let btcScale = 'log';
+
+    function setBtcScale(scale) {
+      btcScale = scale;
+      document.getElementById('btc-scale-linear').style.opacity = scale === 'linear' ? '1' : '0.45';
+      document.getElementById('btc-scale-log').style.opacity    = scale === 'log'    ? '1' : '0.45';
+      if (btcDataCache) renderBtcChart(btcDataCache);
+    }
+    document.getElementById('btc-scale-linear').addEventListener('click', () => setBtcScale('linear'));
+    document.getElementById('btc-scale-log').addEventListener('click', () => setBtcScale('log'));
 
     async function buildBtcChart() {
       if (btcDataCache) {
@@ -1449,13 +1455,7 @@
       const status = document.getElementById('btc-status');
       status.textContent = 'Loading BTC price data…';
       try {
-        const resp = await fetch(
-          'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=max&interval=weekly',
-          { signal: AbortSignal.timeout(15000) }
-        );
-        if (!resp.ok) throw new Error('HTTP ' + resp.status);
-        const json = await resp.json();
-        btcDataCache = json.prices;
+        btcDataCache = await fetchBtcSeries();
         status.textContent = '';
         renderBtcChart(btcDataCache);
         fillBtcReturnsTable();
@@ -1464,34 +1464,90 @@
       }
     }
 
+    // Local server (Yahoo-scraped CSV) first; CoinGecko fallback if server down.
+    async function fetchBtcSeries() {
+      try {
+        const port = await findPort();
+        if (port) {
+          const resp = await fetch(`http://localhost:${port}/btc_series`, { signal: AbortSignal.timeout(8000) });
+          const json = await resp.json();
+          if (json.points && json.points.length) {
+            return { labels: json.points.map(p => p.date), values: json.points.map(p => p.close) };
+          }
+        }
+      } catch (_) { /* fall through to CoinGecko */ }
+      const resp = await fetch(
+        'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=max&interval=weekly',
+        { signal: AbortSignal.timeout(15000) }
+      );
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const json = await resp.json();
+      return {
+        labels: json.prices.map(p => new Date(p[0]).toISOString().slice(0, 10)),
+        values: json.prices.map(p => p[1]),
+      };
+    }
+
     const BTC_BULL_CYCLES = [
       { start: '2010-07', end: '2011-06', label: 'Bull 1', color: 'rgba(78,205,196,0.13)'  },
-      { start: '2011-09', end: '2013-11', label: 'Bull 2', color: 'rgba(102,187,106,0.13)' },
-      { start: '2015-04', end: '2017-12', label: 'Bull 3', color: 'rgba(255,193,7,0.11)'   },
-      { start: '2018-11', end: '2021-11', label: 'Bull 4', color: 'rgba(171,71,188,0.13)'  },
-      { start: '2022-12', end: '2099-01', label: 'Bull 5', color: 'rgba(78,205,196,0.09)'  },
+      { start: '2011-11', end: '2013-11', label: 'Bull 2', color: 'rgba(102,187,106,0.13)' },
+      { start: '2015-01', end: '2017-12', label: 'Bull 3', color: 'rgba(255,193,7,0.11)'   },
+      { start: '2018-12', end: '2021-11', label: 'Bull 4', color: 'rgba(171,71,188,0.13)'  },
+      { start: '2022-11', end: '2025-10', label: 'Bull 5', color: 'rgba(78,205,196,0.09)'  },
     ];
     const BTC_TOPS = [
-      { date: '2011-06', label: 'Bull 1 Top\n$31'    },
-      { date: '2013-11', label: 'Bull 2 Top\n$1,147' },
-      { date: '2017-12', label: 'Bull 3 Top\n$19,783'},
-      { date: '2021-11', label: 'Bull 4 Top\n$69,000'},
+      { date: '2011-06', label: 'Cycle 1 Top ~$30'      },
+      { date: '2013-11', label: 'Cycle 2 Top ~$1,150'   },
+      { date: '2017-12', label: 'Cycle 3 Top ~$19,800'  },
+      { date: '2021-11', label: 'Cycle 4 Top ~$69,000'  },
+      { date: '2025-10', label: 'Cycle 5 Top ~$126,300' },
     ];
     const BTC_BOTTOMS = [
-      { date: '2011-09', label: 'Bear 1\n$4.71'    },
-      { date: '2015-04', label: 'Bear 2\n$227'     },
-      { date: '2018-11', label: 'Bear 3\n$5,722'   },
-      { date: '2022-12', label: 'Bear 4\n$16,626'  },
-      { date: '2026-06', label: 'Signal\n$63,067'  },
+      { date: '2011-11', label: 'Bottom ~$2.14'   },
+      { date: '2015-01', label: 'Bottom ~$152'    },
+      { date: '2018-12', label: 'Bottom ~$3,200'  },
+      { date: '2022-11', label: 'Bottom ~$15,500' },
     ];
 
-    function renderBtcChart(prices) {
-      if (btcChart) { btcChart.destroy(); btcChart = null; }
-      const labels = prices.map(p => new Date(p[0]).toISOString().slice(0, 10));
-      const values = prices.map(p => p[1]);
+    function downsampleWeekly(labels, values) {
+      // Keep one close per ISO week (last point wins) so pre-2014 monthly
+      // and post-2014 daily data share uniform weekly spacing.
+      const buckets = new Map();
+      labels.forEach((l, i) => {
+        const d = new Date(l);
+        // ISO week key: year + week-number
+        const jan4 = new Date(d.getFullYear(), 0, 4);
+        const week = Math.ceil(((d - jan4) / 86400000 + jan4.getDay() + 1) / 7);
+        const key = `${d.getFullYear()}-W${String(week).padStart(2, '0')}`;
+        buckets.set(key, { label: l, value: values[i] });
+      });
+      const out = { labels: [], values: [] };
+      buckets.forEach(({ label, value }) => { out.labels.push(label); out.values.push(value); });
+      return out;
+    }
 
-      const topData    = labels.map((l, i) => BTC_TOPS.find(b => l.startsWith(b.date))    ? values[i] : null);
-      const bottomData = labels.map((l, i) => BTC_BOTTOMS.find(b => l.startsWith(b.date)) ? values[i] : null);
+    function renderBtcChart({ labels, values }) {
+      if (btcChart) { btcChart.destroy(); btcChart = null; }
+      ({ labels, values } = downsampleWeekly(labels, values));
+
+      // One marker per event: the extreme close within the event's month.
+      const markAt = (events, isBetter) => {
+        const arr = new Array(labels.length).fill(null);
+        events.forEach(ev => {
+          let best = -1;
+          labels.forEach((l, i) => {
+            if (!l.startsWith(ev.date)) return;
+            if (best === -1 || isBetter(values[i], values[best])) best = i;
+          });
+          if (best !== -1) arr[best] = values[best];
+        });
+        return arr;
+      };
+      const topData    = markAt(BTC_TOPS,    (a, b) => a > b);
+      const bottomData = markAt(BTC_BOTTOMS, (a, b) => a < b);
+      // Amber dot on the latest close — current cycle position, unconfirmed.
+      const currentData = new Array(labels.length).fill(null);
+      currentData[labels.length - 1] = values[values.length - 1];
 
       const isDark    = !document.documentElement.classList.contains('light');
       const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
@@ -1544,7 +1600,7 @@
               spanGaps: false,
             },
             {
-              label: 'Bull Top',
+              label: 'Cycle Top',
               data: topData,
               borderColor: 'transparent',
               backgroundColor: upColor,
@@ -1555,7 +1611,7 @@
               showLine: false,
             },
             {
-              label: 'Bear Bottom',
+              label: 'Cycle Bottom',
               data: bottomData,
               borderColor: 'transparent',
               backgroundColor: downColor,
@@ -1563,6 +1619,16 @@
               pointStyle: 'triangle',
               rotation: 180,
               pointHoverRadius: 10,
+              showLine: false,
+            },
+            {
+              label: 'Current (unconfirmed)',
+              data: currentData,
+              borderColor: 'transparent',
+              backgroundColor: '#f0b429',
+              pointRadius: 7,
+              pointStyle: 'circle',
+              pointHoverRadius: 9,
               showLine: false,
             },
           ],
@@ -1585,7 +1651,7 @@
               grid: { color: gridColor },
             },
             y: {
-              type: 'logarithmic',
+              type: btcScale === 'log' ? 'logarithmic' : 'linear',
               ticks: {
                 color: textColor,
                 callback(v) {
@@ -1615,20 +1681,32 @@
       });
     }
 
+    document.getElementById('btc-show-tops').addEventListener('click', () => {
+      showCycleModal('₿ Cycle Tops',
+        BTC_TOPS.map(t => ({ date: t.date, index: t.label.split('~')[1] || t.label })),
+        'bull');
+    });
+    document.getElementById('btc-show-bottoms').addEventListener('click', () => {
+      showCycleModal('₿ Cycle Bottoms',
+        BTC_BOTTOMS.map(b => ({ date: b.date, index: b.label.replace('Bottom ', '') })),
+        'bear');
+    });
+
     function fillBtcReturnsTable() {
       const tbody = document.getElementById('btc-returns-body');
       if (!tbody) return;
-      const fmtPct = (v) => `<span class="${v >= 0 ? 'val-bull' : 'val-bear'}">${v >= 0 ? '+' : ''}${v}%</span>`;
-      const fmtPrice = (p) => '$' + p.toLocaleString('en-US', { maximumFractionDigits: 0 });
+      const fmtPct = (v) => `<span class="${v >= 0 ? 'val-bull' : 'val-bear'}">${v >= 0 ? '+' : ''}${v.toLocaleString('en-US')}%</span>`;
+      const fmtPrice = (p) => '$' + p.toLocaleString('en-US', { maximumFractionDigits: p < 10 ? 2 : 0 });
       let html = '';
       BTC_FORWARD_RETURNS.forEach(row => {
         if (row.current) {
-          html += `<tr style="border-top:1px solid var(--border);background:rgba(247,147,26,0.06);">
-            <td style="padding:10px 14px;font-weight:600;color:#f7931a;">${row.label} ▶ now</td>
-            <td style="padding:10px 14px;text-align:right;">${fmtPrice(row.price)}</td>
-            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">in progress</td>
-            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">in progress</td>
-            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">in progress</td>
+          const nowPrice = btcDataCache ? btcDataCache.values[btcDataCache.values.length - 1] : null;
+          html += `<tr style="border-top:1px solid var(--border);background:rgba(240,180,41,0.08);">
+            <td style="padding:10px 14px;font-weight:600;color:#f0b429;">${row.label} ▶ now (unconfirmed)</td>
+            <td style="padding:10px 14px;text-align:right;">${nowPrice != null ? fmtPrice(nowPrice) : '—'}</td>
+            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">awaiting bottom</td>
+            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">awaiting bottom</td>
+            <td style="padding:10px 14px;text-align:right;color:var(--text-3);font-style:italic;">awaiting bottom</td>
           </tr>`;
         } else {
           html += `<tr style="border-top:1px solid var(--border);">
@@ -1643,16 +1721,16 @@
       html += `<tr style="border-top:2px solid var(--border-strong);background:var(--row-even);">
         <td style="padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Median</td>
         <td></td>
-        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+31%</span></td>
-        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+130%</span></td>
-        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+499%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+113%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+157%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+505%</span></td>
       </tr>
       <tr style="background:var(--row-odd);">
         <td style="padding:10px 14px;color:var(--text-3);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Worst case</td>
         <td></td>
-        <td style="padding:10px 14px;text-align:right;"><span class="val-bear">-3%</span></td>
-        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+52%</span></td>
-        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+185%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+73%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+124%</span></td>
+        <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+442%</span></td>
       </tr>`;
       tbody.innerHTML = html;
     }
