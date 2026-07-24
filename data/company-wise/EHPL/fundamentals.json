@@ -1,0 +1,43 @@
+{
+  "symbol": "EHPL",
+  "company_name": "Eastern Hydropower Limited (EHPL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 6200000.0,
+  "market_price": 369.2,
+  "percent_change": -0.49,
+  "last_traded_on": "2026/07/03 02:59:43",
+  "high_52w": 685.0,
+  "low_52w": 365.0,
+  "avg_180d": 407.42,
+  "avg_120d": 402.56,
+  "year_yield_pct": -35.44,
+  "eps": 6.42,
+  "eps_fy": "082-083",
+  "pe_ratio": 57.51,
+  "book_value": 77.73,
+  "pbv": 4.75,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 15053.0,
+  "market_cap": 2289040000.0,
+  "scraped_at": "2026-07-04T15:15:00",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 6200000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 997.0,
+  "all_time_high_date": "2024-10-06T00:00:00",
+  "paid_up_capital": 620000000.0,
+  "net_profit": 39804000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "39804000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "77.73",
+      "dividend_pct": ""
+    }
+  ]
+}

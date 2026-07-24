@@ -1,0 +1,36 @@
+{
+  "symbol": "KBL",
+  "company_name": "Kumari Bank Limited (KBL)",
+  "sector": "Commercial Banks",
+  "shares_outstanding": 262258613.4,
+  "market_price": 228.2,
+  "percent_change": 2.33,
+  "last_traded_on": "2026/07/24 02:59:53",
+  "high_52w": 256.0,
+  "low_52w": 175.5,
+  "avg_180d": 212.8,
+  "avg_120d": 218.06,
+  "year_yield_pct": 1.24,
+  "eps": 21.24,
+  "eps_fy": "082-083",
+  "pe_ratio": 10.74,
+  "book_value": 158.53,
+  "pbv": 1.44,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 222345.0,
+  "market_cap": 59847415577.88,
+  "scraped_at": "2026-07-24T22:04:42",
+  "source": "merolagani.com",
+  "net_profit": 5570372948.62,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "5570372948.62",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "158.53",
+      "dividend_pct": ""
+    }
+  ]
+}
