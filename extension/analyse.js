@@ -937,6 +937,66 @@
       if (isSurvivor && (d.merged_date || m.merged_date)) listingSub = `Survived merger on ${d.merged_date || m.merged_date}`;
       setText('r-listing-sub', listingSub);
 
+      // Mergers & Acquisitions card
+      const acquisitions = Array.isArray(d.acquisitions) ? d.acquisitions : [];
+      const mergers = Array.isArray(d.mergers) ? d.mergers : [];
+      const totalMa = acquisitions.length + mergers.length;
+      if (totalMa > 0) {
+        const maLabel = totalMa === 1 ? '1 event' : `${totalMa} events`;
+        setText('r-ma-count', maLabel);
+        const latestMa = [...acquisitions, ...mergers].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+        const latestYear = latestMa && latestMa.date ? new Date(latestMa.date).getFullYear() : null;
+        setText('r-ma-sub', latestYear ? `Latest: ${latestYear}` : 'See details below');
+      } else {
+        setText('r-ma-count', 'None');
+        setText('r-ma-sub', 'No M&A activity');
+      }
+
+      // Render M&A details section
+      const maSection = document.getElementById('r-ma-section');
+      const maContent = document.getElementById('r-ma-content');
+      if (totalMa > 0) {
+        maSection.style.display = 'block';
+        maContent.innerHTML = '';
+
+        // Acquisitions
+        if (acquisitions.length > 0) {
+          const acqDiv = document.createElement('div');
+          acqDiv.innerHTML = '<div style="font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Acquisitions</div>';
+          acquisitions.forEach(acq => {
+            const row = document.createElement('div');
+            row.style.cssText = 'padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12px;line-height:1.6;';
+            const entityList = Array.isArray(acq.entities) ? acq.entities.join(', ') : (acq.entity || '—');
+            row.innerHTML = `
+              <div style="color:var(--text-2);margin-bottom:4px;"><strong>${acq.date || '—'}</strong> · ${acq.type || 'Acquisition'}</div>
+              <div style="color:var(--text-3);margin-bottom:4px;">${entityList}</div>
+              <div style="color:var(--text-3);font-size:11px;">${acq.status || '—'}${acq.swap_ratio ? ' · Ratio: ' + acq.swap_ratio : ''}</div>
+            `;
+            acqDiv.appendChild(row);
+          });
+          maContent.appendChild(acqDiv);
+        }
+
+        // Mergers
+        if (mergers.length > 0) {
+          const merDiv = document.createElement('div');
+          merDiv.innerHTML = '<div style="font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;margin-top:8px;">Mergers</div>';
+          mergers.forEach(mer => {
+            const row = document.createElement('div');
+            row.style.cssText = 'padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12px;line-height:1.6;';
+            row.innerHTML = `
+              <div style="color:var(--text-2);margin-bottom:4px;"><strong>${mer.date || '—'}</strong></div>
+              <div style="color:var(--text-3);margin-bottom:4px;">${mer.entity || '—'}</div>
+              <div style="color:var(--text-3);font-size:11px;">${mer.status || '—'}${mer.swap_ratio ? ' · Ratio: ' + mer.swap_ratio : ''}</div>
+            `;
+            merDiv.appendChild(row);
+          });
+          maContent.appendChild(merDiv);
+        }
+      } else {
+        maSection.style.display = 'none';
+      }
+
       const mergeBanner = document.getElementById('r-merge-banner');
       if (mergeBanner) {
         if (isClosedMerged) {

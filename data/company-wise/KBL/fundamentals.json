@@ -20,6 +20,11 @@
   "dividend_fy": null,
   "avg_volume_30d": 222345.0,
   "market_cap": 59847415577.88,
+  "listing_date": "2017-09-06",
+  "promoter_pct": 51.0,
+  "public_pct": 49.0,
+  "promoter_shares": 133751892,
+  "public_shares": 128506721,
   "scraped_at": "2026-07-24T22:04:42",
   "source": "merolagani.com",
   "net_profit": 5570372948.62,
@@ -31,6 +36,43 @@
       "npl_pct": "",
       "book_value": "158.53",
       "dividend_pct": ""
+    }
+  ],
+  "acquisitions": [
+    {
+      "date": "2017-06-30",
+      "type": "4-bank merger",
+      "entities": [
+        "Kasthamandap Development Bank",
+        "Paschimanchal Finance",
+        "Mahakali Bikas Bank",
+        "Kankrebihar Bikas Bank"
+      ],
+      "status": "NRB-approved joint operations",
+      "paid_up_capital_pre_rights_npr_bn": 6.2,
+      "paid_up_capital_post_rights_npr_bn": 7.4,
+      "rights_issue_pct": 20,
+      "deposits_npr_bn": 52.30,
+      "loans_npr_bn": 44.95,
+      "branches": 74,
+      "atms": 57,
+      "swap_ratio": "1:0.85"
+    },
+    {
+      "date": "2020-06-30",
+      "type": "acquisition",
+      "entity": "Deva Bikas Bank Limited",
+      "status": "joint operations began mid-2020",
+      "swap_ratio": "1:0.86"
+    }
+  ],
+  "mergers": [
+    {
+      "date": "2023-01-01",
+      "entity": "Nepal Credit and Commerce Bank (NCC Bank)",
+      "status": "merged into KBL",
+      "swap_ratio": "1:1",
+      "notes": "Significantly expanded scale"
     }
   ]
 }

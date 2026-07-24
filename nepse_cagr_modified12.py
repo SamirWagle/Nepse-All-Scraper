@@ -36,10 +36,25 @@ DEFAULT_INVESTMENT = 100_000  # Rs.
 DEFAULT_DATA_DIR = Path(__file__).parent / "data"  # override with --data-dir
 DAYS_PER_YEAR = 365.25    # accounts for leap years
 
-# Known listing dates (overrides earliest data in CSV if earlier)
-LISTING_DATES = {
-    "SPIL": date(2023, 4, 3),
-}
+def _load_listing_dates(data_dir: Path) -> dict:
+    csv_path = data_dir / "ipo_listings.csv"
+    result = {}
+    if csv_path.exists():
+        try:
+            df = pd.read_csv(csv_path)
+            df.columns = df.columns.str.strip().str.lower()
+            for _, row in df.iterrows():
+                sym = str(row["symbol"]).strip().upper()
+                try:
+                    result[sym] = date.fromisoformat(str(row["listing_date"]).strip())
+                except ValueError:
+                    pass
+        except Exception:
+            pass
+    return result
+
+# Listing dates loaded from ipo_listings.csv at startup
+LISTING_DATES = _load_listing_dates(DEFAULT_DATA_DIR)
 
 
 # ─────────────────────────────────────────────

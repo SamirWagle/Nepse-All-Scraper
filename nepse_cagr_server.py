@@ -34,6 +34,7 @@ from nepse_cagr import (
     FACE_VALUE,
     FACE_VALUE_OVERRIDES,
     DAYS_PER_YEAR,
+    LISTING_DATES,
 )
 
 import pandas as pd
@@ -677,6 +678,12 @@ class Handler(BaseHTTPRequestHandler):
                     else:
                         csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
                     df = pd.read_csv(csv_path, parse_dates=["date"]).sort_values("date")
+                    # Clip to known listing date so the overlay doesn't show
+                    # a pre-listing entity's price history (e.g. KBL before 2017).
+                    if not is_index:
+                        listing = LISTING_DATES.get(symbol)
+                        if listing is not None:
+                            df = df[df["date"].dt.date >= listing]
                     price_col = "close" if "close" in df.columns else "ltp"
                     # Indices have no corporate actions — adjusted == raw.
                     if adjusted and not is_index:
