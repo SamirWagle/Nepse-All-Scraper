@@ -952,47 +952,28 @@
         setText('r-ma-sub', 'No M&A activity');
       }
 
-      // Render M&A details section
+      // Render M&A details section — single chronological list, type labeled inline
       const maSection = document.getElementById('r-ma-section');
       const maContent = document.getElementById('r-ma-content');
       if (totalMa > 0) {
         maSection.style.display = 'block';
         maContent.innerHTML = '';
 
-        // Acquisitions
-        if (acquisitions.length > 0) {
-          const acqDiv = document.createElement('div');
-          acqDiv.innerHTML = '<div style="font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Acquisitions</div>';
-          acquisitions.forEach(acq => {
-            const row = document.createElement('div');
-            row.style.cssText = 'padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12px;line-height:1.6;';
-            const entityList = Array.isArray(acq.entities) ? acq.entities.join(', ') : (acq.entity || '—');
-            row.innerHTML = `
-              <div style="color:var(--text-2);margin-bottom:4px;"><strong>${acq.date || '—'}</strong> · ${acq.type || 'Acquisition'}</div>
-              <div style="color:var(--text-3);margin-bottom:4px;">${entityList}</div>
-              <div style="color:var(--text-3);font-size:11px;">${acq.status || '—'}${acq.swap_ratio ? ' · Ratio: ' + acq.swap_ratio : ''}</div>
-            `;
-            acqDiv.appendChild(row);
-          });
-          maContent.appendChild(acqDiv);
-        }
+        const allMa = [
+          ...acquisitions.map(a => ({ ...a, _type: 'Acquisition', _entity: Array.isArray(a.entities) ? a.entities.join(', ') : (a.entity || '—') })),
+          ...mergers.map(m => ({ ...m, _type: 'Merger', _entity: m.entity || '—' })),
+        ].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
 
-        // Mergers
-        if (mergers.length > 0) {
-          const merDiv = document.createElement('div');
-          merDiv.innerHTML = '<div style="font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;margin-top:8px;">Mergers</div>';
-          mergers.forEach(mer => {
-            const row = document.createElement('div');
-            row.style.cssText = 'padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12px;line-height:1.6;';
-            row.innerHTML = `
-              <div style="color:var(--text-2);margin-bottom:4px;"><strong>${mer.date || '—'}</strong></div>
-              <div style="color:var(--text-3);margin-bottom:4px;">${mer.entity || '—'}</div>
-              <div style="color:var(--text-3);font-size:11px;">${mer.status || '—'}${mer.swap_ratio ? ' · Ratio: ' + mer.swap_ratio : ''}</div>
-            `;
-            merDiv.appendChild(row);
-          });
-          maContent.appendChild(merDiv);
-        }
+        allMa.forEach(item => {
+          const row = document.createElement('div');
+          row.style.cssText = 'padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12px;line-height:1.6;margin-bottom:8px;';
+          row.innerHTML = `
+            <div style="color:var(--text-2);margin-bottom:4px;"><strong>${item.date || '—'}</strong> · ${item._type}</div>
+            <div style="color:var(--text-3);margin-bottom:4px;">${item._entity}</div>
+            <div style="color:var(--text-3);font-size:11px;">${item.status || '—'}${item.swap_ratio ? ' · Ratio: ' + item.swap_ratio : ''}</div>
+          `;
+          maContent.appendChild(row);
+        });
       } else {
         maSection.style.display = 'none';
       }

@@ -782,6 +782,35 @@ class Handler(BaseHTTPRequestHandler):
                         data["final_survivor_name"] = final["name"]
                         data["final_survivor_date"] = final["chain"][-1].get("merged_date")
                         data["merger_chain"] = final["chain"]
+                # Build absorbed-entities lists for surviving companies (M&A card)
+                all_merger_entries = _load_merger_meta()
+                absorbed_mergers = []
+                absorbed_acquisitions = []
+                for k, v in all_merger_entries.items():
+                    if not isinstance(v, dict):
+                        continue
+                    if v.get("status") != "closed":
+                        continue
+                    target = (v.get("surviving_symbol") or v.get("merged_into") or "").upper()
+                    if target != symbol:
+                        continue
+                    event_type = (v.get("event_type") or "merger").lower()
+                    entry = {
+                        "entity": v.get("display_name") or k,
+                        "symbol": k,
+                        "date": v.get("merged_date"),
+                        "status": "Completed",
+                    }
+                    if event_type == "acquisition":
+                        absorbed_acquisitions.append(entry)
+                    else:
+                        absorbed_mergers.append(entry)
+                if absorbed_mergers:
+                    absorbed_mergers.sort(key=lambda x: x.get("date") or "")
+                    data["mergers"] = absorbed_mergers
+                if absorbed_acquisitions:
+                    absorbed_acquisitions.sort(key=lambda x: x.get("date") or "")
+                    data["acquisitions"] = absorbed_acquisitions
                 # Shiller P/E (CAPE) — current price / avg(eps, up to 10 years)
                 # Reads from eps_history.csv which accumulates yearly EPS per symbol.
                 import csv as _csv
