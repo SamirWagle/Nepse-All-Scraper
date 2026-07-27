@@ -1687,7 +1687,7 @@
       "note": "Nilgiri Bikas Bank Limited is marked as Merged on ShareSansar company page.",
       "source_url": "https://www.sharesansar.com/company/ngbl",
       "source_title": "ShareSansar company page (NGBL)",
-      "merged_date": "2016-07-13",
+      "merged_date": "2015-07-13",
       "merged_into": "GBBL",
       "merged_into_name": "Garima Bikas Bank Limited",
       "surviving_symbol": "GBBL",
@@ -3258,20 +3258,6 @@
       "note": "Himalayan General Insurance Co. Ltd Promoter Share merged into Himalayan Everest Insurance Limited Promoter.",
       "source_url": "https://www.sharesansar.com/merger-acquisition",
       "source_title": "ShareSansar M&A feed → HEIP"
-    },
-    "GBBL": {
-      "symbol": "GBBL",
-      "status": "closed",
-      "display_name": "Garima Bikas Bank Limited",
-      "merged_date": "2022-03-21",
-      "merged_into": "GCL",
-      "merged_into_name": "Garima Capital Limited",
-      "surviving_symbol": "GCL",
-      "surviving_name": "Garima Capital Limited",
-      "display_mode": "closed",
-      "note": "Garima Bikas Bank Limited merged into Garima Capital Limited.",
-      "source_url": "https://www.sharesansar.com/merger-acquisition",
-      "source_title": "ShareSansar M&A feed → GCL"
     },
     "BJLBSL": {
       "symbol": "BJLBSL",
