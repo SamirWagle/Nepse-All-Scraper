@@ -309,6 +309,17 @@ PORT               = 5758
 DEFAULT_INVESTMENT = 100_000
 DATA_DIR           = Path(__file__).parent / "data"
 
+def _load_ceo_mapping() -> dict:
+    p = DATA_DIR / "ceo_mapping.json"
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text())
+    except Exception:
+        return {}
+
+_CEO_MAPPING: dict = _load_ceo_mapping()
+
 # NEPSE symbols are 1-15 uppercase alphanumeric characters.
 # Validated before any filesystem access to prevent path traversal.
 _SYMBOL_RE = re.compile(r'^[A-Z0-9]{1,20}$')
@@ -849,6 +860,9 @@ class Handler(BaseHTTPRequestHandler):
                             }
                 except Exception:
                     pass
+                ceo = _CEO_MAPPING.get(symbol)
+                if ceo:
+                    data["ceo"] = ceo
                 self._send_json(data)
         elif self.path == "/mergers":
             self._send_json({"version": 1, "entries": _load_merger_meta()})

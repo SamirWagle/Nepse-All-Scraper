@@ -846,7 +846,7 @@
       setText('r-symbol', d.symbol || '—');
       setText('r-sector', d.sector || 'NEPSE');
       setText('r-substext', [
-        d.sector,
+        d.ceo ? `CEO: ${d.ceo}` : null,
         d.shares_outstanding ? `${fmtCompact(d.shares_outstanding)} shares listed` : null,
         d.listing_date ? `Listed ${d.listing_date}` : null,
       ].filter(Boolean).join(' · ') || '—');
