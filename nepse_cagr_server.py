@@ -842,6 +842,21 @@ class Handler(BaseHTTPRequestHandler):
                             data["shiller_pe_years"] = len(recent)
                     except Exception:
                         pass
+                # Historical PE band — this company's own PE at each fiscal
+                # year-end across its full price/EPS history (see scripts/schiller_pe.py).
+                try:
+                    import statistics as _statistics
+                    from scripts.schiller_pe import historical_pe_series as _hist_pe_series, PE_OUTLIER_CAP as _PE_CAP
+                    hist = _hist_pe_series(symbol)
+                    hist_pes = [h["pe"] for h in hist if h["pe"] <= _PE_CAP]
+                    if hist_pes:
+                        data["historical_pe_avg"] = round(_statistics.mean(hist_pes), 2)
+                        data["historical_pe_median"] = round(_statistics.median(hist_pes), 2)
+                        data["historical_pe_min"] = round(min(hist_pes), 2)
+                        data["historical_pe_max"] = round(max(hist_pes), 2)
+                        data["historical_pe_years"] = len(hist_pes)
+                except Exception:
+                    pass
                 # Attach latest day OHLC from local prices.csv
                 try:
                     csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
