@@ -1,0 +1,64 @@
+{
+  "symbol": "MNBBL",
+  "company_name": "Muktinath Bikas Bank Ltd. (MNBBL)",
+  "sector": "Development Bank Limited",
+  "shares_outstanding": 80008390.0,
+  "market_price": 375.0,
+  "percent_change": -0.53,
+  "last_traded_on": "2026/07/27 02:59:56",
+  "high_52w": 503.0,
+  "low_52w": 340.1,
+  "avg_180d": 373.26,
+  "avg_120d": 372.4,
+  "year_yield_pct": -22.58,
+  "eps": 15.71,
+  "eps_fy": "082-083",
+  "pe_ratio": 23.87,
+  "book_value": 155.09,
+  "pbv": 2.42,
+  "dividend_pct": 4.67,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 27191.0,
+  "market_cap": 30003146250.0,
+  "scraped_at": "2026-07-27T20:45:55",
+  "source": "merolagani.com",
+  "promoter_shares": 40801983.0,
+  "public_shares": 39201906.0,
+  "promoter_pct": 51.0,
+  "public_pct": 49.0,
+  "all_time_high": 1657.0,
+  "all_time_high_date": "2016-07-27T00:00:00",
+  "paid_up_capital": 8000389000.0,
+  "bonus_dividend_pct": 13.53,
+  "net_profit": 1256931806.9,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "1256931806.9",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "155.09",
+      "dividend_pct": "4.67"
+    }
+  ],
+  "acquisitions": [
+    {
+      "date": "2015-07-15",
+      "entities": ["Civic Development Bank Ltd."],
+      "status": "Completed — NRB final approval, joint operation from 2072-03-30 BS; upgraded MNBBL to National Level Development Bank"
+    },
+    {
+      "date": "2019-10-17",
+      "entities": ["Vibor Capital Ltd."],
+      "status": "Completed — MNBBL acquired 58% stake, renamed Muktinath Capital Ltd. (merchant bank subsidiary, not an NRB bank merger)"
+    }
+  ],
+  "mergers": [
+    {
+      "date": "2019-07-16",
+      "entity": "Tinau Mission Development Bank Ltd.",
+      "status": "Completed (date approximate — converted from BS 2076-03-31, exact AD date unverified)",
+      "swap_ratio": "1:1"
+    }
+  ]
+}

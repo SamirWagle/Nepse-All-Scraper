@@ -921,17 +921,6 @@
         setText('r-shiller-pe-sub', 'No EPS history available');
       }
 
-      if (isClosedMerged) {
-        setText('r-hist-pe', '—');
-        setText('r-hist-pe-sub', `${closedLabel} company`);
-      } else if (d.historical_pe_median != null) {
-        setText('r-hist-pe', d.historical_pe_median.toFixed(2) + '×');
-        setText('r-hist-pe-sub', `range ${d.historical_pe_min.toFixed(1)}–${d.historical_pe_max.toFixed(1)}× · ${d.historical_pe_years}yr`);
-      } else {
-        setText('r-hist-pe', '—');
-        setText('r-hist-pe-sub', 'No EPS history available');
-      }
-
       setText('r-eps', isClosedMerged ? '—' : (d.eps != null ? 'Rs. ' + d.eps.toFixed(2) : '—'));
       setText('r-eps-sub', isClosedMerged ? `${closedLabel} company` : (d.eps_fy ? `FY ${d.eps_fy}` : ''));
 
