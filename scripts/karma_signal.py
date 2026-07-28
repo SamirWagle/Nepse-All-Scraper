@@ -27,8 +27,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import html
+import os
+import shutil
 import sys
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -37,6 +41,8 @@ import pandas as pd
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 COMPANY_DIR = DATA_DIR / "company-wise"
 NEPSE_INDEX = DATA_DIR / "index" / "nepse" / "history.csv"
+OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output"
+HISTORY_DIR = OUTPUT_DIR / "history"
 
 # ── Tunables ─────────────────────────────────────────────────────────────────
 MIN_MEDIAN_TURNOVER = 2_000_000.0  # NPR/day over 60d — exit liquidity floor
@@ -479,6 +485,190 @@ def _prepare(ticker: str, index: pd.DataFrame) -> pd.DataFrame | None:
     return merged
 
 
+# ── HTML report ──────────────────────────────────────────────────────────────
+REPORT_CSS = """
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 40px 24px; background: #1b1b1b; color: #ededed;
+       font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+.wrap { max-width: 1000px; margin: 0 auto; }
+.head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+.head .regime-note { font-size: 17px; color: #ededed; }
+.head .asof { margin-left: auto; color: #8f8f8f; font-size: 14px; font-weight: 500; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px;
+        border-radius: 8px; font-size: 15px; font-weight: 600; }
+.pill.on  { background: #102b1b; color: #4ade80; }
+.pill.off { background: #33161a; color: #f87171; }
+.card { border: 1px solid #333; border-radius: 12px; overflow-x: auto; scrollbar-width: thin; }
+.card::-webkit-scrollbar { height: 8px; }
+.card::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+th, td { padding: 12px 9px; text-align: right; white-space: nowrap;
+         border-bottom: 1px solid #333; }
+tbody tr:last-child td { border-bottom: none; }
+th { color: #ededed; font-weight: 600; cursor: pointer; user-select: none; }
+th:hover { color: #fff; }
+th:nth-child(-n+3), td:nth-child(-n+3) { text-align: left; }
+tbody tr:hover { background: #232323; }
+td.ticker { font-weight: 700; }
+td.rr { font-weight: 700; }
+.badge { display: inline-block; padding: 4px 12px; border-radius: 8px;
+         font-size: 15px; font-weight: 500; }
+.badge.position { background: #16304d; color: #60a5fa; }
+.badge.swing    { background: #2c2c2c; color: #d4d4d4; }
+.score { display: inline-flex; align-items: center; gap: 12px; }
+.score .bar { width: 46px; height: 6px; background: #2c2c2c; border-radius: 3px; overflow: hidden; }
+.score .fill { display: block; height: 100%; background: #4a90e2; border-radius: 3px; }
+.hot { color: #f87171; }
+.cold { color: #4ade80; }
+.callout { display: flex; gap: 12px; margin: 26px 0 0; padding: 20px 24px;
+           border-radius: 12px; background: #3a2e07; border: 1px solid #6b5712; }
+.callout .icon { color: #fbbf24; font-size: 18px; line-height: 1.5; }
+.callout p { margin: 0; color: #fbbf24; font-size: 16px; font-weight: 600; line-height: 1.6; }
+@media print { body { background: #fff; color: #000; padding: 0; }
+                .callout { background: #fdf6e0; } th, td { border-color: #ccc; } }
+"""
+
+REPORT_JS = """
+document.querySelectorAll('th').forEach(function (th, i) {
+  th.addEventListener('click', function () {
+    var tb = th.closest('table').tBodies[0];
+    var rows = Array.prototype.slice.call(tb.rows);
+    var desc = th.dataset.desc !== 'true';
+    rows.sort(function (a, b) {
+      var x = a.cells[i].dataset.v, y = b.cells[i].dataset.v;
+      var nx = parseFloat(x), ny = parseFloat(y);
+      var c = (isNaN(nx) || isNaN(ny)) ? String(x).localeCompare(String(y)) : nx - ny;
+      return desc ? -c : c;
+    });
+    th.dataset.desc = desc;
+    rows.forEach(function (r) { tb.appendChild(r); });
+  });
+});
+"""
+
+# Column key -> (header label, sortable raw value extractor). Percent/ratio
+# columns arrive as pre-formatted strings, so the raw value is stripped back to
+# a number for the sort only.
+REPORT_COLUMNS = [
+    ("ticker", "Ticker"), ("mode", "Mode"), ("score", "Score"), ("close", "Close"),
+    ("stop", "Stop"), ("target", "Target"), ("rewd:risk", "Rwd:risk"), ("rsi", "RSI"),
+    ("adx", "ADX"), ("%of52wH", "%of52wH"),
+]
+
+
+def _sort_value(raw) -> str:
+    """Numeric prefix of a display string, for the client-side sort."""
+    s = str(raw).replace("%", "").replace("M", "")
+    s = s.split(":")[0] if ":" in s else s
+    try:
+        return str(float(s))
+    except ValueError:
+        return str(raw)
+
+
+def _report_row(row: dict) -> str:
+    cells = []
+    for key, _ in REPORT_COLUMNS:
+        val = row[key]
+        sort_v = html.escape(_sort_value(val), quote=True)
+        if key == "ticker":
+            inner, cls = html.escape(str(val)), ' class="ticker"'
+        elif key == "mode":
+            inner = f'<span class="badge {html.escape(str(val))}">{html.escape(str(val))}</span>'
+            cls = ""
+        elif key == "score":
+            pct = max(0.0, min(100.0, float(val)))
+            inner = (f'<span class="score"><span class="bar">'
+                     f'<span class="fill" style="width:{pct:.0f}%"></span></span>{val}</span>')
+            cls = ""
+        elif key == "rsi":
+            rsi_v = float(val)
+            tone = "hot" if rsi_v >= 70 else "cold" if rsi_v <= 30 else ""
+            inner, cls = html.escape(str(val)), f' class="{tone}"' if tone else ""
+        elif key == "rewd:risk":
+            inner, cls = html.escape(str(val)), ' class="rr"'
+        else:
+            inner, cls = html.escape(str(val)), ""
+        cells.append(f'<td{cls} data-v="{sort_v}">{inner}</td>')
+    return "<tr>" + "".join(cells) + "</tr>"
+
+
+def _odds_block(mode_names: list[str]) -> str:
+    """One amber warning paragraph: per-mode base rates, then the caveat."""
+    stats = []
+    for name in mode_names:
+        o = mode_odds(name)
+        stats.append(
+            f"{name.capitalize()} mode: {o['p_win']:.0%} win rate, "
+            f"{o['money_ratio']:.2f}:1 money odds, {o['ev']:+.2%} EV/trade "
+            f"over {o['n']} trades (avg win {o['avg_win']:+.1%}, "
+            f"avg loss -{o['avg_loss']:.1%}, frequency odds {o['freq_ratio']:.2f}:1 against)."
+        )
+    body = (
+        "Odds are strategy-level, not per-stock. " + " ".join(stats) +
+        " Every row above shares these same odds — score does not predict which "
+        "name outperforms; rwd:risk varies only because it reflects each stock's "
+        "own ATR stop width."
+    )
+    return f'<div class="icon">&#9888;</div><p>{html.escape(body)}</p>'
+
+
+def _archive_path(mode: str, when: datetime) -> Path:
+    """A never-overwritten path under output/history/, suffixed on collision."""
+    HISTORY_DIR.mkdir(parents=True, exist_ok=True)
+    base = f"scan_{mode}_{when:%Y%m%d_%H%M%S}"
+    path = HISTORY_DIR / f"{base}.html"
+    n = 2
+    while path.exists():
+        path = HISTORY_DIR / f"{base}_{n}.html"
+        n += 1
+    return path
+
+
+def _point_latest_at(target: Path) -> None:
+    latest = OUTPUT_DIR / "latest.html"
+    try:
+        if latest.exists() or latest.is_symlink():
+            latest.unlink()
+        os.symlink(target.relative_to(OUTPUT_DIR), latest)
+    except OSError:
+        # ponytail: filesystems without symlinks (or a locked file) get a copy.
+        shutil.copyfile(target, latest)
+
+
+def write_html_report(out: pd.DataFrame, mode_names: list[str], regime: bool,
+                      latest_bar, cutoff, stale: int) -> Path:
+    """Archive the scan as a self-contained dark-theme HTML file.
+
+    Returns the timestamped archive path; output/latest.html is repointed at it.
+    """
+    now = datetime.now()
+    ranked = out.sort_values("score", ascending=False)
+    rows = "".join(_report_row(r) for r in ranked.to_dict("records"))
+    head = "".join(f"<th>{html.escape(label)}</th>" for _, label in REPORT_COLUMNS)
+    badge = ('<span class="pill on">&#8599; Risk-on</span>' if regime
+             else '<span class="pill off">&#8600; Risk-off</span>')
+    doc = f"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karma NEPSE Signal — {now:%Y-%m-%d %H:%M}</title>
+<style>{REPORT_CSS}</style></head>
+<body><div class="wrap">
+<div class="head">{badge}
+  <span class="regime-note">NEPSE index {'above' if regime else 'below'} MA200</span>
+  <span class="asof">as of {latest_bar.date()} &middot; {stale} tickers skipped (stale, no bar since {cutoff.date()})</span>
+</div>
+<div class="card"><table><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>
+<div class="callout">{_odds_block(mode_names)}</div>
+</div><script>{REPORT_JS}</script></body></html>
+"""
+    path = _archive_path("_".join(mode_names) if len(mode_names) > 1 else mode_names[0], now)
+    path.write_text(doc, encoding="utf-8")
+    _point_latest_at(path)
+    return path
+
+
 # ── Commands ─────────────────────────────────────────────────────────────────
 def _modes(args) -> list[Mode]:
     return list(MODES.values()) if args.mode == "both" else [MODES[args.mode]]
@@ -546,7 +736,15 @@ def cmd_scan(args) -> None:
         print("No BUY signals today.")
         return
     out = pd.DataFrame(rows).sort_values(["mode", "score"], ascending=[True, False])
-    print(out.groupby("mode", group_keys=False).head(args.top).to_string(index=False))
+    shown = out.groupby("mode", group_keys=False).head(args.top)
+    print(shown.to_string(index=False))
+
+    mode_names = [m.name for m in _modes(args)]
+    try:
+        report = write_html_report(shown, mode_names, regime, latest, cutoff, stale)
+        print(f"\nHTML report: {report}\n  stable link: {OUTPUT_DIR / 'latest.html'}")
+    except OSError as ex:
+        print(f"\nWARNING: could not write HTML report: {ex}")
 
     print("\nOdds (measured out-of-sample, net of costs and 7.5% CGT):")
     for mode in _modes(args):

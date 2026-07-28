@@ -118,6 +118,54 @@
       if (name === 'btc') {
         buildBtcChart();
       }
+      if (name === 'karmasignal') {
+        runKarmaSignal();
+      }
+    }
+
+    // ── KarmaNepseTechincalSignal (karma_signal.py scan --mode both) ──
+    let ksRunning = false;
+    async function runKarmaSignal() {
+      if (ksRunning) return;
+      const statusEl = document.getElementById('ks-status');
+      const outEl = document.getElementById('ks-output');
+      const frameEl = document.getElementById('ks-report');
+      ksRunning = true;
+      statusEl.textContent = '⏳ Scanning full NEPSE universe (both modes) — this takes a while...';
+      outEl.textContent = '';
+      outEl.style.display = 'none';
+      frameEl.style.display = 'none';
+      try {
+        const port = await findPort();
+        if (!port) {
+          statusEl.textContent = '❌ Engine offline. Open the extension popup to start it.';
+          return;
+        }
+        const resp = await fetch(`http://localhost:${port}/karma_signal`, { signal: AbortSignal.timeout(600000) });
+        const data = await resp.json();
+        if (data.html) {
+          // ponytail: srcdoc iframe keeps the report's own CSS out of this page.
+          // Its sort script is blocked by the extension CSP — open the file for that.
+          frameEl.srcdoc = data.html;
+          frameEl.style.display = 'block';
+          frameEl.onload = () => {
+            const doc = frameEl.contentDocument;
+            if (doc) frameEl.style.height = doc.documentElement.scrollHeight + 'px';
+          };
+        } else if (data.output) {
+          outEl.textContent = data.output;
+          outEl.style.display = 'block';
+        }
+        if (data.error) {
+          statusEl.textContent = '⚠️ ' + data.error;
+        } else {
+          statusEl.textContent = '✅ Scan complete — ' + new Date().toLocaleString();
+        }
+      } catch (err) {
+        statusEl.textContent = '❌ ' + (err && err.message ? err.message : String(err));
+      } finally {
+        ksRunning = false;
+      }
     }
 
     async function openBullBearFromQuery(query) {
@@ -196,6 +244,11 @@
       e.stopPropagation();
       switchPage('technical');
     });
+    document.getElementById('menu-karmasignal').addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchPage('karmasignal');
+    });
+    document.getElementById('ks-rerun-btn').addEventListener('click', () => runKarmaSignal());
     document.getElementById('btc-circle-btn').addEventListener('click', () => switchPage('btc'));
     document.getElementById('nexttop-btn').addEventListener('click', () => {
       switchPage('nexttop');

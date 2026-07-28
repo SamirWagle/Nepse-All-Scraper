@@ -895,6 +895,28 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"version": 1, "entries": _load_merger_meta()})
         elif self.path == "/interest_rates":
             self._send_json(_load_interest_rates())
+        elif self.path == "/karma_signal":
+            # ponytail: fixed argv, no user input — nothing to inject.
+            import subprocess
+            try:
+                proc = subprocess.run(
+                    [sys.executable, str(Path(__file__).parent / "scripts" / "karma_signal.py"),
+                     "scan", "--mode", "both"],
+                    capture_output=True, text=True, timeout=600,
+                )
+                # The scan archives a styled report and repoints latest.html at
+                # it; hand that straight to the page instead of the text dump.
+                report = Path(__file__).parent / "output" / "latest.html"
+                self._send_json({
+                    "output": proc.stdout,
+                    "html": report.read_text(encoding="utf-8") if report.exists() else None,
+                    "error": proc.stderr.strip() or None,
+                    "returncode": proc.returncode,
+                })
+            except subprocess.TimeoutExpired:
+                self._send_json({"error": "karma_signal scan timed out after 600s"}, status=504)
+            except Exception as ex:
+                self._send_json({"error": str(ex)}, status=500)
         else:
             self.send_response(404)
             self.end_headers()
