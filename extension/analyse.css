@@ -181,6 +181,7 @@
       cursor: pointer;
       text-align: left;
     }
+    .nav-menu-item[hidden] { display: none; }
     .nav-menu-item:last-child { border-bottom: none; }
     .nav-menu-item:hover { background: var(--surface-2); color: var(--accent); }
     .nav-menu-item .item-icon { font-size: 14px; }
