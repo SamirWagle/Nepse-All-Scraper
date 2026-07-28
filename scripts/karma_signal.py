@@ -54,6 +54,8 @@ SEBON_FEE = 0.00015          # per side
 DP_CHARGE = 25.0             # NPR flat, per side, per script
 DEFAULT_POSITION = 100_000.0  # NPR — only used to express DP charge as a %
 SHORT_TERM_CGT = 0.075       # individuals, holding < 365 days
+LONG_TERM_CGT = 0.05         # individuals, holding >= 365 days — buy-and-hold only
+TRADING_DAYS_PER_YEAR = 240  # NEPSE: Sun-Thu, minus public holidays
 
 
 def net_return(gross: float, position_size: float = DEFAULT_POSITION) -> float:
@@ -64,6 +66,18 @@ def net_return(gross: float, position_size: float = DEFAULT_POSITION) -> float:
     round_trip = 2 * (BROKER_COMMISSION + SEBON_FEE) + 2 * DP_CHARGE / position_size
     after_fees = gross - round_trip
     return after_fees * (1 - SHORT_TERM_CGT) if after_fees > 0 else after_fees
+
+
+def buy_hold_net(gross: float, position_size: float = DEFAULT_POSITION) -> float:
+    """Same costs, but paid once and taxed at the long-term rate.
+
+    Buy-and-hold is not cost-free, and comparing a net strategy to a gross
+    benchmark flatters the strategy. It is, however, genuinely cheaper: one
+    round trip instead of dozens, and 5% CGT instead of 7.5%.
+    """
+    round_trip = 2 * (BROKER_COMMISSION + SEBON_FEE) + 2 * DP_CHARGE / position_size
+    after_fees = gross - round_trip
+    return after_fees * (1 - LONG_TERM_CGT) if after_fees > 0 else after_fees
 RSI_CEILING = 75.0
 VOL_EXPANSION = 1.3                # 20d avg qty vs 60d avg qty
 BUY_SCORE = 70                     # score >= this = BUY
@@ -351,15 +365,18 @@ def simulate_trailing(ind: pd.DataFrame, entry_i: int, mode: Mode,
 
     stop_px = entry * (1 - stop_pct)
     peak = entry
+    entry_date = window["date"].iloc[0]
     for held, (_, bar) in enumerate(window.iterrows(), start=1):
         if held >= mode.min_hold and bar["low"] <= stop_px:
-            return {"outcome": "trail_stop", "ret": stop_px / entry - 1, "days": held}
+            return {"outcome": "trail_stop", "ret": stop_px / entry - 1, "days": held,
+                    "entry_date": entry_date, "exit_date": bar["date"]}
         if bar["close"] > peak:
             peak = float(bar["close"])
             # Ratchet only upward — a trailing stop that can loosen is not a stop.
             stop_px = max(stop_px, peak - trail_atr * float(bar["atr14"]))
     exit_px = float(window["close"].iloc[-1])
-    return {"outcome": "time", "ret": exit_px / entry - 1, "days": len(window)}
+    return {"outcome": "time", "ret": exit_px / entry - 1, "days": len(window),
+            "entry_date": entry_date, "exit_date": window["date"].iloc[-1]}
 
 
 def simulate(ind: pd.DataFrame, entry_i: int, mode: Mode,
@@ -379,17 +396,21 @@ def simulate(ind: pd.DataFrame, entry_i: int, mode: Mode,
     if len(window) < mode.min_hold:
         return None  # forward window runs off the end of the data — not a trade
 
+    entry_date = window["date"].iloc[0]
     for held, (_, bar) in enumerate(window.iterrows(), start=1):
         if held < mode.min_hold:
             continue  # minimum hold for the mode
         # Both levels touched intrabar: assume the stop filled first. Optimistic
         # tie-breaking is how backtests manufacture win rates that never arrive.
         if bar["low"] <= stop_px:
-            return {"outcome": "stop", "ret": -stop_pct, "days": held}
+            return {"outcome": "stop", "ret": -stop_pct, "days": held,
+                    "entry_date": entry_date, "exit_date": bar["date"]}
         if bar["high"] >= target_px:
-            return {"outcome": "target", "ret": target, "days": held}
+            return {"outcome": "target", "ret": target, "days": held,
+                    "entry_date": entry_date, "exit_date": bar["date"]}
     exit_px = float(window["close"].iloc[-1])
-    return {"outcome": "time", "ret": exit_px / entry - 1, "days": len(window)}
+    return {"outcome": "time", "ret": exit_px / entry - 1, "days": len(window),
+            "entry_date": entry_date, "exit_date": window["date"].iloc[-1]}
 
 
 def all_tickers() -> list[str]:
@@ -710,6 +731,138 @@ def cmd_tiers(args) -> None:
         )
 
 
+def _index_window_return(idx: pd.Series, start, end) -> float | None:
+    """NEPSE return between two dates, using the last close at or before each.
+
+    `asof` rather than exact lookup: the index series can miss a date the stock
+    traded on, and a missing benchmark must not silently drop a trade.
+    """
+    start_px, end_px = idx.asof(start), idx.asof(end)
+    if pd.isna(start_px) or pd.isna(end_px) or start_px <= 0:
+        return None
+    return end_px / start_px - 1
+
+
+def _t_stat(series: pd.Series) -> float:
+    spread = series.std(ddof=1)
+    n = len(series)
+    return series.mean() / (spread / np.sqrt(n)) if n > 1 and spread > 0 else float("nan")
+
+
+def _avg_concurrent(trades: pd.DataFrame) -> float:
+    """Mean number of positions open per trading day across the sample.
+
+    Counted by stepping a running total over entry/exit events rather than
+    scanning every date against every trade — same answer, and it stays fast
+    on the full universe.
+    """
+    events = pd.concat([
+        pd.Series(1, index=pd.DatetimeIndex(trades["entry_date"])),
+        pd.Series(-1, index=pd.DatetimeIndex(trades["exit_date"])),
+    ]).groupby(level=0).sum().sort_index()
+    open_count = events.cumsum()
+    # Weight each level by the days it persisted — a count that held for a
+    # year must not carry the same weight as one that held for a day.
+    spans = open_count.index.to_series().diff().shift(-1).dt.days.fillna(1)
+    return float((open_count * spans).sum() / spans.sum())
+
+
+def cmd_benchmark(args) -> None:
+    """The only test that can kill this strategy: is it edge, or is it beta?
+
+    Every gate here is a long-only trend filter, and NEPSE rose across most of
+    the sample. So a positive average trade proves nothing on its own. The
+    honest question is whether holding these names over these exact windows
+    beat holding the index over the same windows — and whether either beat
+    simply buying the index once and sleeping through the whole period.
+    """
+    index = load_index()
+    idx = pd.Series(index["close"].to_numpy(), index=index["date"]).sort_index()
+    tickers = all_tickers()[: args.limit] if args.limit else all_tickers()
+    print(f"Benchmarking {len(tickers)} tickers against NEPSE...", file=sys.stderr)
+
+    for mode in _modes(args):
+        trail = mode.trail_atr if args.exit_style == "trail" else None
+        trades = _run_backtest(mode, tickers, index, mode.target, mode.stop, trail)
+        print(f"\n=== {mode.name.upper()} (exit: {args.exit_style}) ===")
+        if trades.empty:
+            print("no trades")
+            continue
+
+        if args.since:
+            trades = trades[trades["entry_date"] >= pd.Timestamp(args.since)]
+            if trades.empty:
+                print(f"no trades after {args.since}")
+                continue
+        trades = trades.assign(
+            bench=[_index_window_return(idx, a, b)
+                   for a, b in zip(trades["entry_date"], trades["exit_date"])]
+        ).dropna(subset=["bench"])
+        trades = trades.assign(net=trades["ret"].map(net_return))
+        alpha = trades["net"] - trades["bench"]
+        n = len(trades)
+
+        # Trades overlap heavily in calendar time — dozens can be open at once,
+        # all riding the same market. Treating them as independent draws is the
+        # single easiest way to manufacture significance that isn't there, so
+        # the honest test collapses each month to one observation first.
+        naive_t = _t_stat(alpha)
+        monthly = alpha.groupby(trades["entry_date"].dt.to_period("M")).mean()
+        quarterly = alpha.groupby(trades["entry_date"].dt.to_period("Q")).mean()
+
+        # Per-day figures are capital-time-weighted (total return over total
+        # days held), not an average of per-trade rates, which would let a
+        # 10-day trade outvote a 60-day one.
+        days = trades["days"].sum()
+        strat_per_day = trades["net"].sum() / days
+        bench_per_day = trades["bench"].sum() / days
+
+        span_start, span_end = trades["entry_date"].min(), trades["exit_date"].max()
+        years = (span_end - span_start).days / 365.25
+        bh_gross = _index_window_return(idx, span_start, span_end)
+        bh_cagr = (1 + buy_hold_net(bh_gross)) ** (1 / years) - 1 if years > 0 else float("nan")
+
+        print(f"period       {span_start:%Y-%m-%d} to {span_end:%Y-%m-%d}  ({years:.1f} yrs)")
+        print(f"trades       {n}")
+        print(f"net avg      {trades['net'].mean():+.2%}   per trade, after costs and 7.5% CGT")
+        print(f"nepse avg    {trades['bench'].mean():+.2%}   same windows, gross")
+        print(f"alpha        {alpha.mean():+.2%}   per trade")
+        print(f"beat index   {(alpha > 0).mean():.1%}   of trades")
+        print(f"t-stat       {naive_t:.2f} per-trade (INFLATED — trades overlap)  "
+              f"{_t_stat(monthly):.2f} monthly  {_t_stat(quarterly):.2f} quarterly")
+        print(f"alpha months {(monthly > 0).mean():.0%} positive ({len(monthly)})   "
+              f"quarters {(quarterly > 0).mean():.0%} positive ({len(quarterly)})")
+        # How many positions were actually open at once. The annualized figure
+        # assumes capital is continuously redeployed, which is only true if the
+        # signal produces enough concurrent candidates to keep every slot full.
+        # If it averages fewer than `slots`, idle cash drags the real return
+        # down and the annualized number is fiction.
+        concurrent = _avg_concurrent(trades)
+        fill = min(1.0, concurrent / args.slots)
+
+        print(f"per day      strategy {strat_per_day:+.3%}  vs  nepse {bench_per_day:+.3%}")
+        print(f"annualized   {(1 + strat_per_day) ** TRADING_DAYS_PER_YEAR - 1:+.1%}   "
+              f"if kept fully deployed ({TRADING_DAYS_PER_YEAR} trading days)")
+        print(f"concurrent   {concurrent:.1f} positions open on an average day "
+              f"({fill:.0%} of {args.slots} slots filled)")
+        deployed = (1 + strat_per_day * fill) ** TRADING_DAYS_PER_YEAR - 1
+        print(f"realistic    {deployed:+.1%}   annualized with idle cash earning nothing")
+        print(f"buy & hold   {bh_cagr:+.1%} CAGR   one round trip, 5% CGT, always invested")
+
+        # A higher return with a t-stat under 2 is a difference we cannot
+        # distinguish from luck, and saying "beats" there is how a backtest
+        # talks someone into risking money on noise.
+        if deployed <= bh_cagr:
+            verdict = "LOSES to buy-and-hold"
+        elif _t_stat(quarterly) >= 2.0:
+            verdict = "BEATS buy-and-hold, alpha significant"
+        else:
+            verdict = "higher return, but alpha NOT significant — cannot rule out luck"
+        print(f"verdict      {verdict}")
+        print("note         NEPSE index is price-return: buy-and-hold also collects "
+              "~2-4%/yr in dividends this comparison ignores.")
+
+
 def cmd_size(args) -> None:
     """Position size from risk-per-trade, not from gut feel.
 
@@ -843,6 +996,22 @@ def cmd_selftest(_args) -> None:
     assert capped and abs(capped["ret"] - 0.40) < 1e-9, f"fixed target should cap at 40%: {capped}"
     assert trailed and trailed["ret"] > 0.40, f"trailing should beat the cap: {trailed}"
     assert simulate_trailing(flat, len(flat) - 3, pos) is None, "incomplete trailing trade leaked"
+
+    # Every trade must carry the exact window the benchmark reads, or the
+    # comparison silently comes from the wrong dates.
+    assert trailed["exit_date"] >= trailed["entry_date"], f"exit before entry: {trailed}"
+    assert capped["entry_date"] == runaway["date"].iloc[len(runaway) - 54], "entry date off by one"
+
+    # Buy-and-hold is cheaper than trading, but never free.
+    assert buy_hold_net(0.40) < 0.40, "buy-and-hold pays costs too"
+    assert buy_hold_net(0.40) > net_return(0.40), "long-term CGT must beat short-term"
+
+    # asof must reach back to the last close at or before a non-trading date.
+    idx = pd.Series([100.0, 110.0], index=pd.to_datetime(["2024-01-01", "2024-02-01"]))
+    gap = _index_window_return(idx, pd.Timestamp("2024-01-15"), pd.Timestamp("2024-02-15"))
+    assert abs(gap - 0.10) < 1e-9, f"asof lookup wrong: {gap}"
+    assert _index_window_return(idx, pd.Timestamp("2023-01-01"), pd.Timestamp("2024-02-01")) is None, \
+        "a date before the index history must not fabricate a benchmark"
     print("selftest OK")
 
 
@@ -878,6 +1047,12 @@ def main() -> None:
     s.add_argument("--split", default="2023-01-01")
     s.add_argument("--limit", type=int, default=0)
     s.set_defaults(func=cmd_tiers)
+
+    s = sub.add_parser("benchmark"); add_levels(s)
+    s.add_argument("--limit", type=int, default=0)
+    s.add_argument("--since", default=None, help="only trades entered on/after this date")
+    s.add_argument("--slots", type=int, default=6, help="concurrent positions your heat cap allows")
+    s.set_defaults(func=cmd_benchmark)
 
     s = sub.add_parser("size")
     s.add_argument("--bankroll", type=float, required=True)
