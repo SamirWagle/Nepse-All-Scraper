@@ -3,6 +3,10 @@
 Records open positions with their stop/target/time-stop, then checks the
 latest bar against those levels and pushes a Telegram message when one trips.
 
+Two alarms matter: the stop loss, and the profit target. A third fires on the
+time stop, because a position held past its max hold is a decision you have
+already made by not making it.
+
     export KARMA_TELEGRAM_TOKEN=...      # from @BotFather
     export KARMA_TELEGRAM_CHAT_ID=...    # from getUpdates
 
@@ -120,15 +124,19 @@ def cmd_open(args) -> None:
 
     entry = args.entry if args.entry else sig.close
     # ATR-derived stop width from the signal bar, applied to the actual fill.
-    lv = sig.levels()
+    lv = sig.levels(target=args.target)
+    target_pct = mode.target if args.target is None else args.target
     record = {
         "ticker": ticker,
         "mode": mode.name,
         "entry": round(entry, 2),
         "stop": round(entry * (1 - lv["stop_pct"]), 2),
         "stop_pct": round(lv["stop_pct"], 4),
-        # No profit target: the exit is a stop that ratchets up behind the
-        # highest close since entry. `peak` is what `watch` ratchets against.
+        "target": round(entry * (1 + target_pct), 2),
+        "target_pct": round(target_pct, 4),
+        # The stop also ratchets up behind the highest close since entry, so a
+        # position can exit on the trail before it ever reaches the target.
+        # `peak` is what `watch` ratchets against.
         "peak": round(entry, 2),
         "trail_atr": mode.trail_atr,
         "opened": str(args.opened or date.today()),
@@ -176,7 +184,12 @@ def ratchet(position: dict, bar: pd.Series) -> dict:
 
 
 def _check(position: dict, bar: pd.Series, held_days: int) -> tuple[str, str] | None:
-    """(status, message) if a level tripped, else None. No profit target."""
+    """(status, message) if a level tripped, else None.
+
+    Stop is tested before target. If a single bar touched both, assume the
+    worse fill — optimistic tie-breaking is how a tracker tells you that you
+    won a trade you actually lost.
+    """
     t, entry = position["ticker"], position["entry"]
     ret = bar["close"] / entry - 1
 
@@ -189,6 +202,21 @@ def _check(position: dict, bar: pd.Series, held_days: int) -> tuple[str, str] | 
             f"Entry {entry:,.1f} → close {bar['close']:,.1f} ({ret:+.1%}), "
             f"locked {locked:+.1%}\n"
             f"Bar date {bar['date'].date()}. Exit."
+        )
+    # `.get` not `[]`: a position opened by an older build has no target, and a
+    # missing key must not crash the watcher that guards every other position.
+    target = position.get("target")
+    if target and bar["high"] >= target:
+        gain = target / entry - 1
+        return "target", (
+            f"🎯 <b>PROFIT TARGET HIT — {t}</b>\n"
+            f"Target {target:,.1f} reached (high {bar['high']:,.1f}).\n"
+            f"Entry {entry:,.1f} → close {bar['close']:,.1f} ({ret:+.1%}), "
+            f"target {gain:+.1%}\n"
+            f"Bar date {bar['date'].date()}. Trailing stop sits at "
+            f"{position['stop']:,.1f}.\n"
+            f"Backtest note: capping winners here roughly halved net return. "
+            f"Selling is your call — the trail keeps running if you hold."
         )
     if held_days >= position["max_hold"]:
         return "timed_out", (
@@ -260,7 +288,7 @@ def cmd_test_telegram(_args) -> None:
 
 
 def cmd_selftest(_args) -> None:
-    pos = {"ticker": "TEST", "entry": 100.0, "stop": 90.0, "peak": 100.0,
+    pos = {"ticker": "TEST", "entry": 100.0, "stop": 90.0, "target": 140.0, "peak": 100.0,
            "trail_atr": 2.0, "max_hold": 63}
 
     def bar(low, high, close, atr=5.0):
@@ -270,6 +298,18 @@ def cmd_selftest(_args) -> None:
     assert _check(pos, bar(89.0, 105.0, 95.0), 5)[0] == "stopped", "stop not detected"
     assert _check(pos, bar(95.0, 105.0, 100.0), 5) is None, "false alarm on a quiet bar"
     assert _check(pos, bar(95.0, 105.0, 100.0), 63)[0] == "timed_out", "time stop not detected"
+
+    # The two events the alarm exists for: stop hit, and target hit.
+    hit = _check(pos, bar(120.0, 141.0, 138.0), 5)
+    assert hit and hit[0] == "target", f"profit target not detected: {hit}"
+    assert "PROFIT TARGET HIT" in hit[1], f"target message wrong: {hit[1]}"
+    assert _check(pos, bar(120.0, 139.9, 138.0), 5) is None, "target fired one tick early"
+    # A bar that touched both levels must report the stop, never the target.
+    both = _check(pos, bar(89.0, 141.0, 138.0), 5)
+    assert both[0] == "stopped", f"optimistic tie-break: bar hit both, reported {both[0]}"
+    # A position written before targets existed must not crash the watcher.
+    legacy = {k: v for k, v in pos.items() if k != "target"}
+    assert _check(legacy, bar(120.0, 141.0, 138.0), 5) is None, "missing target key crashed"
 
     # Trailing stop ratchets up on a new high and never loosens on a pullback.
     up = ratchet(pos, bar(118.0, 125.0, 120.0))
@@ -296,6 +336,8 @@ def main() -> None:
     s = sub.add_parser("open"); s.add_argument("ticker")
     s.add_argument("--mode", choices=list(MODES), default="position")
     s.add_argument("--entry", type=float, default=None, help="actual fill price")
+    s.add_argument("--target", type=float, default=None,
+                   help="profit target as a fraction, e.g. 0.40 (default: mode target)")
     s.add_argument("--opened", default=None, help="entry date YYYY-MM-DD")
     s.set_defaults(func=cmd_open)
 

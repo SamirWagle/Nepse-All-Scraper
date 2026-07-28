@@ -118,6 +118,42 @@ DEFAULT_MODE = "position"
 # out-of-sample, trailing roughly doubles net return per trade in both modes.
 DEFAULT_EXIT = "trail"
 
+# Measured out-of-sample (entries from 2023-01-01, trailing exit, net of costs
+# and CGT). Refresh with `backtest --mode both` after any rule change.
+#
+# These are BASE RATES for the mode, not per-stock forecasts. Nothing measured
+# here predicts which name does better — the `tiers` test showed the signal
+# score has no monotonic relationship to outcome. A per-ticker probability
+# would therefore be invented, so `scan` prints the same odds against every
+# row and the only column that genuinely varies by stock is the reward:risk
+# its own ATR-derived stop implies.
+MEASURED_ODDS = {
+    "swing": {"p_win": 0.408, "avg_win": 0.1234, "avg_loss": 0.0650, "n": 725},
+    "position": {"p_win": 0.419, "avg_win": 0.1511, "avg_loss": 0.0739, "n": 911},
+}
+
+
+def mode_odds(mode_name: str) -> dict:
+    """Frequency odds and money odds for a mode, from the measured base rates.
+
+    Two different ratios, and conflating them is the classic way to talk
+    yourself into a bad bet: you win LESS often than you lose (frequency odds
+    below 1), and you still profit because the wins are twice the size (money
+    odds above 1).
+    """
+    m = MEASURED_ODDS[mode_name]
+    p_win, p_loss = m["p_win"], 1 - m["p_win"]
+    return {
+        "p_win": p_win,
+        "freq_ratio": p_win / p_loss,
+        "payoff": m["avg_win"] / m["avg_loss"],
+        "money_ratio": (p_win * m["avg_win"]) / (p_loss * m["avg_loss"]),
+        "ev": p_win * m["avg_win"] - p_loss * m["avg_loss"],
+        "avg_win": m["avg_win"],
+        "avg_loss": m["avg_loss"],
+        "n": m["n"],
+    }
+
 
 # ── Data loading ─────────────────────────────────────────────────────────────
 def _corporate_action_factors(ticker: str) -> list[tuple[pd.Timestamp, float]]:
@@ -481,6 +517,10 @@ def cmd_scan(args) -> None:
             if not (sig and sig.is_buy):
                 continue
             lv = sig.levels(args.target, args.stop)
+            odds = mode_odds(mode.name)
+            # The one genuinely per-stock ratio: what this name's own ATR stop
+            # offers. Wider stop = worse odds on the same expected move.
+            rr = odds["avg_win"] / lv["stop_pct"]
             rows.append(
                 {
                     "ticker": t,
@@ -489,6 +529,10 @@ def cmd_scan(args) -> None:
                     "close": round(sig.close, 1),
                     "stop": round(lv["stop"], 1),
                     "stop%": f"{lv['stop_pct']:.1%}",
+                    "target": round(lv["target"], 1),
+                    "up:down": f"{odds['money_ratio']:.2f}:1",
+                    "win%": f"{odds['p_win']:.0%}",
+                    "rewd:risk": f"{rr:.2f}:1",
                     "trail": round(lv["trail_distance"], 1),
                     "rsi": round(sig.detail["rsi14"], 1),
                     "adx": round(sig.detail["adx14"], 1),
@@ -503,6 +547,23 @@ def cmd_scan(args) -> None:
         return
     out = pd.DataFrame(rows).sort_values(["mode", "score"], ascending=[True, False])
     print(out.groupby("mode", group_keys=False).head(args.top).to_string(index=False))
+
+    print("\nOdds (measured out-of-sample, net of costs and 7.5% CGT):")
+    for mode in _modes(args):
+        o = mode_odds(mode.name)
+        print(
+            f"  {mode.name:9s} wins {o['p_win']:.0%} of trades — you LOSE more often than you win.\n"
+            f"            frequency odds {o['freq_ratio']:.2f}:1 against you, "
+            f"money odds {o['money_ratio']:.2f}:1 in your favour.\n"
+            f"            avg win {o['avg_win']:+.1%}, avg loss -{o['avg_loss']:.1%} "
+            f"(payoff {o['payoff']:.2f}:1), EV {o['ev']:+.2%}/trade over {o['n']} trades."
+        )
+    print(
+        "  These odds are the SAME for every row. Nothing measured predicts which\n"
+        "  name does better — `tiers` showed score has no monotonic link to outcome.\n"
+        "  A per-ticker probability would be fabricated. `rewd:risk` is the only\n"
+        "  column that truly varies by stock: it is that name's own ATR stop width."
+    )
 
 
 def cmd_signal(args) -> None:
@@ -1062,6 +1123,16 @@ def cmd_selftest(_args) -> None:
     assert trailed["exit_date"] >= trailed["entry_date"], f"exit before entry: {trailed}"
     assert capped["entry_date"] == runaway["date"].iloc[len(runaway) - 54], "entry date off by one"
 
+    # Frequency odds and money odds must not be confused: this strategy loses
+    # more often than it wins and still has positive EV.
+    for name in MODES:
+        o = mode_odds(name)
+        assert o["freq_ratio"] < 1.0, f"{name}: win rate above 50% — check MEASURED_ODDS"
+        assert o["money_ratio"] > 1.0, f"{name}: money odds not favourable — {o}"
+        assert o["ev"] > 0, f"{name}: negative EV — {o}"
+        assert abs(o["money_ratio"] - o["freq_ratio"] * o["payoff"]) < 1e-9, \
+            f"{name}: money odds must equal frequency odds x payoff"
+
     # Buy-and-hold is cheaper than trading, but never free.
     assert buy_hold_net(0.40) < 0.40, "buy-and-hold pays costs too"
     assert buy_hold_net(0.40) > net_return(0.40), "long-term CGT must beat short-term"
@@ -1087,7 +1158,7 @@ def main() -> None:
         sp.add_argument("--exit", choices=("trail", "target"), default=DEFAULT_EXIT,
                         dest="exit_style")
 
-    s = sub.add_parser("scan"); add_levels(s); s.add_argument("--top", type=int, default=15)
+    s = sub.add_parser("scan"); add_levels(s); s.add_argument("--top", type=int, default=10)
     s.set_defaults(func=cmd_scan)
 
     s = sub.add_parser("signal"); s.add_argument("ticker"); add_levels(s)
