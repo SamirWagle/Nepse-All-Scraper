@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-29",
+  "present_pe": 24.23,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 15.76,
+  "shiller_pe": null,
+  "shiller_pe_years": 3,
+  "shiller_avg_eps": -0.73,
+  "historical_pe_avg": 48.06,
+  "historical_pe_median": 48.06,
+  "historical_pe_min": 21.83,
+  "historical_pe_max": 74.29,
+  "historical_pe_years": 2,
+  "read_vs_shiller": "undefined",
+  "read_vs_median": "cheap",
+  "verdict_lean": "HOLD",
+  "verdict_reason": "Present PE below the 2-year historical median, but the sample is too thin (2 usable years, 1 excluded loss year) for a confident CAPE-style read.",
+  "devils_advocate": "Only 3 fiscal years of EPS exist since COD; the 'cheap' read rests on a single comparison year, not a real cycle. An unresolved NEA billing dispute (~NPR 31cr claimed unpaid) could swing FY083-084 EPS and reprice this fast."
+}
