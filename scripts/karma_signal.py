@@ -27,7 +27,9 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
+import json
 import os
 import shutil
 import sys
@@ -494,7 +496,7 @@ body { margin: 0; padding: 40px 24px; background: #1b1b1b; color: #ededed;
 .wrap { max-width: 1000px; margin: 0 auto; }
 .head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
 .head .regime-note { font-size: 17px; color: #ededed; }
-.head .asof { margin-left: auto; color: #8f8f8f; font-size: 14px; font-weight: 500; }
+.head .asof { color: #8f8f8f; font-size: 14px; font-weight: 500; }
 .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px;
         border-radius: 8px; font-size: 15px; font-weight: 600; }
 .pill.on  { background: #102b1b; color: #4ade80; }
@@ -525,6 +527,26 @@ td.rr { font-weight: 700; }
            border-radius: 12px; background: #3a2e07; border: 1px solid #6b5712; }
 .callout .icon { color: #fbbf24; font-size: 18px; line-height: 1.5; }
 .callout p { margin: 0; color: #fbbf24; font-size: 16px; font-weight: 600; line-height: 1.6; }
+.snap-btn { padding: 6px 16px; background: #2c2c2c; color: #ededed; border: 1px solid #444;
+            border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;
+            margin-left: auto; text-decoration: none; display: inline-block; }
+.snap-btn:hover { background: #333; border-color: #555; }
+/* ponytail: checkbox toggle, not JS or :target — the extension CSP blocks scripts in
+   this iframe, and srcdoc has no base URL so fragment links never fire :target. */
+#snap-toggle { display: none; }
+#snapshots { display: none; }
+#snap-toggle:checked ~ #snapshots { display: block; }
+#snap-toggle:checked ~ #scan { display: none; }
+#snapshots h1 { font-size: 24px; margin: 0; }
+.snap-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.snap-item { padding: 14px 18px; margin-bottom: 10px; background: #232323;
+             border: 1px solid #333; border-radius: 10px;
+             display: flex; align-items: center; justify-content: space-between; }
+.snap-date { font-size: 16px; font-weight: 600; }
+.snap-count { font-size: 14px; color: #8f8f8f; }
+.snap-now { border-color: #2f6b45; }
+.snap-now .snap-date::after { content: " CURRENT"; color: #4ade80; font-size: 12px; }
+.snap-empty { color: #8f8f8f; padding: 20px 0; }
 @media print { body { background: #fff; color: #000; padding: 0; }
                 .callout { background: #fdf6e0; } th, td { border-color: #ccc; } }
 """
@@ -637,6 +659,51 @@ def _point_latest_at(target: Path) -> None:
         shutil.copyfile(target, latest)
 
 
+def _snapshot_hash(out: pd.DataFrame) -> str:
+    """Hash of current scan (ticker + score), for dedup."""
+    data = "|".join(f"{r['ticker']}:{r['score']}" for _, r in out.iterrows())
+    return hashlib.md5(data.encode()).hexdigest()
+
+
+def _load_snapshots() -> list[dict]:
+    """Load snapshots.json; return empty list if not found."""
+    snap_file = OUTPUT_DIR / "snapshots.json"
+    if snap_file.exists():
+        return json.loads(snap_file.read_text())
+    return []
+
+
+def _save_snapshot(now: datetime, count: int, hash_val: str) -> None:
+    """Store snapshot if different from last. Keep 20 most recent."""
+    snap_file = OUTPUT_DIR / "snapshots.json"
+    snapshots = _load_snapshots()
+    if snapshots and snapshots[-1]["hash"] == hash_val:
+        return  # Skip duplicate
+    snapshots.append({
+        "timestamp": now.isoformat(),
+        "date": now.strftime("%Y-%m-%d"),
+        "time": now.strftime("%H:%M:%S"),
+        "count": count,
+        "hash": hash_val,
+    })
+    snap_file.write_text(json.dumps(snapshots[-20:], indent=2))
+
+
+def _snapshot_rows(snapshots: list[dict], current_hash: str) -> str:
+    """Static HTML list of snapshots, newest first. No JS — extension CSP blocks it."""
+    if not snapshots:
+        return '<div class="snap-empty">No snapshots saved yet.</div>'
+    out = []
+    for s in reversed(snapshots):
+        cls = "snap-item snap-now" if s.get("hash") == current_hash else "snap-item"
+        out.append(
+            f'<div class="{cls}">'
+            f'<span class="snap-date">{html.escape(s["date"])} at {html.escape(s["time"])}</span>'
+            f'<span class="snap-count">{s["count"]} rows</span></div>'
+        )
+    return "".join(out)
+
+
 def write_html_report(out: pd.DataFrame, mode_names: list[str], regime: bool,
                       latest_bar, cutoff, stale: int) -> Path:
     """Archive the scan as a self-contained dark-theme HTML file.
@@ -649,15 +716,26 @@ def write_html_report(out: pd.DataFrame, mode_names: list[str], regime: bool,
     head = "".join(f"<th>{html.escape(label)}</th>" for _, label in REPORT_COLUMNS)
     badge = ('<span class="pill on">&#8599; Risk-on</span>' if regime
              else '<span class="pill off">&#8600; Risk-off</span>')
+    snap_hash = _snapshot_hash(ranked)
+    _save_snapshot(now, len(ranked), snap_hash)
+    snap_rows = _snapshot_rows(_load_snapshots(), snap_hash)
     doc = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Karma NEPSE Signal — {now:%Y-%m-%d %H:%M}</title>
 <style>{REPORT_CSS}</style></head>
-<body><div class="wrap">
+<body>
+<input type="checkbox" id="snap-toggle">
+<div id="snapshots" class="wrap">
+  <div class="snap-head"><h1>&#128248; Snapshots</h1>
+    <label for="snap-toggle" class="snap-btn">&larr; Back to scan</label></div>
+  {snap_rows}
+</div>
+<div id="scan" class="wrap">
 <div class="head">{badge}
   <span class="regime-note">NEPSE index {'above' if regime else 'below'} MA200</span>
   <span class="asof">as of {latest_bar.date()} &middot; {stale} tickers skipped (stale, no bar since {cutoff.date()})</span>
+  <label for="snap-toggle" class="snap-btn">&#128248; Snapshots</label>
 </div>
 <div class="card"><table><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>
 <div class="callout">{_odds_block(mode_names)}</div>

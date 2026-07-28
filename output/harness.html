@@ -1,0 +1,99 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0"><iframe style="width:100%;height:900px;border:0" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;title&gt;Karma NEPSE Signal — 2026-07-28 20:51&lt;/title&gt;
+&lt;style&gt;
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 40px 24px; background: #1b1b1b; color: #ededed;
+       font: 16px/1.5 -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Helvetica, Arial, sans-serif; }
+.wrap { max-width: 1000px; margin: 0 auto; }
+.head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+.head .regime-note { font-size: 17px; color: #ededed; }
+.head .asof { color: #8f8f8f; font-size: 14px; font-weight: 500; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px;
+        border-radius: 8px; font-size: 15px; font-weight: 600; }
+.pill.on  { background: #102b1b; color: #4ade80; }
+.pill.off { background: #33161a; color: #f87171; }
+.card { border: 1px solid #333; border-radius: 12px; overflow-x: auto; scrollbar-width: thin; }
+.card::-webkit-scrollbar { height: 8px; }
+.card::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+th, td { padding: 12px 9px; text-align: right; white-space: nowrap;
+         border-bottom: 1px solid #333; }
+tbody tr:last-child td { border-bottom: none; }
+th { color: #ededed; font-weight: 600; cursor: pointer; user-select: none; }
+th:hover { color: #fff; }
+th:nth-child(-n+3), td:nth-child(-n+3) { text-align: left; }
+tbody tr:hover { background: #232323; }
+td.ticker { font-weight: 700; }
+td.rr { font-weight: 700; }
+.badge { display: inline-block; padding: 4px 12px; border-radius: 8px;
+         font-size: 15px; font-weight: 500; }
+.badge.position { background: #16304d; color: #60a5fa; }
+.badge.swing    { background: #2c2c2c; color: #d4d4d4; }
+.score { display: inline-flex; align-items: center; gap: 12px; }
+.score .bar { width: 46px; height: 6px; background: #2c2c2c; border-radius: 3px; overflow: hidden; }
+.score .fill { display: block; height: 100%; background: #4a90e2; border-radius: 3px; }
+.hot { color: #f87171; }
+.cold { color: #4ade80; }
+.callout { display: flex; gap: 12px; margin: 26px 0 0; padding: 20px 24px;
+           border-radius: 12px; background: #3a2e07; border: 1px solid #6b5712; }
+.callout .icon { color: #fbbf24; font-size: 18px; line-height: 1.5; }
+.callout p { margin: 0; color: #fbbf24; font-size: 16px; font-weight: 600; line-height: 1.6; }
+.snap-btn { padding: 6px 16px; background: #2c2c2c; color: #ededed; border: 1px solid #444;
+            border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;
+            margin-left: auto; text-decoration: none; display: inline-block; }
+.snap-btn:hover { background: #333; border-color: #555; }
+/* ponytail: checkbox toggle, not JS or :target — the extension CSP blocks scripts in
+   this iframe, and srcdoc has no base URL so fragment links never fire :target. */
+#snap-toggle { display: none; }
+#snapshots { display: none; }
+#snap-toggle:checked ~ #snapshots { display: block; }
+#snap-toggle:checked ~ #scan { display: none; }
+#snapshots h1 { font-size: 24px; margin: 0; }
+.snap-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.snap-item { padding: 14px 18px; margin-bottom: 10px; background: #232323;
+             border: 1px solid #333; border-radius: 10px;
+             display: flex; align-items: center; justify-content: space-between; }
+.snap-date { font-size: 16px; font-weight: 600; }
+.snap-count { font-size: 14px; color: #8f8f8f; }
+.snap-now { border-color: #2f6b45; }
+.snap-now .snap-date::after { content: &quot; CURRENT&quot;; color: #4ade80; font-size: 12px; }
+.snap-empty { color: #8f8f8f; padding: 20px 0; }
+@media print { body { background: #fff; color: #000; padding: 0; }
+                .callout { background: #fdf6e0; } th, td { border-color: #ccc; } }
+&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;input type=&quot;checkbox&quot; id=&quot;snap-toggle&quot;&gt;
+&lt;div id=&quot;snapshots&quot; class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;snap-head&quot;&gt;&lt;h1&gt;&amp;#128248; Snapshots&lt;/h1&gt;
+    &lt;label for=&quot;snap-toggle&quot; class=&quot;snap-btn&quot;&gt;&amp;larr; Back to scan&lt;/label&gt;&lt;/div&gt;
+  &lt;div class=&quot;snap-item snap-now&quot;&gt;&lt;span class=&quot;snap-date&quot;&gt;2026-07-28 at 19:02:08&lt;/span&gt;&lt;span class=&quot;snap-count&quot;&gt;6 rows&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;scan&quot; class=&quot;wrap&quot;&gt;
+&lt;div class=&quot;head&quot;&gt;&lt;span class=&quot;pill on&quot;&gt;&amp;#8599; Risk-on&lt;/span&gt;
+  &lt;span class=&quot;regime-note&quot;&gt;NEPSE index above MA200&lt;/span&gt;
+  &lt;span class=&quot;asof&quot;&gt;as of 2026-07-28 &amp;middot; 161 tickers skipped (stale, no bar since 2026-07-13)&lt;/span&gt;
+  &lt;label for=&quot;snap-toggle&quot; class=&quot;snap-btn&quot;&gt;&amp;#128248; Snapshots&lt;/label&gt;
+&lt;/div&gt;
+&lt;div class=&quot;card&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Ticker&lt;/th&gt;&lt;th&gt;Mode&lt;/th&gt;&lt;th&gt;Score&lt;/th&gt;&lt;th&gt;Close&lt;/th&gt;&lt;th&gt;Stop&lt;/th&gt;&lt;th&gt;Target&lt;/th&gt;&lt;th&gt;Rwd:risk&lt;/th&gt;&lt;th&gt;RSI&lt;/th&gt;&lt;th&gt;ADX&lt;/th&gt;&lt;th&gt;%of52wH&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;ticker&quot; data-v=&quot;HPPL&quot;&gt;HPPL&lt;/td&gt;&lt;td data-v=&quot;position&quot;&gt;&lt;span class=&quot;badge position&quot;&gt;position&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;95.0&quot;&gt;&lt;span class=&quot;score&quot;&gt;&lt;span class=&quot;bar&quot;&gt;&lt;span class=&quot;fill&quot; style=&quot;width:95%&quot;&gt;&lt;/span&gt;&lt;/span&gt;95&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;381.9&quot;&gt;381.9&lt;/td&gt;&lt;td data-v=&quot;336.1&quot;&gt;336.1&lt;/td&gt;&lt;td data-v=&quot;534.7&quot;&gt;534.7&lt;/td&gt;&lt;td class=&quot;rr&quot; data-v=&quot;1.26&quot;&gt;1.26:1&lt;/td&gt;&lt;td data-v=&quot;64.8&quot;&gt;64.8&lt;/td&gt;&lt;td data-v=&quot;23.2&quot;&gt;23.2&lt;/td&gt;&lt;td data-v=&quot;93.0&quot;&gt;93%&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=&quot;ticker&quot; data-v=&quot;HPPL&quot;&gt;HPPL&lt;/td&gt;&lt;td data-v=&quot;swing&quot;&gt;&lt;span class=&quot;badge swing&quot;&gt;swing&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;95.0&quot;&gt;&lt;span class=&quot;score&quot;&gt;&lt;span class=&quot;bar&quot;&gt;&lt;span class=&quot;fill&quot; style=&quot;width:95%&quot;&gt;&lt;/span&gt;&lt;/span&gt;95&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;381.9&quot;&gt;381.9&lt;/td&gt;&lt;td data-v=&quot;351.3&quot;&gt;351.3&lt;/td&gt;&lt;td data-v=&quot;450.6&quot;&gt;450.6&lt;/td&gt;&lt;td class=&quot;rr&quot; data-v=&quot;1.54&quot;&gt;1.54:1&lt;/td&gt;&lt;td data-v=&quot;64.8&quot;&gt;64.8&lt;/td&gt;&lt;td data-v=&quot;23.2&quot;&gt;23.2&lt;/td&gt;&lt;td data-v=&quot;93.0&quot;&gt;93%&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=&quot;ticker&quot; data-v=&quot;GBIME&quot;&gt;GBIME&lt;/td&gt;&lt;td data-v=&quot;position&quot;&gt;&lt;span class=&quot;badge position&quot;&gt;position&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;90.0&quot;&gt;&lt;span class=&quot;score&quot;&gt;&lt;span class=&quot;bar&quot;&gt;&lt;span class=&quot;fill&quot; style=&quot;width:90%&quot;&gt;&lt;/span&gt;&lt;/span&gt;90&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;259.4&quot;&gt;259.4&lt;/td&gt;&lt;td data-v=&quot;228.3&quot;&gt;228.3&lt;/td&gt;&lt;td data-v=&quot;363.2&quot;&gt;363.2&lt;/td&gt;&lt;td class=&quot;rr&quot; data-v=&quot;1.26&quot;&gt;1.26:1&lt;/td&gt;&lt;td class=&quot;hot&quot; data-v=&quot;73.1&quot;&gt;73.1&lt;/td&gt;&lt;td data-v=&quot;20.6&quot;&gt;20.6&lt;/td&gt;&lt;td data-v=&quot;93.0&quot;&gt;93%&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=&quot;ticker&quot; data-v=&quot;NABIL&quot;&gt;NABIL&lt;/td&gt;&lt;td data-v=&quot;position&quot;&gt;&lt;span class=&quot;badge position&quot;&gt;position&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;90.0&quot;&gt;&lt;span class=&quot;score&quot;&gt;&lt;span class=&quot;bar&quot;&gt;&lt;span class=&quot;fill&quot; style=&quot;width:90%&quot;&gt;&lt;/span&gt;&lt;/span&gt;90&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;558.0&quot;&gt;558.0&lt;/td&gt;&lt;td data-v=&quot;491.0&quot;&gt;491.0&lt;/td&gt;&lt;td data-v=&quot;781.2&quot;&gt;781.2&lt;/td&gt;&lt;td class=&quot;rr&quot; data-v=&quot;1.26&quot;&gt;1.26:1&lt;/td&gt;&lt;td data-v=&quot;69.4&quot;&gt;69.4&lt;/td&gt;&lt;td data-v=&quot;26.9&quot;&gt;26.9&lt;/td&gt;&lt;td data-v=&quot;98.0&quot;&gt;98%&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=&quot;ticker&quot; data-v=&quot;NABIL&quot;&gt;NABIL&lt;/td&gt;&lt;td data-v=&quot;swing&quot;&gt;&lt;span class=&quot;badge swing&quot;&gt;swing&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;90.0&quot;&gt;&lt;span class=&quot;score&quot;&gt;&lt;span class=&quot;bar&quot;&gt;&lt;span class=&quot;fill&quot; style=&quot;width:90%&quot;&gt;&lt;/span&gt;&lt;/span&gt;90&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;558.0&quot;&gt;558.0&lt;/td&gt;&lt;td data-v=&quot;513.4&quot;&gt;513.4&lt;/td&gt;&lt;td data-v=&quot;658.4&quot;&gt;658.4&lt;/td&gt;&lt;td class=&quot;rr&quot; data-v=&quot;1.54&quot;&gt;1.54:1&lt;/td&gt;&lt;td data-v=&quot;69.4&quot;&gt;69.4&lt;/td&gt;&lt;td data-v=&quot;26.9&quot;&gt;26.9&lt;/td&gt;&lt;td data-v=&quot;98.0&quot;&gt;98%&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td class=&quot;ticker&quot; data-v=&quot;BFC&quot;&gt;BFC&lt;/td&gt;&lt;td data-v=&quot;position&quot;&gt;&lt;span class=&quot;badge position&quot;&gt;position&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;85.0&quot;&gt;&lt;span class=&quot;score&quot;&gt;&lt;span class=&quot;bar&quot;&gt;&lt;span class=&quot;fill&quot; style=&quot;width:85%&quot;&gt;&lt;/span&gt;&lt;/span&gt;85&lt;/span&gt;&lt;/td&gt;&lt;td data-v=&quot;514.0&quot;&gt;514.0&lt;/td&gt;&lt;td data-v=&quot;452.3&quot;&gt;452.3&lt;/td&gt;&lt;td data-v=&quot;719.6&quot;&gt;719.6&lt;/td&gt;&lt;td class=&quot;rr&quot; data-v=&quot;1.26&quot;&gt;1.26:1&lt;/td&gt;&lt;td data-v=&quot;48.3&quot;&gt;48.3&lt;/td&gt;&lt;td data-v=&quot;20.9&quot;&gt;20.9&lt;/td&gt;&lt;td data-v=&quot;89.0&quot;&gt;89%&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;div class=&quot;callout&quot;&gt;&lt;div class=&quot;icon&quot;&gt;&amp;#9888;&lt;/div&gt;&lt;p&gt;Odds are strategy-level, not per-stock. Swing mode: 41% win rate, 1.31:1 money odds, +1.19% EV/trade over 725 trades (avg win +12.3%, avg loss -6.5%, frequency odds 0.69:1 against). Position mode: 42% win rate, 1.47:1 money odds, +2.04% EV/trade over 911 trades (avg win +15.1%, avg loss -7.4%, frequency odds 0.72:1 against). Every row above shares these same odds — score does not predict which name outperforms; rwd:risk varies only because it reflects each stock&amp;#x27;s own ATR stop width.&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;script&gt;
+document.querySelectorAll(&#x27;th&#x27;).forEach(function (th, i) {
+  th.addEventListener(&#x27;click&#x27;, function () {
+    var tb = th.closest(&#x27;table&#x27;).tBodies[0];
+    var rows = Array.prototype.slice.call(tb.rows);
+    var desc = th.dataset.desc !== &#x27;true&#x27;;
+    rows.sort(function (a, b) {
+      var x = a.cells[i].dataset.v, y = b.cells[i].dataset.v;
+      var nx = parseFloat(x), ny = parseFloat(y);
+      var c = (isNaN(nx) || isNaN(ny)) ? String(x).localeCompare(String(y)) : nx - ny;
+      return desc ? -c : c;
+    });
+    th.dataset.desc = desc;
+    rows.forEach(function (r) { tb.appendChild(r); });
+  });
+});
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+"></iframe>
