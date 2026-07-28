@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-28",
+  "present_pe": 18.05,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 23.21,
+  "shiller_pe": 21.51,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 19.48,
+  "historical_pe_avg": 16.38,
+  "historical_pe_median": 14.9,
+  "historical_pe_min": 5.47,
+  "historical_pe_max": 52.2,
+  "historical_pe_years": 14,
+  "read_vs_shiller": "cheap",
+  "read_vs_median": "expensive",
+  "verdict_lean": "HOLD",
+  "verdict_reason": "Mixed signal: cheap on smoothed 10yr earnings, pricier than what this stock has typically traded at over its own history. Present PE sits mid-band, not at either extreme.",
+  "devils_advocate": "Shiller PE looks inflated mainly because FY080-081 EPS crashed to 7.64 (pe=52.2 that year, a provisioning/NPL hit), dragging the 10yr average earnings down and making today's 18.05 look cheap by comparison — that's a denominator artifact, not real value. Meanwhile the median-band read says the market is paying more than usual for GBBL right now, off a recent EPS rebound (23.21) that itself could be a bounce-back year rather than a new normal. Don't read cheap-vs-Shiller as a green light without checking whether FY082-083's EPS rebound is durable or a one-year recovery high."
+}

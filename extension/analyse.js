@@ -253,6 +253,45 @@
     modalOverlay.addEventListener('click', (e) => {
       if (e.target === modalOverlay) modalOverlay.style.display = 'none';
     });
+
+    // ── Schiller verdict modal ──
+    const verdictOverlay = document.getElementById('verdict-modal-overlay');
+    async function showVerdict(symbol) {
+      const port = await findPort();
+      if (!port) return;
+      let v;
+      try {
+        const resp = await fetch(`http://localhost:${port}/verdict?symbol=${encodeURIComponent(symbol)}`, { signal: AbortSignal.timeout(10000) });
+        v = await resp.json();
+      } catch (e) {
+        return;
+      }
+      if (!v || v.error) return;
+      document.getElementById('verdict-modal-title').textContent = `${symbol} — Schiller Verdict`;
+      document.getElementById('verdict-modal-date').textContent = `As of ${v.date}`;
+      document.getElementById('verdict-modal-body').innerHTML = `
+        <div style="margin-bottom:10px;font-variant-numeric:tabular-nums;">
+          Present PE: <strong>${v.present_pe}</strong> (FY ${v.present_pe_fy}, EPS ${v.present_pe_eps})<br>
+          Shiller PE: <strong>${v.shiller_pe}</strong> (${v.shiller_pe_years}yr avg EPS ${v.shiller_avg_eps})<br>
+          Historical PE: avg ${v.historical_pe_avg} · median ${v.historical_pe_median} · range [${v.historical_pe_min} – ${v.historical_pe_max}] (${v.historical_pe_years}yrs)
+        </div>
+        <div style="margin-bottom:10px;">Read: ${v.read_vs_shiller} vs Shiller PE, ${v.read_vs_median} vs historical median</div>
+        <div style="margin-bottom:10px;"><strong>Verdict: ${v.verdict_lean}</strong> — ${v.verdict_reason}</div>
+        <div style="color:var(--text-3);font-size:12px;"><strong>Devil's advocate:</strong> ${v.devils_advocate}</div>
+      `;
+      verdictOverlay.style.display = 'flex';
+    }
+    document.getElementById('verdict-btn').addEventListener('click', (e) => {
+      const symbol = e.target.dataset.symbol;
+      if (symbol) showVerdict(symbol);
+    });
+    document.getElementById('verdict-modal-close').addEventListener('click', () => {
+      verdictOverlay.style.display = 'none';
+    });
+    verdictOverlay.addEventListener('click', (e) => {
+      if (e.target === verdictOverlay) verdictOverlay.style.display = 'none';
+    });
+
     // ── Date LTP lookup ──
     async function doLtpLookup() {
       const sym = lastSearchedSymbol;
@@ -919,6 +958,11 @@
       } else {
         setText('r-shiller-pe', '—');
         setText('r-shiller-pe-sub', 'No EPS history available');
+      }
+      const verdictBtn = document.getElementById('verdict-btn');
+      if (verdictBtn) {
+        verdictBtn.style.display = (!isClosedMerged && d.symbol) ? 'block' : 'none';
+        verdictBtn.dataset.symbol = d.symbol || '';
       }
 
       setText('r-eps', isClosedMerged ? '—' : (d.eps != null ? 'Rs. ' + d.eps.toFixed(2) : '—'));

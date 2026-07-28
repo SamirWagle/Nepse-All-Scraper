@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-28",
+  "present_pe": 19.83,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 20.93,
+  "shiller_pe": 21.68,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 19.15,
+  "historical_pe_avg": 18.73,
+  "historical_pe_median": 16.56,
+  "historical_pe_min": 9.77,
+  "historical_pe_max": 32.63,
+  "historical_pe_years": 14,
+  "read_vs_shiller": "cheap",
+  "read_vs_median": "expensive",
+  "verdict_lean": "HOLD",
+  "verdict_reason": "Mixed signal, same pattern as GBBL: cheap on smoothed 10yr earnings, pricier than what this stock has typically traded at over its own history. Present PE sits mid-band, not at either extreme.",
+  "devils_advocate": "FY082-083 EPS (20.93) is a ~58% jump off FY081-082's 13.24, the lowest print in the whole series, after a multi-year slide (17.69→14.48→13.24) through 079-082. That decline sits inside the 10yr Shiller window, dragging the average down and making today's PE look cheap by comparison — denominator effect, not necessarily genuine value. Also: SHINE is a four-time serial acquirer (Resunga 2069, Gaumukhi 2073, Bhargav+Purnima 2076) — each merger expanded paid-up capital and diluted EPS mechanically, so its own 14yr PE history isn't a clean apples-to-apples band."
+}

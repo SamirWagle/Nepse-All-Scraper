@@ -879,6 +879,18 @@ class Handler(BaseHTTPRequestHandler):
                 if ceo:
                     data["ceo"] = ceo
                 self._send_json(data)
+        elif self.path.startswith("/verdict"):
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            symbol = qs.get("symbol", [""])[0].strip().upper()
+            if not symbol or not _SYMBOL_RE.match(symbol):
+                self._send_json({"error": "Invalid symbol"})
+            else:
+                verdict_path = DATA_DIR / "company-wise" / symbol / "verdict.json"
+                if verdict_path.exists():
+                    self._send_json(json.loads(verdict_path.read_text()))
+                else:
+                    self._send_json({"error": "No verdict on file for this symbol"}, status=404)
         elif self.path == "/mergers":
             self._send_json({"version": 1, "entries": _load_merger_meta()})
         elif self.path == "/interest_rates":

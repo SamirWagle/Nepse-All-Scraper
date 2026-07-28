@@ -138,6 +138,7 @@
           <div class="summary-card-label">Shiller P/E (CAPE)</div>
           <div class="summary-card-value" id="r-shiller-pe">—</div>
           <div class="summary-card-sub" id="r-shiller-pe-sub">—</div>
+          <button id="verdict-btn" style="display:none;position:absolute;bottom:10px;right:10px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:6px;border:1px solid var(--border);background:var(--surface-2);color:var(--text-3);cursor:pointer;">Verdict</button>
         </div>
         <div class="summary-card">
           <div class="summary-card-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 1 0 0 7h5a3.5 3.5 0 1 1 0 7H6"/></svg></div>
@@ -462,6 +463,16 @@
         <tbody id="cycle-modal-body"></tbody>
       </table>
       <button id="cycle-modal-close" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-3);font-size:20px;cursor:pointer;line-height:1;">×</button>
+    </div>
+  </div>
+
+  <!-- Schiller verdict modal -->
+  <div id="verdict-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(3px);">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;min-width:300px;max-width:440px;position:relative;box-shadow:0 12px 40px rgba(0,0,0,0.5);">
+      <div id="verdict-modal-title" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3);margin-bottom:4px;"></div>
+      <div id="verdict-modal-date" style="font-size:11px;color:var(--text-3);margin-bottom:16px;"></div>
+      <div id="verdict-modal-body" style="font-size:13px;line-height:1.55;color:var(--text);"></div>
+      <button id="verdict-modal-close" style="position:absolute;top:12px;right:14px;background:none;border:none;color:var(--text-3);font-size:20px;cursor:pointer;line-height:1;">×</button>
     </div>
   </div>
 

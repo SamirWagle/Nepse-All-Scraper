@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-28",
+  "present_pe": 23.87,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 15.71,
+  "shiller_pe": 17.38,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 21.58,
+  "historical_pe_avg": 19.33,
+  "historical_pe_median": 19.32,
+  "historical_pe_min": 6.62,
+  "historical_pe_max": 30.63,
+  "historical_pe_years": 15,
+  "read_vs_shiller": "expensive",
+  "read_vs_median": "expensive",
+  "verdict_lean": "SELL-CASE",
+  "verdict_reason": "Expensive on both markers — present PE sits above smoothed 10yr earnings and above what this stock has typically traded at over its own history.",
+  "devils_advocate": "This isn't price euphoria — price has actually fallen (Rs 405.92 → Rs 362.9 over the last FY), it's earnings compression driving the ratio. FY082-083 EPS (15.71) is near the low end of a multi-year decline from the 072-073 peak (43.10), so the high PE reflects a shrunk denominator, not the market bidding the stock up. That cuts both ways: if EPS keeps falling this is a value trap dressed up as a normal PE band, but if the decline is cyclical (rate spread compression, provisioning cycle) and EPS recovers, today's price could reprice as cheap in hindsight. The SELL-CASE lean is on trailing numbers only — worth checking whether the EPS slide has bottomed before acting on it."
+}
