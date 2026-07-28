@@ -123,7 +123,7 @@
       }
     }
 
-    // ── KarmaNepseTechincalSignal (karma_signal.py scan --mode both) ──
+    // ── KarmaNepseTechnicalSignal (karma_signal.py scan --mode both) ──
     let ksRunning = false;
     async function runKarmaSignal() {
       if (ksRunning) return;
