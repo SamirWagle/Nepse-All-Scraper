@@ -1,0 +1,43 @@
+{
+  "symbol": "HPPL",
+  "company_name": "Himalayan Power Partner Ltd. (HPPL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 10654170.0,
+  "market_price": 381.9,
+  "percent_change": 0.77,
+  "last_traded_on": "2026/07/28 02:59:58",
+  "high_52w": 605.0,
+  "low_52w": 340.1,
+  "avg_180d": 405.49,
+  "avg_120d": 376.37,
+  "year_yield_pct": -28.73,
+  "eps": 15.76,
+  "eps_fy": "082-083",
+  "pe_ratio": 24.23,
+  "book_value": 127.79,
+  "pbv": 2.99,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 79712.0,
+  "market_cap": 4068827523.0,
+  "scraped_at": "2026-07-28T21:14:33",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 15981255.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 749.1,
+  "all_time_high_date": "2021-08-17T00:00:00",
+  "paid_up_capital": 1598125500.0,
+  "net_profit": 167909719.2,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "167909719.2",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "127.79",
+      "dividend_pct": ""
+    }
+  ]
+}

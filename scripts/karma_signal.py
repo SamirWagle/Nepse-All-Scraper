@@ -235,6 +235,14 @@ def load_prices(ticker: str) -> pd.DataFrame | None:
     # High/low can invert if a source row carried only ltp; clamp so ranges stay sane.
     ohlc = out[["open", "high", "low", "close"]]
     out["high"], out["low"] = ohlc.max(axis=1), ohlc.min(axis=1)
+
+    # Raw (un-adjusted) high/close, kept alongside the rights/bonus-adjusted
+    # series above. A 52-week-high check must compare against the price the
+    # stock actually traded at, not a rights-deflated synthetic value — every
+    # broker/data site (ShareSansar, Merolagani) quotes the raw traded high.
+    raw_high = pd.to_numeric(df["high"], errors="coerce") if "high" in df else df["ltp"]
+    out["high_raw"] = raw_high.fillna(df["ltp"]).to_numpy()
+    out["close_raw"] = df["ltp"].to_numpy()
     return out.reset_index(drop=True)
 
 
@@ -294,7 +302,7 @@ def add_indicators(df: pd.DataFrame) -> pd.DataFrame:
     out["adx14"] = adx(out)
     out["macd_hist"] = macd_hist(out["close"])
     out["atr14"] = atr(out)
-    out["high250"] = out["high"].rolling(250).max()
+    out["high250"] = out.get("high_raw", out["high"]).rolling(250).max()
     out["roc60"] = out["close"] / out["close"].shift(60) - 1
     out["vol20"] = out["qty"].rolling(20).mean()
     out["vol60"] = out["qty"].rolling(60).mean()
@@ -339,6 +347,7 @@ def evaluate(ticker: str, ind: pd.DataFrame, i: int, regime_ok: bool, mode: Mode
     r = ind.iloc[i]
     if pd.isna(r["ma200"]) or pd.isna(r["high250"]) or pd.isna(r["turnover60"]):
         return None
+    close_raw = r["close_raw"] if "close_raw" in r.index else r["close"]
 
     gates = {
         # Can you actually get out of a position in this name? NEPSE's tail of
@@ -347,7 +356,7 @@ def evaluate(ticker: str, ind: pd.DataFrame, i: int, regime_ok: bool, mode: Mode
         # NEPSE is a high-beta single-factor market: most names follow the index.
         "market_regime": bool(regime_ok),
         "uptrend": bool(r["close"] > r["ma50"] > r["ma200"] and r["ma50_slope"] > 0),
-        "near_high": bool(r["close"] >= mode.near_high * r["high250"]),
+        "near_high": bool(close_raw >= mode.near_high * r["high250"]),
         "not_extended": bool(r["rsi14"] <= RSI_CEILING and r["close"] <= MAX_EXTENSION * r["ma20"]),
         "trend_strength": bool(r["adx14"] >= mode.adx_floor),
         "volume_expansion": bool(r["vol20"] >= VOL_EXPANSION * r["vol60"]),
@@ -378,7 +387,7 @@ def evaluate(ticker: str, ind: pd.DataFrame, i: int, regime_ok: bool, mode: Mode
             "atr14": float(r["atr14"]),
             "macd_hist": float(r["macd_hist"]),
             "roc60": 0.0 if pd.isna(r["roc60"]) else float(r["roc60"]),
-            "pct_of_high250": float(r["close"] / r["high250"]),
+            "pct_of_high250": float(close_raw / r["high250"]),
             "turnover60": float(r["turnover60"]),
         },
     )

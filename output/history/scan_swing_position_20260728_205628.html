@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karma NEPSE Signal — 2026-07-28 20:56</title>
+<style>
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 40px 24px; background: #1b1b1b; color: #ededed;
+       font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+.wrap { max-width: 1000px; margin: 0 auto; }
+.head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+.head .regime-note { font-size: 17px; color: #ededed; }
+.head .asof { color: #8f8f8f; font-size: 14px; font-weight: 500; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px;
+        border-radius: 8px; font-size: 15px; font-weight: 600; }
+.pill.on  { background: #102b1b; color: #4ade80; }
+.pill.off { background: #33161a; color: #f87171; }
+.card { border: 1px solid #333; border-radius: 12px; overflow-x: auto; scrollbar-width: thin; }
+.card::-webkit-scrollbar { height: 8px; }
+.card::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+th, td { padding: 12px 9px; text-align: right; white-space: nowrap;
+         border-bottom: 1px solid #333; }
+tbody tr:last-child td { border-bottom: none; }
+th { color: #ededed; font-weight: 600; cursor: pointer; user-select: none; }
+th:hover { color: #fff; }
+th:nth-child(-n+3), td:nth-child(-n+3) { text-align: left; }
+tbody tr:hover { background: #232323; }
+td.ticker { font-weight: 700; }
+td.rr { font-weight: 700; }
+.badge { display: inline-block; padding: 4px 12px; border-radius: 8px;
+         font-size: 15px; font-weight: 500; }
+.badge.position { background: #16304d; color: #60a5fa; }
+.badge.swing    { background: #2c2c2c; color: #d4d4d4; }
+.score { display: inline-flex; align-items: center; gap: 12px; }
+.score .bar { width: 46px; height: 6px; background: #2c2c2c; border-radius: 3px; overflow: hidden; }
+.score .fill { display: block; height: 100%; background: #4a90e2; border-radius: 3px; }
+.hot { color: #f87171; }
+.cold { color: #4ade80; }
+.callout { display: flex; gap: 12px; margin: 26px 0 0; padding: 20px 24px;
+           border-radius: 12px; background: #3a2e07; border: 1px solid #6b5712; }
+.callout .icon { color: #fbbf24; font-size: 18px; line-height: 1.5; }
+.callout p { margin: 0; color: #fbbf24; font-size: 16px; font-weight: 600; line-height: 1.6; }
+.snap-btn { padding: 6px 16px; background: #2c2c2c; color: #ededed; border: 1px solid #444;
+            border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer;
+            margin-left: auto; text-decoration: none; display: inline-block; }
+.snap-btn:hover { background: #333; border-color: #555; }
+/* ponytail: checkbox toggle, not JS or :target — the extension CSP blocks scripts in
+   this iframe, and srcdoc has no base URL so fragment links never fire :target. */
+#snap-toggle { display: none; }
+#snapshots { display: none; }
+#snap-toggle:checked ~ #snapshots { display: block; }
+#snap-toggle:checked ~ #scan { display: none; }
+#snapshots h1 { font-size: 24px; margin: 0; }
+.snap-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.snap-item { padding: 14px 18px; margin-bottom: 10px; background: #232323;
+             border: 1px solid #333; border-radius: 10px;
+             display: flex; align-items: center; justify-content: space-between; }
+.snap-date { font-size: 16px; font-weight: 600; }
+.snap-count { font-size: 14px; color: #8f8f8f; }
+.snap-now { border-color: #2f6b45; }
+.snap-now .snap-date::after { content: " CURRENT"; color: #4ade80; font-size: 12px; }
+.snap-empty { color: #8f8f8f; padding: 20px 0; }
+@media print { body { background: #fff; color: #000; padding: 0; }
+                .callout { background: #fdf6e0; } th, td { border-color: #ccc; } }
+</style></head>
+<body>
+<input type="checkbox" id="snap-toggle">
+<div id="snapshots" class="wrap">
+  <div class="snap-head"><h1>&#128248; Snapshots</h1>
+    <label for="snap-toggle" class="snap-btn">&larr; Back to scan</label></div>
+  <div class="snap-item snap-now"><span class="snap-date">2026-07-28 at 19:02:08</span><span class="snap-count">6 rows</span></div>
+</div>
+<div id="scan" class="wrap">
+<div class="head"><span class="pill on">&#8599; Risk-on</span>
+  <span class="regime-note">NEPSE index above MA200</span>
+  <span class="asof">as of 2026-07-28 &middot; 161 tickers skipped (stale, no bar since 2026-07-13)</span>
+  <label for="snap-toggle" class="snap-btn">&#128248; Snapshots</label>
+</div>
+<div class="card"><table><thead><tr><th>Ticker</th><th>Mode</th><th>Score</th><th>Close</th><th>Stop</th><th>Target</th><th>Rwd:risk</th><th>RSI</th><th>ADX</th><th>%of52wH</th></tr></thead><tbody><tr><td class="ticker" data-v="HPPL">HPPL</td><td data-v="position"><span class="badge position">position</span></td><td data-v="95.0"><span class="score"><span class="bar"><span class="fill" style="width:95%"></span></span>95</span></td><td data-v="381.9">381.9</td><td data-v="336.1">336.1</td><td data-v="534.7">534.7</td><td class="rr" data-v="1.26">1.26:1</td><td data-v="64.8">64.8</td><td data-v="23.2">23.2</td><td data-v="93.0">93%</td></tr><tr><td class="ticker" data-v="HPPL">HPPL</td><td data-v="swing"><span class="badge swing">swing</span></td><td data-v="95.0"><span class="score"><span class="bar"><span class="fill" style="width:95%"></span></span>95</span></td><td data-v="381.9">381.9</td><td data-v="351.3">351.3</td><td data-v="450.6">450.6</td><td class="rr" data-v="1.54">1.54:1</td><td data-v="64.8">64.8</td><td data-v="23.2">23.2</td><td data-v="93.0">93%</td></tr><tr><td class="ticker" data-v="GBIME">GBIME</td><td data-v="position"><span class="badge position">position</span></td><td data-v="90.0"><span class="score"><span class="bar"><span class="fill" style="width:90%"></span></span>90</span></td><td data-v="259.4">259.4</td><td data-v="228.3">228.3</td><td data-v="363.2">363.2</td><td class="rr" data-v="1.26">1.26:1</td><td class="hot" data-v="73.1">73.1</td><td data-v="20.6">20.6</td><td data-v="93.0">93%</td></tr><tr><td class="ticker" data-v="NABIL">NABIL</td><td data-v="position"><span class="badge position">position</span></td><td data-v="90.0"><span class="score"><span class="bar"><span class="fill" style="width:90%"></span></span>90</span></td><td data-v="558.0">558.0</td><td data-v="491.0">491.0</td><td data-v="781.2">781.2</td><td class="rr" data-v="1.26">1.26:1</td><td data-v="69.4">69.4</td><td data-v="26.9">26.9</td><td data-v="98.0">98%</td></tr><tr><td class="ticker" data-v="NABIL">NABIL</td><td data-v="swing"><span class="badge swing">swing</span></td><td data-v="90.0"><span class="score"><span class="bar"><span class="fill" style="width:90%"></span></span>90</span></td><td data-v="558.0">558.0</td><td data-v="513.4">513.4</td><td data-v="658.4">658.4</td><td class="rr" data-v="1.54">1.54:1</td><td data-v="69.4">69.4</td><td data-v="26.9">26.9</td><td data-v="98.0">98%</td></tr><tr><td class="ticker" data-v="BFC">BFC</td><td data-v="position"><span class="badge position">position</span></td><td data-v="85.0"><span class="score"><span class="bar"><span class="fill" style="width:85%"></span></span>85</span></td><td data-v="514.0">514.0</td><td data-v="452.3">452.3</td><td data-v="719.6">719.6</td><td class="rr" data-v="1.26">1.26:1</td><td data-v="48.3">48.3</td><td data-v="20.9">20.9</td><td data-v="89.0">89%</td></tr></tbody></table></div>
+<div class="callout"><div class="icon">&#9888;</div><p>Odds are strategy-level, not per-stock. Swing mode: 41% win rate, 1.31:1 money odds, +1.19% EV/trade over 725 trades (avg win +12.3%, avg loss -6.5%, frequency odds 0.69:1 against). Position mode: 42% win rate, 1.47:1 money odds, +2.04% EV/trade over 911 trades (avg win +15.1%, avg loss -7.4%, frequency odds 0.72:1 against). Every row above shares these same odds — score does not predict which name outperforms; rwd:risk varies only because it reflects each stock&#x27;s own ATR stop width.</p></div>
+</div><script>
+document.querySelectorAll('th').forEach(function (th, i) {
+  th.addEventListener('click', function () {
+    var tb = th.closest('table').tBodies[0];
+    var rows = Array.prototype.slice.call(tb.rows);
+    var desc = th.dataset.desc !== 'true';
+    rows.sort(function (a, b) {
+      var x = a.cells[i].dataset.v, y = b.cells[i].dataset.v;
+      var nx = parseFloat(x), ny = parseFloat(y);
+      var c = (isNaN(nx) || isNaN(ny)) ? String(x).localeCompare(String(y)) : nx - ny;
+      return desc ? -c : c;
+    });
+    th.dataset.desc = desc;
+    rows.forEach(function (r) { tb.appendChild(r); });
+  });
+});
+</script></body></html>
