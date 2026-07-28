@@ -120,14 +120,17 @@ def cmd_open(args) -> None:
 
     entry = args.entry if args.entry else sig.close
     # ATR-derived stop width from the signal bar, applied to the actual fill.
-    stop_pct = sig.levels()["stop_pct"]
+    lv = sig.levels()
     record = {
         "ticker": ticker,
         "mode": mode.name,
         "entry": round(entry, 2),
-        "stop": round(entry * (1 - stop_pct), 2),
-        "target": round(entry * (1 + mode.target), 2),
-        "stop_pct": round(stop_pct, 4),
+        "stop": round(entry * (1 - lv["stop_pct"]), 2),
+        "stop_pct": round(lv["stop_pct"], 4),
+        # No profit target: the exit is a stop that ratchets up behind the
+        # highest close since entry. `peak` is what `watch` ratchets against.
+        "peak": round(entry, 2),
+        "trail_atr": mode.trail_atr,
         "opened": str(args.opened or date.today()),
         "max_hold": mode.max_hold,
         "status": "open",
@@ -158,26 +161,34 @@ def cmd_close(args) -> None:
     print(f"{ticker} marked closed.")
 
 
+def ind_atr(px: pd.DataFrame) -> float:
+    """Latest ATR14 — the trailing distance is measured in it."""
+    return float(add_indicators(px)["atr14"].iloc[-1])
+
+
+def ratchet(position: dict, bar: pd.Series) -> dict:
+    """New position with peak and trailing stop advanced. Never loosens."""
+    if bar["close"] <= position["peak"]:
+        return position
+    peak = float(bar["close"])
+    trailed = peak - position["trail_atr"] * float(bar["atr14"])
+    return {**position, "peak": round(peak, 2), "stop": round(max(position["stop"], trailed), 2)}
+
+
 def _check(position: dict, bar: pd.Series, held_days: int) -> tuple[str, str] | None:
-    """(status, message) if a level tripped, else None."""
+    """(status, message) if a level tripped, else None. No profit target."""
     t, entry = position["ticker"], position["entry"]
     ret = bar["close"] / entry - 1
 
-    # Stop is tested first: a bar that breached both must never report the
-    # happier outcome, same tie-break the backtest uses.
     if bar["low"] <= position["stop"]:
+        locked = position["stop"] / entry - 1
+        kind = "TRAILING STOP" if position["stop"] > entry else "STOP"
         return "stopped", (
-            f"🔴 <b>STOP HIT — {t}</b>\n"
+            f"{'🟢' if locked > 0 else '🔴'} <b>{kind} HIT — {t}</b>\n"
             f"Stop {position['stop']:,.1f} breached (low {bar['low']:,.1f}).\n"
-            f"Entry {entry:,.1f} → close {bar['close']:,.1f} ({ret:+.1%})\n"
+            f"Entry {entry:,.1f} → close {bar['close']:,.1f} ({ret:+.1%}), "
+            f"locked {locked:+.1%}\n"
             f"Bar date {bar['date'].date()}. Exit."
-        )
-    if bar["high"] >= position["target"]:
-        return "target", (
-            f"🟢 <b>TARGET HIT — {t}</b>\n"
-            f"Target {position['target']:,.1f} reached (high {bar['high']:,.1f}).\n"
-            f"Entry {entry:,.1f} → close {bar['close']:,.1f} ({ret:+.1%})\n"
-            f"Bar date {bar['date'].date()}. Take the profit."
         )
     if held_days >= position["max_hold"]:
         return "timed_out", (
@@ -216,19 +227,27 @@ def cmd_watch(args) -> None:
             continue
 
         held = int((px["date"] > pd.Timestamp(pos["opened"])).sum())
+        # Check the stop against the bar BEFORE ratcheting on that same bar —
+        # otherwise a bar that spiked then reversed would move the stop up and
+        # hide the breach that already happened inside it.
         hit = _check(pos, bar, held)
         if hit:
             status, msg = hit
             updated = with_status(updated, pos["ticker"], status)
             alerts.append(msg)
             print(msg)
-        else:
-            ret = bar["close"] / pos["entry"] - 1
-            print(
-                f"{pos['ticker']}: open, {ret:+.1%}, close {bar['close']:,.1f} "
-                f"(stop {pos['stop']:,.1f} / target {pos['target']:,.1f}), "
-                f"day {held}/{pos['max_hold']}"
-            )
+            continue
+
+        advanced = ratchet(pos, bar.to_dict() | {"atr14": ind_atr(px)})
+        if advanced["stop"] != pos["stop"]:
+            print(f"{pos['ticker']}: stop raised {pos['stop']:,.1f} -> {advanced['stop']:,.1f}")
+            updated = [advanced if p is pos else p for p in updated]
+        ret = bar["close"] / pos["entry"] - 1
+        print(
+            f"{pos['ticker']}: open, {ret:+.1%}, close {bar['close']:,.1f} "
+            f"(stop {advanced['stop']:,.1f}, peak {advanced['peak']:,.1f}), "
+            f"day {held}/{pos['max_hold']}"
+        )
 
     if alerts and not args.dry_run:
         send_telegram("\n\n".join(alerts))
@@ -241,18 +260,25 @@ def cmd_test_telegram(_args) -> None:
 
 
 def cmd_selftest(_args) -> None:
-    pos = {"ticker": "TEST", "entry": 100.0, "stop": 90.0, "target": 140.0, "max_hold": 63}
+    pos = {"ticker": "TEST", "entry": 100.0, "stop": 90.0, "peak": 100.0,
+           "trail_atr": 2.0, "max_hold": 63}
 
-    def bar(low, high, close):
-        return pd.Series({"low": low, "high": high, "close": close,
+    def bar(low, high, close, atr=5.0):
+        return pd.Series({"low": low, "high": high, "close": close, "atr14": atr,
                           "date": pd.Timestamp("2026-07-27")})
 
     assert _check(pos, bar(89.0, 105.0, 95.0), 5)[0] == "stopped", "stop not detected"
-    assert _check(pos, bar(95.0, 141.0, 138.0), 5)[0] == "target", "target not detected"
     assert _check(pos, bar(95.0, 105.0, 100.0), 5) is None, "false alarm on a quiet bar"
     assert _check(pos, bar(95.0, 105.0, 100.0), 63)[0] == "timed_out", "time stop not detected"
-    # A bar that breaches both must report the stop, never the happier outcome.
-    assert _check(pos, bar(89.0, 141.0, 120.0), 5)[0] == "stopped", "target won an ambiguous bar"
+
+    # Trailing stop ratchets up on a new high and never loosens on a pullback.
+    up = ratchet(pos, bar(118.0, 125.0, 120.0))
+    assert up["peak"] == 120.0 and up["stop"] == 110.0, f"ratchet wrong: {up}"
+    assert ratchet(up, bar(100.0, 112.0, 105.0))["stop"] == 110.0, "stop loosened on a pullback"
+    assert ratchet(up, bar(100.0, 112.0, 105.0))["peak"] == 120.0, "peak regressed"
+    # Once the trail is above entry the exit locks a gain, and says so.
+    status, msg = _check(up, bar(109.0, 115.0, 111.0), 5)
+    assert status == "stopped" and "TRAILING" in msg, f"trailing exit mislabeled: {msg}"
 
     # Status update must not mutate its input.
     original = [{"ticker": "A", "status": "open"}, {"ticker": "B", "status": "open"}]

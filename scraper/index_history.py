@@ -238,12 +238,18 @@ def get_latest_date_in_csv(csv_path):
 # ---------------------------------------------------------------------------
 
 def _auto_detect_data_dir():
-    here = os.path.dirname(os.path.abspath(__file__))
-    for _ in range(5):
-        if os.path.isdir(os.path.join(here, "data")):
-            return here
-        here = os.path.dirname(here)
-    return os.getcwd()
+    """Repo root — the parent of scraper/, always.
+
+    This used to walk upward looking for any directory containing `data`, which
+    broke silently when `scraper/data/` appeared on 2026-05-04: the walk matched
+    it first, and three months of index scrapes landed in `scraper/data/index/`
+    instead of the repo's real `data/index/`. Every scrape succeeded, so nothing
+    ever errored — the app just kept reading files frozen at 2026-05-06.
+
+    This file lives in scraper/, so the root is its parent. No search, nothing
+    to shadow.
+    """
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def run_single(index_name, from_date, to_date, data_dir, incremental=True, debug=False):

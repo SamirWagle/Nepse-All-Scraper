@@ -82,20 +82,27 @@ class Mode:
     name: str
     min_hold: int      # trading days — no exit before this
     max_hold: int      # trading days — time stop
-    target: float
+    target: float      # reference only; the default exit is the trailing stop
     stop: float
-    atr_mult: float    # stop floor in ATRs
+    atr_mult: float    # initial stop floor in ATRs
+    trail_atr: float   # ratcheting stop distance in ATRs
     near_high: float   # min fraction of the 250-day high
     adx_floor: float
 
 
 MODES = {
-    # 2 weeks to ~6 weeks. Breakout continuation, tight stop, modest target.
-    "swing": Mode("swing", 10, 30, 0.18, 0.08, 1.5, 0.92, 22.0),
+    # 2 weeks to ~6 weeks. Breakout continuation, tight stop.
+    "swing": Mode("swing", 10, 30, 0.18, 0.08, 1.5, 2.0, 0.92, 22.0),
     # ~1 to 3 months. Rides an established trend, wider stop for the noise.
-    "position": Mode("position", 20, 63, 0.40, 0.12, 2.5, 0.85, 20.0),
+    "position": Mode("position", 20, 63, 0.40, 0.12, 2.5, 2.0, 0.85, 20.0),
 }
 DEFAULT_MODE = "position"
+
+# The winners are the whole edge here: the median trade loses and the mean
+# trade wins. A fixed profit target truncates exactly the outcomes that pay
+# for the losses, so the default exit is an uncapped trailing stop. Measured
+# out-of-sample, trailing roughly doubles net return per trade in both modes.
+DEFAULT_EXIT = "trail"
 
 
 # ── Data loading ─────────────────────────────────────────────────────────────
@@ -262,8 +269,10 @@ class Signal:
             "entry": self.close,
             "stop": self.close * (1 - stop_pct),
             "stop_pct": stop_pct,
+            # Reference only — the default exit is the trailing stop below.
             "target": self.close * (1 + target),
-            "trail_from": self.close * (1 + target / 2),
+            "trail_atr": self.mode.trail_atr,
+            "trail_distance": self.mode.trail_atr * self.detail["atr14"],
         }
 
 
@@ -318,6 +327,41 @@ def evaluate(ticker: str, ind: pd.DataFrame, i: int, regime_ok: bool, mode: Mode
 
 
 # ── Trade simulation ─────────────────────────────────────────────────────────
+def simulate_trailing(ind: pd.DataFrame, entry_i: int, mode: Mode,
+                      trail_atr: float = 3.0, stop: float | None = None) -> dict | None:
+    """Forward-test one entry with no profit cap — a ratcheting ATR stop only.
+
+    A fixed target caps the right tail. This strategy already has a set-mining
+    payoff shape (negative median, positive mean), so the winners are the whole
+    edge and capping them at +40% truncates exactly the outcomes that pay for
+    the losses. Here the stop ratchets up behind the highest close and the
+    trade runs until it is taken out or the time stop fires.
+    """
+    if entry_i + 1 >= len(ind):
+        return None
+    entry = float(ind["open"].iloc[entry_i + 1])
+    if entry <= 0:
+        return None
+    stop = mode.stop if stop is None else stop
+    stop_pct = max(stop, mode.atr_mult * float(ind["atr14"].iloc[entry_i]) / entry)
+
+    window = ind.iloc[entry_i + 1 : entry_i + 1 + mode.max_hold]
+    if len(window) < mode.min_hold:
+        return None
+
+    stop_px = entry * (1 - stop_pct)
+    peak = entry
+    for held, (_, bar) in enumerate(window.iterrows(), start=1):
+        if held >= mode.min_hold and bar["low"] <= stop_px:
+            return {"outcome": "trail_stop", "ret": stop_px / entry - 1, "days": held}
+        if bar["close"] > peak:
+            peak = float(bar["close"])
+            # Ratchet only upward — a trailing stop that can loosen is not a stop.
+            stop_px = max(stop_px, peak - trail_atr * float(bar["atr14"]))
+    exit_px = float(window["close"].iloc[-1])
+    return {"outcome": "time", "ret": exit_px / entry - 1, "days": len(window)}
+
+
 def simulate(ind: pd.DataFrame, entry_i: int, mode: Mode,
              target: float | None = None, stop: float | None = None) -> dict | None:
     """Forward-test one entry. Entry at next bar's open (no same-bar fills)."""
@@ -424,7 +468,7 @@ def cmd_scan(args) -> None:
                     "close": round(sig.close, 1),
                     "stop": round(lv["stop"], 1),
                     "stop%": f"{lv['stop_pct']:.1%}",
-                    "target": round(lv["target"], 1),
+                    "trail": round(lv["trail_distance"], 1),
                     "rsi": round(sig.detail["rsi14"], 1),
                     "adx": round(sig.detail["adx14"], 1),
                     "%of52wH": f"{sig.detail['pct_of_high250']:.0%}",
@@ -464,14 +508,19 @@ def cmd_signal(args) -> None:
         if sig.is_buy:
             lv = sig.levels(args.target, args.stop)
             print(
-                f"\n  entry {lv['entry']:,.1f}   stop {lv['stop']:,.1f} ({lv['stop_pct']:.1%})"
-                f"   target {lv['target']:,.1f}   trail above {lv['trail_from']:,.1f}"
+                f"\n  entry {lv['entry']:,.1f}   initial stop {lv['stop']:,.1f} "
+                f"({lv['stop_pct']:.1%})"
+                f"\n  exit: trailing stop {lv['trail_atr']:.0f}xATR "
+                f"= {lv['trail_distance']:,.1f} below the highest close. No profit cap."
+                f"\n  reference target {lv['target']:,.1f} (not an exit — capping the "
+                f"winners is what the trailing stop exists to avoid)."
                 f"\n  time stop: {mode.max_hold} trading days; no exit before {mode.min_hold}."
             )
 
 
 def _run_backtest(mode: Mode, tickers: list[str], index: pd.DataFrame,
-                  target: float | None = None, stop: float | None = None) -> pd.DataFrame:
+                  target: float | None = None, stop: float | None = None,
+                  trail_atr: float | None = None) -> pd.DataFrame:
     trades = []
     for t in tickers:
         ind = _prepare(t, index)
@@ -481,7 +530,8 @@ def _run_backtest(mode: Mode, tickers: list[str], index: pd.DataFrame,
         while i < n - 1:
             sig = evaluate(t, ind, i, bool(ind["regime_ok"].iloc[i]), mode)
             if sig and sig.is_buy:
-                res = simulate(ind, i, mode, target, stop)
+                res = (simulate_trailing(ind, i, mode, trail_atr, stop)
+                       if trail_atr else simulate(ind, i, mode, target, stop))
                 if res:
                     trades.append(
                         {"ticker": t, "date": ind["date"].iloc[i], "score": sig.score,
@@ -537,13 +587,65 @@ def cmd_backtest(args) -> None:
     for mode in _modes(args):
         target = mode.target if args.target is None else args.target
         stop = mode.stop if args.stop is None else args.stop
-        trades = _run_backtest(mode, tickers, index, target, stop)
-        print(f"\n=== {mode.name.upper()} ===")
+        trail = mode.trail_atr if args.exit_style == "trail" else None
+        trades = _run_backtest(mode, tickers, index, target, stop, trail)
+        print(f"\n=== {mode.name.upper()} (exit: {args.exit_style}) ===")
         for k, v in _report(trades, mode, target, stop).items():
             print(f"{k:12s} {v}")
         if not trades.empty:
             print("Worst 5 trades:")
             print(trades.nsmallest(5, "ret")[["ticker", "date", "outcome", "ret", "days"]].to_string(index=False))
+
+
+def _tail_stats(trades: pd.DataFrame, label: str) -> dict:
+    net = trades["ret"].map(net_return)
+    return {
+        "exit": label,
+        "trades": len(trades),
+        "win_rate": f"{(trades['ret'] > 0).mean():.1%}",
+        "net_avg": f"{net.mean():.2%}",
+        "net_median": f"{net.median():.2%}",
+        "best": f"{trades['ret'].max():.1%}",
+        "top10%_avg": f"{trades['ret'].nlargest(max(1, len(trades) // 10)).mean():.1%}",
+        "avg_days": round(trades["days"].mean(), 1),
+    }
+
+
+def cmd_tail(args) -> None:
+    """Fixed target vs uncapped trailing stop — does the right tail pay?
+
+    The strategy's median trade loses and its mean trade wins, so the winners
+    are the entire edge. A fixed target truncates them by construction. This
+    compares capping at the target against letting winners run behind a
+    ratcheting ATR stop, judged out-of-sample only.
+    """
+    index = load_index()
+    tickers = all_tickers()[: args.limit] if args.limit else all_tickers()
+    split = pd.Timestamp(args.split)
+
+    for mode in _modes(args):
+        rows = []
+        capped = _run_backtest(mode, tickers, index, args.target, args.stop)
+        if not capped.empty:
+            oos = capped[capped["date"] >= split]
+            if not oos.empty:
+                rows.append(_tail_stats(oos, f"target +{mode.target:.0%}"))
+        for mult in (2.0, 3.0, 4.0):
+            trailed = _run_backtest(mode, tickers, index, stop=args.stop, trail_atr=mult)
+            if trailed.empty:
+                continue
+            oos = trailed[trailed["date"] >= split]
+            if not oos.empty:
+                rows.append(_tail_stats(oos, f"trail {mult:.0f}xATR"))
+
+        print(f"\n=== {mode.name.upper()} — out-of-sample only (after {split.date()}) ===")
+        print(pd.DataFrame(rows).to_string(index=False) if rows else "No trades.")
+
+    print(
+        "\nIf trailing beats the fixed target on net_avg, the +40% cap was "
+        "costing money.\nWatch top10%_avg — that is the size of the pot when "
+        "the setup actually works."
+    )
 
 
 def cmd_tiers(args) -> None:
@@ -663,7 +765,8 @@ def cmd_walkforward(args) -> None:
     for mode in _modes(args):
         target = mode.target if args.target is None else args.target
         stop = mode.stop if args.stop is None else args.stop
-        trades = _run_backtest(mode, tickers, index, target, stop)
+        trail = mode.trail_atr if args.exit_style == "trail" else None
+        trades = _run_backtest(mode, tickers, index, target, stop, trail)
         if trades.empty:
             continue
         for label, part in (
@@ -730,6 +833,16 @@ def cmd_selftest(_args) -> None:
     assert net_return(0.0) < 0.0, "a flat trade still pays commission"
     # A gain smaller than the round trip is a net loss — CGT must not apply.
     assert net_return(0.001) > -0.02, f"CGT charged on a losing trade: {net_return(0.001)}"
+
+    # Trailing stop must ratchet up only, and must never cap a runaway winner
+    # at the fixed target the way `simulate` does.
+    runaway = ind.copy()
+    runaway.loc[runaway.index[-50:], ["open", "high", "low", "close"]] *= 3.0
+    capped = simulate(runaway, len(runaway) - 55, pos, target=0.40)
+    trailed = simulate_trailing(runaway, len(runaway) - 55, pos)
+    assert capped and abs(capped["ret"] - 0.40) < 1e-9, f"fixed target should cap at 40%: {capped}"
+    assert trailed and trailed["ret"] > 0.40, f"trailing should beat the cap: {trailed}"
+    assert simulate_trailing(flat, len(flat) - 3, pos) is None, "incomplete trailing trade leaked"
     print("selftest OK")
 
 
@@ -742,6 +855,8 @@ def main() -> None:
         # Unset means "use the mode's own sizing" — see Mode docstring.
         sp.add_argument("--target", type=float, default=None)
         sp.add_argument("--stop", type=float, default=None)
+        sp.add_argument("--exit", choices=("trail", "target"), default=DEFAULT_EXIT,
+                        dest="exit_style")
 
     s = sub.add_parser("scan"); add_levels(s); s.add_argument("--top", type=int, default=15)
     s.set_defaults(func=cmd_scan)
@@ -753,6 +868,11 @@ def main() -> None:
     s.add_argument("--grid", action="store_true", help="sweep target/stop pairs")
     s.add_argument("--limit", type=int, default=0, help="cap tickers (fast smoke run)")
     s.set_defaults(func=cmd_backtest)
+
+    s = sub.add_parser("tail"); add_levels(s)
+    s.add_argument("--split", default="2023-01-01")
+    s.add_argument("--limit", type=int, default=0)
+    s.set_defaults(func=cmd_tail)
 
     s = sub.add_parser("tiers"); add_levels(s)
     s.add_argument("--split", default="2023-01-01")
