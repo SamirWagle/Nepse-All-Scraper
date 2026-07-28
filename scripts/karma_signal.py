@@ -483,7 +483,12 @@ def _run_backtest(mode: Mode, tickers: list[str], index: pd.DataFrame,
             if sig and sig.is_buy:
                 res = simulate(ind, i, mode, target, stop)
                 if res:
-                    trades.append({"ticker": t, "date": ind["date"].iloc[i], **res})
+                    trades.append(
+                        {"ticker": t, "date": ind["date"].iloc[i], "score": sig.score,
+                         "rsi14": sig.detail["rsi14"], "adx14": sig.detail["adx14"],
+                         "roc60": sig.detail["roc60"],
+                         "pct_of_high250": sig.detail["pct_of_high250"], **res}
+                    )
                     i += res["days"] + 1  # non-overlapping: one position at a time
                     continue
             i += 1
@@ -539,6 +544,68 @@ def cmd_backtest(args) -> None:
         if not trades.empty:
             print("Worst 5 trades:")
             print(trades.nsmallest(5, "ret")[["ticker", "date", "outcome", "ret", "days"]].to_string(index=False))
+
+
+def cmd_tiers(args) -> None:
+    """Does being pickier actually pay? Slice outcomes by score and by setup.
+
+    The premise behind any selectivity rule is that the best-looking setups win
+    more often than the merely acceptable ones. That is an assumption, not a
+    fact, and this is the command that checks it. If the top tier does not beat
+    the bottom tier, the score is decoration and folding to it is superstition.
+    """
+    index = load_index()
+    tickers = all_tickers()[: args.limit] if args.limit else all_tickers()
+    split = pd.Timestamp(args.split)
+
+    for mode in _modes(args):
+        trades = _run_backtest(mode, tickers, index, args.target, args.stop)
+        if trades.empty:
+            continue
+        trades = trades.assign(net=trades["ret"].map(net_return))
+        oos = trades[trades["date"] >= split]
+        print(f"\n=== {mode.name.upper()} — out-of-sample only (after {split.date()}) ===")
+        if oos.empty:
+            print("No out-of-sample trades.")
+            continue
+
+        rows = []
+        for lo, hi in ((70, 84), (85, 94), (95, 100)):
+            part = oos[(oos["score"] >= lo) & (oos["score"] <= hi)]
+            if part.empty:
+                continue
+            rows.append({
+                "score": f"{lo}-{hi}",
+                "trades": len(part),
+                "share": f"{len(part) / len(oos):.0%}",
+                "hit_target": f"{(part['outcome'] == 'target').mean():.1%}",
+                "win_rate": f"{(part['ret'] > 0).mean():.1%}",
+                "net_avg": f"{part['net'].mean():.2%}",
+                "net_median": f"{part['net'].median():.2%}",
+            })
+        print(pd.DataFrame(rows).to_string(index=False))
+
+        # The "set or better" tier: the most selective slice that still trades
+        # often enough to matter. Poker reference: a pocket pair flops a set
+        # 11.8% of the time, so this targets a comparable frequency.
+        cutoff = oos["score"].quantile(0.88)
+        best = oos[oos["score"] >= cutoff]
+        print(
+            f"\nTop {len(best) / len(oos):.0%} by score (score >= {cutoff:.0f}), n={len(best)}: "
+            f"hit {(best['outcome'] == 'target').mean():.1%}, "
+            f"win {(best['ret'] > 0).mean():.1%}, net avg {best['net'].mean():.2%}"
+        )
+        print(
+            f"All out-of-sample trades, n={len(oos)}: "
+            f"hit {(oos['outcome'] == 'target').mean():.1%}, "
+            f"win {(oos['ret'] > 0).mean():.1%}, net avg {oos['net'].mean():.2%}"
+        )
+        edge = best["net"].mean() - oos["net"].mean()
+        print(
+            f"Selectivity edge: {edge:+.2%} per trade. "
+            + ("Being pickier pays." if edge > 0.005 else
+               "Being pickier does NOT pay — the score is not predictive.")
+        )
 
 
 def cmd_size(args) -> None:
@@ -686,6 +753,11 @@ def main() -> None:
     s.add_argument("--grid", action="store_true", help="sweep target/stop pairs")
     s.add_argument("--limit", type=int, default=0, help="cap tickers (fast smoke run)")
     s.set_defaults(func=cmd_backtest)
+
+    s = sub.add_parser("tiers"); add_levels(s)
+    s.add_argument("--split", default="2023-01-01")
+    s.add_argument("--limit", type=int, default=0)
+    s.set_defaults(func=cmd_tiers)
 
     s = sub.add_parser("size")
     s.add_argument("--bankroll", type=float, required=True)
