@@ -272,6 +272,22 @@ def cmd_watch(args) -> None:
         print("No open positions to watch.")
         return
 
+    # An armed position with no credentials is the worst state this tool can be
+    # in: it looks guarded and is not. Say so before checking anything, rather
+    # than only when a level trips — by then the message has nowhere to go.
+    armed_tickers = [p["ticker"] for p in open_positions if p.get("alerts_enabled")]
+    configured = bool(os.environ.get("KARMA_TELEGRAM_TOKEN")
+                      and os.environ.get("KARMA_TELEGRAM_CHAT_ID"))
+    if armed_tickers and not configured:
+        print(
+            f"WARNING: {len(armed_tickers)} position(s) armed ({', '.join(armed_tickers)}) but "
+            f"Telegram is NOT configured in this environment.\n"
+            f"         Levels will be checked and printed; NO message can be sent.\n"
+            f"         This is not protection. Set KARMA_TELEGRAM_TOKEN and "
+            f"KARMA_TELEGRAM_CHAT_ID where this runs (cron does not read your shell).",
+            file=sys.stderr,
+        )
+
     updated, alerts = positions, []
     for pos in open_positions:
         px = load_prices(pos["ticker"])
