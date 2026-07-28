@@ -2,6 +2,8 @@
   "symbol": "NHPC",
   "company_name": "National Hydro Power Company Limited (NHPC)",
   "sector": "Hydro Power",
+  "project_name": "Indrawati-III + Lower Indrawati",
+  "capacity_mw": 12,
   "shares_outstanding": 24671629.15,
   "market_price": 285.4,
   "percent_change": 0.88,

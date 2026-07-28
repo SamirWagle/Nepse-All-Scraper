@@ -2,6 +2,8 @@
   "symbol": "RRHP",
   "company_name": "Rairang Hydropower Development Company Ltd. (RRHP)",
   "sector": "Hydro Power",
+  "project_name": "Iwa Khola",
+  "capacity_mw": 9.9,
   "shares_outstanding": 5600000.0,
   "market_price": 563.1,
   "percent_change": -0.14,

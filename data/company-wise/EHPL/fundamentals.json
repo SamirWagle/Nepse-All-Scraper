@@ -2,6 +2,8 @@
   "symbol": "EHPL",
   "company_name": "Eastern Hydropower Limited (EHPL)",
   "sector": "Hydro Power",
+  "project_name": "Pikhuwa Khola",
+  "capacity_mw": 5,
   "shares_outstanding": 6200000.0,
   "market_price": 369.2,
   "percent_change": -0.49,
