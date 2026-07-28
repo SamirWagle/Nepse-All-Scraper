@@ -863,6 +863,66 @@ def cmd_benchmark(args) -> None:
               "~2-4%/yr in dividends this comparison ignores.")
 
 
+def cmd_regime(args) -> None:
+    """Where does the alpha live — falling markets or rising ones?
+
+    PRE-REGISTERED HYPOTHESIS (stated before this was first run): alpha should
+    be LARGER when NEPSE fell during the hold, because a ratcheting stop exits
+    a decline the index has to sit through. If instead the alpha sits in rising
+    windows, the strategy is leveraged beta and the stop is not earning its
+    keep. Written down first so the result cannot be reinterpreted after the
+    fact — with only ~13 independent quarters, a hypothesis invented after
+    seeing the split would be indistinguishable from curve-fitting.
+
+    The `market_regime` gate blocks entries below the index MA200, so there are
+    no RISK-OFF entries to split on. The split is on what the market did during
+    the hold, which is the part the exit logic actually has to survive.
+    """
+    index = load_index()
+    idx = pd.Series(index["close"].to_numpy(), index=index["date"]).sort_index()
+    tickers = all_tickers()[: args.limit] if args.limit else all_tickers()
+    print(f"Regime split across {len(tickers)} tickers...", file=sys.stderr)
+
+    for mode in _modes(args):
+        trail = mode.trail_atr if args.exit_style == "trail" else None
+        trades = _run_backtest(mode, tickers, index, mode.target, mode.stop, trail)
+        if args.since:
+            trades = trades[trades["entry_date"] >= pd.Timestamp(args.since)]
+        print(f"\n=== {mode.name.upper()} (exit: {args.exit_style}) ===")
+        if trades.empty:
+            print("no trades")
+            continue
+
+        trades = trades.assign(
+            bench=[_index_window_return(idx, a, b)
+                   for a, b in zip(trades["entry_date"], trades["exit_date"])]
+        ).dropna(subset=["bench"])
+        trades = trades.assign(
+            net=trades["ret"].map(net_return),
+            quarter=trades["entry_date"].dt.to_period("Q"),
+        )
+        trades = trades.assign(alpha=trades["net"] - trades["bench"])
+
+        rows = []
+        for label, sel in (("index FELL", trades["bench"] < 0),
+                           ("index ROSE", trades["bench"] >= 0)):
+            g = trades[sel]
+            if g.empty:
+                continue
+            q = g.groupby("quarter")["alpha"].mean()
+            rows.append({
+                "window": label,
+                "trades": len(g),
+                "share": f"{len(g) / len(trades):.0%}",
+                "strategy": f"{g['net'].mean():+.2%}",
+                "nepse": f"{g['bench'].mean():+.2%}",
+                "alpha": f"{g['alpha'].mean():+.2%}",
+                "t_quarterly": f"{_t_stat(q):.2f}",
+                "quarters": len(q),
+            })
+        print(pd.DataFrame(rows).to_string(index=False))
+
+
 def cmd_size(args) -> None:
     """Position size from risk-per-trade, not from gut feel.
 
@@ -1053,6 +1113,11 @@ def main() -> None:
     s.add_argument("--since", default=None, help="only trades entered on/after this date")
     s.add_argument("--slots", type=int, default=6, help="concurrent positions your heat cap allows")
     s.set_defaults(func=cmd_benchmark)
+
+    s = sub.add_parser("regime"); add_levels(s)
+    s.add_argument("--limit", type=int, default=0)
+    s.add_argument("--since", default="2023-01-01")
+    s.set_defaults(func=cmd_regime)
 
     s = sub.add_parser("size")
     s.add_argument("--bankroll", type=float, required=True)
