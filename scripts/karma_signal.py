@@ -541,6 +541,43 @@ def cmd_backtest(args) -> None:
             print(trades.nsmallest(5, "ret")[["ticker", "date", "outcome", "ret", "days"]].to_string(index=False))
 
 
+def cmd_size(args) -> None:
+    """Position size from risk-per-trade, not from gut feel.
+
+    The number that matters is risk per trade (bankroll lost if the stop
+    fills), not position size. They differ by the stop width: a 12% stop turns
+    1% risk into an 8% position. Confusing the two is how a "5% position"
+    quietly becomes a 5%-of-bankroll loss.
+    """
+    mode = MODES[args.mode]
+    stop = mode.stop if args.stop is None else args.stop
+    position = args.bankroll * (args.risk / stop)
+
+    print(f"Bankroll {args.bankroll:,.0f}   mode {mode.name}   stop {stop:.0%}")
+    print(f"Risk per trade {args.risk:.1%} = {args.bankroll * args.risk:,.0f}")
+    print(f"-> position size {position:,.0f} ({position / args.bankroll:.1%} of bankroll)\n")
+
+    # NEPSE is close to a single-factor market: in a real drawdown every open
+    # position falls together, so concurrent positions do not diversify risk
+    # the way the arithmetic suggests. Total heat is the binding constraint.
+    max_concurrent = int(args.heat / args.risk)
+    print(f"Total heat cap {args.heat:.1%} -> at most {max_concurrent} concurrent positions.")
+    print(
+        "NEPSE positions are highly correlated; treat that cap as a hard limit, "
+        "not a target.\n"
+    )
+
+    # Losing streaks are the real risk, and they are longer than intuition says.
+    win = 0.40  # out-of-sample position-mode win rate, rounded down
+    for streak in (5, 10, 15):
+        odds = (1 - win) ** streak
+        dd = 1 - (1 - args.risk) ** streak
+        print(
+            f"  {streak} straight losses: {odds:.1%} likely per {streak}-trade window, "
+            f"drawdown {dd:.1%} (needs {1 / (1 - dd) - 1:+.1%} to recover)"
+        )
+
+
 def cmd_walkforward(args) -> None:
     """Split trades by entry date and compare the two halves.
 
@@ -649,6 +686,14 @@ def main() -> None:
     s.add_argument("--grid", action="store_true", help="sweep target/stop pairs")
     s.add_argument("--limit", type=int, default=0, help="cap tickers (fast smoke run)")
     s.set_defaults(func=cmd_backtest)
+
+    s = sub.add_parser("size")
+    s.add_argument("--bankroll", type=float, required=True)
+    s.add_argument("--risk", type=float, default=0.01, help="bankroll fraction risked per trade")
+    s.add_argument("--heat", type=float, default=0.06, help="max total bankroll at risk at once")
+    s.add_argument("--mode", choices=list(MODES), default=DEFAULT_MODE)
+    s.add_argument("--stop", type=float, default=None)
+    s.set_defaults(func=cmd_size)
 
     s = sub.add_parser("walkforward"); add_levels(s)
     s.add_argument("--split", default="2023-01-01", help="in-sample / out-of-sample boundary")
