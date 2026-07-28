@@ -126,14 +126,22 @@ def cmd_open(args) -> None:
     # ATR-derived stop width from the signal bar, applied to the actual fill.
     lv = sig.levels(target=args.target)
     target_pct = mode.target if args.target is None else args.target
+    # An absolute target price wins over a percentage — it is what you actually
+    # decided at the desk, not a number derived from a default.
+    target_px = args.target_price if args.target_price else entry * (1 + target_pct)
     record = {
         "ticker": ticker,
         "mode": mode.name,
         "entry": round(entry, 2),
         "stop": round(entry * (1 - lv["stop_pct"]), 2),
         "stop_pct": round(lv["stop_pct"], 4),
-        "target": round(entry * (1 + target_pct), 2),
-        "target_pct": round(target_pct, 4),
+        "target": round(target_px, 2),
+        "target_pct": round(target_px / entry - 1, 4),
+        # Off until armed by hand. Recording a trade is not consenting to be
+        # messaged about it — a tracker that starts pinging the moment you log
+        # a fill trains you to ignore it, and the one alert that mattered
+        # arrives in a stream you have stopped reading.
+        "alerts_enabled": False,
         # The stop also ratchets up behind the highest close since entry, so a
         # position can exit on the trail before it ever reaches the target.
         # `peak` is what `watch` ratchets against.
@@ -157,6 +165,35 @@ def cmd_list(_args) -> None:
         print("No positions recorded.")
         return
     print(pd.DataFrame(positions).to_string(index=False))
+
+
+def with_alerts(positions: list[dict], ticker: str, enabled: bool) -> list[dict]:
+    """New list with `ticker`'s open position armed or disarmed."""
+    return [
+        {**p, "alerts_enabled": enabled}
+        if p["ticker"] == ticker and p["status"] == "open"
+        else p
+        for p in positions
+    ]
+
+
+def cmd_alerts(args) -> None:
+    ticker = args.ticker.upper()
+    enabled = args.state == "on"
+    positions = load_positions()
+    match = next((p for p in positions if p["ticker"] == ticker and p["status"] == "open"), None)
+    if match is None:
+        print(f"No open position in {ticker}. Record it first with `open`.")
+        return
+    save_positions(with_alerts(positions, ticker, enabled))
+    if enabled:
+        print(f"{ticker} alarms ARMED — stop {match['stop']:,.1f}, target {match.get('target', 0):,.1f}.")
+        if not (os.environ.get("KARMA_TELEGRAM_TOKEN") and os.environ.get("KARMA_TELEGRAM_CHAT_ID")):
+            print("WARNING: Telegram is not configured in this shell, and `watch` runs from cron")
+            print("with its own environment. Arming here does not make a message arrive there.")
+            print("Verify with: python3 scripts/karma_alerts.py test-telegram")
+    else:
+        print(f"{ticker} alarms DISARMED. Levels still tracked, no messages sent.")
 
 
 def cmd_close(args) -> None:
@@ -242,6 +279,7 @@ def cmd_watch(args) -> None:
             print(f"{pos['ticker']}: no price data — cannot check. This is NOT an all-clear.")
             continue
 
+        armed = pos.get("alerts_enabled", False)
         bar = px.iloc[-1]
         lag = (pd.Timestamp.today().normalize() - bar["date"]).days
         if lag > MAX_STALE_DAYS:
@@ -251,7 +289,8 @@ def cmd_watch(args) -> None:
                 f"Run the daily scraper. Treat this as no protection, not as safe."
             )
             print(msg)
-            alerts.append(msg)
+            if armed:
+                alerts.append(msg)
             continue
 
         held = int((px["date"] > pd.Timestamp(pos["opened"])).sum())
@@ -261,9 +300,12 @@ def cmd_watch(args) -> None:
         hit = _check(pos, bar, held)
         if hit:
             status, msg = hit
+            # The level is recorded either way — tracking is not notification.
+            # Only an armed position generates a message.
             updated = with_status(updated, pos["ticker"], status)
-            alerts.append(msg)
-            print(msg)
+            print(msg if armed else f"{msg}\n(alarms not armed for {pos['ticker']} — nothing sent)")
+            if armed:
+                alerts.append(msg)
             continue
 
         advanced = ratchet(pos, bar.to_dict() | {"atr14": ind_atr(px)})
@@ -273,8 +315,9 @@ def cmd_watch(args) -> None:
         ret = bar["close"] / pos["entry"] - 1
         print(
             f"{pos['ticker']}: open, {ret:+.1%}, close {bar['close']:,.1f} "
-            f"(stop {advanced['stop']:,.1f}, peak {advanced['peak']:,.1f}), "
-            f"day {held}/{pos['max_hold']}"
+            f"(stop {advanced['stop']:,.1f}, target {pos.get('target', 0):,.1f}, "
+            f"peak {advanced['peak']:,.1f}), day {held}/{pos['max_hold']}, "
+            f"alarms {'ARMED' if armed else 'off'}"
         )
 
     if alerts and not args.dry_run:
@@ -326,6 +369,16 @@ def cmd_selftest(_args) -> None:
     result = with_status(original, "A", "stopped")
     assert json.dumps(original) == snapshot, "with_status mutated its input"
     assert result[0]["status"] == "stopped" and result[1]["status"] == "open", "wrong row updated"
+
+    # Alarms are opt-in: recording a trade must never start messaging by itself.
+    armed = with_alerts(original, "A", True)
+    assert json.dumps(original) == snapshot, "with_alerts mutated its input"
+    assert armed[0]["alerts_enabled"] is True, "arming did not take"
+    assert "alerts_enabled" not in armed[1], "armed the wrong position"
+    assert with_alerts(armed, "A", False)[0]["alerts_enabled"] is False, "disarm failed"
+    # A closed position must not be re-armed by a stale ticker match.
+    closed = [{"ticker": "A", "status": "closed_manual"}]
+    assert "alerts_enabled" not in with_alerts(closed, "A", True)[0], "armed a closed position"
     print("selftest OK")
 
 
@@ -338,8 +391,15 @@ def main() -> None:
     s.add_argument("--entry", type=float, default=None, help="actual fill price")
     s.add_argument("--target", type=float, default=None,
                    help="profit target as a fraction, e.g. 0.40 (default: mode target)")
+    s.add_argument("--target-price", type=float, default=None,
+                   help="profit target as an absolute price; overrides --target")
     s.add_argument("--opened", default=None, help="entry date YYYY-MM-DD")
     s.set_defaults(func=cmd_open)
+
+    s = sub.add_parser("alerts", help="arm or disarm Telegram alarms for one position")
+    s.add_argument("state", choices=("on", "off"))
+    s.add_argument("ticker")
+    s.set_defaults(func=cmd_alerts)
 
     s = sub.add_parser("list"); s.set_defaults(func=cmd_list)
     s = sub.add_parser("close"); s.add_argument("ticker"); s.set_defaults(func=cmd_close)
