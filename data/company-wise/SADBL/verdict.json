@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-28",
+  "present_pe": 17.52,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 23.83,
+  "shiller_pe": 28.01,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 14.91,
+  "historical_pe_avg": 20.86,
+  "historical_pe_median": 19.82,
+  "historical_pe_min": 12.13,
+  "historical_pe_max": 38.89,
+  "historical_pe_years": 12,
+  "read_vs_shiller": "cheap",
+  "read_vs_median": "cheap",
+  "verdict_lean": "BUY-CASE (cautious)",
+  "verdict_reason": "Present PE (17.52) sits below both Shiller PE (28.01) and the 12yr historical median (19.82) — cheap on a cyclically-adjusted and own-history basis. Not a denominator trick: FY082-083 EPS (23.83) is the second-highest in the 12yr record, so the low PE reflects genuinely strong current earnings, not an EPS spike distorting the ratio.",
+  "devils_advocate": "A near-peak EPS year is exactly when trailing PE looks most flattering — if 082-083's earnings are a cyclical high (rate-spread tailwind, provisioning reversal) rather than a new run-rate, the 'cheap' read inverts once earnings mean-revert toward the 12yr average (~15.4 vs this year's 23.83). Technicals aren't confirming a re-rating either: price is pinned near its own 60-day resistance (Rs.427) with RSI14 at 64 (approaching overbought), and the stock is down -14.47% over 1yr. NPL%/revenue detail isn't available from local/auto-scraped data, so the earnings-quality question behind this print (core margin expansion vs one-off) can't be confirmed without the annual report or a ShareSansar Pro deep dive."
+}
