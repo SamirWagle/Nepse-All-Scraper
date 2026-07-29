@@ -1,0 +1,43 @@
+{
+  "symbol": "BANDIPUR",
+  "company_name": "Bandipur Cablecar and Tourism Limited (BANDIPUR)",
+  "sector": "Hotels And Tourism",
+  "shares_outstanding": 28299930.0,
+  "market_price": 722.2,
+  "percent_change": -1.07,
+  "last_traded_on": "2026/07/29 02:59:59",
+  "high_52w": 1233.0,
+  "low_52w": 285.0,
+  "avg_180d": 856.4,
+  "avg_120d": 805.28,
+  "year_yield_pct": 0.0,
+  "eps": -0.77,
+  "eps_fy": "082-083",
+  "pe_ratio": -937.92,
+  "book_value": 91.9,
+  "pbv": 7.86,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 23616.0,
+  "market_cap": 20438209446.0,
+  "scraped_at": "2026-07-29T23:05:08",
+  "source": "merolagani.com",
+  "promoter_shares": 22439070.0,
+  "public_shares": 5860930.0,
+  "promoter_pct": 79.29,
+  "public_pct": 20.71,
+  "all_time_high": 1233.0,
+  "all_time_high_date": "2026-01-27T00:00:00",
+  "paid_up_capital": 2830000000.0,
+  "net_profit": -21790946.1,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-21790946.1",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "91.9",
+      "dividend_pct": ""
+    }
+  ]
+}

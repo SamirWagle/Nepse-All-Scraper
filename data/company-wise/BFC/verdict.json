@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-29",
+  "present_pe": 58.41,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 8.8,
+  "shiller_pe": 128.44,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 4.0,
+  "historical_pe_avg": 25.35,
+  "historical_pe_median": 16.88,
+  "historical_pe_min": 8.37,
+  "historical_pe_max": 58.47,
+  "historical_pe_years": 7,
+  "read_vs_shiller": "cheap",
+  "read_vs_median": "expensive",
+  "verdict_lean": "SELL-CASE",
+  "verdict_reason": "Present PE is 3.5x the historical median and near the top of its 7-year positive-earnings range; the 'cheap vs Shiller' read is an artifact of two prior loss years dragging the 10yr average EPS toward zero, not a real signal.",
+  "devils_advocate": "NPL/Total Loans rose from 3.07% (FY078-079) to 14.43% (FY081-082) and core capital fell from 22.38% to 9.23% over the same span, with two consecutive loss years (080-081: -11.77, 081-082: -17.70) preceding this year's positive EPS. The market is pricing FY082-083's return to profit as a durable turnaround at near-record multiples before any sustained asset-quality recovery has been shown."
+}

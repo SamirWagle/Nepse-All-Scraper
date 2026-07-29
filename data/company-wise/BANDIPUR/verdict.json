@@ -1,0 +1,19 @@
+{
+  "date": "2026-07-29",
+  "present_pe": null,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": -0.77,
+  "shiller_pe": null,
+  "shiller_pe_years": 8,
+  "shiller_avg_eps": -3.63,
+  "historical_pe_avg": null,
+  "historical_pe_median": null,
+  "historical_pe_min": null,
+  "historical_pe_max": null,
+  "historical_pe_years": 0,
+  "read_vs_shiller": "not applicable",
+  "read_vs_median": "not applicable",
+  "verdict_lean": "HOLD",
+  "verdict_reason": "Every fiscal year on record (074-075 through 082-083, 8 of 9 years — 079-080 not disclosed) shows negative EPS (avg -3.63) — PE is mathematically undefined, not just unfavorable, so no cheap/expensive read exists yet.",
+  "devils_advocate": "Bull case would need real, imminent earnings turnaround: cable car ramping post-IPO plus any new hotel/tourism management tie-ups could shift revenue mix. But there's zero profitable-year track record to anchor a valuation band — buying here is a bet on a story, not a number. At Rs.722 with book value Rs.91.9 (PBV 7.86x), the market is already pricing in a large future earnings ramp that hasn't shown up in any reported fiscal year yet."
+}
