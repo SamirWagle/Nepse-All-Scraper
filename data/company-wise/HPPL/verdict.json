@@ -1,11 +1,11 @@
 {
-  "date": "2026-07-29",
+  "date": "2026-07-30",
   "present_pe": 24.23,
   "present_pe_fy": "082-083",
   "present_pe_eps": 15.76,
   "shiller_pe": null,
-  "shiller_pe_years": 3,
-  "shiller_avg_eps": -0.73,
+  "shiller_pe_years": 9,
+  "shiller_avg_eps": -2.54,
   "historical_pe_avg": 48.06,
   "historical_pe_median": 48.06,
   "historical_pe_min": 21.83,
@@ -14,6 +14,6 @@
   "read_vs_shiller": "undefined",
   "read_vs_median": "cheap",
   "verdict_lean": "HOLD",
-  "verdict_reason": "Present PE below the 2-year historical median, but the sample is too thin (2 usable years, 1 excluded loss year) for a confident CAPE-style read.",
-  "devils_advocate": "Only 3 fiscal years of EPS exist since COD; the 'cheap' read rests on a single comparison year, not a real cycle. An unresolved NEA billing dispute (~NPR 31cr claimed unpaid) could swing FY083-084 EPS and reprice this fast."
+  "verdict_reason": "Present PE (24.23) sits below the 2-year historical median (48.06), but full backfill to COD (074-075) shows 6 of 9 fiscal years at zero EPS (pre-commissioning) and 079-080 at -20.65 (early ramp losses) - 9yr Shiller avg EPS is negative, so CAPE is undefined, not just unfavorable.",
+  "devils_advocate": "The 'cheap vs history' read leans on exactly 2 profitable years (081-082 PE 74.29, 082-083 PE 21.83) - not a real cycle, just two data points bracketing a huge range. FY082-083's EPS (15.76) is annualized from only 9 months of actual filings - if Q4 comes in weaker than the run-rate, annualized EPS drops and present PE re-rates upward fast. A 1:0.5 rights issue (FY082-083) also dilutes forward EPS roughly 33% once new shares settle, which this trailing-EPS PE doesn't price in yet."
 }

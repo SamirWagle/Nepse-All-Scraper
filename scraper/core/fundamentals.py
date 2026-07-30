@@ -361,8 +361,43 @@ class MerolaganiFundamentalsScraper:
         result.update(_fetch_shareholding(symbol, self.session))
 
         # Derived: net_profit = EPS × shares_outstanding (current FY only)
+        # Uses merolagani's shares_outstanding as-is here — EPS is reported against
+        # that same (possibly pre-rights-issue) share base, so this stays consistent
+        # even if shares_outstanding gets corrected below.
         if result.get("eps") and result.get("shares_outstanding"):
             result["net_profit"] = round(result["eps"] * result["shares_outstanding"], 2)
+
+        # merolagani's shares_outstanding/market_cap/book_value/pbv can lag behind a
+        # rights issue (site doesn't always recompute promptly), while paid_up_capital
+        # (from ShareHubNepal, a separate source) updates faster. If they disagree by
+        # more than 2%, trust paid_up_capital / Rs.100 face value as the current share
+        # count and recompute the fields that depend on it. Observed on HPPL 2026-07:
+        # merolagani still showed 10,654,170 shares weeks after a rights allotment that
+        # paid_up_capital already reflected as 15,981,255.
+        old_shares = result.get("shares_outstanding")
+        paid_up = result.get("paid_up_capital")
+        if old_shares and paid_up:
+            derived_shares = paid_up / 100.0
+            if abs(derived_shares - old_shares) / old_shares > 0.02:
+                logger.warning(
+                    "%s: shares_outstanding stale (%.0f vs paid_up-capital-derived %.0f) — correcting",
+                    symbol, old_shares, derived_shares,
+                )
+                # New shares from a rights issue bring in fresh paid-in capital at par
+                # (Rs.100) — equity isn't just the old equity spread over more shares,
+                # it grows by (new_shares - old_shares) x par. Verified against
+                # nepsealpha's HPPL book value (118.53): dividing old equity by the
+                # new share count alone gives 85.19, which is wrong.
+                equity = result.get("book_value") * old_shares if result.get("book_value") else None
+                if equity:
+                    equity += (derived_shares - old_shares) * 100.0
+                result["shares_outstanding"] = derived_shares
+                if result.get("market_price"):
+                    result["market_cap"] = round(result["market_price"] * derived_shares, 2)
+                if equity:
+                    result["book_value"] = round(equity / derived_shares, 2)
+                    if result.get("market_price"):
+                        result["pbv"] = round(result["market_price"] / result["book_value"], 2)
 
         # Accumulate financial snapshot for 3-year history
         symbol_dir = Path(self.data_dir) / result["symbol"]

@@ -164,11 +164,20 @@ def mode_odds(mode_name: str) -> dict:
 
 
 # ── Data loading ─────────────────────────────────────────────────────────────
-def _corporate_action_factors(ticker: str) -> list[tuple[pd.Timestamp, float]]:
+def _corporate_action_factors(ticker: str, raw: pd.DataFrame) -> list[tuple[pd.Timestamp, float]]:
     """(ex_date, unit_multiplier) for bonus + right issues.
 
     A 1:1 bonus returns 2.0 — every price BEFORE that date is divided by 2.0
-    to sit on the same per-share basis as prices after it.
+    to sit on the same per-share basis as prices after it. Bonus shares are
+    free, so a flat dilution ratio is correct there.
+
+    Rights issues are NOT free — shareholders pay a subscription price for
+    the new units, so a flat 1+new/held ratio overstates the dilution (it
+    treats cash paid in as if it vanished). Use the TERP convention instead
+    (theoretical ex-rights price): factor = cum_price / TERP, where
+    TERP = (cum_price + (new/held)*subscription_price) / (1 + new/held).
+    `raw` must have ascending `date`/`ltp` columns to look up the last
+    traded (cum-rights) price before each ex-date.
     """
     actions: list[tuple[pd.Timestamp, float]] = []
 
@@ -198,7 +207,17 @@ def _corporate_action_factors(ticker: str) -> list[tuple[pd.Timestamp, float]]:
                     continue
             except (ValueError, TypeError):
                 continue
-            actions.append((date, 1.0 + new / held))
+            sub_price = pd.to_numeric(row.get("issue_price"), errors="coerce")
+            cum_prices = raw.loc[raw["date"] < date, "ltp"]
+            if pd.isna(sub_price) or cum_prices.empty:
+                # No subscription price or no pre-rights price to anchor TERP —
+                # fall back to flat dilution ratio rather than fabricate a number.
+                actions.append((date, 1.0 + new / held))
+                continue
+            cum_price = float(cum_prices.iloc[-1])
+            new_per_held = new / held
+            terp = (cum_price + new_per_held * float(sub_price)) / (1.0 + new_per_held)
+            actions.append((date, cum_price / terp))
 
     return sorted(actions)
 
@@ -222,7 +241,7 @@ def load_prices(ticker: str) -> pd.DataFrame | None:
     # Backward adjustment: divide every price strictly before an ex-date by the
     # cumulative multiplier of all actions from that date onward.
     factor = pd.Series(1.0, index=df.index)
-    for ex_date, mult in _corporate_action_factors(ticker):
+    for ex_date, mult in _corporate_action_factors(ticker, df[["date", "ltp"]]):
         factor.loc[df["date"] < ex_date] *= mult
 
     out = pd.DataFrame({"date": df["date"]})
