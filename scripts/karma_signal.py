@@ -569,7 +569,10 @@ td.rr { font-weight: 700; }
 .snap-head { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
 .snap-item { padding: 14px 18px; margin-bottom: 10px; background: #232323;
              border: 1px solid #333; border-radius: 10px;
-             display: flex; align-items: center; justify-content: space-between; }
+             display: flex; align-items: center; justify-content: space-between;
+             color: inherit; text-decoration: none; }
+a.snap-item { cursor: pointer; }
+a.snap-item:hover { background: #2a2a2a; border-color: #444; }
 .snap-date { font-size: 16px; font-weight: 600; }
 .snap-count { font-size: 14px; color: #8f8f8f; }
 .snap-now { border-color: #2f6b45; }
@@ -701,7 +704,7 @@ def _load_snapshots() -> list[dict]:
     return []
 
 
-def _save_snapshot(now: datetime, count: int, hash_val: str) -> None:
+def _save_snapshot(now: datetime, count: int, hash_val: str, filename: str) -> None:
     """Store snapshot if different from last. Keep 20 most recent."""
     snap_file = OUTPUT_DIR / "snapshots.json"
     snapshots = _load_snapshots()
@@ -713,22 +716,34 @@ def _save_snapshot(now: datetime, count: int, hash_val: str) -> None:
         "time": now.strftime("%H:%M:%S"),
         "count": count,
         "hash": hash_val,
+        "file": filename,
     })
     snap_file.write_text(json.dumps(snapshots[-20:], indent=2))
 
 
 def _snapshot_rows(snapshots: list[dict], current_hash: str) -> str:
-    """Static HTML list of snapshots, newest first. No JS — extension CSP blocks it."""
+    """Static HTML list of snapshots, newest first, each linking to its archived
+    report under output/history/ — a plain <a> needs no JS (extension CSP blocks
+    it), the browser handles the navigation itself.
+    """
     if not snapshots:
         return '<div class="snap-empty">No snapshots saved yet.</div>'
     out = []
     for s in reversed(snapshots):
-        cls = "snap-item snap-now" if s.get("hash") == current_hash else "snap-item"
-        out.append(
-            f'<div class="{cls}">'
+        is_current = s.get("hash") == current_hash
+        cls = "snap-item snap-now" if is_current else "snap-item"
+        inner = (
             f'<span class="snap-date">{html.escape(s["date"])} at {html.escape(s["time"])}</span>'
-            f'<span class="snap-count">{s["count"]} rows</span></div>'
+            f'<span class="snap-count">{s["count"]} rows</span>'
         )
+        filename = s.get("file")
+        if filename and not is_current:
+            out.append(
+                f'<a class="{cls}" target="_blank" '
+                f'href="/karma_signal/history/{html.escape(filename)}">{inner}</a>'
+            )
+        else:
+            out.append(f'<div class="{cls}">{inner}</div>')
     return "".join(out)
 
 
@@ -744,8 +759,9 @@ def write_html_report(out: pd.DataFrame, mode_names: list[str], regime: bool,
     head = "".join(f"<th>{html.escape(label)}</th>" for _, label in REPORT_COLUMNS)
     badge = ('<span class="pill on">&#8599; Risk-on</span>' if regime
              else '<span class="pill off">&#8600; Risk-off</span>')
+    path = _archive_path("_".join(mode_names) if len(mode_names) > 1 else mode_names[0], now)
     snap_hash = _snapshot_hash(ranked)
-    _save_snapshot(now, len(ranked), snap_hash)
+    _save_snapshot(now, len(ranked), snap_hash, path.name)
     snap_rows = _snapshot_rows(_load_snapshots(), snap_hash)
     doc = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -769,7 +785,6 @@ def write_html_report(out: pd.DataFrame, mode_names: list[str], regime: bool,
 <div class="callout">{_odds_block(mode_names)}</div>
 </div><script>{REPORT_JS}</script></body></html>
 """
-    path = _archive_path("_".join(mode_names) if len(mode_names) > 1 else mode_names[0], now)
     path.write_text(doc, encoding="utf-8")
     _point_latest_at(path)
     return path

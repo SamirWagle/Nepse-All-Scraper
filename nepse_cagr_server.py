@@ -604,6 +604,15 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _send_html(self, body_str, status=200):
+        body = body_str.encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -895,6 +904,18 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"version": 1, "entries": _load_merger_meta()})
         elif self.path == "/interest_rates":
             self._send_json(_load_interest_rates())
+        elif self.path.startswith("/karma_signal/history/"):
+            filename = self.path[len("/karma_signal/history/"):]
+            # Only bare filenames matching the archiver's own naming pattern —
+            # blocks path traversal (../) and anything outside output/history/.
+            if not re.fullmatch(r"[\w.-]+\.html", filename):
+                self._send_json({"error": "Invalid history filename"}, status=400)
+            else:
+                history_path = Path(__file__).parent / "output" / "history" / filename
+                if history_path.is_file():
+                    self._send_html(history_path.read_text(encoding="utf-8"))
+                else:
+                    self._send_json({"error": "Snapshot report not found"}, status=404)
         elif self.path == "/karma_signal":
             # ponytail: fixed argv, no user input — nothing to inject.
             import subprocess

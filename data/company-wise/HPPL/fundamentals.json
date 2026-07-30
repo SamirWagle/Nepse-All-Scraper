@@ -20,7 +20,7 @@
   "dividend_fy": null,
   "avg_volume_30d": 109685.0,
   "market_cap": 6200726940.0,
-  "scraped_at": "2026-07-30T18:47:58",
+  "scraped_at": "2026-07-30T19:14:16",
   "source": "merolagani.com",
   "promoter_shares": 0.0,
   "public_shares": 15981255.0,
@@ -36,7 +36,7 @@
       "net_profit": "167909719.2",
       "total_revenue": "",
       "npl_pct": "",
-      "book_value": "118.53",
+      "book_value": "127.79",
       "dividend_pct": ""
     }
   ]

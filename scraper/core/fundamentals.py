@@ -256,6 +256,82 @@ def _fetch_shareholding(symbol, session, timeout=15):
         return {}
 
 
+SHARESANSAR_URL = "https://www.sharesansar.com/company"
+NEPSEALPHA_URL = "https://nepsealpha.com/stocks"
+CHUKUL_URL = "https://chukul.com/stock-profile"
+FIRECRAWL_API_URL = "https://api.firecrawl.dev/v1/scrape"
+
+_NEPALI_UNIT_MULTIPLIER = {"ar": 1_000_000_000, "cr": 10_000_000, "lac": 100_000}
+
+
+def _firecrawl_markdown(url, timeout=30):
+    """Fetch a JS-rendered page's markdown via Firecrawl. Returns str or None.
+
+    Costs a Firecrawl credit per call — only use for tiebreaker sources, not
+    routine per-scrape fetches.
+    """
+    import os
+    api_key = os.environ.get("FIRECRAWL_API_KEY")
+    if not api_key:
+        return None
+    try:
+        resp = requests.post(
+            FIRECRAWL_API_URL,
+            headers={"Authorization": f"Bearer {api_key}"},
+            json={"url": url, "formats": ["markdown"], "onlyMainContent": True},
+            timeout=timeout,
+        )
+        resp.raise_for_status()
+        return resp.json().get("data", {}).get("markdown", "")
+    except Exception as exc:
+        logger.warning("Firecrawl fetch failed for %s: %s", url, exc)
+        return None
+
+
+def _fetch_sharesansar_shares(symbol, session, timeout=15):
+    """Scrape 'Listed Shares' from ShareSansar's company page. Returns float or None."""
+    try:
+        url = f"{SHARESANSAR_URL}/{symbol.lower()}"
+        resp = session.get(url, timeout=timeout)
+        resp.raise_for_status()
+        m = re.search(r"Listed Shares</td>\s*<td[^>]*>\s*([\d,]+(?:\.\d+)?)", resp.text)
+        return float(m.group(1).replace(",", "")) if m else None
+    except Exception as exc:
+        logger.warning("ShareSansar shares scrape failed for %s: %s", symbol, exc)
+        return None
+
+
+def _fetch_nepsealpha_paid_up_capital(symbol):
+    """Fetch 'Paid Up Capital' from nepsealpha.com (JS-rendered — needs Firecrawl).
+    Tiebreaker source only; costs a Firecrawl credit per call. Returns float or None.
+    """
+    markdown = _firecrawl_markdown(f"{NEPSEALPHA_URL}/{symbol}/info")
+    if not markdown:
+        return None
+    m = re.search(r"Paid Up Capital \| NPR ([\d,]+(?:\.\d+)?)", markdown)
+    return float(m.group(1).replace(",", "")) if m else None
+
+
+def _fetch_chukul_paid_up_capital(symbol):
+    """Fetch 'Paid-up Capital' from chukul.com (JS-rendered — needs Firecrawl).
+    Value is shown abbreviated (e.g. '1.07 Ar.' = 1.07 Arba). Tiebreaker source
+    only; costs a Firecrawl credit per call. Returns float or None.
+
+    Weighted low (0.5) in the reconciliation vote — observed 2026-07 lagging on
+    HPPL's rights-issue-corrected paid-up capital the same way merolagani and
+    ShareSansar did, so it's not a reliably fast-updating source despite reporting
+    the same field as ShareHub/NepseAlpha.
+    """
+    markdown = _firecrawl_markdown(f"{CHUKUL_URL}?symbol={symbol}")
+    if not markdown:
+        return None
+    m = re.search(r"Paid-up Capital([\d.]+)\s*(Ar|Cr|Lac)\.", markdown)
+    if not m:
+        return None
+    value, unit = float(m.group(1)), m.group(2).lower()
+    return value * _NEPALI_UNIT_MULTIPLIER[unit]
+
+
 class MerolaganiFundamentalsScraper:
     """Scrape per-company fundamentals from merolagani.com."""
 
@@ -368,20 +444,64 @@ class MerolaganiFundamentalsScraper:
             result["net_profit"] = round(result["eps"] * result["shares_outstanding"], 2)
 
         # merolagani's shares_outstanding/market_cap/book_value/pbv can lag behind a
-        # rights issue (site doesn't always recompute promptly), while paid_up_capital
-        # (from ShareHubNepal, a separate source) updates faster. If they disagree by
-        # more than 2%, trust paid_up_capital / Rs.100 face value as the current share
-        # count and recompute the fields that depend on it. Observed on HPPL 2026-07:
-        # merolagani still showed 10,654,170 shares weeks after a rights allotment that
-        # paid_up_capital already reflected as 15,981,255.
+        # rights issue (site doesn't always recompute promptly). Cross-check against
+        # up to 4 other sources: ShareHubNepal's paid_up_capital (already fetched
+        # above, free) and ShareSansar's "Listed Shares" (one extra cheap HTTP call)
+        # run routinely; NepseAlpha's and chukul's paid-up capital (both JS-rendered,
+        # need Firecrawl — costs a credit each) only run as tiebreakers when the
+        # cheap sources disagree, not on every scrape of every ticker. Observed on
+        # HPPL 2026-07: merolagani AND sharesansar both still showed 10,654,170
+        # shares weeks after a rights allotment that ShareHub/NepseAlpha's paid-up
+        # capital already reflected as 15,981,255 — a 2-vs-2 split needing a
+        # tiebreaker. chukul also turned out to lag on this same field (still showed
+        # the stale figure), hence its lower weight below.
         old_shares = result.get("shares_outstanding")
-        paid_up = result.get("paid_up_capital")
-        if old_shares and paid_up:
-            derived_shares = paid_up / 100.0
-            if abs(derived_shares - old_shares) / old_shares > 0.02:
+        if old_shares:
+            paid_up = result.get("paid_up_capital")
+            sharehub_shares = paid_up / 100.0 if paid_up else None
+            sharesansar_shares = _fetch_sharesansar_shares(symbol, self.session)
+
+            def _disagrees(a, b):
+                return a is not None and b is not None and abs(a - b) / b > 0.02
+
+            # weight 1.5 for paid-up-capital-derived sources proven fast-updating
+            # (ShareHub, NepseAlpha); 1.0 for raw "shares outstanding"/"listed
+            # shares" display fields (merolagani, ShareSansar); 0.5 for chukul,
+            # which reports the same paid-up-capital field but was caught lagging
+            # on HPPL just like the 1.0-tier sources — same field, slower site.
+            votes = [(old_shares, 1.0)]  # merolagani's own value
+            if sharehub_shares is not None:
+                votes.append((sharehub_shares, 1.5))
+            if sharesansar_shares is not None:
+                votes.append((sharesansar_shares, 1.0))
+
+            candidates = [v for v, _ in votes[1:]]
+            signal = any(_disagrees(c, old_shares) for c in candidates)
+            if signal:
+                nepsealpha_paid_up = _fetch_nepsealpha_paid_up_capital(symbol)
+                if nepsealpha_paid_up:
+                    votes.append((nepsealpha_paid_up / 100.0, 1.5))
+                chukul_paid_up = _fetch_chukul_paid_up_capital(symbol)
+                if chukul_paid_up:
+                    votes.append((chukul_paid_up / 100.0, 0.5))
+
+            # Cluster votes within 2% of each other; the cluster with the highest
+            # weight sum wins (ties: keep merolagani's own value, don't guess).
+            best_cluster, best_weight = None, 0.0
+            for v, _ in votes:
+                cluster = [(x, w) for x, w in votes if abs(x - v) / v <= 0.02]
+                weight = sum(w for _, w in cluster)
+                if weight > best_weight:
+                    best_cluster, best_weight = cluster, weight
+            derived_shares = (
+                sum(x * w for x, w in best_cluster) / sum(w for _, w in best_cluster)
+                if best_cluster else None
+            )
+
+            if derived_shares and abs(derived_shares - old_shares) / old_shares > 0.02:
                 logger.warning(
-                    "%s: shares_outstanding stale (%.0f vs paid_up-capital-derived %.0f) — correcting",
-                    symbol, old_shares, derived_shares,
+                    "%s: shares_outstanding stale (%.0f vs %d-source consensus %.0f, weight %.1f) — correcting",
+                    symbol, old_shares, len(best_cluster), derived_shares, best_weight,
                 )
                 # New shares from a rights issue bring in fresh paid-in capital at par
                 # (Rs.100) — equity isn't just the old equity spread over more shares,
@@ -398,6 +518,11 @@ class MerolaganiFundamentalsScraper:
                     result["book_value"] = round(equity / derived_shares, 2)
                     if result.get("market_price"):
                         result["pbv"] = round(result["market_price"] / result["book_value"], 2)
+            elif signal:
+                logger.warning(
+                    "%s: shares_outstanding disagreement across sources, no 2-source consensus reached — leaving as-is",
+                    symbol,
+                )
 
         # Accumulate financial snapshot for 3-year history
         symbol_dir = Path(self.data_dir) / result["symbol"]
