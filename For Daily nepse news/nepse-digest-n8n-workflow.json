@@ -1,0 +1,160 @@
+{
+  "name": "NEPSE News Digest",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 7 * * *"
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "Daily 7AM Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "command": "python3 /path/to/nepse_news_digest.py --hours 24"
+      },
+      "id": "execute-script",
+      "name": "Run Digest Script",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [460, 300],
+      "notes": "Update the path to wherever nepse_news_digest.py lives on the n8n host. Requires: pip install requests beautifulsoup4 --break-system-packages"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.item.json.stdout;\nlet data;\ntry {\n  data = JSON.parse(raw);\n} catch (e) {\n  return [{ json: { error: 'Failed to parse script output', raw } }];\n}\n\nif (!data.items || data.items.length === 0) {\n  return [{ json: { message: 'NEPSE Digest — nothing matched in the last ' + data.lookback_hours + 'h.', hasItems: false } }];\n}\n\nconst bySource = {};\nfor (const item of data.items) {\n  if (!bySource[item.source]) bySource[item.source] = [];\n  bySource[item.source].push(item);\n}\n\nlet message = `*NEPSE News Digest* — ${data.count} items (last ${data.lookback_hours}h)\\n\\n`;\nfor (const [source, items] of Object.entries(bySource)) {\n  message += `*${source}*\\n`;\n  for (const it of items) {\n    message += `• [${it.title}](${it.url})\\n`;\n  }\n  message += '\\n';\n}\n\nreturn [{ json: { message, hasItems: true, count: data.count } }];"
+      },
+      "id": "parse-format",
+      "name": "Parse & Format",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "has-items-check",
+              "leftValue": "={{ $json.hasItems }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "has-items-if",
+      "name": "Has Items?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "parse_mode": "Markdown",
+          "disable_web_page_preview": true
+        }
+      },
+      "id": "telegram-send",
+      "name": "Send Telegram Digest",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1120, 220],
+      "credentials": {
+        "telegramApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "Telegram Bot"
+        }
+      },
+      "notes": "Set TELEGRAM_CHAT_ID env var (or hardcode your chat ID) and attach your Telegram bot credential."
+    },
+    {
+      "parameters": {},
+      "id": "noop-quiet-day",
+      "name": "Quiet Day — No-Op",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1120, 400]
+    }
+  ],
+  "connections": {
+    "Daily 7AM Trigger": {
+      "main": [
+        [
+          {
+            "node": "Run Digest Script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Digest Script": {
+      "main": [
+        [
+          {
+            "node": "Parse & Format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse & Format": {
+      "main": [
+        [
+          {
+            "node": "Has Items?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has Items?": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram Digest",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Quiet Day — No-Op",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {}
+}

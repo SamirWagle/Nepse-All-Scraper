@@ -616,6 +616,42 @@ def _last_scheduled_news_run() -> datetime:
     return today if now >= today else today - timedelta(days=1)
 
 
+def _load_dismissed_news_urls() -> set[str]:
+    store = Path(__file__).parent / "output" / "news_dismissed.json"
+    if not store.exists():
+        return set()
+    try:
+        return set(json.loads(store.read_text()).get("urls", []))
+    except (json.JSONDecodeError, OSError):
+        return set()
+
+
+_NEWS_SECTION_RE = re.compile(
+    r'(<details class="sect"[^>]*><summary>.*?<span class="cnt">)(\d+)'
+    r'(</span>.*?<tbody>)(.*?)(</tbody>.*?</details>)',
+    re.DOTALL,
+)
+_NEWS_ROW_RE = re.compile(r"<tr>.*?</tr>", re.DOTALL)
+
+
+def _apply_dismissed_to_report(doc: str, dismissed: set[str]) -> str:
+    """Hide dismissed rows at serve time instead of mutating the cached
+    report file — so undo works for free (the row is just still in the
+    file, only re-hidden while its url stays in the dismissed set) and a
+    stale page reload can't resurrect something already marked read."""
+    if not dismissed:
+        return doc
+    escaped = {html_escape(u) for u in dismissed}
+
+    def repl(match: re.Match) -> str:
+        pre, _cnt, mid, rows_html, tail = match.groups()
+        rows = _NEWS_ROW_RE.findall(rows_html)
+        kept = [r for r in rows if not any(f"href='{u}'" in r for u in escaped)]
+        return f"{pre}{len(kept)}{mid}{''.join(kept)}{tail}"
+
+    return _NEWS_SECTION_RE.sub(repl, doc)
+
+
 # ── HTTP Handler ──────────────────────────────────────────────────────────────
 class Handler(BaseHTTPRequestHandler):
 
@@ -1023,8 +1059,10 @@ newsletter links it held go with it. This cannot be undone.</p>
             last_scan = _last_news_scan()
 
             if not force and last_scan and last_scan >= _last_scheduled_news_run() and report.exists():
+                dismissed = _load_dismissed_news_urls()
+                html_out = _apply_dismissed_to_report(report.read_text(encoding="utf-8"), dismissed)
                 self._send_json({
-                    "html": report.read_text(encoding="utf-8"),
+                    "html": html_out,
                     "cached": True,
                     "last_scan": last_scan.isoformat(),
                 })
@@ -1044,9 +1082,13 @@ newsletter links it held go with it. This cannot be undone.</p>
                      "scan", "--hours", str(hours)],
                     capture_output=True, text=True, timeout=900,
                 )
+                html_out = None
+                if report.exists():
+                    dismissed = _load_dismissed_news_urls()
+                    html_out = _apply_dismissed_to_report(report.read_text(encoding="utf-8"), dismissed)
                 self._send_json({
                     "output": proc.stdout,
-                    "html": report.read_text(encoding="utf-8") if report.exists() else None,
+                    "html": html_out,
                     "error": proc.stderr.strip() or None,
                     "returncode": proc.returncode,
                     "cached": False,
