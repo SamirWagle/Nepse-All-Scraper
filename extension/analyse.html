@@ -51,6 +51,9 @@
               <button class="nav-menu-item" id="menu-karmasignal">
                 <span class="item-icon">🎯</span> KarmaNepseTechnicalSignal
               </button>
+              <button class="nav-menu-item" id="menu-nepsenews">
+                <span class="item-icon">📰</span> KarmaNepseNewsDigest
+              </button>
             </div>
           </div>
         </div>
@@ -462,6 +465,19 @@
       <div id="ks-status" style="margin:12px 0;color:var(--text-3);font-size:13px"></div>
       <iframe id="ks-report" style="display:none;width:100%;border:0;border-radius:12px;background:#1b1b1b"></iframe>
       <pre id="ks-output" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;overflow-x:auto;font-size:12px;line-height:1.5;white-space:pre;margin:0"></pre>
+    </div>
+  </div>
+
+  <div class="page" id="page-nepsenews">
+    <div class="hero">
+      <div class="hero-title">KarmaNepseNewsDigest</div>
+      <div class="hero-sub">nepse_news.py scan --hours 24</div>
+      <button class="search-btn" id="kn-rerun-btn" style="margin-top:14px">Re-run scan</button>
+    </div>
+    <div class="results-area" style="display:block">
+      <div id="kn-status" style="margin:12px 0;color:var(--text-3);font-size:13px"></div>
+      <iframe id="kn-report" style="display:none;width:100%;border:0;border-radius:12px;background:#1b1b1b"></iframe>
+      <pre id="kn-output" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;overflow-x:auto;font-size:12px;line-height:1.5;white-space:pre;margin:0"></pre>
     </div>
   </div>
 

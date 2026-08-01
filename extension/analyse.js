@@ -121,6 +121,20 @@
       if (name === 'karmasignal') {
         runKarmaSignal();
       }
+      if (name === 'nepsenews') {
+        runNepseNews();
+      }
+    }
+
+    // Snapshot links in the generated reports are root-relative
+    // (/karma_signal/history/...). Inside a srcdoc iframe they'd resolve
+    // against chrome-extension:// and 404, so point them at the local engine
+    // before handing the HTML to the frame.
+    function absolutiseReportLinks(reportHtml, port) {
+      return reportHtml.replace(
+        /href="\/(karma_signal|nepse_news)\//g,
+        `href="http://localhost:${port}/$1/`
+      );
     }
 
     // ── KarmaNepseTechnicalSignal (karma_signal.py scan --mode both) ──
@@ -146,7 +160,7 @@
         if (data.html) {
           // ponytail: srcdoc iframe keeps the report's own CSS out of this page.
           // Its sort script is blocked by the extension CSP — open the file for that.
-          frameEl.srcdoc = data.html;
+          frameEl.srcdoc = absolutiseReportLinks(data.html, port);
           frameEl.style.display = 'block';
           frameEl.onload = () => {
             const doc = frameEl.contentDocument;
@@ -165,6 +179,60 @@
         statusEl.textContent = '❌ ' + (err && err.message ? err.message : String(err));
       } finally {
         ksRunning = false;
+      }
+    }
+
+    // ── KarmaNepseNewsDigest (nepse_news.py scan) ──
+    // The nightly cron owns the scan; opening the page normally just reads
+    // that result back. force=true (Re-run button) rescans on demand.
+    let knRunning = false;
+    async function runNepseNews(force = false) {
+      if (knRunning) return;
+      const statusEl = document.getElementById('kn-status');
+      const outEl = document.getElementById('kn-output');
+      const frameEl = document.getElementById('kn-report');
+      knRunning = true;
+      statusEl.textContent = force
+        ? '⏳ Re-scanning news sources — this takes a while...'
+        : '⏳ Loading latest digest...';
+      outEl.textContent = '';
+      outEl.style.display = 'none';
+      frameEl.style.display = 'none';
+      try {
+        const port = await findPort();
+        if (!port) {
+          statusEl.textContent = '❌ Engine offline. Open the extension popup to start it.';
+          return;
+        }
+        const url = `http://localhost:${port}/nepse_news${force ? '?force=1' : ''}`;
+        const resp = await fetch(url, { signal: AbortSignal.timeout(900000) });
+        const data = await resp.json();
+        if (data.html) {
+          frameEl.srcdoc = absolutiseReportLinks(data.html, port);
+          frameEl.style.display = 'block';
+          frameEl.onload = () => {
+            const doc = frameEl.contentDocument;
+            if (doc) frameEl.style.height = doc.documentElement.scrollHeight + 'px';
+          };
+        } else if (data.output) {
+          outEl.textContent = data.output;
+          outEl.style.display = 'block';
+        }
+        if (data.error) {
+          statusEl.textContent = '⚠️ ' + data.error;
+        } else if (data.cached) {
+          statusEl.textContent = '📄 Showing nightly digest from '
+            + new Date(data.last_scan).toLocaleString()
+            + ' — press Re-run scan to refresh now.';
+        } else {
+          statusEl.textContent = '✅ Scan complete ('
+            + (data.lookback_hours || 24) + 'h lookback) — '
+            + new Date().toLocaleString();
+        }
+      } catch (err) {
+        statusEl.textContent = '❌ ' + (err && err.message ? err.message : String(err));
+      } finally {
+        knRunning = false;
       }
     }
 
@@ -249,6 +317,11 @@
       switchPage('karmasignal');
     });
     document.getElementById('ks-rerun-btn').addEventListener('click', () => runKarmaSignal());
+    document.getElementById('menu-nepsenews').addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchPage('nepsenews');
+    });
+    document.getElementById('kn-rerun-btn').addEventListener('click', () => runNepseNews(true));
     document.getElementById('btc-circle-btn').addEventListener('click', () => switchPage('btc'));
     document.getElementById('nexttop-btn').addEventListener('click', () => {
       switchPage('nexttop');

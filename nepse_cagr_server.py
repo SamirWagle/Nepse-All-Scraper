@@ -589,6 +589,31 @@ def calculate_cagr(symbol: str, start_date: date,
     return result
 
 
+# ── News digest cache helpers ─────────────────────────────────────────────────
+# The news scan runs nightly from cron; these let the HTTP handler tell
+# "already scanned tonight" from "the cron never ran".
+NEWS_CRON_HOUR = 22  # must match the crontab entry for scripts/nepse_news.py
+
+
+def _last_news_scan() -> datetime | None:
+    """Timestamp of the last completed scan, or None if none ever ran."""
+    marker = Path(__file__).parent / "output" / "news_last_scan.json"
+    if not marker.exists():
+        return None
+    try:
+        return datetime.fromisoformat(json.loads(marker.read_text())["timestamp"])
+    except (ValueError, KeyError, json.JSONDecodeError):
+        return None
+
+
+def _last_scheduled_news_run() -> datetime:
+    """The most recent moment the cron should have fired (today's 22:00, or
+    yesterday's if it's not 22:00 yet)."""
+    now = datetime.now()
+    today = now.replace(hour=NEWS_CRON_HOUR, minute=0, second=0, microsecond=0)
+    return today if now >= today else today - timedelta(days=1)
+
+
 # ── HTTP Handler ──────────────────────────────────────────────────────────────
 class Handler(BaseHTTPRequestHandler):
 
@@ -936,6 +961,63 @@ class Handler(BaseHTTPRequestHandler):
                 })
             except subprocess.TimeoutExpired:
                 self._send_json({"error": "karma_signal scan timed out after 600s"}, status=504)
+            except Exception as ex:
+                self._send_json({"error": str(ex)}, status=500)
+        elif self.path.startswith("/nepse_news/history/"):
+            filename = self.path[len("/nepse_news/history/"):]
+            if not re.fullmatch(r"[\w.-]+\.html", filename):
+                self._send_json({"error": "Invalid history filename"}, status=400)
+            else:
+                history_path = Path(__file__).parent / "output" / "news_history" / filename
+                if history_path.is_file():
+                    self._send_html(history_path.read_text(encoding="utf-8"))
+                else:
+                    self._send_json({"error": "Snapshot report not found"}, status=404)
+        elif self.path.startswith("/nepse_news"):
+            # The scan is heavy (Firecrawl calls + dozens of fetches), so the
+            # 22:00 cron owns it and the button normally just reads that
+            # result back. A fresh scan runs only when the cron didn't —
+            # machine asleep, say — and then only covers the gap since the
+            # last one. `?force=1` (the Re-run button) always rescans.
+            import subprocess
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            force = qs.get("force", ["0"])[0] == "1"
+            report = Path(__file__).parent / "output" / "news_latest.html"
+            last_scan = _last_news_scan()
+
+            if not force and last_scan and last_scan >= _last_scheduled_news_run() and report.exists():
+                self._send_json({
+                    "html": report.read_text(encoding="utf-8"),
+                    "cached": True,
+                    "last_scan": last_scan.isoformat(),
+                })
+                return
+
+            # Cover only the gap since the last successful scan so a missed
+            # night doesn't silently drop a day of news; fall back to 24h on
+            # a first run, and cap at a week so a long absence can't ask for
+            # an unbounded lookback.
+            hours = 24
+            if last_scan:
+                gap = (datetime.now() - last_scan).total_seconds() / 3600
+                hours = max(24, min(int(gap) + 1, 168))
+            try:
+                proc = subprocess.run(
+                    [sys.executable, str(Path(__file__).parent / "scripts" / "nepse_news.py"),
+                     "scan", "--hours", str(hours)],
+                    capture_output=True, text=True, timeout=900,
+                )
+                self._send_json({
+                    "output": proc.stdout,
+                    "html": report.read_text(encoding="utf-8") if report.exists() else None,
+                    "error": proc.stderr.strip() or None,
+                    "returncode": proc.returncode,
+                    "cached": False,
+                    "lookback_hours": hours,
+                })
+            except subprocess.TimeoutExpired:
+                self._send_json({"error": "nepse_news scan timed out after 900s"}, status=504)
             except Exception as ex:
                 self._send_json({"error": str(ex)}, status=500)
         else:
