@@ -1,0 +1,43 @@
+{
+  "symbol": "MABEL",
+  "company_name": "Mabilung Energy Limited (MABEL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 3858240.0,
+  "market_price": 603.0,
+  "percent_change": 1.26,
+  "last_traded_on": "2026/07/31 02:59:17",
+  "high_52w": 927.0,
+  "low_52w": 317.7,
+  "avg_180d": 697.49,
+  "avg_120d": 666.59,
+  "year_yield_pct": 0.0,
+  "eps": -2.92,
+  "eps_fy": "082-083",
+  "pe_ratio": -206.51,
+  "book_value": 101.19,
+  "pbv": 5.96,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 8450.0,
+  "market_cap": 2326518720.0,
+  "scraped_at": "2026-08-01T21:01:33",
+  "source": "merolagani.com",
+  "promoter_shares": 1967702.0,
+  "public_shares": 1890537.0,
+  "promoter_pct": 51.0,
+  "public_pct": 49.0,
+  "all_time_high": 927.0,
+  "all_time_high_date": "2026-01-27T00:00:00",
+  "paid_up_capital": 385824000.0,
+  "net_profit": -11266060.8,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-11266060.8",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "101.19",
+      "dividend_pct": ""
+    }
+  ]
+}

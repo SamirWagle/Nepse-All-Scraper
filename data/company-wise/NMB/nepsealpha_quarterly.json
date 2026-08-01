@@ -1,0 +1,17 @@
+{
+  "symbol": "NMB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 10.42,
+  "roa_ttm_pct": 0.95,
+  "net_margin_ttm_pct": 16.36,
+  "eps_ttm": 17.69,
+  "eps_ttm_yoy_pct": 38.18,
+  "bvps": 175.79,
+  "bvps_yoy_pct": 7.39,
+  "net_profit_till_qtr": 250.22,
+  "net_profit_till_qtr_yoy_pct": 5.43,
+  "revenue_till_qtr": 1579.85,
+  "revenue_till_qtr_yoy_pct": -8.23,
+  "scraped_at": "2026-08-02T00:04:20",
+  "source": "nepsealpha.com"
+}

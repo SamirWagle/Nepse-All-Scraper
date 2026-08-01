@@ -1,0 +1,17 @@
+{
+  "symbol": "SIFC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 3.3,
+  "roa_ttm_pct": 0.46,
+  "net_margin_ttm_pct": 6.49,
+  "eps_ttm": 4.62,
+  "eps_ttm_yoy_pct": -45.49,
+  "bvps": 139.08,
+  "bvps_yoy_pct": -0.89,
+  "net_profit_till_qtr": 2.54,
+  "net_profit_till_qtr_yoy_pct": -48.36,
+  "revenue_till_qtr": 53.19,
+  "revenue_till_qtr_yoy_pct": -17.96,
+  "scraped_at": "2026-08-02T00:18:07",
+  "source": "nepsealpha.com"
+}

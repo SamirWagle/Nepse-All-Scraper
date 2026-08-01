@@ -1,0 +1,17 @@
+{
+  "symbol": "AVYAN",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 39.26,
+  "roa_ttm_pct": 3.67,
+  "net_margin_ttm_pct": 25.67,
+  "eps_ttm": 53.13,
+  "eps_ttm_yoy_pct": 162.62,
+  "bvps": 157.84,
+  "bvps_yoy_pct": 35.72,
+  "net_profit_till_qtr": 9.85,
+  "net_profit_till_qtr_yoy_pct": 210.45,
+  "revenue_till_qtr": 38.37,
+  "revenue_till_qtr_yoy_pct": 44.27,
+  "scraped_at": "2026-08-01T23:34:40",
+  "source": "nepsealpha.com"
+}

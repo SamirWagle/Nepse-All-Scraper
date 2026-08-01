@@ -1,0 +1,17 @@
+{
+  "symbol": "MAKAR",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 9.7,
+  "roa_ttm_pct": 2.93,
+  "net_margin_ttm_pct": 20.31,
+  "eps_ttm": 10.65,
+  "eps_ttm_yoy_pct": 102.21,
+  "bvps": 115.79,
+  "bvps_yoy_pct": 9.74,
+  "net_profit_till_qtr": 8.71,
+  "net_profit_till_qtr_yoy_pct": 56.43,
+  "revenue_till_qtr": 32.4,
+  "revenue_till_qtr_yoy_pct": 3.07,
+  "scraped_at": "2026-08-01T23:53:38",
+  "source": "nepsealpha.com"
+}

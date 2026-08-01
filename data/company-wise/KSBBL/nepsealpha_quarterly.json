@@ -1,0 +1,17 @@
+{
+  "symbol": "KSBBL",
+  "latest_quarter": "082-083Q4",
+  "roe_ttm_pct": 14.0,
+  "roa_ttm_pct": 1.18,
+  "net_margin_ttm_pct": 16.71,
+  "eps_ttm": 22.34,
+  "eps_ttm_yoy_pct": 35.79,
+  "bvps": 171.01,
+  "bvps_yoy_pct": 11.89,
+  "net_profit_till_qtr": 86.27,
+  "net_profit_till_qtr_yoy_pct": 35.79,
+  "revenue_till_qtr": 516.13,
+  "revenue_till_qtr_yoy_pct": -12.14,
+  "scraped_at": "2026-08-01T23:52:01",
+  "source": "nepsealpha.com"
+}

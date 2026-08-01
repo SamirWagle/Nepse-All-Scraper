@@ -1,0 +1,43 @@
+{
+  "symbol": "SABBL",
+  "company_name": "Salapa Bikas Bank Limited (SABBL)",
+  "sector": "Development Bank Limited",
+  "shares_outstanding": 5223880.0,
+  "market_price": 1045.0,
+  "percent_change": -1.69,
+  "last_traded_on": "2026/07/31 02:59:58",
+  "high_52w": 2000.0,
+  "low_52w": 300.0,
+  "avg_180d": 1158.76,
+  "avg_120d": 1191.01,
+  "year_yield_pct": 0.0,
+  "eps": -0.81,
+  "eps_fy": "082-083",
+  "pe_ratio": -1290.12,
+  "book_value": 103.75,
+  "pbv": 10.07,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 20216.0,
+  "market_cap": 5458954600.0,
+  "scraped_at": "2026-08-01T21:11:22",
+  "source": "merolagani.com",
+  "promoter_shares": 3499999.0,
+  "public_shares": 1723880.0,
+  "promoter_pct": 67.0,
+  "public_pct": 33.0,
+  "all_time_high": 2000.0,
+  "all_time_high_date": "2026-03-25T00:00:00",
+  "paid_up_capital": 522388000.0,
+  "net_profit": -4231342.8,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-4231342.8",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "103.75",
+      "dividend_pct": ""
+    }
+  ]
+}

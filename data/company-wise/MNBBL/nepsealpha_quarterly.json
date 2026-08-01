@@ -1,0 +1,17 @@
+{
+  "symbol": "MNBBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 14.72,
+  "roa_ttm_pct": 1.32,
+  "net_margin_ttm_pct": 17.4,
+  "eps_ttm": 21.94,
+  "eps_ttm_yoy_pct": 55.03,
+  "bvps": 155.09,
+  "bvps_yoy_pct": 11.23,
+  "net_profit_till_qtr": 94.26,
+  "net_profit_till_qtr_yoy_pct": 30.04,
+  "revenue_till_qtr": 724.85,
+  "revenue_till_qtr_yoy_pct": -11.68,
+  "scraped_at": "2026-08-01T23:58:15",
+  "source": "nepsealpha.com"
+}

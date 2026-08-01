@@ -1,0 +1,43 @@
+{
+  "symbol": "SIL",
+  "company_name": "Siddhartha Insurance Ltd. (SIL)",
+  "sector": "Non-Life Insurance",
+  "shares_outstanding": 14039200.0,
+  "market_price": 651.2,
+  "percent_change": 6.41,
+  "last_traded_on": "2023/02/28 03:00:00",
+  "high_52w": 651.2,
+  "low_52w": 603.1,
+  "avg_180d": 623.73,
+  "avg_120d": 0.0,
+  "year_yield_pct": 0.0,
+  "eps": 37.29,
+  "eps_fy": "079-080",
+  "pe_ratio": 17.46,
+  "book_value": 136.02,
+  "pbv": 4.79,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 0.0,
+  "market_cap": 9142327040.0,
+  "scraped_at": "2026-08-01T21:17:02",
+  "source": "merolagani.com",
+  "promoter_shares": 7159992.0,
+  "public_shares": 6879208.0,
+  "promoter_pct": 51.0,
+  "public_pct": 49.0,
+  "all_time_high": 2720.0,
+  "all_time_high_date": "2016-11-07T00:00:00",
+  "paid_up_capital": 1403920000.0,
+  "net_profit": 523521768.0,
+  "financial_history": [
+    {
+      "fiscal_year": "079-080",
+      "net_profit": "523521768.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "136.02",
+      "dividend_pct": ""
+    }
+  ]
+}

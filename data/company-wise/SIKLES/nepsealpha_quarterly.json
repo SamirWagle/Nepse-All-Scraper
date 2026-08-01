@@ -1,0 +1,17 @@
+{
+  "symbol": "SIKLES",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 10.8,
+  "roa_ttm_pct": 5.54,
+  "net_margin_ttm_pct": 34.49,
+  "eps_ttm": 11.31,
+  "eps_ttm_yoy_pct": 35.47,
+  "bvps": 112.28,
+  "bvps_yoy_pct": 9.16,
+  "net_profit_till_qtr": 11.95,
+  "net_profit_till_qtr_yoy_pct": 38.26,
+  "revenue_till_qtr": 25.95,
+  "revenue_till_qtr_yoy_pct": 7.25,
+  "scraped_at": "2026-08-02T00:18:35",
+  "source": "nepsealpha.com"
+}

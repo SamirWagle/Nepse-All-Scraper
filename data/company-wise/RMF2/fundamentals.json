@@ -1,0 +1,43 @@
+{
+  "symbol": "RMF2",
+  "company_name": "RBB Mutual Fund 2 (RMF2)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 84611929.0,
+  "market_price": 10.07,
+  "percent_change": 1.0,
+  "last_traded_on": "2026/07/30 02:41:34",
+  "high_52w": 10.71,
+  "low_52w": 8.78,
+  "avg_180d": 10.09,
+  "avg_120d": 10.13,
+  "year_yield_pct": -2.23,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": 13.0,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 13327.0,
+  "market_cap": 852042125.03,
+  "scraped_at": "2026-08-01T21:10:50",
+  "source": "merolagani.com",
+  "promoter_shares": 84611929.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 10.73,
+  "all_time_high_date": "2024-09-11T00:00:00",
+  "paid_up_capital": 846119290.0,
+  "bonus_dividend_pct": 0.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": "13.0"
+    }
+  ]
+}

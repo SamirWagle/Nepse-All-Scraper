@@ -1,0 +1,17 @@
+{
+  "symbol": "RAWA",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 13.99,
+  "roa_ttm_pct": 4.71,
+  "net_margin_ttm_pct": 29.89,
+  "eps_ttm": 11.11,
+  "eps_ttm_yoy_pct": 334.0,
+  "bvps": 84.73,
+  "bvps_yoy_pct": 14.79,
+  "net_profit_till_qtr": 2.68,
+  "net_profit_till_qtr_yoy_pct": 91.74,
+  "revenue_till_qtr": 8.09,
+  "revenue_till_qtr_yoy_pct": 9.91,
+  "scraped_at": "2026-08-02T00:10:06",
+  "source": "nepsealpha.com"
+}

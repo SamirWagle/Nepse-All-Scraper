@@ -1,0 +1,17 @@
+{
+  "symbol": "SWBBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 16.84,
+  "roa_ttm_pct": 2.58,
+  "net_margin_ttm_pct": 25.11,
+  "eps_ttm": 36.87,
+  "eps_ttm_yoy_pct": 45.75,
+  "bvps": 226.59,
+  "bvps_yoy_pct": 5.42,
+  "net_profit_till_qtr": 32.27,
+  "net_profit_till_qtr_yoy_pct": -27.1,
+  "revenue_till_qtr": 256.92,
+  "revenue_till_qtr_yoy_pct": -21.54,
+  "scraped_at": "2026-08-02T00:22:49",
+  "source": "nepsealpha.com"
+}

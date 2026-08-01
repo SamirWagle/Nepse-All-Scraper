@@ -1,0 +1,17 @@
+{
+  "symbol": "MEHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 0.91,
+  "roa_ttm_pct": 0.36,
+  "net_margin_ttm_pct": 3.48,
+  "eps_ttm": 0.59,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 63.61,
+  "bvps_yoy_pct": -4.15,
+  "net_profit_till_qtr": 74.04,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 10.56,
+  "revenue_till_qtr_yoy_pct": 15.58,
+  "scraped_at": "2026-08-01T23:55:04",
+  "source": "nepsealpha.com"
+}

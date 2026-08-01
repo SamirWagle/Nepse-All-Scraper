@@ -1,0 +1,17 @@
+{
+  "symbol": "SAPDBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 26.98,
+  "roa_ttm_pct": 1.89,
+  "net_margin_ttm_pct": 31.19,
+  "eps_ttm": 19.59,
+  "eps_ttm_yoy_pct": 140.93,
+  "bvps": 72.9,
+  "bvps_yoy_pct": -5.77,
+  "net_profit_till_qtr": 5.9,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 38.83,
+  "revenue_till_qtr_yoy_pct": -12.92,
+  "scraped_at": "2026-08-02T00:14:13",
+  "source": "nepsealpha.com"
+}

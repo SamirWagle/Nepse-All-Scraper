@@ -1,0 +1,43 @@
+{
+  "symbol": "BEDC",
+  "company_name": "Bhugol Energy Development Company Limited  (BEDC)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 5440534.0,
+  "market_price": 318.1,
+  "percent_change": -0.59,
+  "last_traded_on": "2026/07/31 02:59:39",
+  "high_52w": 812.0,
+  "low_52w": 303.1,
+  "avg_180d": 414.94,
+  "avg_120d": 366.32,
+  "year_yield_pct": -59.9,
+  "eps": -0.12,
+  "eps_fy": "082-083",
+  "pe_ratio": -2650.83,
+  "book_value": 47.88,
+  "pbv": 6.64,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 20872.0,
+  "market_cap": 1730633865.4,
+  "scraped_at": "2026-08-01T20:53:47",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 5440534.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 1080.0,
+  "all_time_high_date": "2025-02-04T00:00:00",
+  "paid_up_capital": 544053400.0,
+  "net_profit": -652864.08,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-652864.08",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "47.88",
+      "dividend_pct": ""
+    }
+  ]
+}

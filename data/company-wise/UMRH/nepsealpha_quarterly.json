@@ -1,0 +1,17 @@
+{
+  "symbol": "UMRH",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 9.32,
+  "roa_ttm_pct": 3.57,
+  "net_margin_ttm_pct": 30.54,
+  "eps_ttm": 10.09,
+  "eps_ttm_yoy_pct": 85.87,
+  "bvps": 114.84,
+  "bvps_yoy_pct": 13.8,
+  "net_profit_till_qtr": 6.95,
+  "net_profit_till_qtr_yoy_pct": 164.6,
+  "revenue_till_qtr": 15.99,
+  "revenue_till_qtr_yoy_pct": 0.0,
+  "scraped_at": "2026-08-02T00:25:09",
+  "source": "nepsealpha.com"
+}

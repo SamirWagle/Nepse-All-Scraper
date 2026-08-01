@@ -1,0 +1,17 @@
+{
+  "symbol": "BHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.9,
+  "roa_ttm_pct": 1.95,
+  "net_margin_ttm_pct": 15.14,
+  "eps_ttm": 4.6,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 79.95,
+  "bvps_yoy_pct": 4.57,
+  "net_profit_till_qtr": 23.57,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 87.85,
+  "revenue_till_qtr_yoy_pct": 47.13,
+  "scraped_at": "2026-08-01T23:35:59",
+  "source": "nepsealpha.com"
+}

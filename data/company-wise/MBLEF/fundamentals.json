@@ -1,0 +1,42 @@
+{
+  "symbol": "MBLEF",
+  "company_name": "MBL Equity Fund (MBLEF)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 12162533.0,
+  "market_price": 10.1,
+  "percent_change": 0.0,
+  "last_traded_on": "2026/07/31 02:28:24",
+  "high_52w": 10.8,
+  "low_52w": 8.63,
+  "avg_180d": 10.13,
+  "avg_120d": 10.1,
+  "year_yield_pct": 11.23,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 25559.0,
+  "market_cap": 122841583.3,
+  "scraped_at": "2026-08-01T21:01:45",
+  "source": "merolagani.com",
+  "promoter_shares": 121625330.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 10.8,
+  "all_time_high_date": "2026-03-25T00:00:00",
+  "paid_up_capital": 1216253300.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "SCB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 13.57,
+  "roa_ttm_pct": 1.81,
+  "net_margin_ttm_pct": 38.12,
+  "eps_ttm": 29.25,
+  "eps_ttm_yoy_pct": -3.24,
+  "bvps": 218.59,
+  "bvps_yoy_pct": 4.87,
+  "net_profit_till_qtr": 208.16,
+  "net_profit_till_qtr_yoy_pct": -4.24,
+  "revenue_till_qtr": 549.66,
+  "revenue_till_qtr_yoy_pct": -10.33,
+  "scraped_at": "2026-08-02T00:15:39",
+  "source": "nepsealpha.com"
+}

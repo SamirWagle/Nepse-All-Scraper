@@ -1,0 +1,43 @@
+{
+  "symbol": "BNHC",
+  "company_name": "Buddhabhumi Nepal Hydropower Company Limited (BNHC)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 8000000.0,
+  "market_price": 282.0,
+  "percent_change": -0.6,
+  "last_traded_on": "2026/07/31 02:59:59",
+  "high_52w": 613.8,
+  "low_52w": 261.3,
+  "avg_180d": 348.5,
+  "avg_120d": 320.83,
+  "year_yield_pct": -48.28,
+  "eps": 7.78,
+  "eps_fy": "082-083",
+  "pe_ratio": 36.25,
+  "book_value": 92.15,
+  "pbv": 3.06,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 25157.0,
+  "market_cap": 2256000000.0,
+  "scraped_at": "2026-08-01T20:53:59",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 8000000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 744.0,
+  "all_time_high_date": "2022-02-06T00:00:00",
+  "paid_up_capital": 800000000.0,
+  "net_profit": 31120000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "31120000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "92.15",
+      "dividend_pct": ""
+    }
+  ]
+}

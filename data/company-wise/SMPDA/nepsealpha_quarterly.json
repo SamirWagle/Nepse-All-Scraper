@@ -1,0 +1,17 @@
+{
+  "symbol": "SMPDA",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 9.22,
+  "roa_ttm_pct": 0.97,
+  "net_margin_ttm_pct": 10.48,
+  "eps_ttm": 15.09,
+  "eps_ttm_yoy_pct": 31.64,
+  "bvps": 160.04,
+  "bvps_yoy_pct": 6.64,
+  "net_profit_till_qtr": 13.25,
+  "net_profit_till_qtr_yoy_pct": 64.91,
+  "revenue_till_qtr": 100.92,
+  "revenue_till_qtr_yoy_pct": -19.14,
+  "scraped_at": "2026-08-02T00:20:51",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,39 @@
+{
+  "symbol": "MEHL",
+  "company_name": "Manakamana Engineering Hydropower Limited (MEHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 8000000.0,
+  "market_price": 302.0,
+  "percent_change": -1.31,
+  "last_traded_on": "2026/07/31 02:59:28",
+  "high_52w": 519.0,
+  "low_52w": 290.0,
+  "avg_180d": 394.03,
+  "avg_120d": 366.0,
+  "year_yield_pct": -33.84,
+  "eps": 1.23,
+  "eps_fy": "082-083",
+  "pe_ratio": 245.53,
+  "book_value": 63.61,
+  "pbv": 4.75,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 3617.0,
+  "market_cap": 2416000000.0,
+  "scraped_at": "2026-08-01T21:02:18",
+  "source": "merolagani.com",
+  "all_time_high": 696.0,
+  "all_time_high_date": "2025-02-18T00:00:00",
+  "paid_up_capital": 800000000.0,
+  "net_profit": 9840000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "9840000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "63.61",
+      "dividend_pct": ""
+    }
+  ]
+}

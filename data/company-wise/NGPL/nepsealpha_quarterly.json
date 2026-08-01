@@ -1,0 +1,17 @@
+{
+  "symbol": "NGPL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 0.59,
+  "roa_ttm_pct": 0.5,
+  "net_margin_ttm_pct": 26.39,
+  "eps_ttm": 0.89,
+  "eps_ttm_yoy_pct": 74.35,
+  "bvps": 151.52,
+  "bvps_yoy_pct": 0.68,
+  "net_profit_till_qtr": 4.05,
+  "net_profit_till_qtr_yoy_pct": 76.0,
+  "revenue_till_qtr": 10.56,
+  "revenue_till_qtr_yoy_pct": 18.03,
+  "scraped_at": "2026-08-02T00:00:41",
+  "source": "nepsealpha.com"
+}

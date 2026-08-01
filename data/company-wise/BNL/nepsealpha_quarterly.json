@@ -1,0 +1,17 @@
+{
+  "symbol": "BNL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -1.41,
+  "net_margin_ttm_pct": -1.71,
+  "eps_ttm": -100.89,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 3297.17,
+  "bvps_yoy_pct": -3.36,
+  "net_profit_till_qtr": 21.99,
+  "net_profit_till_qtr_yoy_pct": 1276.49,
+  "revenue_till_qtr": 765.41,
+  "revenue_till_qtr_yoy_pct": 8.19,
+  "scraped_at": "2026-08-01T23:36:26",
+  "source": "nepsealpha.com"
+}

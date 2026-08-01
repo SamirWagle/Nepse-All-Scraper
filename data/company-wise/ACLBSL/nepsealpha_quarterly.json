@@ -1,0 +1,17 @@
+{
+  "symbol": "ACLBSL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 21.31,
+  "roa_ttm_pct": 2.05,
+  "net_margin_ttm_pct": 15.56,
+  "eps_ttm": 34.53,
+  "eps_ttm_yoy_pct": 45.53,
+  "bvps": 179.21,
+  "bvps_yoy_pct": 21.68,
+  "net_profit_till_qtr": 9.37,
+  "net_profit_till_qtr_yoy_pct": 52.76,
+  "revenue_till_qtr": 60.58,
+  "revenue_till_qtr_yoy_pct": 19.06,
+  "scraped_at": "2026-08-01T23:32:52",
+  "source": "nepsealpha.com"
+}

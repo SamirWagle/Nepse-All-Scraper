@@ -1,0 +1,17 @@
+{
+  "symbol": "SBI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 9.9,
+  "roa_ttm_pct": 0.85,
+  "net_margin_ttm_pct": 13.77,
+  "eps_ttm": 18.18,
+  "eps_ttm_yoy_pct": 0.4,
+  "bvps": 189.57,
+  "bvps_yoy_pct": 7.69,
+  "net_profit_till_qtr": 146.18,
+  "net_profit_till_qtr_yoy_pct": 21.49,
+  "revenue_till_qtr": 1081.19,
+  "revenue_till_qtr_yoy_pct": -4.38,
+  "scraped_at": "2026-08-02T00:14:41",
+  "source": "nepsealpha.com"
+}

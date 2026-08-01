@@ -1,0 +1,43 @@
+{
+  "symbol": "MHCL",
+  "company_name": "Molung Hydropower Company Limited (MHCL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 8025000.0,
+  "market_price": 317.9,
+  "percent_change": 0.86,
+  "last_traded_on": "2026/07/31 02:59:56",
+  "high_52w": 488.0,
+  "low_52w": 301.0,
+  "avg_180d": 354.3,
+  "avg_120d": 343.56,
+  "year_yield_pct": -32.58,
+  "eps": 10.4,
+  "eps_fy": "082-083",
+  "pe_ratio": 30.57,
+  "book_value": 87.89,
+  "pbv": 3.62,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 4095.0,
+  "market_cap": 2551147500.0,
+  "scraped_at": "2026-08-01T21:02:27",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 8025000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 655.0,
+  "all_time_high_date": "2025-03-02T00:00:00",
+  "paid_up_capital": 802500000.0,
+  "net_profit": 83460000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "83460000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "87.89",
+      "dividend_pct": ""
+    }
+  ]
+}

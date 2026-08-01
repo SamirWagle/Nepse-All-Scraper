@@ -1,0 +1,17 @@
+{
+  "symbol": "BGWT",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 11.0,
+  "roa_ttm_pct": 8.75,
+  "net_margin_ttm_pct": 43.79,
+  "eps_ttm": 11.9,
+  "eps_ttm_yoy_pct": 92.59,
+  "bvps": 112.67,
+  "bvps_yoy_pct": 10.4,
+  "net_profit_till_qtr": 5.68,
+  "net_profit_till_qtr_yoy_pct": 34.43,
+  "revenue_till_qtr": 12.92,
+  "revenue_till_qtr_yoy_pct": 23.31,
+  "scraped_at": "2026-08-01T23:35:29",
+  "source": "nepsealpha.com"
+}

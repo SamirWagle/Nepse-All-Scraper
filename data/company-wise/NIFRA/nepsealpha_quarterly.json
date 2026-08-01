@@ -1,0 +1,17 @@
+{
+  "symbol": "NIFRA",
+  "latest_quarter": "082-083Q4",
+  "roe_ttm_pct": 3.9,
+  "roa_ttm_pct": 2.38,
+  "net_margin_ttm_pct": 40.73,
+  "eps_ttm": 4.57,
+  "eps_ttm_yoy_pct": -14.44,
+  "bvps": 117.22,
+  "bvps_yoy_pct": -1.4,
+  "net_profit_till_qtr": 98.74,
+  "net_profit_till_qtr_yoy_pct": -14.44,
+  "revenue_till_qtr": 242.4,
+  "revenue_till_qtr_yoy_pct": -1.82,
+  "scraped_at": "2026-08-02T00:03:05",
+  "source": "nepsealpha.com"
+}

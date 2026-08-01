@@ -1,0 +1,17 @@
+{
+  "symbol": "HURJA",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 3.86,
+  "roa_ttm_pct": 1.98,
+  "net_margin_ttm_pct": 15.71,
+  "eps_ttm": 3.59,
+  "eps_ttm_yoy_pct": 103.62,
+  "bvps": 93.55,
+  "bvps_yoy_pct": 3.38,
+  "net_profit_till_qtr": 5.98,
+  "net_profit_till_qtr_yoy_pct": 71.24,
+  "revenue_till_qtr": 34.59,
+  "revenue_till_qtr_yoy_pct": 9.26,
+  "scraped_at": "2026-08-01T23:48:28",
+  "source": "nepsealpha.com"
+}

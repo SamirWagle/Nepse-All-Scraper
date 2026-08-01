@@ -1,0 +1,43 @@
+{
+  "symbol": "CREST",
+  "company_name": "Crest Micro Life Insurance Ltd. (CREST)",
+  "sector": "Life Insurance",
+  "shares_outstanding": 7500000.0,
+  "market_price": 1190.0,
+  "percent_change": -0.25,
+  "last_traded_on": "2026/07/31 02:59:57",
+  "high_52w": 1588.0,
+  "low_52w": 985.2,
+  "avg_180d": 1275.51,
+  "avg_120d": 1215.06,
+  "year_yield_pct": -13.88,
+  "eps": 2.15,
+  "eps_fy": "082-083",
+  "pe_ratio": 553.49,
+  "book_value": 111.17,
+  "pbv": 10.7,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 10511.0,
+  "market_cap": 8925000000.0,
+  "scraped_at": "2026-08-01T20:55:46",
+  "source": "merolagani.com",
+  "promoter_shares": 5250000.0,
+  "public_shares": 2250000.0,
+  "promoter_pct": 70.0,
+  "public_pct": 30.0,
+  "all_time_high": 2458.2,
+  "all_time_high_date": "2025-05-14T00:00:00",
+  "paid_up_capital": 750000000.0,
+  "net_profit": 16125000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "16125000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "111.17",
+      "dividend_pct": ""
+    }
+  ]
+}

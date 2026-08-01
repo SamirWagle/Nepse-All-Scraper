@@ -1,0 +1,43 @@
+{
+  "symbol": "SAGAR",
+  "company_name": "Sagar Distillery Limited (SAGAR)",
+  "sector": "Manufacturing And Processing",
+  "shares_outstanding": 7260000.0,
+  "market_price": 1710.0,
+  "percent_change": 0.35,
+  "last_traded_on": "2026/07/31 02:59:59",
+  "high_52w": 2439.0,
+  "low_52w": 319.5,
+  "avg_180d": 1796.39,
+  "avg_120d": 1705.23,
+  "year_yield_pct": 0.0,
+  "eps": -6.49,
+  "eps_fy": "082-083",
+  "pe_ratio": -263.48,
+  "book_value": 127.08,
+  "pbv": 13.46,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 12274.0,
+  "market_cap": 12414600000.0,
+  "scraped_at": "2026-08-01T21:11:26",
+  "source": "merolagani.com",
+  "promoter_shares": 5808000.0,
+  "public_shares": 1452000.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 2439.0,
+  "all_time_high_date": "2026-01-25T00:00:00",
+  "paid_up_capital": 726000000.0,
+  "net_profit": -47117400.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-47117400.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "127.08",
+      "dividend_pct": ""
+    }
+  ]
+}

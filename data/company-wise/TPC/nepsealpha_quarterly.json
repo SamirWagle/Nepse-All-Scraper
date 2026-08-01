@@ -1,0 +1,17 @@
+{
+  "symbol": "TPC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 8.42,
+  "roa_ttm_pct": 5.36,
+  "net_margin_ttm_pct": 49.27,
+  "eps_ttm": 8.03,
+  "eps_ttm_yoy_pct": 174.77,
+  "bvps": 100.45,
+  "bvps_yoy_pct": 24.3,
+  "net_profit_till_qtr": 6.29,
+  "net_profit_till_qtr_yoy_pct": 169.11,
+  "revenue_till_qtr": 13.04,
+  "revenue_till_qtr_yoy_pct": -16.09,
+  "scraped_at": "2026-08-02T00:23:28",
+  "source": "nepsealpha.com"
+}

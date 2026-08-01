@@ -1,0 +1,39 @@
+{
+  "symbol": "BHCL",
+  "company_name": "Bikash Hydropower Company Limited (BHCL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 9091013.0,
+  "market_price": 503.9,
+  "percent_change": 3.68,
+  "last_traded_on": "2026/07/31 02:59:58",
+  "high_52w": 699.0,
+  "low_52w": 292.1,
+  "avg_180d": 553.36,
+  "avg_120d": 535.29,
+  "year_yield_pct": 0.0,
+  "eps": 10.43,
+  "eps_fy": "082-083",
+  "pe_ratio": 48.31,
+  "book_value": 109.64,
+  "pbv": 4.6,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 32294.0,
+  "market_cap": 4580961450.7,
+  "scraped_at": "2026-08-01T20:53:52",
+  "source": "merolagani.com",
+  "all_time_high": 699.0,
+  "all_time_high_date": "2026-01-27T00:00:00",
+  "paid_up_capital": 909101300.0,
+  "net_profit": 94819265.59,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "94819265.59",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "109.64",
+      "dividend_pct": ""
+    }
+  ]
+}

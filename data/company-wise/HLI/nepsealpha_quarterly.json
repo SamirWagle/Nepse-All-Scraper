@@ -1,0 +1,17 @@
+{
+  "symbol": "HLI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 3.4,
+  "roa_ttm_pct": 0.36,
+  "net_margin_ttm_pct": 1.82,
+  "eps_ttm": 3.68,
+  "eps_ttm_yoy_pct": -49.91,
+  "bvps": 100.45,
+  "bvps_yoy_pct": -13.46,
+  "net_profit_till_qtr": 26.14,
+  "net_profit_till_qtr_yoy_pct": -44.66,
+  "revenue_till_qtr": 1326.84,
+  "revenue_till_qtr_yoy_pct": 6.18,
+  "scraped_at": "2026-08-01T23:47:49",
+  "source": "nepsealpha.com"
+}

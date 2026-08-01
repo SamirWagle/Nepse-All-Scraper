@@ -1,0 +1,17 @@
+{
+  "symbol": "UHEWA",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 16.08,
+  "roa_ttm_pct": 6.48,
+  "net_margin_ttm_pct": 53.01,
+  "eps_ttm": 17.66,
+  "eps_ttm_yoy_pct": 55.2,
+  "bvps": 114.97,
+  "bvps_yoy_pct": 14.64,
+  "net_profit_till_qtr": 8.07,
+  "net_profit_till_qtr_yoy_pct": 23.38,
+  "revenue_till_qtr": 19.16,
+  "revenue_till_qtr_yoy_pct": -14.15,
+  "scraped_at": "2026-08-02T00:24:28",
+  "source": "nepsealpha.com"
+}

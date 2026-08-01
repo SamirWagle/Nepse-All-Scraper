@@ -1,0 +1,17 @@
+{
+  "symbol": "FMDBL",
+  "latest_quarter": "082-083Q4",
+  "roe_ttm_pct": 10.73,
+  "roa_ttm_pct": 3.18,
+  "net_margin_ttm_pct": 47.13,
+  "eps_ttm": 14.18,
+  "eps_ttm_yoy_pct": 44.79,
+  "bvps": 137.26,
+  "bvps_yoy_pct": 4.57,
+  "net_profit_till_qtr": 19.07,
+  "net_profit_till_qtr_yoy_pct": 44.79,
+  "revenue_till_qtr": 40.47,
+  "revenue_till_qtr_yoy_pct": -26.48,
+  "scraped_at": "2026-08-01T23:42:04",
+  "source": "nepsealpha.com"
+}

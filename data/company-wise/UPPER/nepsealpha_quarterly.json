@@ -1,0 +1,17 @@
+{
+  "symbol": "UPPER",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -0.26,
+  "net_margin_ttm_pct": -2.83,
+  "eps_ttm": -1.03,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 46.69,
+  "bvps_yoy_pct": 2.99,
+  "net_profit_till_qtr": 28.68,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 771.81,
+  "revenue_till_qtr_yoy_pct": -1.2,
+  "scraped_at": "2026-08-02T00:25:54",
+  "source": "nepsealpha.com"
+}

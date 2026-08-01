@@ -1,0 +1,43 @@
+{
+  "symbol": "SFCL",
+  "company_name": "Samriddhi Finance Company Limited (SFCL)",
+  "sector": "Finance",
+  "shares_outstanding": 8189114.0,
+  "market_price": 370.0,
+  "percent_change": -1.33,
+  "last_traded_on": "2026/07/09 02:59:57",
+  "high_52w": 507.6,
+  "low_52w": 359.4,
+  "avg_180d": 387.71,
+  "avg_120d": 380.65,
+  "year_yield_pct": -25.66,
+  "eps": 0.12,
+  "eps_fy": "082-083",
+  "pe_ratio": 3083.33,
+  "book_value": 60.3,
+  "pbv": 6.14,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 7982.0,
+  "market_cap": 3029972180.0,
+  "scraped_at": "2026-08-01T21:12:43",
+  "source": "merolagani.com",
+  "promoter_shares": 4913468.0,
+  "public_shares": 3275645.0,
+  "promoter_pct": 60.0,
+  "public_pct": 40.0,
+  "all_time_high": 1117.9,
+  "all_time_high_date": "2024-11-14T00:00:00",
+  "paid_up_capital": 818911400.0,
+  "net_profit": 982693.68,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "982693.68",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "60.3",
+      "dividend_pct": ""
+    }
+  ]
+}

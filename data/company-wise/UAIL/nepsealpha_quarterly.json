@@ -1,0 +1,17 @@
+{
+  "symbol": "UAIL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 0.75,
+  "roa_ttm_pct": 0.41,
+  "net_margin_ttm_pct": 1.44,
+  "eps_ttm": 1.27,
+  "eps_ttm_yoy_pct": -85.9,
+  "bvps": 167.55,
+  "bvps_yoy_pct": -1.14,
+  "net_profit_till_qtr": -697.9,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 211.42,
+  "revenue_till_qtr_yoy_pct": -25.27,
+  "scraped_at": "2026-08-02T00:24:19",
+  "source": "nepsealpha.com"
+}

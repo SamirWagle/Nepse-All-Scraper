@@ -1,0 +1,17 @@
+{
+  "symbol": "NMFBS",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 20.09,
+  "roa_ttm_pct": 2.34,
+  "net_margin_ttm_pct": 19.94,
+  "eps_ttm": 46.02,
+  "eps_ttm_yoy_pct": 36.56,
+  "bvps": 259.51,
+  "bvps_yoy_pct": 28.43,
+  "net_profit_till_qtr": 58.87,
+  "net_profit_till_qtr_yoy_pct": 62.37,
+  "revenue_till_qtr": 253.75,
+  "revenue_till_qtr_yoy_pct": 15.97,
+  "scraped_at": "2026-08-02T00:04:58",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "PROFL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -0.04,
+  "net_margin_ttm_pct": -0.59,
+  "eps_ttm": -0.38,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 75.05,
+  "bvps_yoy_pct": -1.34,
+  "net_profit_till_qtr": -247.43,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 40.36,
+  "revenue_till_qtr_yoy_pct": -9.77,
+  "scraped_at": "2026-08-02T00:09:06",
+  "source": "nepsealpha.com"
+}

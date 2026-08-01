@@ -1,0 +1,43 @@
+{
+  "symbol": "MAKAR",
+  "company_name": "Makar Jitumaya Suri Hydropower Limited (MAKAR)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 7600000.0,
+  "market_price": 440.0,
+  "percent_change": 0.48,
+  "last_traded_on": "2026/07/31 02:59:59",
+  "high_52w": 670.0,
+  "low_52w": 427.5,
+  "avg_180d": 503.9,
+  "avg_120d": 486.01,
+  "year_yield_pct": -31.09,
+  "eps": 15.28,
+  "eps_fy": "082-083",
+  "pe_ratio": 28.8,
+  "book_value": 115.79,
+  "pbv": 3.8,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 20644.0,
+  "market_cap": 3344000000.0,
+  "scraped_at": "2026-08-01T21:01:35",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 7600000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 860.0,
+  "all_time_high_date": "2025-02-05T00:00:00",
+  "paid_up_capital": 760000000.0,
+  "net_profit": 116128000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "116128000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "115.79",
+      "dividend_pct": ""
+    }
+  ]
+}

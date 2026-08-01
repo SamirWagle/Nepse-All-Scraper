@@ -1,0 +1,17 @@
+{
+  "symbol": "ULBSL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 15.91,
+  "roa_ttm_pct": 1.37,
+  "net_margin_ttm_pct": 15.45,
+  "eps_ttm": 40.05,
+  "eps_ttm_yoy_pct": 24.16,
+  "bvps": 276.96,
+  "bvps_yoy_pct": 24.08,
+  "net_profit_till_qtr": 3.07,
+  "net_profit_till_qtr_yoy_pct": -10.49,
+  "revenue_till_qtr": 27.52,
+  "revenue_till_qtr_yoy_pct": -15.27,
+  "scraped_at": "2026-08-02T00:24:38",
+  "source": "nepsealpha.com"
+}

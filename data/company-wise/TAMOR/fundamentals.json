@@ -1,0 +1,43 @@
+{
+  "symbol": "TAMOR",
+  "company_name": "Sanima Middle Tamor Hydropower Limited (TAMOR)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 33324970.0,
+  "market_price": 449.3,
+  "percent_change": -0.38,
+  "last_traded_on": "2026/07/31 02:59:46",
+  "high_52w": 526.0,
+  "low_52w": 396.4,
+  "avg_180d": 444.72,
+  "avg_120d": 447.66,
+  "year_yield_pct": -14.17,
+  "eps": 10.04,
+  "eps_fy": "082-083",
+  "pe_ratio": 44.75,
+  "book_value": 117.67,
+  "pbv": 3.82,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 26053.0,
+  "market_cap": 14972909021.0,
+  "scraped_at": "2026-08-01T21:15:34",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 33325000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 637.0,
+  "all_time_high_date": "2025-02-02T00:00:00",
+  "paid_up_capital": 3332500000.0,
+  "net_profit": 334582698.8,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "334582698.8",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "117.67",
+      "dividend_pct": ""
+    }
+  ]
+}

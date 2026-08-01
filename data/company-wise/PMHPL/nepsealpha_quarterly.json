@@ -1,0 +1,17 @@
+{
+  "symbol": "PMHPL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 1.04,
+  "roa_ttm_pct": 0.36,
+  "net_margin_ttm_pct": 2.69,
+  "eps_ttm": 0.85,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 84.8,
+  "bvps_yoy_pct": 1.18,
+  "net_profit_till_qtr": 8.23,
+  "net_profit_till_qtr_yoy_pct": 1806.32,
+  "revenue_till_qtr": 29.16,
+  "revenue_till_qtr_yoy_pct": 22.7,
+  "scraped_at": "2026-08-02T00:08:17",
+  "source": "nepsealpha.com"
+}

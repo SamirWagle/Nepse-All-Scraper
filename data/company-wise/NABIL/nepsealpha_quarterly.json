@@ -1,0 +1,17 @@
+{
+  "symbol": "NABIL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 13.15,
+  "roa_ttm_pct": 1.28,
+  "net_margin_ttm_pct": 22.3,
+  "eps_ttm": 31.57,
+  "eps_ttm_yoy_pct": 14.74,
+  "bvps": 243.3,
+  "bvps_yoy_pct": 7.48,
+  "net_profit_till_qtr": 646.46,
+  "net_profit_till_qtr_yoy_pct": 27.98,
+  "revenue_till_qtr": 2814.37,
+  "revenue_till_qtr_yoy_pct": -7.16,
+  "scraped_at": "2026-08-01T23:28:02",
+  "source": "nepsealpha.com"
+}

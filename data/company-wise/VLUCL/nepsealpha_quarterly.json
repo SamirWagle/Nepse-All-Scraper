@@ -1,0 +1,17 @@
+{
+  "symbol": "VLUCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -2.33,
+  "net_margin_ttm_pct": -40.69,
+  "eps_ttm": -8.28,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 127.73,
+  "bvps_yoy_pct": -4.78,
+  "net_profit_till_qtr": -1005.67,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 38.93,
+  "revenue_till_qtr_yoy_pct": 2.55,
+  "scraped_at": "2026-08-02T00:26:43",
+  "source": "nepsealpha.com"
+}

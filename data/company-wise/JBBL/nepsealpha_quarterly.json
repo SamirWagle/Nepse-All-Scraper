@@ -1,0 +1,17 @@
+{
+  "symbol": "JBBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 4.96,
+  "roa_ttm_pct": 0.46,
+  "net_margin_ttm_pct": 6.65,
+  "eps_ttm": 7.63,
+  "eps_ttm_yoy_pct": -16.33,
+  "bvps": 163.43,
+  "bvps_yoy_pct": 7.59,
+  "net_profit_till_qtr": 62.95,
+  "net_profit_till_qtr_yoy_pct": 105.3,
+  "revenue_till_qtr": 369.11,
+  "revenue_till_qtr_yoy_pct": -15.83,
+  "scraped_at": "2026-08-01T23:49:35",
+  "source": "nepsealpha.com"
+}

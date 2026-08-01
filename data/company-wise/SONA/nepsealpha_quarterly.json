@@ -1,0 +1,17 @@
+{
+  "symbol": "SONA",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.2,
+  "roa_ttm_pct": 2.15,
+  "net_margin_ttm_pct": 10.13,
+  "eps_ttm": 10.02,
+  "eps_ttm_yoy_pct": 4911.52,
+  "bvps": 197.22,
+  "bvps_yoy_pct": 3.54,
+  "net_profit_till_qtr": 22.61,
+  "net_profit_till_qtr_yoy_pct": 3576.83,
+  "revenue_till_qtr": 304.18,
+  "revenue_till_qtr_yoy_pct": 16.31,
+  "scraped_at": "2026-08-02T00:21:10",
+  "source": "nepsealpha.com"
+}

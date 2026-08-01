@@ -1,0 +1,17 @@
+{
+  "symbol": "VLBS",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -0.07,
+  "net_margin_ttm_pct": -1.04,
+  "eps_ttm": -1.02,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 158.39,
+  "bvps_yoy_pct": 1.63,
+  "net_profit_till_qtr": -267.96,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 77.64,
+  "revenue_till_qtr_yoy_pct": -41.87,
+  "scraped_at": "2026-08-02T00:26:33",
+  "source": "nepsealpha.com"
+}

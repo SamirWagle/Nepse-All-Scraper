@@ -1,0 +1,17 @@
+{
+  "symbol": "NIMB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 8.03,
+  "roa_ttm_pct": 0.92,
+  "net_margin_ttm_pct": 16.24,
+  "eps_ttm": 15.72,
+  "eps_ttm_yoy_pct": -17.01,
+  "bvps": 199.72,
+  "bvps_yoy_pct": 4.9,
+  "net_profit_till_qtr": 314.68,
+  "net_profit_till_qtr_yoy_pct": -30.69,
+  "revenue_till_qtr": 2372.51,
+  "revenue_till_qtr_yoy_pct": -11.47,
+  "scraped_at": "2026-08-02T00:03:33",
+  "source": "nepsealpha.com"
+}

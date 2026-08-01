@@ -1,0 +1,43 @@
+{
+  "symbol": "DHPL",
+  "company_name": "Dibyashwori Hydropower Ltd. (DHPL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 2640000.0,
+  "market_price": 294.0,
+  "percent_change": -0.44,
+  "last_traded_on": "2026/07/31 02:57:15",
+  "high_52w": 345.0,
+  "low_52w": 254.0,
+  "avg_180d": 302.36,
+  "avg_120d": 296.98,
+  "year_yield_pct": -10.3,
+  "eps": 2.92,
+  "eps_fy": "082-083",
+  "pe_ratio": 100.68,
+  "book_value": 5.06,
+  "pbv": 58.1,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 4674.0,
+  "market_cap": 776160000.0,
+  "scraped_at": "2026-08-01T20:55:54",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 2640000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 485.2,
+  "all_time_high_date": "2021-08-18T00:00:00",
+  "paid_up_capital": 264000000.0,
+  "net_profit": 7708800.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "7708800.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "5.06",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "NLG",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 1.62,
+  "roa_ttm_pct": 0.76,
+  "net_margin_ttm_pct": 2.25,
+  "eps_ttm": 2.72,
+  "eps_ttm_yoy_pct": -69.73,
+  "bvps": 170.93,
+  "bvps_yoy_pct": 1.05,
+  "net_profit_till_qtr": 3.48,
+  "net_profit_till_qtr_yoy_pct": -71.78,
+  "revenue_till_qtr": 272.99,
+  "revenue_till_qtr_yoy_pct": 45.49,
+  "scraped_at": "2026-08-02T00:03:53",
+  "source": "nepsealpha.com"
+}

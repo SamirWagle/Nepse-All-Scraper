@@ -1,0 +1,17 @@
+{
+  "symbol": "RIDI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 7.61,
+  "roa_ttm_pct": 4.7,
+  "net_margin_ttm_pct": 33.91,
+  "eps_ttm": 7.58,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 103.2,
+  "bvps_yoy_pct": 9.47,
+  "net_profit_till_qtr": 7.49,
+  "net_profit_till_qtr_yoy_pct": 1239.05,
+  "revenue_till_qtr": 29.83,
+  "revenue_till_qtr_yoy_pct": 21.45,
+  "scraped_at": "2026-08-02T00:11:31",
+  "source": "nepsealpha.com"
+}

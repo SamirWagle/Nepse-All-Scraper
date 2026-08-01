@@ -1,0 +1,17 @@
+{
+  "symbol": "WNLB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 13.94,
+  "roa_ttm_pct": 1.65,
+  "net_margin_ttm_pct": 18.04,
+  "eps_ttm": 18.68,
+  "eps_ttm_yoy_pct": 62.43,
+  "bvps": 131.8,
+  "bvps_yoy_pct": -4.46,
+  "net_profit_till_qtr": 86.04,
+  "net_profit_till_qtr_yoy_pct": -11.27,
+  "revenue_till_qtr": 8.73,
+  "revenue_till_qtr_yoy_pct": -17.93,
+  "scraped_at": "2026-08-02T00:26:52",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,39 @@
+{
+  "symbol": "SIGS3",
+  "company_name": "Siddhartha Investment Growth Scheme 3\t (SIGS3)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 80580000.0,
+  "market_price": 10.42,
+  "percent_change": -2.62,
+  "last_traded_on": "2026/07/31 02:20:10",
+  "high_52w": 11.58,
+  "low_52w": 8.5,
+  "avg_180d": 10.6,
+  "avg_120d": 10.71,
+  "year_yield_pct": -7.05,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": 17.0,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 56464.0,
+  "market_cap": 839643600.0,
+  "scraped_at": "2026-08-01T21:14:08",
+  "source": "merolagani.com",
+  "all_time_high": 11.58,
+  "all_time_high_date": "2026-06-15T00:00:00",
+  "paid_up_capital": 805800000.0,
+  "bonus_dividend_pct": 0.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": "17.0"
+    }
+  ]
+}

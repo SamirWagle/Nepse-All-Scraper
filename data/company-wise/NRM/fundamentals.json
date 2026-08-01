@@ -1,0 +1,43 @@
+{
+  "symbol": "NRM",
+  "company_name": "Nepal Republic Media Limited (NRM)",
+  "sector": "Others",
+  "shares_outstanding": 9675000.0,
+  "market_price": 315.0,
+  "percent_change": 0.64,
+  "last_traded_on": "2026/07/31 02:59:01",
+  "high_52w": 590.0,
+  "low_52w": 295.1,
+  "avg_180d": 383.35,
+  "avg_120d": 361.14,
+  "year_yield_pct": -34.62,
+  "eps": -4.05,
+  "eps_fy": "082-083",
+  "pe_ratio": -77.78,
+  "book_value": 85.78,
+  "pbv": 3.67,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 9154.0,
+  "market_cap": 3047625000.0,
+  "scraped_at": "2026-08-01T21:07:58",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 9675000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 645.0,
+  "all_time_high_date": "2025-03-03T00:00:00",
+  "paid_up_capital": 967500000.0,
+  "net_profit": -39183750.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-39183750.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "85.78",
+      "dividend_pct": ""
+    }
+  ]
+}

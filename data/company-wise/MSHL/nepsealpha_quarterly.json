@@ -1,0 +1,17 @@
+{
+  "symbol": "MSHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 16.52,
+  "roa_ttm_pct": 7.03,
+  "net_margin_ttm_pct": 50.3,
+  "eps_ttm": 17.93,
+  "eps_ttm_yoy_pct": 72.33,
+  "bvps": 116.41,
+  "bvps_yoy_pct": 17.28,
+  "net_profit_till_qtr": 10.28,
+  "net_profit_till_qtr_yoy_pct": 18.0,
+  "revenue_till_qtr": 20.0,
+  "revenue_till_qtr_yoy_pct": -17.11,
+  "scraped_at": "2026-08-01T23:58:47",
+  "source": "nepsealpha.com"
+}

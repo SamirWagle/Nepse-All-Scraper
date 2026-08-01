@@ -1,0 +1,43 @@
+{
+  "symbol": "BBC",
+  "company_name": "Bishal Bazar Company Limited (BBC)",
+  "sector": "Tradings",
+  "shares_outstanding": 40100000.0,
+  "market_price": 4280.0,
+  "percent_change": 0.0,
+  "last_traded_on": "2026/07/31 02:58:34",
+  "high_52w": 6120.0,
+  "low_52w": 3825.0,
+  "avg_180d": 4638.77,
+  "avg_120d": 4539.38,
+  "year_yield_pct": -23.16,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 100.0,
+  "pbv": 42.8,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 337.0,
+  "market_cap": 171628000000.0,
+  "scraped_at": "2026-08-01T20:53:45",
+  "source": "merolagani.com",
+  "promoter_shares": 5910740.0,
+  "public_shares": 34189260.0,
+  "promoter_pct": 14.74,
+  "public_pct": 85.26,
+  "all_time_high": 8208.0,
+  "all_time_high_date": "2021-05-06T00:00:00",
+  "paid_up_capital": 4010000000.0,
+  "bonus_dividend_pct": 0.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "NYADI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 9.09,
+  "roa_ttm_pct": 2.04,
+  "net_margin_ttm_pct": 12.98,
+  "eps_ttm": 6.49,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 75.96,
+  "bvps_yoy_pct": 6.36,
+  "net_profit_till_qtr": 14.78,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 60.98,
+  "revenue_till_qtr_yoy_pct": 19.81,
+  "scraped_at": "2026-08-02T00:06:51",
+  "source": "nepsealpha.com"
+}

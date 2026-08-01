@@ -1,0 +1,17 @@
+{
+  "symbol": "CHDC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 31.31,
+  "roa_ttm_pct": 32.57,
+  "net_margin_ttm_pct": 97.12,
+  "eps_ttm": 67.11,
+  "eps_ttm_yoy_pct": 96.91,
+  "bvps": 257.36,
+  "bvps_yoy_pct": 49.69,
+  "net_profit_till_qtr": 47.36,
+  "net_profit_till_qtr_yoy_pct": 34.14,
+  "revenue_till_qtr": 48.71,
+  "revenue_till_qtr_yoy_pct": 27.87,
+  "scraped_at": "2026-08-01T23:38:19",
+  "source": "nepsealpha.com"
+}

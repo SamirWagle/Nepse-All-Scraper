@@ -1,0 +1,17 @@
+{
+  "symbol": "HATHY",
+  "latest_quarter": "082-083Q1",
+  "roe_ttm_pct": 1.61,
+  "roa_ttm_pct": 1.24,
+  "net_margin_ttm_pct": 21.84,
+  "eps_ttm": 1.08,
+  "eps_ttm_yoy_pct": -66.68,
+  "bvps": 66.64,
+  "bvps_yoy_pct": 0.1,
+  "net_profit_till_qtr": 44.23,
+  "net_profit_till_qtr_yoy_pct": -87.36,
+  "revenue_till_qtr": 88.14,
+  "revenue_till_qtr_yoy_pct": -81.97,
+  "scraped_at": "2026-08-01T23:45:49",
+  "source": "nepsealpha.com"
+}

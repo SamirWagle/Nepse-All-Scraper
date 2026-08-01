@@ -1,0 +1,17 @@
+{
+  "symbol": "SGHC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 8.27,
+  "roa_ttm_pct": 2.03,
+  "net_margin_ttm_pct": 12.85,
+  "eps_ttm": 6.51,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 83.67,
+  "bvps_yoy_pct": 9.39,
+  "net_profit_till_qtr": 17.75,
+  "net_profit_till_qtr_yoy_pct": 160.8,
+  "revenue_till_qtr": 67.66,
+  "revenue_till_qtr_yoy_pct": 2.82,
+  "scraped_at": "2026-08-02T00:16:37",
+  "source": "nepsealpha.com"
+}

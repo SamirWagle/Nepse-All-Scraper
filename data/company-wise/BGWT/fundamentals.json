@@ -1,0 +1,40 @@
+{
+  "symbol": "BGWT",
+  "company_name": "Bhagawati Hydropower Development Company Ltd. (BGWT)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 6782399.0,
+  "market_price": 595.0,
+  "percent_change": -0.34,
+  "last_traded_on": "2026/07/31 02:59:58",
+  "high_52w": 957.0,
+  "low_52w": 516.1,
+  "avg_180d": 686.68,
+  "avg_120d": 651.46,
+  "year_yield_pct": -37.26,
+  "eps": 11.16,
+  "eps_fy": "082-083",
+  "pe_ratio": 53.32,
+  "book_value": 112.67,
+  "pbv": 5.28,
+  "dividend_pct": 6.0,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 2581.0,
+  "market_cap": 4035527405.0,
+  "scraped_at": "2026-08-01T20:53:51",
+  "source": "merolagani.com",
+  "all_time_high": 1361.7,
+  "all_time_high_date": "2024-06-12T00:00:00",
+  "paid_up_capital": 678239900.0,
+  "bonus_dividend_pct": 14.0,
+  "net_profit": 75691572.84,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "75691572.84",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "112.67",
+      "dividend_pct": "6.0"
+    }
+  ]
+}

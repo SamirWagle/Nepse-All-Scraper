@@ -1,0 +1,17 @@
+{
+  "symbol": "PPL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -2.32,
+  "net_margin_ttm_pct": -27.77,
+  "eps_ttm": -2.37,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 102.98,
+  "bvps_yoy_pct": 4.36,
+  "net_profit_till_qtr": -180.5,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 5.36,
+  "revenue_till_qtr_yoy_pct": -23.06,
+  "scraped_at": "2026-08-02T00:08:48",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "NICLBSL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -1.54,
+  "net_margin_ttm_pct": -15.55,
+  "eps_ttm": -19.72,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 127.35,
+  "bvps_yoy_pct": -13.51,
+  "net_profit_till_qtr": 10.69,
+  "net_profit_till_qtr_yoy_pct": 8133.81,
+  "revenue_till_qtr": 165.85,
+  "revenue_till_qtr_yoy_pct": 23.58,
+  "scraped_at": "2026-08-02T00:02:46",
+  "source": "nepsealpha.com"
+}

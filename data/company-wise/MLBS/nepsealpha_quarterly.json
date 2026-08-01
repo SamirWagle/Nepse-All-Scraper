@@ -1,0 +1,17 @@
+{
+  "symbol": "MLBS",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 11.67,
+  "roa_ttm_pct": 1.05,
+  "net_margin_ttm_pct": 7.72,
+  "eps_ttm": 15.43,
+  "eps_ttm_yoy_pct": -52.73,
+  "bvps": 141.2,
+  "bvps_yoy_pct": 14.86,
+  "net_profit_till_qtr": 1.32,
+  "net_profit_till_qtr_yoy_pct": 41.19,
+  "revenue_till_qtr": 16.15,
+  "revenue_till_qtr_yoy_pct": 9.21,
+  "scraped_at": "2026-08-01T23:57:38",
+  "source": "nepsealpha.com"
+}

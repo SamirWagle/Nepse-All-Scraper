@@ -1,0 +1,17 @@
+{
+  "symbol": "KBSH",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.26,
+  "roa_ttm_pct": 4.56,
+  "net_margin_ttm_pct": 32.02,
+  "eps_ttm": 6.66,
+  "eps_ttm_yoy_pct": -15.19,
+  "bvps": 130.2,
+  "bvps_yoy_pct": 3.81,
+  "net_profit_till_qtr": 1.1,
+  "net_profit_till_qtr_yoy_pct": 8.77,
+  "revenue_till_qtr": 2.69,
+  "revenue_till_qtr_yoy_pct": -1.65,
+  "scraped_at": "2026-08-01T23:50:52",
+  "source": "nepsealpha.com"
+}

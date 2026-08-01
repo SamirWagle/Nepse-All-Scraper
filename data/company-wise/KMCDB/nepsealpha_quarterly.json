@@ -1,0 +1,17 @@
+{
+  "symbol": "KMCDB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 7.41,
+  "roa_ttm_pct": 1.04,
+  "net_margin_ttm_pct": 7.61,
+  "eps_ttm": 12.22,
+  "eps_ttm_yoy_pct": -44.66,
+  "bvps": 154.96,
+  "bvps_yoy_pct": -3.47,
+  "net_profit_till_qtr": 1.47,
+  "net_profit_till_qtr_yoy_pct": -78.36,
+  "revenue_till_qtr": 53.59,
+  "revenue_till_qtr_yoy_pct": 10.9,
+  "scraped_at": "2026-08-01T23:51:39",
+  "source": "nepsealpha.com"
+}

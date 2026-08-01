@@ -1,0 +1,17 @@
+{
+  "symbol": "JOSHI",
+  "latest_quarter": "082-083Q2",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -9.98,
+  "net_margin_ttm_pct": -358.01,
+  "eps_ttm": -7.53,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 67.88,
+  "bvps_yoy_pct": 118.16,
+  "net_profit_till_qtr": -219.59,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 48.67,
+  "revenue_till_qtr_yoy_pct": -72.07,
+  "scraped_at": "2026-08-01T23:50:20",
+  "source": "nepsealpha.com"
+}

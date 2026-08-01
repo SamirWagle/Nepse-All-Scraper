@@ -1,0 +1,39 @@
+{
+  "symbol": "MMKJL",
+  "company_name": "Mathillo Mailun Khola Jalvidhyut Limited (MMKJL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 10000000.0,
+  "market_price": 484.0,
+  "percent_change": -0.21,
+  "last_traded_on": "2026/07/31 02:59:41",
+  "high_52w": 699.9,
+  "low_52w": 429.1,
+  "avg_180d": 521.94,
+  "avg_120d": 497.89,
+  "year_yield_pct": -20.72,
+  "eps": 11.28,
+  "eps_fy": "082-083",
+  "pe_ratio": 42.91,
+  "book_value": 97.94,
+  "pbv": 4.94,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 3554.0,
+  "market_cap": 4840000000.0,
+  "scraped_at": "2026-08-01T21:03:12",
+  "source": "merolagani.com",
+  "all_time_high": 890.4,
+  "all_time_high_date": "2025-01-27T00:00:00",
+  "paid_up_capital": 1000000000.0,
+  "net_profit": 112800000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "112800000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "97.94",
+      "dividend_pct": ""
+    }
+  ]
+}

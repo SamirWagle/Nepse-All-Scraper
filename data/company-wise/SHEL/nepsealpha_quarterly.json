@@ -1,0 +1,17 @@
+{
+  "symbol": "SHEL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 6.77,
+  "roa_ttm_pct": 3.42,
+  "net_margin_ttm_pct": 30.64,
+  "eps_ttm": 7.24,
+  "eps_ttm_yoy_pct": 126.65,
+  "bvps": 109.82,
+  "bvps_yoy_pct": 5.81,
+  "net_profit_till_qtr": 20.47,
+  "net_profit_till_qtr_yoy_pct": 52.39,
+  "revenue_till_qtr": 57.87,
+  "revenue_till_qtr_yoy_pct": 4.61,
+  "scraped_at": "2026-08-02T00:16:56",
+  "source": "nepsealpha.com"
+}

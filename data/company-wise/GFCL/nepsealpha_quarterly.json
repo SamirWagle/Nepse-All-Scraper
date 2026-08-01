@@ -1,0 +1,17 @@
+{
+  "symbol": "GFCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 4.41,
+  "roa_ttm_pct": 0.57,
+  "net_margin_ttm_pct": 8.42,
+  "eps_ttm": 9.64,
+  "eps_ttm_yoy_pct": -63.52,
+  "bvps": 207.18,
+  "bvps_yoy_pct": 3.24,
+  "net_profit_till_qtr": 10.13,
+  "net_profit_till_qtr_yoy_pct": 565.71,
+  "revenue_till_qtr": 85.89,
+  "revenue_till_qtr_yoy_pct": -2.72,
+  "scraped_at": "2026-08-01T23:43:17",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,42 @@
+{
+  "symbol": "GBIMESY2",
+  "company_name": "Global IME Samunnat Yojana - II (GBIMESY2)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 150000000.0,
+  "market_price": 9.25,
+  "percent_change": 2.32,
+  "last_traded_on": "2026/07/31 02:48:53",
+  "high_52w": 10.78,
+  "low_52w": 8.5,
+  "avg_180d": 9.41,
+  "avg_120d": 9.41,
+  "year_yield_pct": 0.0,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 90320.0,
+  "market_cap": 1387500000.0,
+  "scraped_at": "2026-08-01T20:56:45",
+  "source": "merolagani.com",
+  "promoter_shares": 150000000.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 10.78,
+  "all_time_high_date": "2026-07-16T00:00:00",
+  "paid_up_capital": 1500000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": ""
+    }
+  ]
+}

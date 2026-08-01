@@ -1,0 +1,17 @@
+{
+  "symbol": "CYCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 16.07,
+  "roa_ttm_pct": 1.59,
+  "net_margin_ttm_pct": 13.13,
+  "eps_ttm": 43.18,
+  "eps_ttm_yoy_pct": 74.47,
+  "bvps": 269.54,
+  "bvps_yoy_pct": 0.38,
+  "net_profit_till_qtr": 5.34,
+  "net_profit_till_qtr_yoy_pct": -4.35,
+  "revenue_till_qtr": 61.22,
+  "revenue_till_qtr_yoy_pct": -2.23,
+  "scraped_at": "2026-08-01T23:40:05",
+  "source": "nepsealpha.com"
+}

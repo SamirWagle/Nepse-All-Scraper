@@ -1,0 +1,17 @@
+{
+  "symbol": "SMB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 30.46,
+  "roa_ttm_pct": 3.12,
+  "net_margin_ttm_pct": 22.06,
+  "eps_ttm": 50.22,
+  "eps_ttm_yoy_pct": 59.74,
+  "bvps": 183.37,
+  "bvps_yoy_pct": 31.42,
+  "net_profit_till_qtr": 4.68,
+  "net_profit_till_qtr_yoy_pct": 52.65,
+  "revenue_till_qtr": 22.57,
+  "revenue_till_qtr_yoy_pct": 25.1,
+  "scraped_at": "2026-08-02T00:20:04",
+  "source": "nepsealpha.com"
+}

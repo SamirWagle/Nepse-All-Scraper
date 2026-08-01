@@ -1,0 +1,17 @@
+{
+  "symbol": "MHCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 8.82,
+  "roa_ttm_pct": 5.13,
+  "net_margin_ttm_pct": 32.85,
+  "eps_ttm": 7.44,
+  "eps_ttm_yoy_pct": 47.02,
+  "bvps": 87.89,
+  "bvps_yoy_pct": 9.28,
+  "net_profit_till_qtr": 6.26,
+  "net_profit_till_qtr_yoy_pct": 107.36,
+  "revenue_till_qtr": 14.86,
+  "revenue_till_qtr_yoy_pct": 16.12,
+  "scraped_at": "2026-08-01T23:55:51",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,43 @@
+{
+  "symbol": "NMLBBL",
+  "company_name": "Nerude Mirmire Laghubitta Bittiya Sanstha Limited (NMLBBL)",
+  "sector": "Microfinance",
+  "shares_outstanding": 13977642.7,
+  "market_price": 522.0,
+  "percent_change": 0.38,
+  "last_traded_on": "2026/07/31 02:49:22",
+  "high_52w": 760.0,
+  "low_52w": 496.1,
+  "avg_180d": 598.67,
+  "avg_120d": 581.51,
+  "year_yield_pct": -30.19,
+  "eps": -71.21,
+  "eps_fy": "082-083",
+  "pe_ratio": -7.33,
+  "book_value": 123.56,
+  "pbv": 4.22,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 6063.0,
+  "market_cap": 7296329489.4,
+  "scraped_at": "2026-08-01T21:07:54",
+  "source": "merolagani.com",
+  "promoter_shares": 7197088.0,
+  "public_shares": 6780554.0,
+  "promoter_pct": 51.49,
+  "public_pct": 48.51,
+  "all_time_high": 2850.0,
+  "all_time_high_date": "2016-07-04T00:00:00",
+  "paid_up_capital": 1397764300.0,
+  "net_profit": -995347936.67,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-995347936.67",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "123.56",
+      "dividend_pct": ""
+    }
+  ]
+}

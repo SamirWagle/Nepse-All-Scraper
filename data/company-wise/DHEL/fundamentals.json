@@ -1,0 +1,43 @@
+{
+  "symbol": "DHEL",
+  "company_name": "Daramkhola Hydro Energy Limited (DHEL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 10305000.0,
+  "market_price": 587.9,
+  "percent_change": 1.36,
+  "last_traded_on": "2026/07/31 02:59:57",
+  "high_52w": 918.9,
+  "low_52w": 402.2,
+  "avg_180d": 646.98,
+  "avg_120d": 610.71,
+  "year_yield_pct": 0.0,
+  "eps": -4.33,
+  "eps_fy": "082-083",
+  "pe_ratio": -135.77,
+  "book_value": 128.02,
+  "pbv": 4.59,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 19011.0,
+  "market_cap": 6058309500.0,
+  "scraped_at": "2026-08-01T20:55:53",
+  "source": "merolagani.com",
+  "promoter_shares": 6355093.0,
+  "public_shares": 3949906.0,
+  "promoter_pct": 61.67,
+  "public_pct": 38.33,
+  "all_time_high": 918.9,
+  "all_time_high_date": "2026-01-28T00:00:00",
+  "paid_up_capital": 1030500000.0,
+  "net_profit": -44620650.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-44620650.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "128.02",
+      "dividend_pct": ""
+    }
+  ]
+}

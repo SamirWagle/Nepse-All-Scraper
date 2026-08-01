@@ -1,0 +1,43 @@
+{
+  "symbol": "PHCL",
+  "company_name": "Peoples Hydropower Company Limited (PHCL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 32000000.0,
+  "market_price": 299.7,
+  "percent_change": -0.1,
+  "last_traded_on": "2026/07/31 02:59:27",
+  "high_52w": 520.0,
+  "low_52w": 249.7,
+  "avg_180d": 307.39,
+  "avg_120d": 306.42,
+  "year_yield_pct": -41.86,
+  "eps": 0.16,
+  "eps_fy": "082-083",
+  "pe_ratio": 1873.13,
+  "book_value": 100.23,
+  "pbv": 2.99,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 52914.0,
+  "market_cap": 9590400000.0,
+  "scraped_at": "2026-08-01T21:08:55",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 32000000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 745.6,
+  "all_time_high_date": "2025-02-18T00:00:00",
+  "paid_up_capital": 3200000000.0,
+  "net_profit": 5120000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "5120000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.23",
+      "dividend_pct": ""
+    }
+  ]
+}

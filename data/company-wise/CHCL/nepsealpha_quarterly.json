@@ -1,0 +1,17 @@
+{
+  "symbol": "CHCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.48,
+  "roa_ttm_pct": 5.25,
+  "net_margin_ttm_pct": 53.57,
+  "eps_ttm": 6.63,
+  "eps_ttm_yoy_pct": -8.01,
+  "bvps": 121.0,
+  "bvps_yoy_pct": 1.61,
+  "net_profit_till_qtr": 45.7,
+  "net_profit_till_qtr_yoy_pct": -10.02,
+  "revenue_till_qtr": 82.37,
+  "revenue_till_qtr_yoy_pct": -12.69,
+  "scraped_at": "2026-08-01T23:38:10",
+  "source": "nepsealpha.com"
+}

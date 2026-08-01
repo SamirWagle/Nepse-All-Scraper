@@ -1,0 +1,40 @@
+{
+  "symbol": "SARBTM",
+  "company_name": "Sarbottam Cement Limited (SARBTM)",
+  "sector": "Manufacturing And Processing",
+  "shares_outstanding": 52242750.0,
+  "market_price": 790.1,
+  "percent_change": 0.01,
+  "last_traded_on": "2026/07/31 02:59:54",
+  "high_52w": 1000.0,
+  "low_52w": 750.0,
+  "avg_180d": 847.99,
+  "avg_120d": 832.53,
+  "year_yield_pct": -20.99,
+  "eps": 23.12,
+  "eps_fy": "082-083",
+  "pe_ratio": 34.17,
+  "book_value": 195.96,
+  "pbv": 4.03,
+  "dividend_pct": 15.0,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 8700.0,
+  "market_cap": 41276996775.0,
+  "scraped_at": "2026-08-01T21:11:51",
+  "source": "merolagani.com",
+  "all_time_high": 1083.0,
+  "all_time_high_date": "2024-03-28T00:00:00",
+  "paid_up_capital": 5224275000.0,
+  "bonus_dividend_pct": 5.0,
+  "net_profit": 1207852380.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "1207852380.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "195.96",
+      "dividend_pct": "15.0"
+    }
+  ]
+}

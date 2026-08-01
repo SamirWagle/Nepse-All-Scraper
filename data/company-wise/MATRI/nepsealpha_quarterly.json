@@ -1,0 +1,17 @@
+{
+  "symbol": "MATRI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.52,
+  "roa_ttm_pct": 0.45,
+  "net_margin_ttm_pct": 4.28,
+  "eps_ttm": 9.04,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 132.3,
+  "bvps_yoy_pct": -33.18,
+  "net_profit_till_qtr": 7.12,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 99.15,
+  "revenue_till_qtr_yoy_pct": 1.07,
+  "scraped_at": "2026-08-01T23:53:57",
+  "source": "nepsealpha.com"
+}

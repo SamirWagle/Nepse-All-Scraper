@@ -1,0 +1,17 @@
+{
+  "symbol": "BNT",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -4.45,
+  "net_margin_ttm_pct": -4.98,
+  "eps_ttm": -339.9,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 3137.85,
+  "bvps_yoy_pct": -10.27,
+  "net_profit_till_qtr": 27.71,
+  "net_profit_till_qtr_yoy_pct": 243.08,
+  "revenue_till_qtr": 555.81,
+  "revenue_till_qtr_yoy_pct": 13.12,
+  "scraped_at": "2026-08-01T23:36:35",
+  "source": "nepsealpha.com"
+}

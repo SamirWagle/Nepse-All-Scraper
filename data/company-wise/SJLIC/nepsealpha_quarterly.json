@@ -1,0 +1,17 @@
+{
+  "symbol": "SJLIC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 6.04,
+  "roa_ttm_pct": 0.74,
+  "net_margin_ttm_pct": 3.09,
+  "eps_ttm": 7.68,
+  "eps_ttm_yoy_pct": -3.02,
+  "bvps": 125.49,
+  "bvps_yoy_pct": 0.06,
+  "net_profit_till_qtr": 33.03,
+  "net_profit_till_qtr_yoy_pct": 11.69,
+  "revenue_till_qtr": 874.35,
+  "revenue_till_qtr_yoy_pct": 14.49,
+  "scraped_at": "2026-08-02T00:19:05",
+  "source": "nepsealpha.com"
+}

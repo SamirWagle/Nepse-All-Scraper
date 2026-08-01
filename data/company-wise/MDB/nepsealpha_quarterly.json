@@ -1,0 +1,17 @@
+{
+  "symbol": "MDB",
+  "latest_quarter": "082-083Q4",
+  "roe_ttm_pct": 8.25,
+  "roa_ttm_pct": 1.44,
+  "net_margin_ttm_pct": 20.95,
+  "eps_ttm": 11.6,
+  "eps_ttm_yoy_pct": 8.29,
+  "bvps": 143.2,
+  "bvps_yoy_pct": 1.48,
+  "net_profit_till_qtr": 14.12,
+  "net_profit_till_qtr_yoy_pct": 8.29,
+  "revenue_till_qtr": 67.42,
+  "revenue_till_qtr_yoy_pct": 18.03,
+  "scraped_at": "2026-08-01T23:54:55",
+  "source": "nepsealpha.com"
+}

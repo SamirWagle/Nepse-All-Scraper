@@ -1,0 +1,17 @@
+{
+  "symbol": "JFL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -2.18,
+  "net_margin_ttm_pct": -37.35,
+  "eps_ttm": -15.65,
+  "eps_ttm_yoy_pct": null,
+  "bvps": -6.46,
+  "bvps_yoy_pct": null,
+  "net_profit_till_qtr": -290.9,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 21.28,
+  "revenue_till_qtr_yoy_pct": -47.25,
+  "scraped_at": "2026-08-01T23:50:00",
+  "source": "nepsealpha.com"
+}

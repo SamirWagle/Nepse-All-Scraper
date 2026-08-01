@@ -1,0 +1,43 @@
+{
+  "symbol": "KEF",
+  "company_name": "Kumari Equity Fund (KEF)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 100000000.0,
+  "market_price": 10.3,
+  "percent_change": 0.19,
+  "last_traded_on": "2026/07/31 02:45:39",
+  "high_52w": 11.3,
+  "low_52w": 8.31,
+  "avg_180d": 10.33,
+  "avg_120d": 10.64,
+  "year_yield_pct": 1.48,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": 11.5,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 126153.0,
+  "market_cap": 1030000000.0,
+  "scraped_at": "2026-08-01T21:00:01",
+  "source": "merolagani.com",
+  "promoter_shares": 100000000.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 11.3,
+  "all_time_high_date": "2026-06-18T00:00:00",
+  "paid_up_capital": 1000000000.0,
+  "bonus_dividend_pct": 0.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": "11.5"
+    }
+  ]
+}

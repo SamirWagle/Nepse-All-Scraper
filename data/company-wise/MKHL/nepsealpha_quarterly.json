@@ -1,0 +1,17 @@
+{
+  "symbol": "MKHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.95,
+  "roa_ttm_pct": 1.64,
+  "net_margin_ttm_pct": 29.33,
+  "eps_ttm": 3.0,
+  "eps_ttm_yoy_pct": 803.97,
+  "bvps": 103.9,
+  "bvps_yoy_pct": 2.12,
+  "net_profit_till_qtr": 1.15,
+  "net_profit_till_qtr_yoy_pct": 370.99,
+  "revenue_till_qtr": 2.49,
+  "revenue_till_qtr_yoy_pct": -48.1,
+  "scraped_at": "2026-08-01T23:56:39",
+  "source": "nepsealpha.com"
+}

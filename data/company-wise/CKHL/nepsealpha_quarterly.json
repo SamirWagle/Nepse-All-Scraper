@@ -1,0 +1,17 @@
+{
+  "symbol": "CKHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 0.7,
+  "roa_ttm_pct": 0.22,
+  "net_margin_ttm_pct": 2.12,
+  "eps_ttm": 0.65,
+  "eps_ttm_yoy_pct": 14.66,
+  "bvps": 90.17,
+  "bvps_yoy_pct": -5.68,
+  "net_profit_till_qtr": 1.29,
+  "net_profit_till_qtr_yoy_pct": 164.52,
+  "revenue_till_qtr": 10.12,
+  "revenue_till_qtr_yoy_pct": 3.37,
+  "scraped_at": "2026-08-01T23:39:18",
+  "source": "nepsealpha.com"
+}

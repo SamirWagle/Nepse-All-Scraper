@@ -1,0 +1,43 @@
+{
+  "symbol": "AVYAN",
+  "company_name": "Aviyan Laghubitta Bittiya Sanstha Limited (AVYAN)",
+  "sector": "Microfinance",
+  "shares_outstanding": 2500000.0,
+  "market_price": 1029.0,
+  "percent_change": 1.38,
+  "last_traded_on": "2026/07/31 02:59:45",
+  "high_52w": 1366.0,
+  "low_52w": 906.0,
+  "avg_180d": 1081.68,
+  "avg_120d": 1092.93,
+  "year_yield_pct": -9.55,
+  "eps": 52.53,
+  "eps_fy": "082-083",
+  "pe_ratio": 19.59,
+  "book_value": 157.84,
+  "pbv": 6.52,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 3048.0,
+  "market_cap": 2572500000.0,
+  "scraped_at": "2026-08-01T20:53:40",
+  "source": "merolagani.com",
+  "promoter_shares": 1525000.0,
+  "public_shares": 975000.0,
+  "promoter_pct": 61.0,
+  "public_pct": 39.0,
+  "all_time_high": 1366.0,
+  "all_time_high_date": "2026-03-25T00:00:00",
+  "paid_up_capital": 250000000.0,
+  "net_profit": 131325000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "131325000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "157.84",
+      "dividend_pct": ""
+    }
+  ]
+}

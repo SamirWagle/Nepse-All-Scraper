@@ -1,0 +1,17 @@
+{
+  "symbol": "SPDL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 4.94,
+  "roa_ttm_pct": 4.0,
+  "net_margin_ttm_pct": 43.24,
+  "eps_ttm": 5.27,
+  "eps_ttm_yoy_pct": 15.8,
+  "bvps": 107.18,
+  "bvps_yoy_pct": 2.17,
+  "net_profit_till_qtr": 5.32,
+  "net_profit_till_qtr_yoy_pct": -12.14,
+  "revenue_till_qtr": 16.23,
+  "revenue_till_qtr_yoy_pct": -14.67,
+  "scraped_at": "2026-08-02T00:21:30",
+  "source": "nepsealpha.com"
+}

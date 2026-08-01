@@ -1,0 +1,17 @@
+{
+  "symbol": "NIL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.64,
+  "roa_ttm_pct": 2.98,
+  "net_margin_ttm_pct": 10.62,
+  "eps_ttm": 12.46,
+  "eps_ttm_yoy_pct": -49.01,
+  "bvps": 223.11,
+  "bvps_yoy_pct": 5.12,
+  "net_profit_till_qtr": 16.4,
+  "net_profit_till_qtr_yoy_pct": -55.61,
+  "revenue_till_qtr": 212.59,
+  "revenue_till_qtr_yoy_pct": -1.64,
+  "scraped_at": "2026-08-02T00:03:24",
+  "source": "nepsealpha.com"
+}

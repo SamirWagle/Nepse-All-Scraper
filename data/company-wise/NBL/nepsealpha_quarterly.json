@@ -1,0 +1,17 @@
+{
+  "symbol": "NBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 9.78,
+  "roa_ttm_pct": 0.92,
+  "net_margin_ttm_pct": 16.9,
+  "eps_ttm": 25.74,
+  "eps_ttm_yoy_pct": -12.24,
+  "bvps": 272.79,
+  "bvps_yoy_pct": 4.62,
+  "net_profit_till_qtr": 279.3,
+  "net_profit_till_qtr_yoy_pct": 0.34,
+  "revenue_till_qtr": 1619.76,
+  "revenue_till_qtr_yoy_pct": -4.08,
+  "scraped_at": "2026-08-01T23:59:56",
+  "source": "nepsealpha.com"
+}

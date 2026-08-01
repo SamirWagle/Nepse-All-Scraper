@@ -1,0 +1,43 @@
+{
+  "symbol": "HHL",
+  "company_name": "Himalayan Hydropower Limited (HHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 10950000.0,
+  "market_price": 340.0,
+  "percent_change": 0.59,
+  "last_traded_on": "2026/07/31 02:59:56",
+  "high_52w": 416.6,
+  "low_52w": 309.0,
+  "avg_180d": 358.57,
+  "avg_120d": 360.43,
+  "year_yield_pct": -16.34,
+  "eps": 8.29,
+  "eps_fy": "082-083",
+  "pe_ratio": 41.01,
+  "book_value": 84.17,
+  "pbv": 4.04,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 23947.0,
+  "market_cap": 3723000000.0,
+  "scraped_at": "2026-08-01T20:58:42",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 10950000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 635.0,
+  "all_time_high_date": "2025-02-09T00:00:00",
+  "paid_up_capital": 1095000000.0,
+  "net_profit": 90775500.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "90775500.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "84.17",
+      "dividend_pct": ""
+    }
+  ]
+}

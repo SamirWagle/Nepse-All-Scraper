@@ -1,0 +1,43 @@
+{
+  "symbol": "UPPER",
+  "company_name": "Upper Tamakoshi Hydropower Ltd (UPPER)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 211800000.0,
+  "market_price": 195.5,
+  "percent_change": 0.77,
+  "last_traded_on": "2026/07/31 02:59:43",
+  "high_52w": 242.6,
+  "low_52w": 166.0,
+  "avg_180d": 202.67,
+  "avg_120d": 202.22,
+  "year_yield_pct": -4.67,
+  "eps": 1.81,
+  "eps_fy": "082-083",
+  "pe_ratio": 108.01,
+  "book_value": 46.69,
+  "pbv": 4.19,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 77515.0,
+  "market_cap": 41406900000.0,
+  "scraped_at": "2026-08-01T21:16:38",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 211800000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 962.5,
+  "all_time_high_date": "2021-08-11T00:00:00",
+  "paid_up_capital": 21180000000.0,
+  "net_profit": 383358000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "383358000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "46.69",
+      "dividend_pct": ""
+    }
+  ]
+}

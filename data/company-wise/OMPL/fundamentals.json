@@ -1,0 +1,43 @@
+{
+  "symbol": "OMPL",
+  "company_name": "Om Megashree Pharmaceuticals Limited (OMPL)",
+  "sector": "Manufacturing And Processing",
+  "shares_outstanding": 6000000.0,
+  "market_price": 940.0,
+  "percent_change": 0.64,
+  "last_traded_on": "2026/07/31 02:59:59",
+  "high_52w": 1575.9,
+  "low_52w": 848.0,
+  "avg_180d": 1176.1,
+  "avg_120d": 1105.04,
+  "year_yield_pct": -35.24,
+  "eps": -9.1,
+  "eps_fy": "082-083",
+  "pe_ratio": -103.3,
+  "book_value": 97.5,
+  "pbv": 9.64,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 4009.0,
+  "market_cap": 5640000000.0,
+  "scraped_at": "2026-08-01T21:08:23",
+  "source": "merolagani.com",
+  "promoter_shares": 4200000.0,
+  "public_shares": 1800000.0,
+  "promoter_pct": 70.0,
+  "public_pct": 30.0,
+  "all_time_high": 2167.2,
+  "all_time_high_date": "2025-06-05T00:00:00",
+  "paid_up_capital": 600000000.0,
+  "net_profit": -54600000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-54600000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "97.5",
+      "dividend_pct": ""
+    }
+  ]
+}

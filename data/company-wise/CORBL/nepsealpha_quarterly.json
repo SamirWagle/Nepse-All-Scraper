@@ -1,0 +1,17 @@
+{
+  "symbol": "CORBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 1.94,
+  "roa_ttm_pct": 0.49,
+  "net_margin_ttm_pct": 6.8,
+  "eps_ttm": 2.68,
+  "eps_ttm_yoy_pct": -47.63,
+  "bvps": 139.27,
+  "bvps_yoy_pct": -3.34,
+  "net_profit_till_qtr": 4.83,
+  "net_profit_till_qtr_yoy_pct": 171.42,
+  "revenue_till_qtr": 16.55,
+  "revenue_till_qtr_yoy_pct": 6.15,
+  "scraped_at": "2026-08-01T23:39:44",
+  "source": "nepsealpha.com"
+}

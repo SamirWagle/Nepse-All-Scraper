@@ -1,0 +1,17 @@
+{
+  "symbol": "BARUN",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.83,
+  "roa_ttm_pct": 2.77,
+  "net_margin_ttm_pct": 33.34,
+  "eps_ttm": 2.96,
+  "eps_ttm_yoy_pct": -37.5,
+  "bvps": 107.72,
+  "bvps_yoy_pct": 6.0,
+  "net_profit_till_qtr": 1.7,
+  "net_profit_till_qtr_yoy_pct": 373.82,
+  "revenue_till_qtr": 7.54,
+  "revenue_till_qtr_yoy_pct": 3.64,
+  "scraped_at": "2026-08-01T23:34:51",
+  "source": "nepsealpha.com"
+}

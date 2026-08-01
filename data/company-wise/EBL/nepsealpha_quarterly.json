@@ -1,0 +1,17 @@
+{
+  "symbol": "EBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 14.84,
+  "roa_ttm_pct": 1.32,
+  "net_margin_ttm_pct": 23.51,
+  "eps_ttm": 34.91,
+  "eps_ttm_yoy_pct": 5.28,
+  "bvps": 244.27,
+  "bvps_yoy_pct": 9.96,
+  "net_profit_till_qtr": 332.93,
+  "net_profit_till_qtr_yoy_pct": -3.71,
+  "revenue_till_qtr": 1501.66,
+  "revenue_till_qtr_yoy_pct": -2.86,
+  "scraped_at": "2026-08-01T23:41:17",
+  "source": "nepsealpha.com"
+}

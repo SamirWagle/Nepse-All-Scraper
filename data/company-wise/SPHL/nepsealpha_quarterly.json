@@ -1,0 +1,17 @@
+{
+  "symbol": "SPHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.14,
+  "roa_ttm_pct": 1.15,
+  "net_margin_ttm_pct": 13.08,
+  "eps_ttm": 2.03,
+  "eps_ttm_yoy_pct": 5.3,
+  "bvps": 94.63,
+  "bvps_yoy_pct": 3.56,
+  "net_profit_till_qtr": 1.14,
+  "net_profit_till_qtr_yoy_pct": 96.83,
+  "revenue_till_qtr": 4.65,
+  "revenue_till_qtr_yoy_pct": -20.56,
+  "scraped_at": "2026-08-02T00:21:40",
+  "source": "nepsealpha.com"
+}

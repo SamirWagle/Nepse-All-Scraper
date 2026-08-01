@@ -1,0 +1,17 @@
+{
+  "symbol": "ENL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.48,
+  "roa_ttm_pct": 2.4,
+  "net_margin_ttm_pct": 66.4,
+  "eps_ttm": 2.71,
+  "eps_ttm_yoy_pct": 82.45,
+  "bvps": 110.58,
+  "bvps_yoy_pct": 1.13,
+  "net_profit_till_qtr": 1.77,
+  "net_profit_till_qtr_yoy_pct": 106.02,
+  "revenue_till_qtr": 2.25,
+  "revenue_till_qtr_yoy_pct": 55.23,
+  "scraped_at": "2026-08-01T23:41:54",
+  "source": "nepsealpha.com"
+}

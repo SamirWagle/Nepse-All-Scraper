@@ -1,0 +1,43 @@
+{
+  "symbol": "NICFC",
+  "company_name": "NIC ASIA Flexi CAP Fund (NICFC)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 102000000.0,
+  "market_price": 9.1,
+  "percent_change": -1.94,
+  "last_traded_on": "2026/07/31 02:33:21",
+  "high_52w": 10.4,
+  "low_52w": 8.37,
+  "avg_180d": 9.35,
+  "avg_120d": 9.34,
+  "year_yield_pct": -8.73,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": 10.1,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 9545.0,
+  "market_cap": 928200000.0,
+  "scraped_at": "2026-08-01T21:06:22",
+  "source": "merolagani.com",
+  "promoter_shares": 10200000.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 10.99,
+  "all_time_high_date": "2024-08-22T00:00:00",
+  "paid_up_capital": 102000000.0,
+  "bonus_dividend_pct": 0.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": "10.1"
+    }
+  ]
+}

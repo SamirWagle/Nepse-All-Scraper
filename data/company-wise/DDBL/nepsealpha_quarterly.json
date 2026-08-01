@@ -1,0 +1,17 @@
+{
+  "symbol": "DDBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 23.27,
+  "roa_ttm_pct": 3.43,
+  "net_margin_ttm_pct": 27.15,
+  "eps_ttm": 45.7,
+  "eps_ttm_yoy_pct": 23.45,
+  "bvps": 212.26,
+  "bvps_yoy_pct": 19.43,
+  "net_profit_till_qtr": 68.01,
+  "net_profit_till_qtr_yoy_pct": 57.39,
+  "revenue_till_qtr": 270.09,
+  "revenue_till_qtr_yoy_pct": -1.34,
+  "scraped_at": "2026-08-01T23:40:23",
+  "source": "nepsealpha.com"
+}

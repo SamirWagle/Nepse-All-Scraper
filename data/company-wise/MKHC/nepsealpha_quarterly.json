@@ -1,0 +1,17 @@
+{
+  "symbol": "MKHC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.4,
+  "roa_ttm_pct": 0.47,
+  "net_margin_ttm_pct": 3.85,
+  "eps_ttm": 1.49,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 63.15,
+  "bvps_yoy_pct": 2.09,
+  "net_profit_till_qtr": 2.93,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 29.7,
+  "revenue_till_qtr_yoy_pct": 20.56,
+  "scraped_at": "2026-08-01T23:56:29",
+  "source": "nepsealpha.com"
+}

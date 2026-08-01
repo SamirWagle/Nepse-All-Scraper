@@ -1,0 +1,17 @@
+{
+  "symbol": "AKJCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.5,
+  "roa_ttm_pct": 1.76,
+  "net_margin_ttm_pct": 20.96,
+  "eps_ttm": 2.28,
+  "eps_ttm_yoy_pct": 167.35,
+  "bvps": 92.42,
+  "bvps_yoy_pct": 2.65,
+  "net_profit_till_qtr": 3.83,
+  "net_profit_till_qtr_yoy_pct": 13.82,
+  "revenue_till_qtr": 17.25,
+  "revenue_till_qtr_yoy_pct": 13.63,
+  "scraped_at": "2026-08-01T23:33:44",
+  "source": "nepsealpha.com"
+}

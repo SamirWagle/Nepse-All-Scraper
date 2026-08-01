@@ -1,0 +1,39 @@
+{
+  "symbol": "SONA",
+  "company_name": "Sonapur Minerals and Oil Limited (SONA)",
+  "sector": "Manufacturing And Processing",
+  "shares_outstanding": 30750500.0,
+  "market_price": 410.0,
+  "percent_change": 0.29,
+  "last_traded_on": "2026/07/31 02:59:49",
+  "high_52w": 510.0,
+  "low_52w": 398.0,
+  "avg_180d": 437.81,
+  "avg_120d": 434.02,
+  "year_yield_pct": -14.4,
+  "eps": 9.81,
+  "eps_fy": "082-083",
+  "pe_ratio": 41.79,
+  "book_value": 197.22,
+  "pbv": 2.08,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 18059.0,
+  "market_cap": 12607705000.0,
+  "scraped_at": "2026-08-01T21:15:12",
+  "source": "merolagani.com",
+  "all_time_high": 624.0,
+  "all_time_high_date": "2024-08-11T00:00:00",
+  "paid_up_capital": 3075050000.0,
+  "net_profit": 301662405.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "301662405.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "197.22",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "symbol": "SSHL",
+  "company_name": "Shiva Shree Hydropower Limited (SSHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 29528000.0,
+  "market_price": 205.0,
+  "percent_change": 0.99,
+  "last_traded_on": "2026/07/31 02:59:58",
+  "high_52w": 251.0,
+  "low_52w": 151.0,
+  "avg_180d": 210.87,
+  "avg_120d": 211.2,
+  "year_yield_pct": -28.23,
+  "eps": -3.11,
+  "eps_fy": "082-083",
+  "pe_ratio": -65.92,
+  "book_value": 54.56,
+  "pbv": 3.76,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 100751.0,
+  "market_cap": 6053240000.0,
+  "scraped_at": "2026-08-01T21:15:24",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 29528000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 533.0,
+  "all_time_high_date": "2021-08-18T00:00:00",
+  "paid_up_capital": 2952800000.0,
+  "net_profit": -91832080.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-91832080.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "54.56",
+      "dividend_pct": ""
+    }
+  ]
+}

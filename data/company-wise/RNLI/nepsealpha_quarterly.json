@@ -1,0 +1,17 @@
+{
+  "symbol": "RNLI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 7.44,
+  "roa_ttm_pct": 2.53,
+  "net_margin_ttm_pct": 24.38,
+  "eps_ttm": 11.06,
+  "eps_ttm_yoy_pct": 4.16,
+  "bvps": 146.17,
+  "bvps_yoy_pct": -2.54,
+  "net_profit_till_qtr": 47.04,
+  "net_profit_till_qtr_yoy_pct": 0.99,
+  "revenue_till_qtr": 460.98,
+  "revenue_till_qtr_yoy_pct": 24.89,
+  "scraped_at": "2026-08-02T00:12:07",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "HRL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.13,
+  "roa_ttm_pct": 1.44,
+  "net_margin_ttm_pct": 4.92,
+  "eps_ttm": 3.28,
+  "eps_ttm_yoy_pct": -73.42,
+  "bvps": 150.18,
+  "bvps_yoy_pct": -2.37,
+  "net_profit_till_qtr": -443.53,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 472.82,
+  "revenue_till_qtr_yoy_pct": -9.12,
+  "scraped_at": "2026-08-01T23:48:18",
+  "source": "nepsealpha.com"
+}

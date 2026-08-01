@@ -1,0 +1,17 @@
+{
+  "symbol": "ILBS",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 23.12,
+  "roa_ttm_pct": 2.72,
+  "net_margin_ttm_pct": 21.32,
+  "eps_ttm": 33.95,
+  "eps_ttm_yoy_pct": 1168.44,
+  "bvps": 140.07,
+  "bvps_yoy_pct": 1.69,
+  "net_profit_till_qtr": 7.58,
+  "net_profit_till_qtr_yoy_pct": 11361.64,
+  "revenue_till_qtr": 54.28,
+  "revenue_till_qtr_yoy_pct": -1.09,
+  "scraped_at": "2026-08-01T23:49:16",
+  "source": "nepsealpha.com"
+}

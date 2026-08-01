@@ -1,0 +1,43 @@
+{
+  "symbol": "MBJC",
+  "company_name": "Madhya Bhotekoshi Jalavidyut Company Limited (MBJC)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 60000000.0,
+  "market_price": 267.0,
+  "percent_change": 0.19,
+  "last_traded_on": "2026/07/31 02:59:47",
+  "high_52w": 333.0,
+  "low_52w": 261.1,
+  "avg_180d": 288.03,
+  "avg_120d": 282.5,
+  "year_yield_pct": -16.26,
+  "eps": 1.71,
+  "eps_fy": "082-083",
+  "pe_ratio": 156.14,
+  "book_value": 94.7,
+  "pbv": 2.82,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 13575.0,
+  "market_cap": 16020000000.0,
+  "scraped_at": "2026-08-01T21:01:40",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 60000000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 505.0,
+  "all_time_high_date": "2022-01-19T00:00:00",
+  "paid_up_capital": 6000000000.0,
+  "net_profit": 102600000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "102600000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "94.7",
+      "dividend_pct": ""
+    }
+  ]
+}

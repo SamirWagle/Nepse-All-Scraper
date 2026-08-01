@@ -1,0 +1,17 @@
+{
+  "symbol": "UNHPL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 4.36,
+  "roa_ttm_pct": 5.57,
+  "net_margin_ttm_pct": 53.12,
+  "eps_ttm": 4.5,
+  "eps_ttm_yoy_pct": 28.67,
+  "bvps": 104.59,
+  "bvps_yoy_pct": 3.66,
+  "net_profit_till_qtr": 2.95,
+  "net_profit_till_qtr_yoy_pct": 12.33,
+  "revenue_till_qtr": 6.35,
+  "revenue_till_qtr_yoy_pct": -15.43,
+  "scraped_at": "2026-08-02T00:25:18",
+  "source": "nepsealpha.com"
+}

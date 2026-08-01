@@ -1,0 +1,17 @@
+{
+  "symbol": "KPCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 8.67,
+  "roa_ttm_pct": 7.98,
+  "net_margin_ttm_pct": 47.63,
+  "eps_ttm": 9.55,
+  "eps_ttm_yoy_pct": -6.76,
+  "bvps": 115.44,
+  "bvps_yoy_pct": 9.47,
+  "net_profit_till_qtr": 8.95,
+  "net_profit_till_qtr_yoy_pct": 1.46,
+  "revenue_till_qtr": 15.75,
+  "revenue_till_qtr_yoy_pct": 1.98,
+  "scraped_at": "2026-08-01T23:51:51",
+  "source": "nepsealpha.com"
+}

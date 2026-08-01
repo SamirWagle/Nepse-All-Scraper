@@ -1,0 +1,17 @@
+{
+  "symbol": "RFPL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 1.21,
+  "roa_ttm_pct": 0.67,
+  "net_margin_ttm_pct": 6.79,
+  "eps_ttm": 1.31,
+  "eps_ttm_yoy_pct": -84.4,
+  "bvps": 118.41,
+  "bvps_yoy_pct": 18.07,
+  "net_profit_till_qtr": 1.87,
+  "net_profit_till_qtr_yoy_pct": 1190.15,
+  "revenue_till_qtr": 20.17,
+  "revenue_till_qtr_yoy_pct": 4.25,
+  "scraped_at": "2026-08-02T00:11:04",
+  "source": "nepsealpha.com"
+}

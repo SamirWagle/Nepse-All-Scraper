@@ -1,0 +1,43 @@
+{
+  "symbol": "GLH",
+  "company_name": "Greenlife Hydropower Limited (GLH)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 18000000.0,
+  "market_price": 259.0,
+  "percent_change": 2.78,
+  "last_traded_on": "2026/07/31 02:59:54",
+  "high_52w": 328.2,
+  "low_52w": 227.4,
+  "avg_180d": 269.57,
+  "avg_120d": 263.85,
+  "year_yield_pct": -7.69,
+  "eps": 2.18,
+  "eps_fy": "082-083",
+  "pe_ratio": 118.81,
+  "book_value": 111.36,
+  "pbv": 2.33,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 28862.0,
+  "market_cap": 4662000000.0,
+  "scraped_at": "2026-08-01T20:57:32",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 18000000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 657.0,
+  "all_time_high_date": "2021-08-18T00:00:00",
+  "paid_up_capital": 1800000000.0,
+  "net_profit": 39240000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "39240000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "111.36",
+      "dividend_pct": ""
+    }
+  ]
+}

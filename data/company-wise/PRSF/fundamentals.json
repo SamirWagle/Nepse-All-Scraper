@@ -1,0 +1,43 @@
+{
+  "symbol": "PRSF",
+  "company_name": "Prabhu Smart Fund (PRSF)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 100000000.0,
+  "market_price": 12.93,
+  "percent_change": 1.25,
+  "last_traded_on": "2026/07/31 02:38:22",
+  "high_52w": 13.61,
+  "low_52w": 9.85,
+  "avg_180d": 12.42,
+  "avg_120d": 12.8,
+  "year_yield_pct": 14.02,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": 10.0,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 65711.0,
+  "market_cap": 1293000000.0,
+  "scraped_at": "2026-08-01T21:09:30",
+  "source": "merolagani.com",
+  "promoter_shares": 100000000.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 13.61,
+  "all_time_high_date": "2026-04-21T00:00:00",
+  "paid_up_capital": 1000000000.0,
+  "bonus_dividend_pct": 0.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": "10.0"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "CLI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 6.09,
+  "roa_ttm_pct": 1.73,
+  "net_margin_ttm_pct": 4.92,
+  "eps_ttm": 8.55,
+  "eps_ttm_yoy_pct": 6.55,
+  "bvps": 131.17,
+  "bvps_yoy_pct": -10.72,
+  "net_profit_till_qtr": 36.0,
+  "net_profit_till_qtr_yoy_pct": 0.67,
+  "revenue_till_qtr": 621.99,
+  "revenue_till_qtr_yoy_pct": 22.38,
+  "scraped_at": "2026-08-01T23:39:27",
+  "source": "nepsealpha.com"
+}

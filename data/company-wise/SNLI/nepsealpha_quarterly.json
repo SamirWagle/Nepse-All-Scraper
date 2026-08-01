@@ -1,0 +1,17 @@
+{
+  "symbol": "SNLI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 7.2,
+  "roa_ttm_pct": 2.93,
+  "net_margin_ttm_pct": 15.71,
+  "eps_ttm": 10.48,
+  "eps_ttm_yoy_pct": 2.03,
+  "bvps": 141.38,
+  "bvps_yoy_pct": -3.39,
+  "net_profit_till_qtr": 34.0,
+  "net_profit_till_qtr_yoy_pct": -37.32,
+  "revenue_till_qtr": 352.42,
+  "revenue_till_qtr_yoy_pct": -22.36,
+  "scraped_at": "2026-08-02T00:21:01",
+  "source": "nepsealpha.com"
+}

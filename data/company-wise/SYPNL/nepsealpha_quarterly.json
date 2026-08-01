@@ -1,0 +1,17 @@
+{
+  "symbol": "SYPNL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.83,
+  "roa_ttm_pct": 2.35,
+  "net_margin_ttm_pct": 5.69,
+  "eps_ttm": 3.08,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 108.94,
+  "bvps_yoy_pct": null,
+  "net_profit_till_qtr": 3.02,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 53.08,
+  "revenue_till_qtr_yoy_pct": null,
+  "scraped_at": "2026-08-02T00:23:09",
+  "source": "nepsealpha.com"
+}

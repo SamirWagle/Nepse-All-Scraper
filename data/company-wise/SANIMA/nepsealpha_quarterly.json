@@ -1,0 +1,17 @@
+{
+  "symbol": "SANIMA",
+  "latest_quarter": "082-083Q4",
+  "roe_ttm_pct": 14.13,
+  "roa_ttm_pct": 1.24,
+  "net_margin_ttm_pct": 20.59,
+  "eps_ttm": 24.92,
+  "eps_ttm_yoy_pct": 31.66,
+  "bvps": 188.42,
+  "bvps_yoy_pct": 11.6,
+  "net_profit_till_qtr": 338.51,
+  "net_profit_till_qtr_yoy_pct": 31.66,
+  "revenue_till_qtr": 1643.88,
+  "revenue_till_qtr_yoy_pct": -8.88,
+  "scraped_at": "2026-08-02T00:13:56",
+  "source": "nepsealpha.com"
+}

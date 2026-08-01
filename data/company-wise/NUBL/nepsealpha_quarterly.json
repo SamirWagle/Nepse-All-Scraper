@@ -1,0 +1,17 @@
+{
+  "symbol": "NUBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 8.89,
+  "roa_ttm_pct": 1.81,
+  "net_margin_ttm_pct": 13.74,
+  "eps_ttm": 18.61,
+  "eps_ttm_yoy_pct": -37.07,
+  "bvps": 214.43,
+  "bvps_yoy_pct": 8.23,
+  "net_profit_till_qtr": 15.5,
+  "net_profit_till_qtr_yoy_pct": -67.74,
+  "revenue_till_qtr": 270.79,
+  "revenue_till_qtr_yoy_pct": 6.05,
+  "scraped_at": "2026-08-02T00:06:31",
+  "source": "nepsealpha.com"
+}

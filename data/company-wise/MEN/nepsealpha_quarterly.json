@@ -1,0 +1,17 @@
+{
+  "symbol": "MEN",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 16.45,
+  "roa_ttm_pct": 9.45,
+  "net_margin_ttm_pct": 47.08,
+  "eps_ttm": 22.15,
+  "eps_ttm_yoy_pct": 92.33,
+  "bvps": 142.24,
+  "bvps_yoy_pct": 17.01,
+  "net_profit_till_qtr": 52.76,
+  "net_profit_till_qtr_yoy_pct": 13.46,
+  "revenue_till_qtr": 107.97,
+  "revenue_till_qtr_yoy_pct": 16.83,
+  "scraped_at": "2026-08-01T23:55:22",
+  "source": "nepsealpha.com"
+}

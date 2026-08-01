@@ -1,0 +1,17 @@
+{
+  "symbol": "GMLI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.94,
+  "roa_ttm_pct": 4.46,
+  "net_margin_ttm_pct": 6.91,
+  "eps_ttm": 6.31,
+  "eps_ttm_yoy_pct": 29.47,
+  "bvps": 107.08,
+  "bvps_yoy_pct": 3.6,
+  "net_profit_till_qtr": 1.46,
+  "net_profit_till_qtr_yoy_pct": -46.83,
+  "revenue_till_qtr": 42.12,
+  "revenue_till_qtr_yoy_pct": 103.68,
+  "scraped_at": "2026-08-01T23:44:33",
+  "source": "nepsealpha.com"
+}

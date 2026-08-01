@@ -1,0 +1,17 @@
+{
+  "symbol": "USLB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 15.22,
+  "roa_ttm_pct": 1.41,
+  "net_margin_ttm_pct": 14.82,
+  "eps_ttm": 23.83,
+  "eps_ttm_yoy_pct": 12.19,
+  "bvps": 168.81,
+  "bvps_yoy_pct": 13.9,
+  "net_profit_till_qtr": 4.43,
+  "net_profit_till_qtr_yoy_pct": -15.46,
+  "revenue_till_qtr": 39.69,
+  "revenue_till_qtr_yoy_pct": -26.89,
+  "scraped_at": "2026-08-02T00:26:23",
+  "source": "nepsealpha.com"
+}

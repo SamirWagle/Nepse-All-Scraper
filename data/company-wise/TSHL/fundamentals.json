@@ -1,0 +1,43 @@
+{
+  "symbol": "TSHL",
+  "company_name": "Three Star Hydropower Limited (TSHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 4925000.0,
+  "market_price": 374.0,
+  "percent_change": 0.54,
+  "last_traded_on": "2026/07/31 02:59:15",
+  "high_52w": 989.0,
+  "low_52w": 308.1,
+  "avg_180d": 605.62,
+  "avg_120d": 535.86,
+  "year_yield_pct": -57.31,
+  "eps": -9.18,
+  "eps_fy": "082-083",
+  "pe_ratio": -40.74,
+  "book_value": 60.99,
+  "pbv": 6.13,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 16210.0,
+  "market_cap": 1841950000.0,
+  "scraped_at": "2026-08-01T21:15:39",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 4925000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 1231.0,
+  "all_time_high_date": "2024-08-28T00:00:00",
+  "paid_up_capital": 492500000.0,
+  "net_profit": -45211500.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-45211500.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "60.99",
+      "dividend_pct": ""
+    }
+  ]
+}

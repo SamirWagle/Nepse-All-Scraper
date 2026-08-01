@@ -1,0 +1,17 @@
+{
+  "symbol": "UNL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 39.26,
+  "roa_ttm_pct": 24.29,
+  "net_margin_ttm_pct": 103.33,
+  "eps_ttm": 2100.98,
+  "eps_ttm_yoy_pct": -1.37,
+  "bvps": 5114.98,
+  "bvps_yoy_pct": -9.69,
+  "net_profit_till_qtr": 45.53,
+  "net_profit_till_qtr_yoy_pct": -76.79,
+  "revenue_till_qtr": 187.27,
+  "revenue_till_qtr_yoy_pct": -77.29,
+  "scraped_at": "2026-08-02T00:25:28",
+  "source": "nepsealpha.com"
+}

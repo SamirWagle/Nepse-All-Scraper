@@ -1,0 +1,17 @@
+{
+  "symbol": "BNHC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 0.04,
+  "roa_ttm_pct": 0.01,
+  "net_margin_ttm_pct": 0.11,
+  "eps_ttm": 0.02,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 92.15,
+  "bvps_yoy_pct": 121.91,
+  "net_profit_till_qtr": 2.33,
+  "net_profit_till_qtr_yoy_pct": 4053.38,
+  "revenue_till_qtr": 14.64,
+  "revenue_till_qtr_yoy_pct": 19.4,
+  "scraped_at": "2026-08-01T23:36:16",
+  "source": "nepsealpha.com"
+}

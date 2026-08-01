@@ -1,0 +1,17 @@
+{
+  "symbol": "MFIL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 15.28,
+  "roa_ttm_pct": 1.37,
+  "net_margin_ttm_pct": 16.61,
+  "eps_ttm": 26.8,
+  "eps_ttm_yoy_pct": 26.66,
+  "bvps": 182.2,
+  "bvps_yoy_pct": 7.08,
+  "net_profit_till_qtr": 21.89,
+  "net_profit_till_qtr_yoy_pct": 27.93,
+  "revenue_till_qtr": 158.56,
+  "revenue_till_qtr_yoy_pct": -6.54,
+  "scraped_at": "2026-08-01T23:55:42",
+  "source": "nepsealpha.com"
+}

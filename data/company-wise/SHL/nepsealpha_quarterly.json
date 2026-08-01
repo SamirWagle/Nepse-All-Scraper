@@ -1,0 +1,17 @@
+{
+  "symbol": "SHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 26.33,
+  "roa_ttm_pct": 20.68,
+  "net_margin_ttm_pct": 24.1,
+  "eps_ttm": 6.42,
+  "eps_ttm_yoy_pct": 14.92,
+  "bvps": 26.73,
+  "bvps_yoy_pct": 22.16,
+  "net_profit_till_qtr": 55.07,
+  "net_profit_till_qtr_yoy_pct": 17.83,
+  "revenue_till_qtr": 224.98,
+  "revenue_till_qtr_yoy_pct": 18.98,
+  "scraped_at": "2026-08-02T00:17:33",
+  "source": "nepsealpha.com"
+}

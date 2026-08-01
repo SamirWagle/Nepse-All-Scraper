@@ -1,0 +1,17 @@
+{
+  "symbol": "BFC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 13.3,
+  "roa_ttm_pct": 1.9,
+  "net_margin_ttm_pct": 25.44,
+  "eps_ttm": 15.28,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 112.72,
+  "bvps_yoy_pct": 1.65,
+  "net_profit_till_qtr": 5.88,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 36.46,
+  "revenue_till_qtr_yoy_pct": -7.37,
+  "scraped_at": "2026-08-01T23:35:19",
+  "source": "nepsealpha.com"
+}

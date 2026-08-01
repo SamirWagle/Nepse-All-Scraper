@@ -1,0 +1,17 @@
+{
+  "symbol": "MANDU",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 7.75,
+  "roa_ttm_pct": 3.09,
+  "net_margin_ttm_pct": 27.21,
+  "eps_ttm": 10.21,
+  "eps_ttm_yoy_pct": -20.78,
+  "bvps": 141.72,
+  "bvps_yoy_pct": 9.14,
+  "net_profit_till_qtr": 24.83,
+  "net_profit_till_qtr_yoy_pct": 65.22,
+  "revenue_till_qtr": 57.57,
+  "revenue_till_qtr_yoy_pct": 181.13,
+  "scraped_at": "2026-08-01T23:53:48",
+  "source": "nepsealpha.com"
+}

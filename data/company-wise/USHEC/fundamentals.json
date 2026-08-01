@@ -1,0 +1,43 @@
+{
+  "symbol": "USHEC",
+  "company_name": "Upper Solu Hydro Electric Company Limited  (USHEC)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 13500000.0,
+  "market_price": 492.0,
+  "percent_change": 0.0,
+  "last_traded_on": "2026/07/31 02:57:16",
+  "high_52w": 539.1,
+  "low_52w": 432.0,
+  "avg_180d": 494.43,
+  "avg_120d": 496.48,
+  "year_yield_pct": -0.61,
+  "eps": 20.43,
+  "eps_fy": "082-083",
+  "pe_ratio": 24.08,
+  "book_value": 118.95,
+  "pbv": 4.14,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 5140.0,
+  "market_cap": 6642000000.0,
+  "scraped_at": "2026-08-01T21:16:39",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 13500000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 752.0,
+  "all_time_high_date": "2025-01-28T00:00:00",
+  "paid_up_capital": 1350000000.0,
+  "net_profit": 275805000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "275805000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "118.95",
+      "dividend_pct": ""
+    }
+  ]
+}

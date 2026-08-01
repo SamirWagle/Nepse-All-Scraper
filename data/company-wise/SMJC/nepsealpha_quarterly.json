@@ -1,0 +1,17 @@
+{
+  "symbol": "SMJC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 1.65,
+  "roa_ttm_pct": 0.83,
+  "net_margin_ttm_pct": 12.02,
+  "eps_ttm": 1.77,
+  "eps_ttm_yoy_pct": -18.55,
+  "bvps": 108.09,
+  "bvps_yoy_pct": 1.38,
+  "net_profit_till_qtr": 2.68,
+  "net_profit_till_qtr_yoy_pct": 4.95,
+  "revenue_till_qtr": 17.32,
+  "revenue_till_qtr_yoy_pct": -25.46,
+  "scraped_at": "2026-08-02T00:20:41",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,43 @@
+{
+  "symbol": "JOSHI",
+  "company_name": "Joshi Hydropower Development Company Ltd (JOSHI)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 6128100.0,
+  "market_price": 283.0,
+  "percent_change": 6.79,
+  "last_traded_on": "2026/07/31 02:59:58",
+  "high_52w": 388.6,
+  "low_52w": 246.0,
+  "avg_180d": 285.54,
+  "avg_120d": 276.76,
+  "year_yield_pct": -18.14,
+  "eps": -7.17,
+  "eps_fy": "082-083",
+  "pe_ratio": -39.47,
+  "book_value": 67.88,
+  "pbv": 4.17,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 13768.0,
+  "market_cap": 1734252300.0,
+  "scraped_at": "2026-08-01T20:59:41",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 6128100.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 521.6,
+  "all_time_high_date": "2024-12-24T00:00:00",
+  "paid_up_capital": 612810000.0,
+  "net_profit": -43938477.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-43938477.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "67.88",
+      "dividend_pct": ""
+    }
+  ]
+}

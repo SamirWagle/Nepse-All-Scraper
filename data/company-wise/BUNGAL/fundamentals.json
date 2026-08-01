@@ -1,0 +1,43 @@
+{
+  "symbol": "BUNGAL",
+  "company_name": "Bungal Hydro Limited (BUNGAL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 8300000.0,
+  "market_price": 597.0,
+  "percent_change": 1.7,
+  "last_traded_on": "2026/07/31 02:59:49",
+  "high_52w": 895.0,
+  "low_52w": 302.4,
+  "avg_180d": 651.56,
+  "avg_120d": 646.64,
+  "year_yield_pct": 0.0,
+  "eps": -0.79,
+  "eps_fy": "082-083",
+  "pe_ratio": -755.7,
+  "book_value": 84.68,
+  "pbv": 7.05,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 56197.0,
+  "market_cap": 4955100000.0,
+  "scraped_at": "2026-08-01T20:54:33",
+  "source": "merolagani.com",
+  "promoter_shares": 5395000.0,
+  "public_shares": 2905000.0,
+  "promoter_pct": 65.0,
+  "public_pct": 35.0,
+  "all_time_high": 895.0,
+  "all_time_high_date": "2026-06-18T00:00:00",
+  "paid_up_capital": 830000000.0,
+  "net_profit": -6557000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-6557000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "84.68",
+      "dividend_pct": ""
+    }
+  ]
+}

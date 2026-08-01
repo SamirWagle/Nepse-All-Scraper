@@ -1,0 +1,17 @@
+{
+  "symbol": "SWASTIK",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 13.42,
+  "roa_ttm_pct": 1.63,
+  "net_margin_ttm_pct": 12.67,
+  "eps_ttm": 21.33,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 158.94,
+  "bvps_yoy_pct": null,
+  "net_profit_till_qtr": 92.4,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 7.29,
+  "revenue_till_qtr_yoy_pct": null,
+  "scraped_at": "2026-08-02T00:22:40",
+  "source": "nepsealpha.com"
+}

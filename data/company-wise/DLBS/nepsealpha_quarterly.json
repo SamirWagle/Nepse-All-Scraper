@@ -1,0 +1,17 @@
+{
+  "symbol": "DLBS",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 12.74,
+  "roa_ttm_pct": 1.1,
+  "net_margin_ttm_pct": 9.07,
+  "eps_ttm": 21.19,
+  "eps_ttm_yoy_pct": 7.82,
+  "bvps": 148.7,
+  "bvps_yoy_pct": -8.53,
+  "net_profit_till_qtr": 1.83,
+  "net_profit_till_qtr_yoy_pct": 247.3,
+  "revenue_till_qtr": 21.87,
+  "revenue_till_qtr_yoy_pct": -6.4,
+  "scraped_at": "2026-08-01T23:40:50",
+  "source": "nepsealpha.com"
+}

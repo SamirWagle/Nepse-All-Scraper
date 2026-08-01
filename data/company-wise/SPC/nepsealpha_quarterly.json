@@ -1,0 +1,17 @@
+{
+  "symbol": "SPC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.71,
+  "roa_ttm_pct": 0.68,
+  "net_margin_ttm_pct": 9.56,
+  "eps_ttm": 2.93,
+  "eps_ttm_yoy_pct": 279.17,
+  "bvps": 106.74,
+  "bvps_yoy_pct": -1.02,
+  "net_profit_till_qtr": -12.98,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 15.31,
+  "revenue_till_qtr_yoy_pct": -32.32,
+  "scraped_at": "2026-08-02T00:21:20",
+  "source": "nepsealpha.com"
+}

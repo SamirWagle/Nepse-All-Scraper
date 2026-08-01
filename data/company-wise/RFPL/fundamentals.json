@@ -1,0 +1,43 @@
+{
+  "symbol": "RFPL",
+  "company_name": "River Falls Power Limited (RFPL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 14000000.0,
+  "market_price": 335.3,
+  "percent_change": 0.54,
+  "last_traded_on": "2026/07/31 02:59:43",
+  "high_52w": 704.0,
+  "low_52w": 306.0,
+  "avg_180d": 376.1,
+  "avg_120d": 361.82,
+  "year_yield_pct": -51.45,
+  "eps": 1.78,
+  "eps_fy": "082-083",
+  "pe_ratio": 188.37,
+  "book_value": 118.41,
+  "pbv": 2.83,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 22431.0,
+  "market_cap": 4694200000.0,
+  "scraped_at": "2026-08-01T21:10:29",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 14000000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 1484.0,
+  "all_time_high_date": "2025-01-12T00:00:00",
+  "paid_up_capital": 1400000000.0,
+  "net_profit": 24920000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "24920000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "118.41",
+      "dividend_pct": ""
+    }
+  ]
+}

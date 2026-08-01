@@ -1,0 +1,43 @@
+{
+  "symbol": "SIGS2",
+  "company_name": "Siddhartha Investment Growth Scheme - 2 (SIGS2)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 120000000.0,
+  "market_price": 10.5,
+  "percent_change": 0.0,
+  "last_traded_on": "2026/07/29 02:59:13",
+  "high_52w": 11.7,
+  "low_52w": 8.9,
+  "avg_180d": 10.29,
+  "avg_120d": 10.45,
+  "year_yield_pct": -3.76,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": 20.0,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 3689.0,
+  "market_cap": 1260000000.0,
+  "scraped_at": "2026-08-01T21:13:54",
+  "source": "merolagani.com",
+  "promoter_shares": 120000000.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 11.7,
+  "all_time_high_date": "2025-08-21T00:00:00",
+  "paid_up_capital": 1200000000.0,
+  "bonus_dividend_pct": 0.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": "20.0"
+    }
+  ]
+}

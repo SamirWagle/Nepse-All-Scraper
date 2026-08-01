@@ -1,0 +1,39 @@
+{
+  "symbol": "CKHL",
+  "company_name": "Chirkhwa Hydropower Limited (CKHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 4000000.0,
+  "market_price": 605.6,
+  "percent_change": 2.99,
+  "last_traded_on": "2026/07/31 02:59:55",
+  "high_52w": 804.0,
+  "low_52w": 525.0,
+  "avg_180d": 668.63,
+  "avg_120d": 648.8,
+  "year_yield_pct": -12.39,
+  "eps": 4.3,
+  "eps_fy": "082-083",
+  "pe_ratio": 140.84,
+  "book_value": 90.17,
+  "pbv": 6.72,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 4324.0,
+  "market_cap": 2422400000.0,
+  "scraped_at": "2026-08-01T20:55:28",
+  "source": "merolagani.com",
+  "all_time_high": 910.0,
+  "all_time_high_date": "2025-02-04T00:00:00",
+  "paid_up_capital": 400000000.0,
+  "net_profit": 17200000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "17200000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "90.17",
+      "dividend_pct": ""
+    }
+  ]
+}

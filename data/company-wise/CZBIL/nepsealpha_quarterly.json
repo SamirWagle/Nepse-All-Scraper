@@ -1,0 +1,17 @@
+{
+  "symbol": "CZBIL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 7.09,
+  "roa_ttm_pct": 0.67,
+  "net_margin_ttm_pct": 10.6,
+  "eps_ttm": 10.56,
+  "eps_ttm_yoy_pct": 49.86,
+  "bvps": 155.96,
+  "bvps_yoy_pct": 7.23,
+  "net_profit_till_qtr": 130.65,
+  "net_profit_till_qtr_yoy_pct": 35.82,
+  "revenue_till_qtr": 1127.33,
+  "revenue_till_qtr_yoy_pct": -14.17,
+  "scraped_at": "2026-08-01T23:40:14",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "NHDL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 11.48,
+  "roa_ttm_pct": 9.11,
+  "net_margin_ttm_pct": 50.47,
+  "eps_ttm": 13.42,
+  "eps_ttm_yoy_pct": 8.62,
+  "bvps": 123.6,
+  "bvps_yoy_pct": 11.49,
+  "net_profit_till_qtr": 5.32,
+  "net_profit_till_qtr_yoy_pct": 6.71,
+  "revenue_till_qtr": 9.42,
+  "revenue_till_qtr_yoy_pct": 3.13,
+  "scraped_at": "2026-08-02T00:00:52",
+  "source": "nepsealpha.com"
+}

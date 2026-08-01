@@ -1,0 +1,17 @@
+{
+  "symbol": "MEL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -1.6,
+  "net_margin_ttm_pct": -18.58,
+  "eps_ttm": -3.03,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 58.62,
+  "bvps_yoy_pct": -5.14,
+  "net_profit_till_qtr": -676.68,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 34.72,
+  "revenue_till_qtr_yoy_pct": -13.44,
+  "scraped_at": "2026-08-01T23:55:14",
+  "source": "nepsealpha.com"
+}

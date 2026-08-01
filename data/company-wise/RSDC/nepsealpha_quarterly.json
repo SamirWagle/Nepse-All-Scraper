@@ -1,0 +1,17 @@
+{
+  "symbol": "RSDC",
+  "latest_quarter": "082-083Q4",
+  "roe_ttm_pct": 10.54,
+  "roa_ttm_pct": 2.55,
+  "net_margin_ttm_pct": 33.4,
+  "eps_ttm": 13.37,
+  "eps_ttm_yoy_pct": 33.96,
+  "bvps": 131.07,
+  "bvps_yoy_pct": 4.06,
+  "net_profit_till_qtr": 13.82,
+  "net_profit_till_qtr_yoy_pct": 33.96,
+  "revenue_till_qtr": 41.39,
+  "revenue_till_qtr_yoy_pct": -31.03,
+  "scraped_at": "2026-08-02T00:12:17",
+  "source": "nepsealpha.com"
+}

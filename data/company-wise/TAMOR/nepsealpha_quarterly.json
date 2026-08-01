@@ -1,0 +1,17 @@
+{
+  "symbol": "TAMOR",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 11.62,
+  "roa_ttm_pct": 3.14,
+  "net_margin_ttm_pct": 33.94,
+  "eps_ttm": 13.36,
+  "eps_ttm_yoy_pct": 9.76,
+  "bvps": 117.67,
+  "bvps_yoy_pct": 6.95,
+  "net_profit_till_qtr": 25.1,
+  "net_profit_till_qtr_yoy_pct": -38.11,
+  "revenue_till_qtr": 131.17,
+  "revenue_till_qtr_yoy_pct": -50.27,
+  "scraped_at": "2026-08-02T00:23:18",
+  "source": "nepsealpha.com"
+}

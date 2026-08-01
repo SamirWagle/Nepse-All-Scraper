@@ -1,0 +1,43 @@
+{
+  "symbol": "NYADI",
+  "company_name": "Nyadi Hydropower Limited (NYADI)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 15000000.0,
+  "market_price": 370.0,
+  "percent_change": 1.37,
+  "last_traded_on": "2026/07/31 02:58:23",
+  "high_52w": 482.0,
+  "low_52w": 341.0,
+  "avg_180d": 397.39,
+  "avg_120d": 389.18,
+  "year_yield_pct": -18.37,
+  "eps": 13.14,
+  "eps_fy": "082-083",
+  "pe_ratio": 28.16,
+  "book_value": 75.96,
+  "pbv": 4.87,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 5918.0,
+  "market_cap": 5550000000.0,
+  "scraped_at": "2026-08-01T21:08:20",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 15000000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 880.0,
+  "all_time_high_date": "2025-02-11T00:00:00",
+  "paid_up_capital": 1500000000.0,
+  "net_profit": 197100000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "197100000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "75.96",
+      "dividend_pct": ""
+    }
+  ]
+}

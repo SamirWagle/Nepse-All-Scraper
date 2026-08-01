@@ -1,0 +1,43 @@
+{
+  "symbol": "KKHC",
+  "company_name": "Khanikhola Hydropower Co. Ltd. (KKHC)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 9314286.0,
+  "market_price": 291.4,
+  "percent_change": -1.55,
+  "last_traded_on": "2026/07/31 02:59:59",
+  "high_52w": 340.5,
+  "low_52w": 208.0,
+  "avg_180d": 270.28,
+  "avg_120d": 264.66,
+  "year_yield_pct": 4.64,
+  "eps": -2.08,
+  "eps_fy": "082-083",
+  "pe_ratio": -140.1,
+  "book_value": 88.57,
+  "pbv": 3.29,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 128458.0,
+  "market_cap": 2714182940.4,
+  "scraped_at": "2026-08-01T21:00:14",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 9314286.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 556.2,
+  "all_time_high_date": "2021-08-18T00:00:00",
+  "paid_up_capital": 931428600.0,
+  "net_profit": -19373714.88,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-19373714.88",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "88.57",
+      "dividend_pct": ""
+    }
+  ]
+}

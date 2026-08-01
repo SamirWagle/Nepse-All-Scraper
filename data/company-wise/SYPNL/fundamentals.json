@@ -1,0 +1,43 @@
+{
+  "symbol": "SYPNL",
+  "company_name": "SY Panel Nepal Limited (SYPNL)",
+  "sector": "Manufacturing And Processing",
+  "shares_outstanding": 13081361.0,
+  "market_price": 1350.0,
+  "percent_change": 1.43,
+  "last_traded_on": "2026/07/31 02:59:59",
+  "high_52w": 2255.9,
+  "low_52w": 319.8,
+  "avg_180d": 1614.98,
+  "avg_120d": 1485.12,
+  "year_yield_pct": 0.0,
+  "eps": 3.08,
+  "eps_fy": "082-083",
+  "pe_ratio": 438.31,
+  "book_value": 108.94,
+  "pbv": 12.39,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 48708.0,
+  "market_cap": 17659837350.0,
+  "scraped_at": "2026-08-01T21:15:33",
+  "source": "merolagani.com",
+  "promoter_shares": 7848822.0,
+  "public_shares": 5232548.0,
+  "promoter_pct": 60.0,
+  "public_pct": 40.0,
+  "all_time_high": 2255.9,
+  "all_time_high_date": "2026-01-27T00:00:00",
+  "paid_up_capital": 1308137100.0,
+  "net_profit": 40290591.88,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "40290591.88",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "108.94",
+      "dividend_pct": ""
+    }
+  ]
+}

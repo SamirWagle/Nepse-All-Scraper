@@ -1,0 +1,17 @@
+{
+  "symbol": "PCBL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 14.28,
+  "roa_ttm_pct": 1.55,
+  "net_margin_ttm_pct": 21.99,
+  "eps_ttm": 23.31,
+  "eps_ttm_yoy_pct": 56.31,
+  "bvps": 171.28,
+  "bvps_yoy_pct": 12.36,
+  "net_profit_till_qtr": 308.93,
+  "net_profit_till_qtr_yoy_pct": 38.58,
+  "revenue_till_qtr": 1629.87,
+  "revenue_till_qtr_yoy_pct": -7.51,
+  "scraped_at": "2026-08-02T00:07:49",
+  "source": "nepsealpha.com"
+}

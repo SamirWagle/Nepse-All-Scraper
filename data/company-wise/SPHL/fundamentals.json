@@ -1,0 +1,43 @@
+{
+  "symbol": "SPHL",
+  "company_name": "Sayapatri Hydropower Limited (SPHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 3000000.0,
+  "market_price": 539.6,
+  "percent_change": 0.67,
+  "last_traded_on": "2026/07/31 02:59:57",
+  "high_52w": 713.0,
+  "low_52w": 477.1,
+  "avg_180d": 552.67,
+  "avg_120d": 548.82,
+  "year_yield_pct": -23.41,
+  "eps": 5.05,
+  "eps_fy": "082-083",
+  "pe_ratio": 106.85,
+  "book_value": 94.63,
+  "pbv": 5.7,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 8413.0,
+  "market_cap": 1618800000.0,
+  "scraped_at": "2026-08-01T21:15:17",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 3000000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 922.0,
+  "all_time_high_date": "2025-01-26T00:00:00",
+  "paid_up_capital": 300000000.0,
+  "net_profit": 15150000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "15150000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "94.63",
+      "dividend_pct": ""
+    }
+  ]
+}

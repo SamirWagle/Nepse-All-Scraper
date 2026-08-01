@@ -1,0 +1,43 @@
+{
+  "symbol": "MATRI",
+  "company_name": "Matribhumi Laghubitta Bittiya Sanstha Limited  (MATRI)",
+  "sector": "Microfinance",
+  "shares_outstanding": 6283573.4,
+  "market_price": 830.0,
+  "percent_change": 0.01,
+  "last_traded_on": "2026/07/31 02:54:49",
+  "high_52w": 1221.1,
+  "low_52w": 786.3,
+  "avg_180d": 916.62,
+  "avg_120d": 890.62,
+  "year_yield_pct": -31.8,
+  "eps": 15.11,
+  "eps_fy": "082-083",
+  "pe_ratio": 54.93,
+  "book_value": 132.3,
+  "pbv": 6.27,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 819.0,
+  "market_cap": 5215365922.0,
+  "scraped_at": "2026-08-01T21:01:38",
+  "source": "merolagani.com",
+  "promoter_shares": 4398501.0,
+  "public_shares": 1885072.0,
+  "promoter_pct": 70.0,
+  "public_pct": 30.0,
+  "all_time_high": 2042.0,
+  "all_time_high_date": "2021-04-04T00:00:00",
+  "paid_up_capital": 628357400.0,
+  "net_profit": 94944794.07,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "94944794.07",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "132.3",
+      "dividend_pct": ""
+    }
+  ]
+}

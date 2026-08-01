@@ -1,0 +1,17 @@
+{
+  "symbol": "USHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 48.94,
+  "roa_ttm_pct": 16.32,
+  "net_margin_ttm_pct": 182.89,
+  "eps_ttm": 45.97,
+  "eps_ttm_yoy_pct": 32.63,
+  "bvps": 95.74,
+  "bvps_yoy_pct": 2.27,
+  "net_profit_till_qtr": 85.85,
+  "net_profit_till_qtr_yoy_pct": -88.74,
+  "revenue_till_qtr": 5.53,
+  "revenue_till_qtr_yoy_pct": -69.64,
+  "scraped_at": "2026-08-02T00:26:13",
+  "source": "nepsealpha.com"
+}

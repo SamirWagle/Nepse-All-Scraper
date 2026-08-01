@@ -1,0 +1,17 @@
+{
+  "symbol": "ICFC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 12.06,
+  "roa_ttm_pct": 1.04,
+  "net_margin_ttm_pct": 13.66,
+  "eps_ttm": 21.38,
+  "eps_ttm_yoy_pct": -9.8,
+  "bvps": 176.61,
+  "bvps_yoy_pct": 3.2,
+  "net_profit_till_qtr": 10.31,
+  "net_profit_till_qtr_yoy_pct": -47.14,
+  "revenue_till_qtr": 133.0,
+  "revenue_till_qtr_yoy_pct": -6.1,
+  "scraped_at": "2026-08-01T23:48:37",
+  "source": "nepsealpha.com"
+}

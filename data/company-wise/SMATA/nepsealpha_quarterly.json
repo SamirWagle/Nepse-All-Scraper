@@ -1,0 +1,17 @@
+{
+  "symbol": "SMATA",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 16.07,
+  "roa_ttm_pct": 2.21,
+  "net_margin_ttm_pct": 17.43,
+  "eps_ttm": 21.37,
+  "eps_ttm_yoy_pct": 346.77,
+  "bvps": 139.56,
+  "bvps_yoy_pct": 15.88,
+  "net_profit_till_qtr": 8.23,
+  "net_profit_till_qtr_yoy_pct": 214.76,
+  "revenue_till_qtr": 59.28,
+  "revenue_till_qtr_yoy_pct": 28.9,
+  "scraped_at": "2026-08-02T00:19:53",
+  "source": "nepsealpha.com"
+}

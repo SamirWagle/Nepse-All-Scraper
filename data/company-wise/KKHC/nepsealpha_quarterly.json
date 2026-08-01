@@ -1,0 +1,17 @@
+{
+  "symbol": "KKHC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -0.02,
+  "net_margin_ttm_pct": -0.24,
+  "eps_ttm": -0.04,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 88.57,
+  "bvps_yoy_pct": 4.22,
+  "net_profit_till_qtr": -145.55,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 8.66,
+  "revenue_till_qtr_yoy_pct": 54.47,
+  "scraped_at": "2026-08-01T23:51:30",
+  "source": "nepsealpha.com"
+}

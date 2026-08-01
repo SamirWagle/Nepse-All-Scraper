@@ -1,0 +1,17 @@
+{
+  "symbol": "PFL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 18.19,
+  "roa_ttm_pct": 1.41,
+  "net_margin_ttm_pct": 20.96,
+  "eps_ttm": null,
+  "eps_ttm_yoy_pct": -16.58,
+  "bvps": null,
+  "bvps_yoy_pct": 30.06,
+  "net_profit_till_qtr": 7.31,
+  "net_profit_till_qtr_yoy_pct": 1.55,
+  "revenue_till_qtr": 43.12,
+  "revenue_till_qtr_yoy_pct": -45.62,
+  "scraped_at": "2026-08-02T00:07:59",
+  "source": "nepsealpha.com"
+}

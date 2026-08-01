@@ -1,0 +1,17 @@
+{
+  "symbol": "EHPL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.78,
+  "roa_ttm_pct": 2.46,
+  "net_margin_ttm_pct": 15.05,
+  "eps_ttm": 4.37,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 77.73,
+  "bvps_yoy_pct": 5.73,
+  "net_profit_till_qtr": 2.99,
+  "net_profit_till_qtr_yoy_pct": 141.32,
+  "revenue_till_qtr": 15.52,
+  "revenue_till_qtr_yoy_pct": 48.26,
+  "scraped_at": "2026-08-01T23:41:45",
+  "source": "nepsealpha.com"
+}

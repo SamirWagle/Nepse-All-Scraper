@@ -1,0 +1,17 @@
+{
+  "symbol": "RADHI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 22.44,
+  "roa_ttm_pct": 18.45,
+  "net_margin_ttm_pct": 98.99,
+  "eps_ttm": 33.86,
+  "eps_ttm_yoy_pct": 670.94,
+  "bvps": 176.26,
+  "bvps_yoy_pct": 49.88,
+  "net_profit_till_qtr": 32.39,
+  "net_profit_till_qtr_yoy_pct": 299.43,
+  "revenue_till_qtr": 10.96,
+  "revenue_till_qtr_yoy_pct": 5.53,
+  "scraped_at": "2026-08-02T00:09:56",
+  "source": "nepsealpha.com"
+}

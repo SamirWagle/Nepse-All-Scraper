@@ -1,0 +1,43 @@
+{
+  "symbol": "USHL",
+  "company_name": "Upper Syange  Hydropower Limited (USHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 2200000.0,
+  "market_price": 544.3,
+  "percent_change": 0.24,
+  "last_traded_on": "2026/07/31 02:59:58",
+  "high_52w": 945.0,
+  "low_52w": 468.1,
+  "avg_180d": 644.67,
+  "avg_120d": 602.63,
+  "year_yield_pct": -21.47,
+  "eps": 5.2,
+  "eps_fy": "082-083",
+  "pe_ratio": 104.67,
+  "book_value": 95.74,
+  "pbv": 5.69,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 3456.0,
+  "market_cap": 1197460000.0,
+  "scraped_at": "2026-08-01T21:16:41",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 2200000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 961.0,
+  "all_time_high_date": "2024-10-15T00:00:00",
+  "paid_up_capital": 220000000.0,
+  "net_profit": 11440000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "11440000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "95.74",
+      "dividend_pct": ""
+    }
+  ]
+}

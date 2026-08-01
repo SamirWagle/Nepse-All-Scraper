@@ -1,0 +1,17 @@
+{
+  "symbol": "SADBL",
+  "latest_quarter": "082-083Q4",
+  "roe_ttm_pct": 15.26,
+  "roa_ttm_pct": 1.39,
+  "net_margin_ttm_pct": 18.64,
+  "eps_ttm": 23.83,
+  "eps_ttm_yoy_pct": 65.69,
+  "bvps": 169.5,
+  "bvps_yoy_pct": 13.56,
+  "net_profit_till_qtr": 88.99,
+  "net_profit_till_qtr_yoy_pct": 65.69,
+  "revenue_till_qtr": 477.45,
+  "revenue_till_qtr_yoy_pct": -7.94,
+  "scraped_at": "2026-08-02T00:12:56",
+  "source": "nepsealpha.com"
+}

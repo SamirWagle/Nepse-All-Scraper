@@ -1,0 +1,43 @@
+{
+  "symbol": "SJCL",
+  "company_name": "SANJEN JALAVIDHYUT COMPANY LIMITED (SJCL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 36500000.0,
+  "market_price": 275.0,
+  "percent_change": 0.36,
+  "last_traded_on": "2026/07/31 02:59:57",
+  "high_52w": 365.0,
+  "low_52w": 263.2,
+  "avg_180d": 300.0,
+  "avg_120d": 293.75,
+  "year_yield_pct": -14.9,
+  "eps": 0.79,
+  "eps_fy": "082-083",
+  "pe_ratio": 348.1,
+  "book_value": 82.1,
+  "pbv": 3.35,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 10166.0,
+  "market_cap": 10037500000.0,
+  "scraped_at": "2026-08-01T21:14:24",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 36500000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 550.0,
+  "all_time_high_date": "2021-06-14T00:00:00",
+  "paid_up_capital": 3650000000.0,
+  "net_profit": 28835000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "28835000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "82.1",
+      "dividend_pct": ""
+    }
+  ]
+}

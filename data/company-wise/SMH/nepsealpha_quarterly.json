@@ -1,0 +1,17 @@
+{
+  "symbol": "SMH",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.68,
+  "roa_ttm_pct": 2.78,
+  "net_margin_ttm_pct": 27.3,
+  "eps_ttm": 5.89,
+  "eps_ttm_yoy_pct": -19.14,
+  "bvps": 109.13,
+  "bvps_yoy_pct": 9.36,
+  "net_profit_till_qtr": 3.78,
+  "net_profit_till_qtr_yoy_pct": -19.14,
+  "revenue_till_qtr": 13.84,
+  "revenue_till_qtr_yoy_pct": -8.81,
+  "scraped_at": "2026-08-02T00:20:22",
+  "source": "nepsealpha.com"
+}

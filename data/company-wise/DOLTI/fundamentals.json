@@ -1,0 +1,43 @@
+{
+  "symbol": "DOLTI",
+  "company_name": "Dolti Power Company Limited (DOLTI)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 5364860.0,
+  "market_price": 325.0,
+  "percent_change": 1.56,
+  "last_traded_on": "2026/07/31 02:59:37",
+  "high_52w": 619.0,
+  "low_52w": 300.1,
+  "avg_180d": 410.71,
+  "avg_120d": 364.96,
+  "year_yield_pct": -45.43,
+  "eps": 0.83,
+  "eps_fy": "082-083",
+  "pe_ratio": 391.57,
+  "book_value": 58.54,
+  "pbv": 5.55,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 25719.0,
+  "market_cap": 1743579500.0,
+  "scraped_at": "2026-08-01T20:55:58",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 5364860.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 1017.0,
+  "all_time_high_date": "2025-01-23T00:00:00",
+  "paid_up_capital": 536486000.0,
+  "net_profit": 4452833.8,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "4452833.8",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "58.54",
+      "dividend_pct": ""
+    }
+  ]
+}

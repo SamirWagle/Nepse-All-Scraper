@@ -1,0 +1,17 @@
+{
+  "symbol": "HDHPC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -3.65,
+  "net_margin_ttm_pct": -70.15,
+  "eps_ttm": -3.05,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 74.09,
+  "bvps_yoy_pct": -2.16,
+  "net_profit_till_qtr": -916.0,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 6.96,
+  "revenue_till_qtr_yoy_pct": 6.1,
+  "scraped_at": "2026-08-01T23:46:21",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "KDL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 9.14,
+  "roa_ttm_pct": 7.6,
+  "net_margin_ttm_pct": 65.35,
+  "eps_ttm": 9.3,
+  "eps_ttm_yoy_pct": 181.42,
+  "bvps": 107.94,
+  "bvps_yoy_pct": 9.2,
+  "net_profit_till_qtr": 4.97,
+  "net_profit_till_qtr_yoy_pct": 162.88,
+  "revenue_till_qtr": 6.66,
+  "revenue_till_qtr_yoy_pct": 18.29,
+  "scraped_at": "2026-08-01T23:51:11",
+  "source": "nepsealpha.com"
+}

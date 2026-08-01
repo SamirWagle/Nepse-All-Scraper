@@ -1,0 +1,17 @@
+{
+  "symbol": "NRIC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 39.37,
+  "roa_ttm_pct": 16.8,
+  "net_margin_ttm_pct": 57.42,
+  "eps_ttm": 47.14,
+  "eps_ttm_yoy_pct": 571.09,
+  "bvps": 109.2,
+  "bvps_yoy_pct": -26.79,
+  "net_profit_till_qtr": 584.03,
+  "net_profit_till_qtr_yoy_pct": 965.28,
+  "revenue_till_qtr": 668.17,
+  "revenue_till_qtr_yoy_pct": -22.05,
+  "scraped_at": "2026-08-02T00:05:44",
+  "source": "nepsealpha.com"
+}

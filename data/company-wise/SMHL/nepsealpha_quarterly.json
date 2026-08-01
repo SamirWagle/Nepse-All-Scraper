@@ -1,0 +1,17 @@
+{
+  "symbol": "SMHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 11.88,
+  "roa_ttm_pct": 3.06,
+  "net_margin_ttm_pct": 31.61,
+  "eps_ttm": 12.78,
+  "eps_ttm_yoy_pct": 112.11,
+  "bvps": 111.65,
+  "bvps_yoy_pct": 8.92,
+  "net_profit_till_qtr": 24.42,
+  "net_profit_till_qtr_yoy_pct": 74.99,
+  "revenue_till_qtr": 93.64,
+  "revenue_till_qtr_yoy_pct": -16.88,
+  "scraped_at": "2026-08-02T00:20:32",
+  "source": "nepsealpha.com"
+}

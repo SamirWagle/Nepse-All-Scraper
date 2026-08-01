@@ -1,0 +1,43 @@
+{
+  "symbol": "PURE",
+  "company_name": "Pure Energy Ltd. (PURE)",
+  "sector": "Others",
+  "shares_outstanding": 8000000.0,
+  "market_price": 863.0,
+  "percent_change": 1.18,
+  "last_traded_on": "2026/07/31 02:59:57",
+  "high_52w": 1262.0,
+  "low_52w": 706.2,
+  "avg_180d": 927.97,
+  "avg_120d": 894.0,
+  "year_yield_pct": -4.24,
+  "eps": 1.95,
+  "eps_fy": "082-083",
+  "pe_ratio": 442.56,
+  "book_value": 101.94,
+  "pbv": 8.47,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 7075.0,
+  "market_cap": 6904000000.0,
+  "scraped_at": "2026-08-01T21:10:05",
+  "source": "merolagani.com",
+  "promoter_shares": 6400000.0,
+  "public_shares": 1600000.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 1327.9,
+  "all_time_high_date": "2025-06-19T00:00:00",
+  "paid_up_capital": 800000000.0,
+  "net_profit": 15600000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "15600000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "101.94",
+      "dividend_pct": ""
+    }
+  ]
+}

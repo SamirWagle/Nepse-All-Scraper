@@ -1,0 +1,43 @@
+{
+  "symbol": "GHL",
+  "company_name": "Ghalemdi Hydro Limited (GHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 16500000.0,
+  "market_price": 226.8,
+  "percent_change": 0.93,
+  "last_traded_on": "2026/07/31 02:59:56",
+  "high_52w": 290.0,
+  "low_52w": 197.1,
+  "avg_180d": 239.93,
+  "avg_120d": 234.07,
+  "year_yield_pct": -10.61,
+  "eps": -2.15,
+  "eps_fy": "082-083",
+  "pe_ratio": -105.49,
+  "book_value": 95.07,
+  "pbv": 2.39,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 29771.0,
+  "market_cap": 3742200000.0,
+  "scraped_at": "2026-08-01T20:57:14",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 16500000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 555.9,
+  "all_time_high_date": "2021-08-18T00:00:00",
+  "paid_up_capital": 1650000000.0,
+  "net_profit": -35475000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-35475000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "95.07",
+      "dividend_pct": ""
+    }
+  ]
+}

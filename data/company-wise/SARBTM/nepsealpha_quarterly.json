@@ -1,0 +1,17 @@
+{
+  "symbol": "SARBTM",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 13.03,
+  "roa_ttm_pct": 8.45,
+  "net_margin_ttm_pct": 13.41,
+  "eps_ttm": 25.02,
+  "eps_ttm_yoy_pct": 99.13,
+  "bvps": 195.96,
+  "bvps_yoy_pct": 6.1,
+  "net_profit_till_qtr": 90.58,
+  "net_profit_till_qtr_yoy_pct": 50.21,
+  "revenue_till_qtr": 700.8,
+  "revenue_till_qtr_yoy_pct": 2.89,
+  "scraped_at": "2026-08-02T00:14:22",
+  "source": "nepsealpha.com"
+}

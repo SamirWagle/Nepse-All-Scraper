@@ -1,0 +1,17 @@
+{
+  "symbol": "SALICO",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 4.6,
+  "roa_ttm_pct": 1.78,
+  "net_margin_ttm_pct": 5.65,
+  "eps_ttm": 10.85,
+  "eps_ttm_yoy_pct": -26.2,
+  "bvps": 233.64,
+  "bvps_yoy_pct": -6.1,
+  "net_profit_till_qtr": 13.32,
+  "net_profit_till_qtr_yoy_pct": -47.13,
+  "revenue_till_qtr": 297.5,
+  "revenue_till_qtr_yoy_pct": 0.89,
+  "scraped_at": "2026-08-02T00:13:47",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,43 @@
+{
+  "symbol": "RHPL",
+  "company_name": "RASUWAGADHI HYDROPOWER COMPANY LIMITED (RHPL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 68421000.0,
+  "market_price": 259.9,
+  "percent_change": 0.7,
+  "last_traded_on": "2026/07/31 02:59:56",
+  "high_52w": 350.0,
+  "low_52w": 251.3,
+  "avg_180d": 280.21,
+  "avg_120d": 273.36,
+  "year_yield_pct": -23.16,
+  "eps": -24.16,
+  "eps_fy": "082-083",
+  "pe_ratio": -10.76,
+  "book_value": 70.04,
+  "pbv": 3.71,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 11418.0,
+  "market_cap": 17782617900.0,
+  "scraped_at": "2026-08-01T21:10:32",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 68421000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 613.0,
+  "all_time_high_date": "2021-06-14T00:00:00",
+  "paid_up_capital": 6842100000.0,
+  "net_profit": -1653051360.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-1653051360.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "70.04",
+      "dividend_pct": ""
+    }
+  ]
+}

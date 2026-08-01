@@ -1,0 +1,43 @@
+{
+  "symbol": "NABBC",
+  "company_name": "Narayani Development Bank Limited (NABBC)",
+  "sector": "Development Bank Limited",
+  "shares_outstanding": 5249930.6,
+  "market_price": 785.2,
+  "percent_change": 0.64,
+  "last_traded_on": "2026/07/31 02:57:07",
+  "high_52w": 1835.0,
+  "low_52w": 662.0,
+  "avg_180d": 1118.58,
+  "avg_120d": 946.17,
+  "year_yield_pct": -52.66,
+  "eps": -12.64,
+  "eps_fy": "082-083",
+  "pe_ratio": -62.12,
+  "book_value": 32.98,
+  "pbv": 23.81,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 18185.0,
+  "market_cap": 4122245507.12,
+  "scraped_at": "2026-08-01T21:03:47",
+  "source": "merolagani.com",
+  "promoter_shares": 3727039.0,
+  "public_shares": 1522312.0,
+  "promoter_pct": 71.0,
+  "public_pct": 29.0,
+  "all_time_high": 2060.0,
+  "all_time_high_date": "2025-03-19T00:00:00",
+  "paid_up_capital": 524935200.0,
+  "net_profit": -66359122.78,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-66359122.78",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "32.98",
+      "dividend_pct": ""
+    }
+  ]
+}

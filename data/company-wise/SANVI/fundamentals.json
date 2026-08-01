@@ -1,0 +1,40 @@
+{
+  "symbol": "SANVI",
+  "company_name": "Sanvi Energy Limited (SANVI)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 8800000.0,
+  "market_price": 604.0,
+  "percent_change": 1.77,
+  "last_traded_on": "2026/07/31 02:59:56",
+  "high_52w": 1060.0,
+  "low_52w": 536.0,
+  "avg_180d": 724.31,
+  "avg_120d": 675.38,
+  "year_yield_pct": -32.25,
+  "eps": -8.5,
+  "eps_fy": "082-083",
+  "pe_ratio": -71.06,
+  "book_value": 107.55,
+  "pbv": 5.62,
+  "dividend_pct": 5.25,
+  "dividend_fy": "079-080",
+  "avg_volume_30d": 12074.0,
+  "market_cap": 5315200000.0,
+  "scraped_at": "2026-08-01T21:11:48",
+  "source": "merolagani.com",
+  "all_time_high": 1060.0,
+  "all_time_high_date": "2026-01-27T00:00:00",
+  "paid_up_capital": 880000000.0,
+  "bonus_dividend_pct": 0.0,
+  "net_profit": -74800000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-74800000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "107.55",
+      "dividend_pct": "5.25"
+    }
+  ]
+}

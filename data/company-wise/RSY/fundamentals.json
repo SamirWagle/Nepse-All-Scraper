@@ -1,0 +1,42 @@
+{
+  "symbol": "RSY",
+  "company_name": "Reliable Samriddhi Yojana (RSY)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 120000000.0,
+  "market_price": 10.3,
+  "percent_change": 0.49,
+  "last_traded_on": "2026/07/31 02:53:52",
+  "high_52w": 10.7,
+  "low_52w": 8.63,
+  "avg_180d": 10.15,
+  "avg_120d": 10.19,
+  "year_yield_pct": 5.21,
+  "eps": 0.0,
+  "eps_fy": "082-083",
+  "pe_ratio": 0.0,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 25470.0,
+  "market_cap": 1236000000.0,
+  "scraped_at": "2026-08-01T21:11:07",
+  "source": "merolagani.com",
+  "promoter_shares": 120000000.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 10.7,
+  "all_time_high_date": "2026-03-24T00:00:00",
+  "paid_up_capital": 1200000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "AHPC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.5,
+  "roa_ttm_pct": 5.06,
+  "net_margin_ttm_pct": 56.3,
+  "eps_ttm": 5.94,
+  "eps_ttm_yoy_pct": -29.84,
+  "bvps": 110.71,
+  "bvps_yoy_pct": 6.11,
+  "net_profit_till_qtr": 13.37,
+  "net_profit_till_qtr_yoy_pct": -60.9,
+  "revenue_till_qtr": 22.91,
+  "revenue_till_qtr_yoy_pct": -58.05,
+  "scraped_at": "2026-08-01T23:33:35",
+  "source": "nepsealpha.com"
+}

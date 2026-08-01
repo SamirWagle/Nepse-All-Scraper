@@ -1,0 +1,39 @@
+{
+  "symbol": "SMPDA",
+  "company_name": "Sampada Laghubitta Bittiya Sanstha Limited (SMPDA)",
+  "sector": "Microfinance",
+  "shares_outstanding": 7008583.45,
+  "market_price": 762.0,
+  "percent_change": -0.9,
+  "last_traded_on": "2026/07/31 02:59:52",
+  "high_52w": 1155.0,
+  "low_52w": 730.0,
+  "avg_180d": 843.04,
+  "avg_120d": 824.15,
+  "year_yield_pct": -25.88,
+  "eps": 25.2,
+  "eps_fy": "082-083",
+  "pe_ratio": 30.24,
+  "book_value": 160.04,
+  "pbv": 4.76,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 1283.0,
+  "market_cap": 5340540588.9,
+  "scraped_at": "2026-08-01T21:15:09",
+  "source": "merolagani.com",
+  "all_time_high": 2079.0,
+  "all_time_high_date": "2021-05-30T00:00:00",
+  "paid_up_capital": 700858400.0,
+  "net_profit": 176616302.94,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "176616302.94",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "160.04",
+      "dividend_pct": ""
+    }
+  ]
+}

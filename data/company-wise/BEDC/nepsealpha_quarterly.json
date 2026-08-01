@@ -1,0 +1,17 @@
+{
+  "symbol": "BEDC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -1.29,
+  "net_margin_ttm_pct": -18.22,
+  "eps_ttm": -2.01,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 47.88,
+  "bvps_yoy_pct": -4.38,
+  "net_profit_till_qtr": -5.08,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 4.94,
+  "revenue_till_qtr_yoy_pct": 14.63,
+  "scraped_at": "2026-08-01T23:35:10",
+  "source": "nepsealpha.com"
+}

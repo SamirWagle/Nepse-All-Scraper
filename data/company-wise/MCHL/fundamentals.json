@@ -1,0 +1,43 @@
+{
+  "symbol": "MCHL",
+  "company_name": "Menchhiyam Hydropower Limited (MCHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 5425833.0,
+  "market_price": 283.8,
+  "percent_change": 0.64,
+  "last_traded_on": "2026/07/31 02:59:57",
+  "high_52w": 553.0,
+  "low_52w": 262.0,
+  "avg_180d": 351.66,
+  "avg_120d": 319.89,
+  "year_yield_pct": -48.4,
+  "eps": 0.93,
+  "eps_fy": "082-083",
+  "pe_ratio": 305.16,
+  "book_value": -23.87,
+  "pbv": -11.89,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 6246.0,
+  "market_cap": 1539851405.4,
+  "scraped_at": "2026-08-01T21:02:15",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 5425833.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 714.0,
+  "all_time_high_date": "2025-02-11T00:00:00",
+  "paid_up_capital": 542583300.0,
+  "net_profit": 5046024.69,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "5046024.69",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "-23.87",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "BHDC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 8.48,
+  "roa_ttm_pct": 3.83,
+  "net_margin_ttm_pct": 25.67,
+  "eps_ttm": 9.42,
+  "eps_ttm_yoy_pct": 148.14,
+  "bvps": 117.43,
+  "bvps_yoy_pct": 11.94,
+  "net_profit_till_qtr": 11.77,
+  "net_profit_till_qtr_yoy_pct": 77.32,
+  "revenue_till_qtr": 35.31,
+  "revenue_till_qtr_yoy_pct": 14.58,
+  "scraped_at": "2026-08-01T23:35:49",
+  "source": "nepsealpha.com"
+}

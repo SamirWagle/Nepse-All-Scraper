@@ -1,0 +1,17 @@
+{
+  "symbol": "SRLI",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 6.87,
+  "roa_ttm_pct": 1.35,
+  "net_margin_ttm_pct": 6.93,
+  "eps_ttm": 7.59,
+  "eps_ttm_yoy_pct": 0.85,
+  "bvps": 111.65,
+  "bvps_yoy_pct": 0.06,
+  "net_profit_till_qtr": 34.09,
+  "net_profit_till_qtr_yoy_pct": -9.7,
+  "revenue_till_qtr": 549.62,
+  "revenue_till_qtr_yoy_pct": -21.54,
+  "scraped_at": "2026-08-02T00:22:12",
+  "source": "nepsealpha.com"
+}

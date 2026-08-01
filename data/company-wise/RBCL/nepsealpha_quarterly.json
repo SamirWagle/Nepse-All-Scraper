@@ -1,0 +1,17 @@
+{
+  "symbol": "RBCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 1.87,
+  "roa_ttm_pct": 1.29,
+  "net_margin_ttm_pct": 22.73,
+  "eps_ttm": 120.36,
+  "eps_ttm_yoy_pct": -36.65,
+  "bvps": 6524.1,
+  "bvps_yoy_pct": 3.21,
+  "net_profit_till_qtr": 28.9,
+  "net_profit_till_qtr_yoy_pct": -26.97,
+  "revenue_till_qtr": 94.83,
+  "revenue_till_qtr_yoy_pct": -7.12,
+  "scraped_at": "2026-08-02T00:10:44",
+  "source": "nepsealpha.com"
+}

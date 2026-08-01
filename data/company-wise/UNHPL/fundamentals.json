@@ -1,0 +1,43 @@
+{
+  "symbol": "UNHPL",
+  "company_name": "Union Hydropower Limited (UNHPL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 7500000.0,
+  "market_price": 382.1,
+  "percent_change": -0.21,
+  "last_traded_on": "2026/07/31 02:59:58",
+  "high_52w": 571.0,
+  "low_52w": 370.0,
+  "avg_180d": 459.78,
+  "avg_120d": 438.53,
+  "year_yield_pct": -6.52,
+  "eps": 5.24,
+  "eps_fy": "082-083",
+  "pe_ratio": 72.92,
+  "book_value": 104.59,
+  "pbv": 3.65,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 19370.0,
+  "market_cap": 2865750000.0,
+  "scraped_at": "2026-08-01T21:16:31",
+  "source": "merolagani.com",
+  "promoter_shares": 0.0,
+  "public_shares": 7500000.0,
+  "promoter_pct": 0.0,
+  "public_pct": 100.0,
+  "all_time_high": 612.0,
+  "all_time_high_date": "2021-08-18T00:00:00",
+  "paid_up_capital": 750000000.0,
+  "net_profit": 39300000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "39300000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "104.59",
+      "dividend_pct": ""
+    }
+  ]
+}

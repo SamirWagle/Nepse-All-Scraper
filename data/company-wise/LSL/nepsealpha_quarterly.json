@@ -1,0 +1,17 @@
+{
+  "symbol": "LSL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 10.02,
+  "roa_ttm_pct": 0.99,
+  "net_margin_ttm_pct": 16.83,
+  "eps_ttm": 16.81,
+  "eps_ttm_yoy_pct": 46.64,
+  "bvps": 175.08,
+  "bvps_yoy_pct": 9.32,
+  "net_profit_till_qtr": 203.82,
+  "net_profit_till_qtr_yoy_pct": 23.36,
+  "revenue_till_qtr": 1891.12,
+  "revenue_till_qtr_yoy_pct": -12.49,
+  "scraped_at": "2026-08-01T23:52:59",
+  "source": "nepsealpha.com"
+}

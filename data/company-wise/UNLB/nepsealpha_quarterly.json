@@ -1,0 +1,17 @@
+{
+  "symbol": "UNLB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 5.48,
+  "roa_ttm_pct": 0.54,
+  "net_margin_ttm_pct": 5.46,
+  "eps_ttm": 13.83,
+  "eps_ttm_yoy_pct": -49.31,
+  "bvps": 222.36,
+  "bvps_yoy_pct": -17.63,
+  "net_profit_till_qtr": 1.35,
+  "net_profit_till_qtr_yoy_pct": -66.61,
+  "revenue_till_qtr": 37.61,
+  "revenue_till_qtr_yoy_pct": -20.08,
+  "scraped_at": "2026-08-02T00:25:37",
+  "source": "nepsealpha.com"
+}

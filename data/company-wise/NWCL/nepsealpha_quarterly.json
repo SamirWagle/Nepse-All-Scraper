@@ -1,0 +1,17 @@
+{
+  "symbol": "NWCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -1.4,
+  "net_margin_ttm_pct": -6.23,
+  "eps_ttm": -3.49,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 99.09,
+  "bvps_yoy_pct": 37.41,
+  "net_profit_till_qtr": -356.96,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 9.58,
+  "revenue_till_qtr_yoy_pct": 291.43,
+  "scraped_at": "2026-08-02T00:06:41",
+  "source": "nepsealpha.com"
+}

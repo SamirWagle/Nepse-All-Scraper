@@ -1,0 +1,17 @@
+{
+  "symbol": "ANLB",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 22.23,
+  "roa_ttm_pct": 3.73,
+  "net_margin_ttm_pct": 32.04,
+  "eps_ttm": 80.13,
+  "eps_ttm_yoy_pct": 215.57,
+  "bvps": 424.28,
+  "bvps_yoy_pct": 36.43,
+  "net_profit_till_qtr": 4.85,
+  "net_profit_till_qtr_yoy_pct": 125.84,
+  "revenue_till_qtr": 16.57,
+  "revenue_till_qtr_yoy_pct": 5.61,
+  "scraped_at": "2026-08-01T23:34:22",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "HIDCL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 2.81,
+  "roa_ttm_pct": 3.43,
+  "net_margin_ttm_pct": 70.28,
+  "eps_ttm": 3.18,
+  "eps_ttm_yoy_pct": -27.46,
+  "bvps": 112.61,
+  "bvps_yoy_pct": -0.42,
+  "net_profit_till_qtr": 54.7,
+  "net_profit_till_qtr_yoy_pct": -24.97,
+  "revenue_till_qtr": 78.84,
+  "revenue_till_qtr_yoy_pct": -27.88,
+  "scraped_at": "2026-08-01T23:47:08",
+  "source": "nepsealpha.com"
+}

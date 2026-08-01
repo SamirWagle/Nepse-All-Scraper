@@ -1,0 +1,17 @@
+{
+  "symbol": "GVL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 12.47,
+  "roa_ttm_pct": 4.68,
+  "net_margin_ttm_pct": 31.36,
+  "eps_ttm": 14.85,
+  "eps_ttm_yoy_pct": 93.49,
+  "bvps": 125.77,
+  "bvps_yoy_pct": 12.29,
+  "net_profit_till_qtr": 49.44,
+  "net_profit_till_qtr_yoy_pct": 32.37,
+  "revenue_till_qtr": 129.57,
+  "revenue_till_qtr_yoy_pct": 0.72,
+  "scraped_at": "2026-08-01T23:45:17",
+  "source": "nepsealpha.com"
+}

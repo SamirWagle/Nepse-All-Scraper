@@ -1,0 +1,43 @@
+{
+  "symbol": "SWASTIK",
+  "company_name": "Swastik Laghubitta Bittiya Sanstha Limited (SWASTIK)",
+  "sector": "Microfinance",
+  "shares_outstanding": 577500.0,
+  "market_price": 2020.0,
+  "percent_change": 0.44,
+  "last_traded_on": "2026/07/31 02:59:57",
+  "high_52w": 3400.0,
+  "low_52w": 391.7,
+  "avg_180d": 2491.13,
+  "avg_120d": 2325.7,
+  "year_yield_pct": 0.0,
+  "eps": 21.33,
+  "eps_fy": "082-083",
+  "pe_ratio": 94.7,
+  "book_value": 158.94,
+  "pbv": 12.71,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 611.0,
+  "market_cap": 1166550000.0,
+  "scraped_at": "2026-08-01T21:15:27",
+  "source": "merolagani.com",
+  "promoter_shares": 346500.0,
+  "public_shares": 231000.0,
+  "promoter_pct": 60.0,
+  "public_pct": 40.0,
+  "all_time_high": 3400.0,
+  "all_time_high_date": "2025-12-21T00:00:00",
+  "paid_up_capital": 57750000.0,
+  "net_profit": 12318075.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "12318075.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "158.94",
+      "dividend_pct": ""
+    }
+  ]
+}

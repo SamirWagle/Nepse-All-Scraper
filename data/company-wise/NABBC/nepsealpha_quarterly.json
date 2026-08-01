@@ -1,0 +1,17 @@
+{
+  "symbol": "NABBC",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -10.85,
+  "net_margin_ttm_pct": -287.59,
+  "eps_ttm": -11.86,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 32.98,
+  "bvps_yoy_pct": 254.32,
+  "net_profit_till_qtr": -497.82,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 1.63,
+  "revenue_till_qtr_yoy_pct": -46.27,
+  "scraped_at": "2026-08-01T23:59:07",
+  "source": "nepsealpha.com"
+}

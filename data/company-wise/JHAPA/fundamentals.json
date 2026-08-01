@@ -1,0 +1,43 @@
+{
+  "symbol": "JHAPA",
+  "company_name": "Jhapa Energy Limited (JHAPA)",
+  "sector": "Others",
+  "shares_outstanding": 3801900.0,
+  "market_price": 1138.0,
+  "percent_change": 1.7,
+  "last_traded_on": "2026/07/31 02:59:57",
+  "high_52w": 1929.0,
+  "low_52w": 293.4,
+  "avg_180d": 1386.46,
+  "avg_120d": 1370.81,
+  "year_yield_pct": 0.0,
+  "eps": 5.63,
+  "eps_fy": "082-083",
+  "pe_ratio": 202.13,
+  "book_value": 102.36,
+  "pbv": 11.12,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 12408.0,
+  "market_cap": 4326562200.0,
+  "scraped_at": "2026-08-01T20:59:39",
+  "source": "merolagani.com",
+  "promoter_shares": 2851425.0,
+  "public_shares": 950475.0,
+  "promoter_pct": 75.0,
+  "public_pct": 25.0,
+  "all_time_high": 1929.0,
+  "all_time_high_date": "2026-05-11T00:00:00",
+  "paid_up_capital": 380190000.0,
+  "net_profit": 21404697.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "21404697.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "102.36",
+      "dividend_pct": ""
+    }
+  ]
+}
