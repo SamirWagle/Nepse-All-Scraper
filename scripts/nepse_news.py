@@ -840,10 +840,15 @@ def write_html_report(items: list[dict], macro_items: list[dict],
                       letters: list[dict], hours: int) -> Path:
     now = datetime.now()
     path = _archive_path(now)
-    # Snapshot tracks the NEPSE set only — global macro headlines churn on
-    # their own cycle and would otherwise force a new snapshot every run.
-    snap_hash = _snapshot_hash(items)
-    _save_snapshot(now, len(items), snap_hash, path.name)
+    # Hash the NEPSE items *and* the letters. Letters must be in it: a new
+    # fund-manager letter on a day of unchanged headlines would otherwise
+    # hash identical, get deduped away, and leave the archive holding the
+    # only copy of that letter with nothing linking to it. Macro stays out —
+    # those feeds churn hourly and would force a new snapshot every run,
+    # which is the thing dedup exists to prevent.
+    tracked = items + letters
+    snap_hash = _snapshot_hash(tracked)
+    _save_snapshot(now, len(tracked), snap_hash, path.name)
     snap_rows = _snapshot_rows(_load_snapshots(), snap_hash)
     doc = f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
