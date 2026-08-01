@@ -39,13 +39,26 @@ from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from functools import lru_cache
 from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import quote, urljoin
 
 import requests
 from bs4 import BeautifulSoup
 
 OUTPUT_DIR = Path(__file__).resolve().parent.parent / "output"
 HISTORY_DIR = OUTPUT_DIR / "news_history"
+
+# Nepali property market. Matched against the same fetched items as the
+# NEPSE set, then split out into its own report section — it's a separate
+# asset class and would otherwise be buried among the market headlines.
+REALESTATE_KEYWORDS = [
+    "real estate", "realestate", "land price", "land prices", "housing",
+    "house price", "property", "property price", "land transaction",
+    "land registration", "land revenue", "malpot", "land plotting",
+    "plotting", "apartment", "housing loan", "home loan", "mortgage",
+    "land tax", "land ownership", "guthi", "ghaderi", "land pooling",
+    "construction sector", "cement industry", "rental", "land market",
+    "building code", "urban development", "land ceiling", "land acquisition",
+]
 
 DEFAULT_KEYWORDS = [
     "ipo", "fpo", "further public offering", "rights share", "right share",
@@ -69,7 +82,7 @@ DEFAULT_KEYWORDS = [
     "microfinance", "banking sector", "commercial bank", "loan", "credit",
     "insurance", "mutual fund", "tourism", "foreign investment", "fdi",
     "electricity", "energy", "capital market", "broker", "market cap",
-]
+] + REALESTATE_KEYWORDS  # fetched together, split apart for the report
 
 # World-market/macro headlines worth surfacing to a NEPSE investor — kept
 # deliberately narrow (rate decisions, crashes, oil/gold, recession signals)
@@ -128,12 +141,14 @@ RSS_SOURCES = {
 
 # Global macro — matched against MACRO_KEYWORDS instead of DEFAULT_KEYWORDS
 # and rendered in their own section of the report.
+# Free-to-read only. MarketWatch and FT were dropped 2026-08-01: both
+# publish open RSS but paywall the article behind it, so every headline they
+# contributed was a dead end.
 MACRO_RSS_SOURCES = {
     "CNBC World": "https://www.cnbc.com/id/100727362/device/rss/rss.html",
     "CNBC Economy": "https://www.cnbc.com/id/20910258/device/rss/rss.html",
-    "MarketWatch": "https://feeds.content.dowjones.io/public/rss/mw_topstories",
-    "FT Markets": "https://www.ft.com/markets?format=rss",
     "Investing.com": "https://www.investing.com/rss/news_14.rss",
+    "Yahoo Finance": "https://finance.yahoo.com/news/rssindex",
 }
 
 # No usable feed — scraped by grabbing every <a> and keyword-filtering the
@@ -705,6 +720,22 @@ def fetch_facebook_pages(keywords: list[str], since: datetime, access_token: str
     return items
 
 
+def load_dismissed() -> set[str]:
+    """URLs the reader has marked as read.
+
+    Needed because letters sit in a 120-day window and news can be re-fetched
+    within its own — without this, anything hidden would reappear on the next
+    scan. Keyed by URL, and the server can put one back.
+    """
+    f = OUTPUT_DIR / "news_dismissed.json"
+    if not f.exists():
+        return set()
+    try:
+        return set(json.loads(f.read_text()).get("urls", []))
+    except (json.JSONDecodeError, OSError):
+        return set()
+
+
 def dedupe(items: list[dict]) -> list[dict]:
     seen = set()
     out = []
@@ -730,8 +761,11 @@ body { margin: 0; background: #121212; color: #e6e6e6; font-family: -apple-syste
 .head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
 .snap-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .snap-btn { cursor: pointer; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; padding: 6px 12px; font-size: 13px; color: #ccc; }
-.snap-item { display: block; padding: 10px 14px; border: 1px solid #2a2a2a; border-radius: 8px; margin-bottom: 8px; color: #ccc; text-decoration: none; }
+.snap-item { display: block; padding: 10px 14px; border: 1px solid #2a2a2a; border-radius: 8px; color: #ccc; text-decoration: none; flex: 1; }
 .snap-item:hover { border-color: #555; }
+.snap-row { display: flex; align-items: stretch; gap: 8px; margin-bottom: 8px; }
+.snap-del { display: flex; align-items: center; padding: 0 14px; border: 1px solid #2a2a2a; border-radius: 8px; color: #6a6a6a; text-decoration: none; font-size: 13px; }
+.snap-del:hover { border-color: #a33; color: #e06c6c; }
 .snap-now { border-color: #4caf50; color: #4caf50; }
 .snap-date { margin-right: 12px; }
 .snap-empty { color: #777; }
@@ -743,8 +777,24 @@ td a { color: #7fb8ff; text-decoration: none; }
 td a:hover { text-decoration: underline; }
 .src-tag { display: inline-block; background: #262626; border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #aaa; }
 h2 { font-size: 15px; color: #bbb; margin: 22px 0 10px; font-weight: 600; }
+.sect { margin: 14px 0; }
+.sect > summary { cursor: pointer; font-size: 15px; color: #bbb; font-weight: 600;
+  padding: 10px 12px; background: #171717; border: 1px solid #262626; border-radius: 10px;
+  list-style: none; user-select: none; }
+.sect > summary::-webkit-details-marker { display: none; }
+.sect > summary::before { content: "\25B8"; display: inline-block; margin-right: 9px;
+  color: #777; transition: transform .15s; }
+.sect[open] > summary::before { transform: rotate(90deg); }
+.sect > summary:hover { border-color: #3a3a3a; }
+.sect .cnt { display: inline-block; margin-left: 9px; background: #2a2a2a; color: #bbb;
+  border-radius: 20px; padding: 1px 9px; font-size: 11px; font-weight: 600; }
+.sect > .card, .sect > .snap-empty { margin-top: 9px; }
+td.act { text-align: center; width: 34px; }
+a.dismiss { color: #555; text-decoration: none; font-size: 14px; }
+a.dismiss:hover { color: #5fbf72; }
 .when { color: #777; font-size: 12px; white-space: nowrap; }
 .orig { color: #6f6f6f; font-size: 12px; margin-top: 3px; }
+.tier-note { color: #666; font-size: 11px; font-weight: 400; margin-left: 8px; }
 """
 
 
@@ -810,34 +860,67 @@ def _snapshot_rows(snapshots: list[dict], current_hash: str) -> str:
         )
         filename = s.get("file")
         if filename and not is_current:
-            out.append(
+            # Delete goes via a confirm page rather than acting on this click:
+            # a link that deletes on GET can fire from a browser prefetch, and
+            # the archive is the only copy of that day's digest.
+            row = (
                 f'<a class="{cls}" target="_blank" '
                 f'href="/nepse_news/history/{html.escape(filename)}">{inner}</a>'
+                f'<a class="snap-del" target="_blank" title="Delete this snapshot" '
+                f'href="/nepse_news/delete?file={html.escape(filename)}">&#10005;</a>'
             )
         else:
-            out.append(f'<div class="{cls}">{inner}</div>')
+            row = f'<div class="{cls}">{inner}</div>'
+        out.append(f'<div class="snap-row">{row}</div>')
     return "".join(out)
 
 
-def _table(items: list[dict], empty_note: str) -> str:
-    if not items:
-        return f'<div class="snap-empty">{empty_note}</div>'
-    rows = "".join(
+def _row(it: dict, dismissable: bool) -> str:
+    orig = (f"<div class='orig'>{html.escape(it['original_title'])}</div>"
+            if it.get("original_title") else "")
+    dismiss = ""
+    if dismissable:
+        # target=_blank so ticking an item off opens a small confirmation tab
+        # instead of navigating the report iframe away from the digest.
+        dismiss = (
+            f'<td class="act"><a class="dismiss" target="_blank" title="Mark read and hide" '
+            f'href="/nepse_news/dismiss?url={quote(it["url"], safe="")}">&#10003;</a></td>'
+        )
+    return (
         f"<tr><td><span class='src-tag'>{html.escape(it['source'])}</span></td>"
         f"<td><a href='{html.escape(it['url'])}' target='_blank'>{html.escape(it['title'])}</a>"
-        + (f"<div class='orig'>{html.escape(it['original_title'])}</div>"
-           if it.get("original_title") else "")
-        + f"</td><td class='when'>{html.escape(it.get('published', '')[:10])}</td></tr>"
-        for it in items
+        f"{orig}</td>"
+        f"<td class='when'>{html.escape(it.get('published', '')[:10])}</td>{dismiss}</tr>"
     )
+
+
+def _section(title: str, items: list[dict], empty_note: str, *,
+             note: str = "", open_by_default: bool = True,
+             dismissable: bool = False) -> str:
+    """One collapsible report section.
+
+    <details>/<summary> because the extension's CSP blocks scripts inside the
+    report iframe — the browser does the toggling itself, no JS required.
+    """
+    if items:
+        head = "<th>Source</th><th>Headline</th><th>Date</th>" + (
+            "<th></th>" if dismissable else "")
+        rows = "".join(_row(it, dismissable) for it in items)
+        body = (f'<div class="card"><table><thead><tr>{head}</tr></thead>'
+                f"<tbody>{rows}</tbody></table></div>")
+    else:
+        body = f'<div class="snap-empty">{empty_note}</div>'
+    note_html = f'<span class="tier-note">{note}</span>' if note else ""
     return (
-        '<div class="card"><table><thead><tr><th>Source</th><th>Headline</th>'
-        f"<th>Date</th></tr></thead><tbody>{rows}</tbody></table></div>"
+        f'<details class="sect"{" open" if open_by_default else ""}>'
+        f'<summary>{title}<span class="cnt">{len(items)}</span>{note_html}</summary>'
+        f"{body}</details>"
     )
 
 
-def write_html_report(items: list[dict], macro_items: list[dict],
-                      letters: list[dict], hours: int) -> Path:
+def write_html_report(items: list[dict], realestate_items: list[dict],
+                      macro_items: list[dict], letters: list[dict],
+                      hours: int, letter_days: int) -> Path:
     now = datetime.now()
     path = _archive_path(now)
     # Hash the NEPSE items *and* the letters. Letters must be in it: a new
@@ -846,7 +929,7 @@ def write_html_report(items: list[dict], macro_items: list[dict],
     # only copy of that letter with nothing linking to it. Macro stays out —
     # those feeds churn hourly and would force a new snapshot every run,
     # which is the thing dedup exists to prevent.
-    tracked = items + letters
+    tracked = items + realestate_items + letters
     snap_hash = _snapshot_hash(tracked)
     _save_snapshot(now, len(tracked), snap_hash, path.name)
     snap_rows = _snapshot_rows(_load_snapshots(), snap_hash)
@@ -864,16 +947,21 @@ def write_html_report(items: list[dict], macro_items: list[dict],
 </div>
 <div id="scan" class="wrap">
 <div class="head">
-  <span>{len(items)} NEPSE &middot; {len(letters)} letters &middot; {len(macro_items)} macro
-    &middot; lookback {hours}h &middot; as of {now:%Y-%m-%d %H:%M}</span>
+  <span>{len(items)} NEPSE &middot; {len(realestate_items)} property &middot;
+    {len(letters)} letters &middot; {len(macro_items)} macro
+    &middot; news lookback {hours}h &middot; as of {now:%Y-%m-%d %H:%M}</span>
   <label for="snap-toggle" class="snap-btn">&#128248; Snapshots</label>
 </div>
-<h2>&#128196; Fund manager letters &amp; newsletters</h2>
-{_table(letters, "No new letters in this window.")}
-<h2>&#127475;&#127477; NEPSE &amp; Nepal economy</h2>
-{_table(items, "Nothing new in this window.")}
-<h2>&#127758; Global macro</h2>
-{_table(macro_items, "Nothing notable in this window.")}
+{_section("&#128196; Fund manager letters &amp; newsletters", letters,
+          "No letters published recently.",
+          note=f"current editions &middot; last {letter_days} days &middot; &#10003; to hide once read",
+          open_by_default=False, dismissable=True)}
+{_section("&#127475;&#127477; NEPSE &amp; Nepal economy", items,
+          "Nothing new in this window.", dismissable=True)}
+{_section("&#127968; Nepal real estate", realestate_items,
+          "Nothing new in this window.", dismissable=True)}
+{_section("&#127758; Global macro", macro_items,
+          "Nothing notable in this window.", dismissable=True)}
 </div></body></html>
 """
     path.write_text(doc, encoding="utf-8")
@@ -916,27 +1004,51 @@ def cmd_scan(args) -> None:
     nepse_items += fetch_facebook_pages(keywords, since, os.environ.get("FB_ACCESS_TOKEN"))
     nepse_items = dedupe(nepse_items)
 
+    # Property is its own asset class — pull those out of the market set so
+    # they get their own section instead of being lost among the headlines.
+    realestate_items = [it for it in nepse_items
+                        if _matches_keywords(it["title"], REALESTATE_KEYWORDS)]
+    realestate_urls = {it["url"] for it in realestate_items}
+    nepse_items = [it for it in nepse_items if it["url"] not in realestate_urls]
+
     macro_items: list[dict] = []
     for source, url in MACRO_RSS_SOURCES.items():
         macro_items += fetch_rss(source, url, MACRO_KEYWORDS, since)
     macro_items = dedupe(macro_items)
 
+    # Letters get a far longer window than the news. They're published
+    # quarterly to monthly, so judging them by the 24h news window empties
+    # the section on all but one day per quarter — the reader wants "what is
+    # the current edition", not "was it published in the last day".
+    letter_since = datetime.now(timezone.utc) - timedelta(days=args.letter_days)
     letters: list[dict] = []
     for source, url in PUBLICATION_SOURCES.items():
-        letters += fetch_publications(source, url, since)
+        letters += fetch_publications(source, url, letter_since)
     for source, url in PUBLICATION_JS_SOURCES.items():
-        letters += fetch_publications_js(source, url, since)
+        letters += fetch_publications_js(source, url, letter_since)
     letters = dedupe(letters)
+    letters.sort(key=lambda it: it["published"], reverse=True)
 
-    report_path = write_html_report(nepse_items, macro_items, letters, args.hours)
+    # Drop anything the reader has ticked off.
+    dismissed = load_dismissed()
+    if dismissed:
+        nepse_items = [it for it in nepse_items if it["url"] not in dismissed]
+        realestate_items = [it for it in realestate_items if it["url"] not in dismissed]
+        macro_items = [it for it in macro_items if it["url"] not in dismissed]
+        letters = [it for it in letters if it["url"] not in dismissed]
+
+    report_path = write_html_report(nepse_items, realestate_items, macro_items,
+                                    letters, args.hours, args.letter_days)
 
     print(json.dumps({
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "count": len(nepse_items) + len(macro_items) + len(letters),
+        "count": len(nepse_items) + len(realestate_items) + len(macro_items) + len(letters),
         "nepse_count": len(nepse_items),
+        "realestate_count": len(realestate_items),
         "macro_count": len(macro_items),
         "letter_count": len(letters),
         "items": nepse_items,
+        "realestate_items": realestate_items,
         "macro_items": macro_items,
         "letters": letters,
         "report": str(report_path),
@@ -948,6 +1060,8 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True)
     scan_p = sub.add_parser("scan")
     scan_p.add_argument("--hours", type=int, default=24)
+    scan_p.add_argument("--letter-days", type=int, default=120,
+                        help="lookback for fund-manager letters (quarterly cadence)")
     scan_p.add_argument("--keywords", type=str, default=None)
     scan_p.set_defaults(func=cmd_scan)
     args = parser.parse_args()

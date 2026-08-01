@@ -130,10 +130,13 @@
     // (/karma_signal/history/...). Inside a srcdoc iframe they'd resolve
     // against chrome-extension:// and 404, so point them at the local engine
     // before handing the HTML to the frame.
+    // Quote-agnostic on purpose: the reports emit both href="..." and
+    // href='...', and a double-quote-only pattern silently skips the rest,
+    // leaving them to resolve against chrome-extension:// and 404.
     function absolutiseReportLinks(reportHtml, port) {
       return reportHtml.replace(
-        /href="\/(karma_signal|nepse_news)\//g,
-        `href="http://localhost:${port}/$1/`
+        /href=(["'])\/(karma_signal|nepse_news)\//g,
+        `href=$1http://localhost:${port}/$2/`
       );
     }
 
@@ -182,6 +185,38 @@
       }
     }
 
+    // Handle the digest's ✓ (mark-read) links here in the parent instead of
+    // letting them navigate. The report is a srcdoc iframe, so it's
+    // same-origin and its clicks are reachable — but its own CSP blocks any
+    // script inside it, so this is the only place the work can happen.
+    // Navigating instead would either replace the digest or strand the
+    // reader in a tab with no way back.
+    function wireDismissLinks(doc, statusEl, fit) {
+      doc.addEventListener('click', async (ev) => {
+        const link = ev.target.closest && ev.target.closest('a.dismiss');
+        if (!link) return;
+        ev.preventDefault();
+        const row = link.closest('tr');
+        try {
+          const resp = await fetch(link.href, { signal: AbortSignal.timeout(15000) });
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          const section = link.closest('details');
+          if (row) row.remove();
+          // Keep the section's count badge honest after the row goes.
+          const badge = section && section.querySelector('summary .cnt');
+          if (badge) {
+            const left = section.querySelectorAll('tbody tr').length;
+            badge.textContent = left;
+          }
+          statusEl.textContent = '✓ Hidden from future scans — ' + new Date().toLocaleTimeString();
+          fit();
+        } catch (err) {
+          statusEl.textContent = '⚠️ Could not hide item: '
+            + (err && err.message ? err.message : String(err));
+        }
+      });
+    }
+
     // ── KarmaNepseNewsDigest (nepse_news.py scan) ──
     // The nightly cron owns the scan; opening the page normally just reads
     // that result back. force=true (Re-run button) rescans on demand.
@@ -212,7 +247,14 @@
           frameEl.style.display = 'block';
           frameEl.onload = () => {
             const doc = frameEl.contentDocument;
-            if (doc) frameEl.style.height = doc.documentElement.scrollHeight + 'px';
+            if (!doc) return;
+            const fit = () => {
+              frameEl.style.height = doc.documentElement.scrollHeight + 'px';
+            };
+            fit();
+            // Keep the frame sized when a section is expanded/collapsed.
+            doc.addEventListener('toggle', fit, true);
+            wireDismissLinks(doc, statusEl, fit);
           };
         } else if (data.output) {
           outEl.textContent = data.output;

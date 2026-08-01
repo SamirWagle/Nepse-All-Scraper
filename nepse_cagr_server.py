@@ -21,6 +21,8 @@ import re
 import sys
 import threading
 import time
+from html import escape as html_escape
+from urllib.parse import quote
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -963,6 +965,40 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"error": "karma_signal scan timed out after 600s"}, status=504)
             except Exception as ex:
                 self._send_json({"error": str(ex)}, status=500)
+        elif self.path.startswith("/nepse_news/dismiss") or \
+                self.path.startswith("/nepse_news/undismiss"):
+            from urllib.parse import urlparse, parse_qs
+            undo = self.path.startswith("/nepse_news/undismiss")
+            target = parse_qs(urlparse(self.path).query).get("url", [""])[0]
+            self._toggle_news_dismissed(target, undo=undo)
+        elif self.path.startswith("/nepse_news/delete"):
+            # Confirm page only — the deletion itself is a POST, so a browser
+            # prefetching this link can't destroy an archive.
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            filename = qs.get("file", [""])[0]
+            if not re.fullmatch(r"[\w.-]+\.html", filename):
+                self._send_json({"error": "Invalid snapshot filename"}, status=400)
+            else:
+                safe = html_escape(filename)
+                self._send_html(f"""<!doctype html><html><head><meta charset="utf-8">
+<title>Delete snapshot</title><style>
+body{{background:#121212;color:#e6e6e6;font-family:-apple-system,sans-serif;
+padding:40px;max-width:620px;margin:0 auto}}
+.warn{{background:#1b1b1b;border:1px solid #a33;border-radius:10px;padding:20px}}
+code{{color:#e0a76c}} button{{background:#a33;color:#fff;border:0;border-radius:8px;
+padding:10px 18px;font-size:14px;cursor:pointer}}
+a{{color:#7fb8ff;margin-left:16px}}</style></head><body>
+<div class="warn"><h2>Delete this snapshot permanently?</h2>
+<p><code>{safe}</code></p>
+<p>This removes the archived report from disk and drops its row from the
+snapshot list. It is the only stored copy of that digest &mdash; any
+newsletter links it held go with it. This cannot be undone.</p>
+<form method="POST" action="/nepse_news/delete">
+<input type="hidden" name="file" value="{safe}">
+<button type="submit">Delete permanently</button>
+<a href="javascript:window.close()">Cancel</a>
+</form></div></body></html>""")
         elif self.path.startswith("/nepse_news/history/"):
             filename = self.path[len("/nepse_news/history/"):]
             if not re.fullmatch(r"[\w.-]+\.html", filename):
@@ -1024,12 +1060,118 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(404)
             self.end_headers()
 
+    def _toggle_news_dismissed(self, target: str, *, undo: bool) -> None:
+        """Hide a digest item once read, or put it back.
+
+        Reversible by design, which is why this is safe on a GET: the worst a
+        stray prefetch can do is hide a headline, and the reply carries the
+        link to undo it.
+        """
+        if not target.startswith(("http://", "https://")):
+            self._send_json({"error": "Invalid item URL"}, status=400)
+            return
+        store = Path(__file__).parent / "output" / "news_dismissed.json"
+        urls = []
+        if store.exists():
+            try:
+                urls = json.loads(store.read_text()).get("urls", [])
+            except (json.JSONDecodeError, OSError):
+                urls = []
+        if undo:
+            urls = [u for u in urls if u != target]
+        elif target not in urls:
+            urls.append(target)
+        store.write_text(json.dumps({"urls": urls}, indent=2))
+
+        safe = html_escape(target)
+        back = "dismiss" if undo else "undismiss"
+        label = "Restored" if undo else "Marked as read"
+        verb = "hide it again" if undo else "undo"
+        self._send_html(f"""<!doctype html><html><head><meta charset="utf-8">
+<title>{label}</title><style>
+body{{background:#121212;color:#e6e6e6;font-family:-apple-system,sans-serif;
+padding:40px;max-width:620px;margin:0 auto}}
+.ok{{background:#1b1b1b;border:1px solid #2a2a2a;border-radius:10px;padding:20px}}
+a{{color:#7fb8ff}} .u{{color:#8a8a8a;font-size:12px;word-break:break-all}}
+.hint{{color:#7a7a7a;font-size:12px}}
+</style></head><body><div class="ok">
+<h2>{label}</h2>
+<p class="u">{safe}</p>
+<p>It is now {'visible again' if undo else 'hidden from the digest'}. Hidden items
+stay hidden across future scans until restored.</p>
+<p><a href="/nepse_news/{back}?url={quote(target, safe='')}">Click to {verb}</a></p>
+<p class="hint">You normally never see this page &mdash; the digest hides items
+in place. It shows up when the link is opened on its own, so close this tab
+(or go back) to return to the digest.</p>
+<p><a href="javascript:history.back()">&larr; Back</a>
+   <a href="javascript:window.close()" style="margin-left:16px">Close tab</a></p>
+</div></body></html>""")
+
+    def _delete_news_snapshot(self, filename: str) -> None:
+        """Remove one archived digest and its snapshot row. Irreversible."""
+        if not re.fullmatch(r"[\w.-]+\.html", filename):
+            self._send_json({"error": "Invalid snapshot filename"}, status=400)
+            return
+        out_dir = Path(__file__).parent / "output"
+        archive = out_dir / "news_history" / filename
+        # Resolve and re-check: the regex already blocks traversal, but the
+        # containment check is what actually guarantees we delete inside
+        # news_history/ and nowhere else.
+        try:
+            archive = archive.resolve()
+            archive.relative_to((out_dir / "news_history").resolve())
+        except (ValueError, OSError):
+            self._send_json({"error": "Refusing to delete outside news_history"}, status=400)
+            return
+
+        removed_file = False
+        if archive.is_file():
+            archive.unlink()
+            removed_file = True
+
+        snap_file = out_dir / "news_snapshots.json"
+        removed_rows = 0
+        if snap_file.exists():
+            try:
+                snapshots = json.loads(snap_file.read_text())
+                kept = [s for s in snapshots if s.get("file") != filename]
+                removed_rows = len(snapshots) - len(kept)
+                if removed_rows:
+                    snap_file.write_text(json.dumps(kept, indent=2))
+            except (json.JSONDecodeError, OSError) as ex:
+                self._send_json({"error": f"Snapshot index update failed: {ex}"}, status=500)
+                return
+
+        safe = html_escape(filename)
+        self._send_html(f"""<!doctype html><html><head><meta charset="utf-8">
+<title>Snapshot deleted</title><style>
+body{{background:#121212;color:#e6e6e6;font-family:-apple-system,sans-serif;
+padding:40px;max-width:620px;margin:0 auto}}
+.ok{{background:#1b1b1b;border:1px solid #2a2a2a;border-radius:10px;padding:20px}}
+code{{color:#e0a76c}}</style></head><body><div class="ok">
+<h2>{'Deleted' if removed_file or removed_rows else 'Nothing to delete'}</h2>
+<p><code>{safe}</code></p>
+<p>Archive file removed: <strong>{str(removed_file).lower()}</strong><br>
+Snapshot rows removed: <strong>{removed_rows}</strong></p>
+<p>Reopen the digest and press Snapshots to see the updated list.</p>
+<p><a href="javascript:window.close()" style="color:#7fb8ff">Close tab</a></p>
+</div></body></html>""")
+
     def do_POST(self):
         try:
             length = int(self.headers.get("Content-Length", 0))
         except (TypeError, ValueError):
             length = 0
-        body = json.loads(self.rfile.read(length).decode("utf-8")) if length else {}
+        raw = self.rfile.read(length) if length else b""
+
+        # Form-encoded, not JSON — handled before the JSON parse below.
+        if self.path == "/nepse_news/delete":
+            from urllib.parse import parse_qs
+            filename = parse_qs(raw.decode("utf-8")).get("file", [""])[0]
+            self._delete_news_snapshot(filename)
+            return
+
+        body = json.loads(raw.decode("utf-8")) if raw else {}
 
         if self.path == "/cagr":
             symbol     = body.get("symbol", "").strip().upper()
