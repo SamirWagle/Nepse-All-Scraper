@@ -1,0 +1,19 @@
+{
+  "date": "2026-08-02",
+  "present_pe": 21.01,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 22.75,
+  "shiller_pe": 25.28,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 18.91,
+  "historical_pe_avg": 18.41,
+  "historical_pe_median": 18.41,
+  "historical_pe_min": 9.69,
+  "historical_pe_max": 27.66,
+  "historical_pe_years": 9,
+  "read_vs_shiller": "cheap",
+  "read_vs_median": "expensive",
+  "verdict_lean": "HOLD",
+  "verdict_reason": "Mixed signal: cheap vs 10yr Shiller avg but expensive vs own historical median PE, sitting in upper-middle of its 9-year band.",
+  "devils_advocate": "Shiller PE is dragged up by the FY077-078 EPS spike (31.51, a one-off post-merger integration peak) - strip that outlier and 'cheap vs Shiller' likely flips to in-line, weakening the only bullish leg of this read."
+}
