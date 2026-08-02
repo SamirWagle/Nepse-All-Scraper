@@ -26,5 +26,13 @@
     "time": "18:18:30",
     "count": 3,
     "hash": "3c1c1c2f82bf3ab952060da13b87f5c6"
+  },
+  {
+    "timestamp": "2026-08-02T18:10:09.594146",
+    "date": "2026-08-02",
+    "time": "18:10:09",
+    "count": 4,
+    "hash": "6fe30121bc0dd134c9dc211c2df37213",
+    "file": "scan_swing_position_20260802_181009.html"
   }
 ]
