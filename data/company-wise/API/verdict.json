@@ -1,0 +1,19 @@
+{
+  "date": "2026-08-02",
+  "present_pe": 24.37,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 13.76,
+  "shiller_pe": 51.43,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 6.52,
+  "historical_pe_avg": 46.6,
+  "historical_pe_median": 44.23,
+  "historical_pe_min": 12.38,
+  "historical_pe_max": 79.9,
+  "historical_pe_years": 11,
+  "read_vs_shiller": "cheap",
+  "read_vs_median": "cheap",
+  "verdict_lean": "BUY-CASE",
+  "verdict_reason": "Present PE 24.4 sits well below both 10yr Shiller PE (51.4) and own historical median (44.2), close to the historically-cheap end of its range.",
+  "devils_advocate": "The FY082-83 EPS (13.76) is annualized off an unaudited Q3 YTD figure driven by the new 40MW Upper Chameliya plant ramping up — hydro generation is seasonal (dry-season Q4 output typically weaker), so full-year EPS may land below the naive annualization, making the 'cheap' present PE partly an artifact of extrapolating a strong wet-season quarter. Also the historical PE band includes construction-phase years (069-072) with near-zero/negative EPS that distort what 'cheap vs history' even means for this stock."
+}
