@@ -1,0 +1,80 @@
+{
+  "comparison_date": "2026-08-04",
+  "subject": "SBL",
+  "peers": ["NABIL", "EBL", "HBL"],
+  "sector": "Commercial Banks",
+  "companies": {
+    "SBL": {
+      "company_name": "Siddhartha Bank Limited",
+      "market_price": 420.0,
+      "as_of": "2026-08-03",
+      "pe_ratio": 23.84,
+      "pbv": 1.94,
+      "book_value_per_share": 216.73,
+      "dividend_pct_last_fy": 5.53,
+      "dividend_fy": "081-082",
+      "eps": 17.62,
+      "eps_fy": "082-083 Q3 (annualized)",
+      "npl_pct": 3.80,
+      "npl_fy": "082-083 (audited-trend, per NotebookLM SBL audited reports; unaudited Q3 pull showed 3.71%)",
+      "sources": ["merolagani.com", "sharesansar.com", "NotebookLM (SBL audited reports notebook)"]
+    },
+    "NABIL": {
+      "company_name": "Nabil Bank Limited",
+      "market_price": 559.0,
+      "as_of": "2026-08-04",
+      "pe_ratio": 16.77,
+      "pbv": 2.30,
+      "book_value_per_share": 243.30,
+      "dividend_pct_last_fy": 12.5,
+      "dividend_fy": "081-082",
+      "eps": 33.34,
+      "eps_fy": "082-083 Q3 (annualized)",
+      "npl_pct": 4.37,
+      "npl_fy": "082-083 Q3 (down from 4.96% prior year)",
+      "sources": ["merolagani.com", "sharesansar.com (Q3 FY082/83 quarterly analysis, published 2026-04-28)"]
+    },
+    "EBL": {
+      "company_name": "Everest Bank Limited",
+      "market_price": 730.0,
+      "as_of": "2026-08-03",
+      "pe_ratio": 22.57,
+      "pbv": 2.99,
+      "book_value_per_share": 244.27,
+      "dividend_pct_last_fy": 14.0,
+      "dividend_fy": "081-082",
+      "eps": 32.35,
+      "eps_fy": "082-083 Q3 (annualized)",
+      "npl_pct": 0.61,
+      "npl_fy": "082-083 Q3 (improved from 0.64% prior year)",
+      "sources": ["merolagani.com", "sharesansar.com (Q3 FY082/83 quarterly analysis, published 2026-04-27)"]
+    },
+    "HBL": {
+      "company_name": "Himalayan Bank Limited",
+      "market_price": 202.90,
+      "as_of": "2026-08-03",
+      "pe_ratio": 45.09,
+      "pbv": 1.18,
+      "book_value_per_share": 171.96,
+      "dividend_pct_last_fy": null,
+      "dividend_fy": null,
+      "eps": 4.50,
+      "eps_fy": "082-083 Q3 (annualized)",
+      "npl_pct": 7.28,
+      "npl_fy": "081-082 Q4 (last confirmed figure; FY082/83 Q3/Q4 NPL not yet independently re-verified this session)",
+      "sources": ["merolagani.com", "sharesansar.com (Q4 FY081/82 sector comparison, published 2025-08-17)"],
+      "caveat": "NPL figure is one FY older than the other three banks -- HBL's own FY082/83 quarterly NPL was not found in a free-tier source during this pull; recommend SS Pro login for a fresher number."
+    }
+  },
+  "sector_read": {
+    "pe": "SBL (23.84) trades above HBL (45.09 is an outlier on depressed EPS) and NABIL (16.77), close to EBL (22.57). SBL is mid-to-rich vs NABIL.",
+    "pbv": "SBL (1.94) cheaper than NABIL (2.30) and EBL (2.99), pricier than HBL (1.18).",
+    "npl": "EBL has by far the cleanest book (0.61%). SBL (3.80%) and NABIL (4.37%) are mid-pack. HBL (7.28%, though stale) remains the weakest asset quality among the four."
+  },
+  "notes": [
+    "SBL just published its FY2082/83 Q4 (year-end) unaudited results on 2026-08-04 (net profit Rs 3.51 Arba) -- EPS/PE/BVPS above are still the Q3 merolagani snapshot; Q4 ratios not yet reflected on merolagani/sharesansar free pages as of this pull.",
+    "NABIL and EBL NPL are fresh Q3 FY082/83 figures (most recent quarter with a published ratio in a free source).",
+    "HBL NPL is the oldest and weakest-sourced figure in this table -- flagged, not silently presented as current.",
+    "Verified across merolagani.com, sharesansar.com (2 independent article pulls per bank where available), and NotebookLM's SBL audited-reports notebook for the NPL trend."
+  ]
+}

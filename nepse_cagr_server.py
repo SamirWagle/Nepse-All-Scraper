@@ -49,6 +49,7 @@ _merger_meta_cache = None
 # ── Known listing dates (overrides scraper data) ───────────────────────────────
 LISTING_DATE_OVERRIDES = {
     "SPIL": "2023-04-03",
+    "SBL": "2006-02-24",
 }
 
 # ── Sub-index ticker aliases → data/index/{slug}/history.csv ──────────────────

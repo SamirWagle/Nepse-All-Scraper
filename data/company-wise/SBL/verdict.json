@@ -1,0 +1,19 @@
+{
+  "date": "2026-08-04",
+  "present_pe": 18.12,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 23.06,
+  "shiller_pe": 17.97,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 23.25,
+  "historical_pe_avg": 16.07,
+  "historical_pe_median": 15.41,
+  "historical_pe_min": 10.13,
+  "historical_pe_max": 25.93,
+  "historical_pe_years": 16,
+  "read_vs_shiller": "in-line",
+  "read_vs_median": "expensive",
+  "verdict_lean": "SELL-CASE",
+  "verdict_reason": "Present PE 18.12 sits above own 16yr median (15.41) and avg (16.07) while NPL is rising (2.62% -> 3.53% YoY) -- paying a premium for deteriorating asset quality.",
+  "devils_advocate": "SBL just raised Rs 3.5bn AT1 capital (PNCPS) mid-year -- market may be pricing in future loan-book growth headroom the trailing EPS doesn't show yet, which would justify a structural re-rating above its old history. Counter to that: NPL is moving the wrong direction at the same time, so the premium could equally be complacency rather than forward-looking capital deployment."
+}
