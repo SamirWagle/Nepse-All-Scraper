@@ -529,14 +529,16 @@ body { margin: 0; padding: 40px 24px; background: #1b1b1b; color: #ededed;
         border-radius: 8px; font-size: 15px; font-weight: 600; }
 .pill.on  { background: #102b1b; color: #4ade80; }
 .pill.off { background: #33161a; color: #f87171; }
-.card { border: 1px solid #333; border-radius: 12px; overflow-x: auto; scrollbar-width: thin; }
+.card { border: 1px solid #333; border-radius: 12px; overflow: auto; max-height: 75vh;
+        scrollbar-width: thin; }
 .card::-webkit-scrollbar { height: 8px; }
 .card::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
 table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
 th, td { padding: 12px 9px; text-align: right; white-space: nowrap;
          border-bottom: 1px solid #333; }
 tbody tr:last-child td { border-bottom: none; }
-th { color: #ededed; font-weight: 600; cursor: pointer; user-select: none; }
+th { color: #ededed; font-weight: 600; cursor: pointer; user-select: none;
+     position: sticky; top: 0; background: #1b1b1b; z-index: 1; }
 th:hover { color: #fff; }
 th:nth-child(-n+3), td:nth-child(-n+3) { text-align: left; }
 tbody tr:hover { background: #232323; }
@@ -578,6 +580,15 @@ a.snap-item:hover { background: #2a2a2a; border-color: #444; }
 .snap-now { border-color: #2f6b45; }
 .snap-now .snap-date::after { content: " CURRENT"; color: #4ade80; font-size: 12px; }
 .snap-empty { color: #8f8f8f; padding: 20px 0; }
+.track-cb { width: 17px; height: 17px; cursor: pointer; accent-color: #4a90e2; }
+.track-panel { display: none; margin-top: 18px; }
+.track-entry { padding: 16px 20px; margin-bottom: 10px; background: #1f2a1f;
+               border: 1px solid #2f6b45; border-radius: 10px; }
+.track-entry h3 { margin: 0 0 10px; font-size: 16px; color: #4ade80; }
+.track-entry pre { margin: 6px 0 0; padding: 10px 12px; background: #141414;
+                    border-radius: 6px; font-size: 13px; white-space: pre-wrap;
+                    word-break: break-word; color: #d4d4d4; }
+.track-entry .telegram-note { margin: 10px 0 0; font-size: 13px; color: #fbbf24; }
 @media print { body { background: #fff; color: #000; padding: 0; }
                 .callout { background: #fdf6e0; } th, td { border-color: #ccc; } }
 """
@@ -598,6 +609,58 @@ document.querySelectorAll('th').forEach(function (th, i) {
     rows.forEach(function (r) { tb.appendChild(r); });
   });
 });
+
+document.querySelectorAll('.track-cb').forEach(function (cb) {
+  cb.addEventListener('change', function () {
+    var panel = document.getElementById('track-panel');
+    var key = cb.dataset.ticker + '|' + cb.dataset.mode;
+    var existing = panel.querySelector('[data-key="' + key + '"]');
+    if (!cb.checked) {
+      if (existing) existing.remove();
+      panel.style.display = panel.children.length ? 'block' : 'none';
+      return;
+    }
+    var close = parseFloat(cb.dataset.close);
+    var buyStr = window.prompt(cb.dataset.ticker + ' (' + cb.dataset.mode + ') — buying price?', close);
+    if (buyStr === null) { cb.checked = false; return; }
+    var entry = parseFloat(buyStr);
+    if (isNaN(entry) || entry <= 0) {
+      window.alert('Not a valid price.');
+      cb.checked = false;
+      return;
+    }
+    var today = new Date().toISOString().slice(0, 10);
+    var dateStr = window.prompt('Date bought (YYYY-MM-DD)?', today);
+    if (dateStr === null) { cb.checked = false; return; }
+    // Same stop/target % this row already carries (mode's own ATR-derived
+    // stop and target, both computed once at scan time) — re-applied to the
+    // actual fill price instead of the scan-time close.
+    var stopPct = (close - parseFloat(cb.dataset.stop)) / close;
+    var targetPct = (parseFloat(cb.dataset.target) - close) / close;
+    var stop = (entry * (1 - stopPct)).toFixed(1);
+    var target = (entry * (1 + targetPct)).toFixed(1);
+    var cmd = 'python3 scripts/karma_alerts.py open ' + cb.dataset.ticker +
+      ' --mode ' + cb.dataset.mode + ' --entry ' + entry +
+      ' --opened ' + dateStr + ' --target-price ' + target;
+    var armCmd = 'python3 scripts/karma_alerts.py alerts on ' + cb.dataset.ticker;
+    if (existing) existing.remove();
+    var div = document.createElement('div');
+    div.className = 'track-entry';
+    div.dataset.key = key;
+    div.innerHTML =
+      '<h3>' + cb.dataset.ticker + ' — bought ' + entry + ' on ' + dateStr + '</h3>' +
+      'Stop <b>' + stop + '</b> &middot; Target <b>' + target + '</b><br>' +
+      'Run this to record it:<pre>' + cmd + '</pre>' +
+      'Then arm alerts:<pre>' + armCmd + '</pre>' +
+      '<p class="telegram-note">&#9888; Set up Telegram before arming, or the ' +
+      'stop/target alarm has nowhere to send: export KARMA_TELEGRAM_TOKEN and ' +
+      'KARMA_TELEGRAM_CHAT_ID wherever `karma_alerts.py watch` actually runs ' +
+      '(cron does not read your shell env). Test with ' +
+      '<code>python3 scripts/karma_alerts.py test-telegram</code>.</p>';
+    panel.appendChild(div);
+    panel.style.display = 'block';
+  });
+});
 """
 
 # Column key -> (header label, sortable raw value extractor). Percent/ratio
@@ -606,7 +669,7 @@ document.querySelectorAll('th').forEach(function (th, i) {
 REPORT_COLUMNS = [
     ("ticker", "Ticker"), ("mode", "Mode"), ("score", "Score"), ("close", "Close"),
     ("stop", "Stop"), ("target", "Target"), ("rewd:risk", "Rwd:risk"), ("rsi", "RSI"),
-    ("adx", "ADX"), ("%of52wH", "%of52wH"),
+    ("adx", "ADX"), ("%of52wH", "%of52wH"), ("track", "Track"),
 ]
 
 
@@ -623,6 +686,20 @@ def _sort_value(raw) -> str:
 def _report_row(row: dict) -> str:
     cells = []
     for key, _ in REPORT_COLUMNS:
+        if key == "track":
+            # Raw (unformatted) numbers for the JS handler — stop%/target% are
+            # re-derived client-side from THIS row's own close/stop/target, so
+            # the personalized levels stay consistent with the scan that
+            # produced them instead of duplicating the ATR/mode math in JS.
+            cells.append(
+                f'<td class="track-cell" data-v="0">'
+                f'<input type="checkbox" class="track-cb" '
+                f'data-ticker="{html.escape(str(row["ticker"]))}" '
+                f'data-mode="{html.escape(str(row["mode"]))}" '
+                f'data-close="{row["close"]}" data-stop="{row["stop"]}" '
+                f'data-target="{row["target"]}"></td>'
+            )
+            continue
         val = row[key]
         sort_v = html.escape(_sort_value(val), quote=True)
         if key == "ticker":
@@ -782,6 +859,7 @@ def write_html_report(out: pd.DataFrame, mode_names: list[str], regime: bool,
   <label for="snap-toggle" class="snap-btn">&#128248; Snapshots</label>
 </div>
 <div class="card"><table><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>
+<div id="track-panel" class="track-panel"></div>
 <div class="callout">{_odds_block(mode_names)}</div>
 </div><script>{REPORT_JS}</script></body></html>
 """
