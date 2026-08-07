@@ -1,0 +1,43 @@
+{
+  "symbol": "KHPL",
+  "company_name": "Kalinchock Hydropower Limited (KHPL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 5500000.0,
+  "market_price": 816.0,
+  "percent_change": -0.24,
+  "last_traded_on": "2026/08/07 02:59:36",
+  "high_52w": 1324.8,
+  "low_52w": 300.0,
+  "avg_180d": 882.07,
+  "avg_120d": 882.07,
+  "year_yield_pct": 0.0,
+  "eps": 0.29,
+  "eps_fy": "082-083",
+  "pe_ratio": 2813.79,
+  "book_value": 105.5,
+  "pbv": 7.73,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 16612.0,
+  "market_cap": 4488000000.0,
+  "scraped_at": "2026-08-08T01:45:39",
+  "source": "merolagani.com",
+  "promoter_shares": 4125000.0,
+  "public_shares": 1375000.0,
+  "promoter_pct": 75.0,
+  "public_pct": 25.0,
+  "all_time_high": 1324.8,
+  "all_time_high_date": "2026-06-11T00:00:00",
+  "paid_up_capital": 550000000.0,
+  "net_profit": 1595000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "1595000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "105.5",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 import sys
 import os
 import argparse
+from pathlib import Path
 
 # Ensure scraper package is importable
 # Add the 'scraper' directory to Python path if not already there
@@ -20,6 +21,8 @@ def main():
     parser.add_argument("--skip-mergers", action="store_true", help="Skip refreshing the merger registry during the daily run.")
     parser.add_argument("--skip-index", action="store_true", help="Skip the NEPSE index/sub-index history scrape.")
     parser.add_argument("--skip-alerts", action="store_true", help="Skip the Karma position-alarm check.")
+    parser.add_argument("--skip-floorsheet", action="store_true", help="Skip today's floorsheet scrape.")
+    parser.add_argument("--skip-corporate-actions", action="store_true", help="Skip the dividend and right-share scrapes.")
 
     args = parser.parse_args()
     
@@ -39,7 +42,6 @@ def main():
 
     # Sync listing dates for any new symbols not yet in ipo_listings.csv
     print("\nChecking for new symbols missing listing dates...")
-    from pathlib import Path
     sys.path.insert(0, str(Path(__file__).parent.parent))
     from scraper.core.listing_date import ShareHubListingDateScraper
     listing_scraper = ShareHubListingDateScraper()
@@ -53,8 +55,46 @@ def main():
     repo = Path(__file__).parent.parent
     if not args.skip_index:
         run_step("index history", [sys.executable, str(repo / "scraper" / "index_history.py"), "--all"])
+
+    # Floorsheet used to run only in GitHub Actions. That workflow stopped
+    # committing on 2026-05-09 and nobody noticed for three months, so the
+    # local cron owns it now — the CI step is a harmless duplicate if it runs.
+    #
+    # The scraper stamps every row with today's date rather than the trade date
+    # on the page, so running it when the market was closed files yesterday's
+    # trades under today. Only run it on a day that actually traded.
+    if not args.skip_floorsheet:
+        if _market_traded_today(repo):
+            run_step("floorsheet", [sys.executable, str(repo / "scraper" / "run_github_actions.py"), "--floorsheet"])
+        else:
+            print("\n=== floorsheet ===\nSkipped: no trades recorded for today (market closed).")
+
+    # Dividends and right shares were CI-only too, so they died with the
+    # workflow on 2026-05-09 alongside the floorsheet. Same treatment.
+    runner = str(repo / "scraper" / "run_github_actions.py")
+    if not args.skip_corporate_actions:
+        run_step("dividends", [sys.executable, runner, "--dividends"])
+        run_step("right shares", [sys.executable, runner, "--right-shares"])
+
     if not args.skip_alerts:
         run_step("karma alerts", [sys.executable, str(repo / "scripts" / "karma_alerts.py"), "watch"])
+
+    # Last word of the run: what is current and what is not. A step that dies
+    # quietly still shows up here as a stale product.
+    run_step("data freshness", [sys.executable, str(repo / "scripts" / "data_freshness.py")])
+
+
+def _market_traded_today(repo: Path) -> bool:
+    """True if the prices just scraped carry today's date."""
+    from datetime import date
+
+    sys.path.insert(0, str(repo / "scripts"))
+    try:
+        from data_freshness import _newest_price_date
+    except Exception as exc:
+        print(f"WARNING: could not check trading day ({exc}); assuming market traded.")
+        return True
+    return _newest_price_date() == date.today()
 
 
 def run_step(name: str, cmd: list) -> None:

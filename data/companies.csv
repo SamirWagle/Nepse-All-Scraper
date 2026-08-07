@@ -9,6 +9,7 @@ AKPL,Arun Kabeli Power Limited
 ALBSL,Asha Laghubitta Bittiya Sanstha Limited
 ALICL,Asian Life Insurance Company Limited
 ANLB,Aatmanirbhar Laghubitta Bittiya Sanstha Limited
+APHL,Apex Hospitality Limited
 API,Api Power Company Limited
 AVYAN,Aviyan Laghubitta Bittiya Sanstha Limited
 BANDIPUR,Bandipur Cable Car and Tourism Limited
@@ -21,6 +22,7 @@ BHCL,Bikash Hydropower Company Limited
 BHDC,Bindhyabasini Hydropower Development Company Limited
 BHL,Balephi Hydropower Limited
 BHPL,Barahi Hydropower Public Limited
+BJHL,Bhujung Hydropower Limited
 BNHC,Buddha Bhumi Nepal Hydropower Company Limited
 BNL,Bottlers Nepal Limited (Balaju)
 BNT,Bottlers Nepal (Terai) Limited
@@ -30,6 +32,7 @@ BPCL,Butwal Power Company Limited
 BUNGAL,Bungal Hydro Limited
 C30MF,Citizens Super 30 Mutual Fund
 CBBL,Chhimek Laghubitta Bittiya Sanstha Limited
+CBLD88,10.25% Civil Bank Debenture 2088
 CCBD88,10.50% Century Debenture 2088
 CFCL,Central Finance Limited
 CGH,Chandragiri Hills Limited
@@ -45,8 +48,10 @@ CLI,Citizen Life Insurance Company Limited
 CMF2,2
 CORBL,Corporate Development Bank Limited
 CREST,Crest Micro Life Insurance Limited
+CSY,Citizens Santulit Yojana
 CYCL,CYC Nepal Laghubitta Bittiya Sanstha Limited
 CZBIL,Citizens Bank International Limited
+CZBILP,Citizens Bank International Limited Promoter Share
 DDBL,Deprosc Laghubitta Bittiya Sanstha Limited
 DHEL,Daramkhola Hydro Energy Limited
 DHPL,Dibyashwari Hydropower Company Limited
@@ -54,7 +59,9 @@ DLBS,Dhaulagiri Laghubitta Bittiya Sanstha Limited
 DOLTI,Dolti Power Company Ltd
 DORDI,Dordi Khola Hydropower Company Limited
 EBL,Everest Bank Limited
+EBLD85,10.5% Everest Bank Ltd Rinpatra 2085
 EBLD91,7.50% Everest Bank Limited Debenture 2091
+ECL,Everest Colour Limited
 EDBL,Excel Development Bank Limited
 EHPL,Eastern Hydropower Limited
 ENL,Emerging Nepal Limited
@@ -88,6 +95,7 @@ HDHPC,Himal Dolakha Hydropower Company Limited
 HDL,Himalayan Distillery Limited
 HEI,Himalayan Everest Insurance Limited
 HEIP,Himalayan Everest Insurance Limited Promoter
+HFIN,Hotel Forest Inn Limited
 HHL,Himalayan Hydropower Limited
 HIDCL,Hydroelectricity Investment and Development Company Limited
 HIDCLP,Hydroelectricity Investment and Development Company Limited Promoter Share
@@ -100,6 +108,7 @@ HRL,Himalayan Reinsurance Limited
 HURJA,Himalaya Urja Bikas Company Limited
 ICFC,ICFC Finance Limited
 ICFCD88,9% ICFC Finance Limited Debenture 2088
+ICFCD89,8% ICFC Finance Limited Debenture 2089
 IGI,IGI Prudential Insurance Limited
 IHL,Ingwa Hydropower Ltd
 ILBS,Infinity Laghubitta Bittiya Sanstha Limited
@@ -111,20 +120,25 @@ JFL,Janaki Finance Company Limited
 JHAPA,Jhapa Energy Limited
 JOSHI,Joshi Hydropower Development Company Limited
 JSLBB,Janautthan Samudayic Laghubitta Bittiya Sanstha Limited
+KAHL,Kalanga Hydro Limited
 KBL,Kumari Bank Limited
+KBLD89,11% KBL Debenture 2089
 KBSH,Kutheli Bukhari Small Hydropower Limited
 KDBY,Kumari Dhanabriddhi Yojana
 KDL,Kalinchowk Darshan Limited
 KEF,Kumari Equity Fund
+KHPL,Kalinchowk Hydropower Limited
 KKHC,Khani Khola Hydropower Company Limited
 KMCDB,Kalika Laghubitta Bittiya Sanstha Limited
 KPCL,Kalika Power Company Limited
 KSBBL,Kamana Sewa Bikas Bank Limited
 KSY,Kumari Sabal Yojana
 LBBL,Lumbini Bikas Bank Limited
+LBBLD89,11% LBBL Debenture 2089
 LEC,Liberty Energy Company Limited
 LICN,Life Insurance Corporation Nepal Limited
 LLBS,Laxmi Laghubitta Bittiya Sanstha Limited
+LSH12,LS Horizon 12
 LSL,Laxmi Sunrise Bank Limited
 LUK,Laxmi Unnati Kosh
 LVF2,II
@@ -208,16 +222,19 @@ NRIC,Nepal Reinsurance Company Limited
 NRM,Nepal Republic Media Limited
 NRN,NRN Infrastructure and Development Limited
 NSIF2,II
+NSY,Nepal Life Samriddhi Lagani Yojana
 NTC,Nepal Doorsanchar Company Limited
 NUBL,Nirdhan Utthan Laghubitta Bittiya Sanstha Limited
 NWCL,Nepal Warehousing Company Limited
 NYADI,Nyadi Hydropower Limited
 OHL,Oriental Hotel Limited
 OMPL,Om Megashree Pharmaceuticals Limited
+PBD84,10.15% Prime Debenture 2084
 PBD88,10% Prime Debenture 2088
 PBLD84,10% Prabhu Bank Debenture 2084 (PBLD84)
 PBLD87,8.5% Prabhu Bank Debenture 2087
 PCBL,Prime Commercial Bank Limited
+PCIL,Palpa Cements Industries Limited
 PFL,Pokhara Finance Limited
 PHCL,Peoples Hydropower Company Limited
 PMHPL,Panchakanya Mai Hydropower Limited
@@ -241,15 +258,18 @@ RFPL,River Falls Power Limited
 RHGCL,Rapti Hydro & General Construction Limited
 RHPL,Rasuwagadhi Hydropower Company Limited
 RIDI,Ridi Power Company Limited
+RLEL,Ridge Line Energy Limited
 RLFL,Reliance Finance Limited
 RMF1,RBB Mutual Fund 1
 RMF2,RBB Mutual Fund 2
 RNLI,Reliable Nepal Life Insurance Limited
 RSDC,RSDC Laghubitta Bittiya Sanstha Limited
+RSML,Reliance Spinning Mills Limited
 RSY,Reliable Samriddhi Yojana
 RURU,Ru Ru Jalbidhyut Pariyojana Limited
 SABBL,Salapa Bikas Bank Limited
 SADBL,Shangrila Development Bank Limited
+SAEF2,Sanima Equity Fund II
 SAGAR,Sagar Distillery Limited
 SAGF,Sanima Growth Fund
 SAHAS,Sahas Urja Limited
@@ -269,10 +289,12 @@ SBLD2091,7.25% SBL Debenture 2091
 SCB,Standard Chartered Bank Nepal Limited
 SDBD87,"9% Shangrila Development Bank Debenture, 2087"
 SEF,Siddhartha Equity Fund
+SEF2,Siddhartha Equity Fund 2
 SFCL,Samriddhi Finance Company Limited (former World Merchant Banking)
 SFEF,Sunrise Focused Equity Fund
 SFMF,Sunrise First Mutual Fund
 SGHC,Ganga Hydropower & Construction Limited
+SGHL,Sanigad Hydro Limited
 SGIC,Sanima GIC Insurance Limited
 SHEL,Singati Hydro Energy Limited
 SHINE,Shine Resunga Development Bank Limited
@@ -286,10 +308,14 @@ SIFC,Shree Investment Finance Company Limited
 SIGS2,2
 SIGS3,Siddhartha Investment Growth Scheme 3
 SIKLES,Sikles Hydropower Limited
+SIL,Siddhartha Insurance Limited
 SINDU,Sindhu Bikas Bank Limited
+SIPD,Shikhar Power Development Limited
 SJCL,Sanjen Jalavidhyut Company Limited
 SJLIC,SuryaJyoti Life Insurance Company Limited
 SKBBL,Sana Kisan Bikas Laghubitta Bittiya Sanstha Limited
+SKHEL,Suryakunda Hydro Electric Limited
+SKHL,Super Khudi Hydropower Limited
 SLBBL,Swarojgar Laghubitta Bittiya Sanstha Limited
 SLBSL,Samudayik Laghubitta Bittiya Sanstha Limited
 SLCF,Sanima Large Cap Fund
@@ -301,7 +327,10 @@ SMHL,Super Madi Hydropower Limited
 SMJC,Sagarmatha Jalbidhyut Company Limited
 SMPDA,Sampada Laghubitta Bittiya Sanstha Limited
 SNLI,Sun Nepal Life Insurance Company Limited
+SNORL,Snow Rivers Limited
+SOHL,Solu Hydropower Limited
 SONA,Sonapur Minerals and Oil Limited
+SOPL,Sopan Pharmaceuticals Limited
 SPC,Samling Power Company Limited
 SPDL,Synergy Power Development Limited
 SPHL,Sayapatri Hydropower Limited
@@ -316,6 +345,7 @@ SWMF,Suryodaya Womi Laghubitta Bittiya Sanstha Limited
 SYPNL,SY Panel Nepal Limited
 TAMOR,Sanima Middle Tamor Hydropower Limited
 TPC,Terhathum Power Company Limited
+TPKHL,Taksar Pikhuwa Khola Hydropower Limited
 TRH,Taragaon Regency Hotel Limited
 TSHL,Three Star Hydropower Limited
 TTL,Trade Tower Limited
@@ -337,4 +367,4 @@ USLB,Unnati Sahakarya Laghubitta Bittiya Sanstha Limited
 VLBS,Vijaya Laghubitta Bittiya Sanstha Limited
 VLUCL,Vision Lumbini Urja Company Limited
 WNLB,Wean Nepal Laghubitta Bittiya Sanstha Limited
-SIL,Siddhartha Insurance Limited
+YMHL,Yambaling Hydropower Limited

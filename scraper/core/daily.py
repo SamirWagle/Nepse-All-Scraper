@@ -47,8 +47,7 @@ class DailyScraperManager:
         list_path = self.data_dir / "company_list.json"
         if not list_path.exists():
             logger.warning("company_list.json not found — falling back to all mapped companies.")
-            mapping = self.price_scraper._load_company_id_map(force_update=True)
-            return set(mapping.keys())
+            return self.get_all_companies()
 
         with open(list_path) as f:
             return set(json.load(f))
@@ -144,13 +143,31 @@ class DailyScraperManager:
             sys.exit(1)
 
         try:
-            self._run_daily_update_inner(check_new_only=check_new_only, force_full=force_full, priority_only=priority_only)
+            self._run_daily_update_inner(
+                check_new_only=check_new_only,
+                force_full=force_full,
+                priority_only=priority_only,
+                update_mergers=update_mergers,
+            )
         finally:
             fcntl.flock(lock_fh, fcntl.LOCK_UN)
             lock_fh.close()
 
-    def _run_daily_update_inner(self, check_new_only=False, force_full=False, priority_only=True):
+    def _run_daily_update_inner(self, check_new_only=False, force_full=False, priority_only=True, update_mergers=True):
         logger.info("=== Daily Update Started ===")
+
+        # Refresh the symbol registry first so new IPOs are searchable in the app
+        # even before their price history exists. Best-effort, never fatal.
+        logger.info("--- Refreshing company registry ---")
+        try:
+            import sys as _sys
+            _scraper_dir = str(Path(__file__).resolve().parent.parent)
+            if _scraper_dir not in _sys.path:
+                _sys.path.insert(0, _scraper_dir)
+            from refresh_company_registry import refresh as _refresh_registry
+            _refresh_registry()
+        except Exception as e:
+            logger.error(f"Company registry refresh failed: {e}")
 
         target = self.get_priority_companies() if priority_only else self.get_all_companies()
         logger.info(f"Priority companies: {len(target)}")
@@ -195,21 +212,9 @@ class DailyScraperManager:
         else:
             logger.info("--- Skipping interest rates (not month-end) ---")
 
-        # Incrementally update all sub-index history CSVs daily
-        logger.info("--- Updating index/sub-index history ---")
-        try:
-            import sys as _sys
-            _scraper_dir = str(Path(__file__).resolve().parent.parent)
-            if _scraper_dir not in _sys.path:
-                _sys.path.insert(0, _scraper_dir)
-            from index_history import run_all as _run_index_history_all
-            _run_index_history_all(
-                from_date=None, to_date=None,
-                data_dir=str(self.data_dir.parent),
-                incremental=True,
-            )
-        except Exception as e:
-            logger.error(f"Index history scrape failed: {e}")
+        # Index history is scraped by run_daily.py's "index history" step, which
+        # runs the identical call (--all == run_all(None, None, incremental=True)).
+        # It used to run here too, so every daily job scraped all 18 indices twice.
 
         logger.info("=== Daily Update Completed ===")
         if failed_count > 0:

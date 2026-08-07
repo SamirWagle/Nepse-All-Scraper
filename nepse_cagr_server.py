@@ -40,6 +40,7 @@ from nepse_cagr import (
 )
 
 import pandas as pd
+from instrument_type import is_equity
 from scraper.core.listing_date import ShareHubListingDateScraper
 from scraper.core.fundamentals import MerolaganiFundamentalsScraper
 _listing_scraper = ShareHubListingDateScraper()
@@ -226,6 +227,14 @@ def _load_companies() -> list:
     companies = []
     seen = set()
 
+    def _add(sym: str, name: str | None) -> None:
+        """Register an ordinary share; skip debentures, bonds, funds, promoter shares."""
+        label = name or sym
+        if not is_equity(label):
+            return
+        companies.append({"symbol": sym, "name": label})
+        seen.add(sym)
+
     # Primary source: full mapping, including merged/delisted companies.
     for sym in sorted(mapping.keys()):
         name = names.get(sym)
@@ -237,14 +246,12 @@ def _load_companies() -> list:
                     name = str(match.iloc[0]["name"])
             except Exception:
                 pass
-        companies.append({"symbol": sym, "name": name or sym})
-        seen.add(sym)
+        _add(sym, name)
 
     # Backfill any names that exist in company_names.json but not mapping.
     for sym, name in names.items():
         if sym not in seen:
-            companies.append({"symbol": sym, "name": name or sym})
-            seen.add(sym)
+            _add(sym, name)
 
     _companies_cache = companies
     return _companies_cache

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
+import re
 import time
 import logging
 import random
@@ -11,6 +12,19 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+
+def _clean_date(value):
+    """Return a real YYYY-MM-DD string, or None for a source's 'no data' filler.
+
+    ShareHubNepal renders an unknown listing date as "-". That is truthy, so it
+    suppressed the Sharepaati fallback and then got written to ipo_listings.csv
+    as if it were a date.
+    """
+    text = str(value or "").strip()
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+        return None
+    return text
 
 
 class ShareHubListingDateScraper:
@@ -80,12 +94,18 @@ class ShareHubListingDateScraper:
         listing), so we override with the first-trade date and log a warning.
         Returns date string (YYYY-MM-DD) or None if not found.
         """
-        scraped = self._fetch_from_sharehub(symbol)
+        scraped = _clean_date(self._fetch_from_sharehub(symbol))
         if not scraped:
             logger.info(f"  {symbol}: ShareHubNepal miss — trying Sharepaati")
-            scraped = self._fetch_from_sharepaati(symbol)
+            scraped = _clean_date(self._fetch_from_sharepaati(symbol))
 
         if not scraped:
+            # Both sources blank. For a recent listing the first observed trade
+            # IS the listing date, and it always beats storing a placeholder.
+            first_trade = self._first_trade_date(symbol)
+            if first_trade:
+                logger.info(f"  {symbol}: no source date — using first trade {first_trade}")
+                return first_trade
             return None
 
         # Cross-check against prices.csv first row (ground truth)
@@ -192,7 +212,11 @@ class ShareHubListingDateScraper:
         existing = self._load_existing()
         logger.info(f"Already have {len(existing)} symbols in ipo_listings.csv.")
 
-        to_fetch = [s for s in symbols if s not in existing] if skip_existing else symbols
+        # A failed lookup is stored as "-", and treating that as "already have
+        # it" made the failure permanent — SOHL stayed blank because the only
+        # attempt to resolve it came back empty. Retry those placeholders.
+        resolved = {s for s, d in existing.items() if str(d).strip() not in ("", "-")}
+        to_fetch = [s for s in symbols if s not in resolved] if skip_existing else symbols
         logger.info(f"Fetching {len(to_fetch)} symbols...")
 
         newly_fetched = {}

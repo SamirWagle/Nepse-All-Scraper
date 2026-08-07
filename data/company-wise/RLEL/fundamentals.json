@@ -1,0 +1,43 @@
+{
+  "symbol": "RLEL",
+  "company_name": "Ridge Line Energy Limited (RLEL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 11850000.0,
+  "market_price": 890.0,
+  "percent_change": 0.45,
+  "last_traded_on": "2026/08/07 02:59:50",
+  "high_52w": 1592.3,
+  "low_52w": 300.0,
+  "avg_180d": 928.32,
+  "avg_120d": 975.0,
+  "year_yield_pct": 0.0,
+  "eps": 10.57,
+  "eps_fy": "082-083",
+  "pe_ratio": 84.2,
+  "book_value": 125.06,
+  "pbv": 7.12,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 12298.0,
+  "market_cap": 10546500000.0,
+  "scraped_at": "2026-08-08T02:01:00",
+  "source": "merolagani.com",
+  "promoter_shares": 9243000.0,
+  "public_shares": 2607000.0,
+  "promoter_pct": 78.0,
+  "public_pct": 22.0,
+  "all_time_high": 1592.3,
+  "all_time_high_date": "2026-04-21T00:00:00",
+  "paid_up_capital": 1185000000.0,
+  "net_profit": 125254500.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "125254500.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "125.06",
+      "dividend_pct": ""
+    }
+  ]
+}

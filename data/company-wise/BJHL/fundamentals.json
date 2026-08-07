@@ -1,0 +1,43 @@
+{
+  "symbol": "BJHL",
+  "company_name": "Bhujung Hydropower Limited (BJHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 10000000.0,
+  "market_price": 694.0,
+  "percent_change": -1.42,
+  "last_traded_on": "2026/08/07 02:59:59",
+  "high_52w": 1305.0,
+  "low_52w": 270.1,
+  "avg_180d": 850.46,
+  "avg_120d": 894.32,
+  "year_yield_pct": 0.0,
+  "eps": -3.26,
+  "eps_fy": "082-083",
+  "pe_ratio": -212.88,
+  "book_value": 88.82,
+  "pbv": 7.81,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 10652.0,
+  "market_cap": 6940000000.0,
+  "scraped_at": "2026-08-08T01:34:28",
+  "source": "merolagani.com",
+  "promoter_shares": 8000000.0,
+  "public_shares": 2000000.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 1305.0,
+  "all_time_high_date": "2026-04-15T00:00:00",
+  "paid_up_capital": 1000000000.0,
+  "net_profit": -32600000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-32600000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "88.82",
+      "dividend_pct": ""
+    }
+  ]
+}

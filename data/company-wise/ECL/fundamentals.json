@@ -1,0 +1,42 @@
+{
+  "symbol": "ECL",
+  "company_name": "Everest Colour Limited (ECL)",
+  "sector": "Manufacturing And Processing",
+  "shares_outstanding": 3000000.0,
+  "market_price": 1665.0,
+  "percent_change": 3.29,
+  "last_traded_on": "2026/08/07 02:59:57",
+  "high_52w": 1980.0,
+  "low_52w": 296.6,
+  "avg_180d": 998.18,
+  "avg_120d": 998.18,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "083-084",
+  "pe_ratio": null,
+  "book_value": 100.0,
+  "pbv": 16.65,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 20062.0,
+  "market_cap": 4995000000.0,
+  "scraped_at": "2026-08-08T01:38:33",
+  "source": "merolagani.com",
+  "promoter_shares": 2210000.0,
+  "public_shares": 790000.0,
+  "promoter_pct": 73.67,
+  "public_pct": 26.33,
+  "all_time_high": 1980.0,
+  "all_time_high_date": "2026-08-05T00:00:00",
+  "paid_up_capital": 300000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "083-084",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    }
+  ]
+}

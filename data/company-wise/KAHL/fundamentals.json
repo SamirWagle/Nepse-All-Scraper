@@ -1,0 +1,43 @@
+{
+  "symbol": "KAHL",
+  "company_name": "Kalanga Hydro Limited (KAHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 14000000.0,
+  "market_price": 542.2,
+  "percent_change": -2.22,
+  "last_traded_on": "2026/08/07 02:59:56",
+  "high_52w": 613.0,
+  "low_52w": 295.4,
+  "avg_180d": 511.67,
+  "avg_120d": 511.67,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "082-083",
+  "pe_ratio": null,
+  "book_value": 100.0,
+  "pbv": 5.42,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 54146.0,
+  "market_cap": 7590800000.0,
+  "scraped_at": "2026-08-08T01:44:25",
+  "source": "merolagani.com",
+  "promoter_shares": 9100000.0,
+  "public_shares": 4900000.0,
+  "local_shares": 1400000.0,
+  "promoter_pct": 65.0,
+  "public_pct": 35.0,
+  "all_time_high": 613.0,
+  "all_time_high_date": "2026-07-24T00:00:00",
+  "paid_up_capital": 1400000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    }
+  ]
+}

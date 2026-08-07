@@ -1,0 +1,43 @@
+{
+  "symbol": "HFIN",
+  "company_name": "Hotel Forest Inn Limited (HFIN)",
+  "sector": "Hotels And Tourism",
+  "shares_outstanding": 20000000.0,
+  "market_price": 699.0,
+  "percent_change": -1.41,
+  "last_traded_on": "2026/08/07 02:59:58",
+  "high_52w": 1450.6,
+  "low_52w": 101.7,
+  "avg_180d": 759.92,
+  "avg_120d": 865.17,
+  "year_yield_pct": 0.0,
+  "eps": -3.6,
+  "eps_fy": "082-083",
+  "pe_ratio": -194.17,
+  "book_value": 110.51,
+  "pbv": 6.33,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 33047.0,
+  "market_cap": 13980000000.0,
+  "scraped_at": "2026-08-08T01:42:15",
+  "source": "merolagani.com",
+  "promoter_shares": 16000000.0,
+  "public_shares": 4000000.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 1450.6,
+  "all_time_high_date": "2026-04-21T00:00:00",
+  "paid_up_capital": 2000000000.0,
+  "net_profit": -72000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-72000000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "110.51",
+      "dividend_pct": ""
+    }
+  ]
+}

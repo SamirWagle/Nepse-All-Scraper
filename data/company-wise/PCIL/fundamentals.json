@@ -1,0 +1,43 @@
+{
+  "symbol": "PCIL",
+  "company_name": "Palpa Cement Industries Limited (PCIL)",
+  "sector": "Manufacturing And Processing",
+  "shares_outstanding": 37500000.0,
+  "market_price": 622.3,
+  "percent_change": -2.0,
+  "last_traded_on": "2026/08/07 02:59:57",
+  "high_52w": 1280.0,
+  "low_52w": 300.0,
+  "avg_180d": 723.81,
+  "avg_120d": 723.81,
+  "year_yield_pct": 0.0,
+  "eps": 2.04,
+  "eps_fy": "082-083",
+  "pe_ratio": 305.05,
+  "book_value": 129.58,
+  "pbv": 4.8,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 44044.0,
+  "market_cap": 23336250000.0,
+  "scraped_at": "2026-08-08T01:58:45",
+  "source": "merolagani.com",
+  "promoter_shares": 30000000.0,
+  "public_shares": 7500000.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 1280.0,
+  "all_time_high_date": "2026-04-28T00:00:00",
+  "paid_up_capital": 3750000000.0,
+  "net_profit": 76500000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "76500000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "129.58",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "symbol": "SOHL",
+  "company_name": "Solu Hydropower Limited  (SOHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 100000000.0,
+  "market_price": 688.0,
+  "percent_change": 3.93,
+  "last_traded_on": "2026/08/07 02:59:59",
+  "high_52w": 875.5,
+  "low_52w": 300.0,
+  "avg_180d": 647.44,
+  "avg_120d": 662.1,
+  "year_yield_pct": 0.0,
+  "eps": 11.44,
+  "eps_fy": "082-083Q3",
+  "pe_ratio": 60.14,
+  "book_value": 100.0,
+  "pbv": 6.88,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 177898.0,
+  "market_cap": 68800000000.0,
+  "scraped_at": "2026-08-08T01:29:53",
+  "source": "merolagani.com",
+  "eps_source": "nepsealpha.com (EPS TTM)",
+  "promoter_shares": 80000000.0,
+  "public_shares": 20000000.0,
+  "local_shares": 10000000.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 875.5,
+  "all_time_high_date": "2026-04-20T00:00:00",
+  "paid_up_capital": 10000000000.0,
+  "net_profit": 1144000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083Q3",
+      "net_profit": "1144000000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    },
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "symbol": "CSY",
+  "company_name": "Citizens Santulit Yojana (CSY)",
+  "sector": "Mutual Fund",
+  "shares_outstanding": 12500000.0,
+  "market_price": 8.85,
+  "percent_change": -1.88,
+  "last_traded_on": "2026/08/07 02:58:00",
+  "high_52w": 10.0,
+  "low_52w": 8.78,
+  "avg_180d": 9.32,
+  "avg_120d": 9.27,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "082-083",
+  "pe_ratio": null,
+  "book_value": 0.0,
+  "pbv": 0.0,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 8213.0,
+  "market_cap": 110625000.0,
+  "scraped_at": "2026-08-08T01:37:16",
+  "source": "merolagani.com",
+  "promoter_shares": 125000000.0,
+  "public_shares": 0.0,
+  "promoter_pct": 100.0,
+  "public_pct": 0.0,
+  "all_time_high": 10.0,
+  "all_time_high_date": "2026-02-17T00:00:00",
+  "paid_up_capital": 1250000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "0.0",
+      "dividend_pct": ""
+    }
+  ]
+}

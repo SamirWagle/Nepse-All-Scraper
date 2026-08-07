@@ -182,6 +182,44 @@ def _read_financial_history(symbol_dir: Path) -> list:
         return []
 
 
+def _apply_eps_fallback(result, company_dir):
+    """Fill EPS/P-E from the NepseAlpha quarterly file when Merolagani has none.
+
+    Merolagani reports EPS 0.00 until a company files a full year after listing,
+    and a literal 0.00 P/E is worse than no answer — it reads as a real ratio.
+    NepseAlpha publishes EPS TTM from the quarterlies, which covers exactly the
+    newly listed companies Merolagani leaves blank (SOHL: EPS TTM 11.44).
+
+    Anything still unknown becomes None so the UI renders an em dash.
+    """
+    if result.get("eps"):
+        return
+
+    quarterly_path = Path(company_dir) / "nepsealpha_quarterly.json"
+    eps_ttm = None
+    if quarterly_path.exists():
+        try:
+            quarterly = json.loads(quarterly_path.read_text())
+            eps_ttm = quarterly.get("eps_ttm")
+            latest_quarter = quarterly.get("latest_quarter")
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.warning("Could not read %s: %s", quarterly_path, exc)
+
+    if eps_ttm and eps_ttm > 0:
+        result["eps"] = eps_ttm
+        result["eps_fy"] = latest_quarter or result.get("eps_fy")
+        result["eps_source"] = "nepsealpha.com (EPS TTM)"
+        price = result.get("market_price")
+        if price:
+            result["pe_ratio"] = round(price / eps_ttm, 2)
+        return
+
+    # No EPS anywhere: report unknown rather than zero.
+    result["eps"] = None
+    if not result.get("pe_ratio"):
+        result["pe_ratio"] = None
+
+
 def _fetch_shareholding(symbol, session, timeout=15):
     """Scrape promoter/public share counts and financial metrics from ShareHubNepal.
 
@@ -207,20 +245,36 @@ def _fetch_shareholding(symbol, session, timeout=15):
 
         promoter = _num("promoterShares")
         public = _num("publicShares")
+        # Hydropower IPOs carry a project-affected-locals tranche that
+        # ShareHubNepal reports separately. Ignoring it made promoter+public
+        # fall short of listedShares, so the mismatch guard below discarded
+        # good data for 91 hydropower companies (SOHL: 80M + 10M + 10M = 100M).
+        # Locals are ordinary non-promoter holders, so they count as public.
+        local = _num("localShares")
+        if local:
+            public = (public or 0) + local
         listed = _num("listedShares")
         ath = _num("allTimeHigh")
         ath_date = _str("allTimeHighDate")
 
         out = {}
-        # ShareHubNepal sometimes reports promoterShares:0 when it has no data.
-        # Detect bad data by checking promoter+public != listedShares (mismatch means unreliable).
-        # If they sum correctly, promoter=0 is genuine (100% public company, e.g. AKJCL).
+        # ShareHubNepal sometimes reports promoterShares:0 when it has no data —
+        # arithmetic still checks out (0 + public == listedShares) so the old
+        # sum-mismatch check couldn't catch it. Confirmed bad on UNL 2026-08:
+        # JSON says promoterShares:0 but ShareHub's own page prose says ~80%
+        # Hindustan Unilever + ~5% Sibkrim Land & Industrial. Only AKJCL is a
+        # confirmed genuine 100%-public company — treat any other promoter==0
+        # as unreliable rather than silently trusting it.
+        GENUINE_ZERO_PROMOTER_SYMBOLS = {"AKJCL"}
         shareholding_unreliable = (
             promoter is not None and public is not None and listed is not None
             and abs((promoter + public) - listed) > 1
         ) or (
             promoter is not None and public is not None
             and promoter == 0 and public == 0
+        ) or (
+            promoter is not None and promoter == 0
+            and symbol not in GENUINE_ZERO_PROMOTER_SYMBOLS
         )
         if shareholding_unreliable:
             logger.warning(
@@ -232,6 +286,8 @@ def _fetch_shareholding(symbol, session, timeout=15):
                 out["promoter_shares"] = promoter
             if public is not None:
                 out["public_shares"] = public
+            if local:
+                out["local_shares"] = local
             if promoter is not None and public is not None:
                 total = promoter + public
                 if total > 0:
@@ -430,6 +486,8 @@ class MerolaganiFundamentalsScraper:
             "scraped_at": datetime.now().isoformat(timespec="seconds"),
             "source": "merolagani.com",
         }
+        _apply_eps_fallback(result, Path(self.data_dir) / symbol)
+
         # Accumulate EPS history for Shiller P/E — appends to eps_history.csv
         if result.get("eps") and result.get("eps_fy"):
             _update_eps_history(Path(self.data_dir) / result["symbol"], result["eps"], result["eps_fy"])

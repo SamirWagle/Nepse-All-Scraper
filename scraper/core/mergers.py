@@ -188,6 +188,12 @@ class ShareSansarMergerScraper:
         re.I,
     )
 
+    # ShareSansar's registry lists the exchange itself as a company, and every
+    # merger headline ends "...listed in NEPSE for trading". Left in, the bare
+    # ticker match reads that as the exchange being a merger party — which is
+    # how IGI ended up recorded as having merged into NEPSE.
+    EXCLUDED_SYMBOLS = frozenset({"NEPSE"})
+
     ARTICLE_SELECTORS = (
         "article",
         "[itemprop=articleBody]",
@@ -277,6 +283,8 @@ class ShareSansarMergerScraper:
 
         candidates: list[str] = []
         for sym, name in self._symbol_name_map.items():
+            if sym in self.EXCLUDED_SYMBOLS:
+                continue
             name_clean = self._clean_company_name(name)
             name_up = name_clean.upper() if name_clean else ""
             matched = False
@@ -296,7 +304,8 @@ class ShareSansarMergerScraper:
         if not company_name:
             return None
         target = self._normalize_text(company_name).upper()
-        return self._name_to_symbol.get(target)
+        sym = self._name_to_symbol.get(target)
+        return None if sym in self.EXCLUDED_SYMBOLS else sym
 
     def _extract_company_profile_names(self, text: str) -> list[str]:
         names = []
@@ -474,7 +483,7 @@ class ShareSansarMergerScraper:
             return None
         # 1) parenthetical ticker (e.g. "... Limited (NCCB)")
         m = re.search(r"\(\s*([A-Z][A-Z0-9]{1,9})\s*\)", name)
-        if m and m.group(1) in self._symbols:
+        if m and m.group(1) in self._symbols and m.group(1) not in self.EXCLUDED_SYMBOLS:
             return m.group(1)
         # 2) exact normalized name
         sym = self._symbol_for_company_name(name)
