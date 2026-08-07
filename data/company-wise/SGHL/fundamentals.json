@@ -1,0 +1,43 @@
+{
+  "symbol": "SGHL",
+  "company_name": "Sanigad Hydro Limited (SGHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 28500000.0,
+  "market_price": 518.0,
+  "percent_change": -1.45,
+  "last_traded_on": "2026/08/07 02:59:59",
+  "high_52w": 587.0,
+  "low_52w": 299.3,
+  "avg_180d": 494.79,
+  "avg_120d": 494.79,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "082-083",
+  "pe_ratio": null,
+  "book_value": 100.0,
+  "pbv": 5.18,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 81851.0,
+  "market_cap": 14763000000.0,
+  "scraped_at": "2026-08-08T02:05:55",
+  "source": "merolagani.com",
+  "promoter_shares": 19950000.0,
+  "public_shares": 8550000.0,
+  "local_shares": 2850000.0,
+  "promoter_pct": 70.0,
+  "public_pct": 30.0,
+  "all_time_high": 587.0,
+  "all_time_high_date": "2026-07-24T00:00:00",
+  "paid_up_capital": 2850000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    }
+  ]
+}
