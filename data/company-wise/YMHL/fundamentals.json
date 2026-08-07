@@ -1,0 +1,43 @@
+{
+  "symbol": "YMHL",
+  "company_name": "Yambaling Hydropower Limited (YMHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 7000000.0,
+  "market_price": 621.8,
+  "percent_change": -2.8,
+  "last_traded_on": "2026/08/07 02:59:57",
+  "high_52w": 797.6,
+  "low_52w": 300.0,
+  "avg_180d": 597.55,
+  "avg_120d": 597.55,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "082-083",
+  "pe_ratio": null,
+  "book_value": 100.0,
+  "pbv": 6.22,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 32042.0,
+  "market_cap": 4352600000.0,
+  "scraped_at": "2026-08-08T02:12:45",
+  "source": "merolagani.com",
+  "promoter_shares": 4200000.0,
+  "public_shares": 2800000.0,
+  "local_shares": 700000.0,
+  "promoter_pct": 60.0,
+  "public_pct": 40.0,
+  "all_time_high": 797.6,
+  "all_time_high_date": "2026-06-30T00:00:00",
+  "paid_up_capital": 700000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    }
+  ]
+}
