@@ -1,0 +1,43 @@
+{
+  "symbol": "SKHL",
+  "company_name": "Super Khudi Hydropower Limited (SKHL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 15500000.0,
+  "market_price": 890.0,
+  "percent_change": 0.0,
+  "last_traded_on": "2026/08/07 02:59:58",
+  "high_52w": 1360.0,
+  "low_52w": 300.0,
+  "avg_180d": 906.17,
+  "avg_120d": 952.6,
+  "year_yield_pct": 0.0,
+  "eps": 14.41,
+  "eps_fy": "082-083",
+  "pe_ratio": 61.76,
+  "book_value": 138.19,
+  "pbv": 6.44,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 14191.0,
+  "market_cap": 13795000000.0,
+  "scraped_at": "2026-08-08T02:08:06",
+  "source": "merolagani.com",
+  "promoter_shares": 12400000.0,
+  "public_shares": 3100000.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 1360.0,
+  "all_time_high_date": "2026-04-21T00:00:00",
+  "paid_up_capital": 1550000000.0,
+  "net_profit": 223355000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "223355000.0",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "138.19",
+      "dividend_pct": ""
+    }
+  ]
+}

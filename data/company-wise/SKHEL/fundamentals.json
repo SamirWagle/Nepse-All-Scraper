@@ -1,0 +1,43 @@
+{
+  "symbol": "SKHEL",
+  "company_name": "Suryakunda Hydro Electric Limited (SKHEL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 6896744.0,
+  "market_price": 990.0,
+  "percent_change": 0.1,
+  "last_traded_on": "2026/08/07 02:59:17",
+  "high_52w": 2069.4,
+  "low_52w": 284.3,
+  "avg_180d": 1077.09,
+  "avg_120d": 1142.75,
+  "year_yield_pct": 0.0,
+  "eps": -4.37,
+  "eps_fy": "082-083",
+  "pe_ratio": -226.54,
+  "book_value": 91.92,
+  "pbv": 10.77,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 5390.0,
+  "market_cap": 6827776560.0,
+  "scraped_at": "2026-08-08T02:08:03",
+  "source": "merolagani.com",
+  "promoter_shares": 5517394.0,
+  "public_shares": 1379350.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 2069.4,
+  "all_time_high_date": "2026-04-23T00:00:00",
+  "paid_up_capital": 689674400.0,
+  "net_profit": -30138771.28,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "-30138771.28",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "91.92",
+      "dividend_pct": ""
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "symbol": "SIPD",
+  "company_name": "Shikhar Power Development Limited (SIPD)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 9800000.0,
+  "market_price": 680.0,
+  "percent_change": -1.45,
+  "last_traded_on": "2026/08/07 02:59:58",
+  "high_52w": 1216.8,
+  "low_52w": 284.3,
+  "avg_180d": 715.38,
+  "avg_120d": 715.38,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "082-083",
+  "pe_ratio": null,
+  "book_value": 100.0,
+  "pbv": 6.8,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 25404.0,
+  "market_cap": 6664000000.0,
+  "scraped_at": "2026-08-08T02:07:49",
+  "source": "merolagani.com",
+  "promoter_shares": 6600300.0,
+  "public_shares": 3199700.0,
+  "promoter_pct": 67.35,
+  "public_pct": 32.65,
+  "all_time_high": 1216.8,
+  "all_time_high_date": "2026-04-28T00:00:00",
+  "paid_up_capital": 980000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    }
+  ]
+}

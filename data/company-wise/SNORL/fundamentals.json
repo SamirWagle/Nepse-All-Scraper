@@ -1,0 +1,43 @@
+{
+  "symbol": "SNORL",
+  "company_name": "Snow Rivers Limited (SNORL)",
+  "sector": "Hydro Power",
+  "shares_outstanding": 9375000.0,
+  "market_price": 906.0,
+  "percent_change": 2.77,
+  "last_traded_on": "2026/08/07 02:59:44",
+  "high_52w": 1017.1,
+  "low_52w": 298.7,
+  "avg_180d": 798.75,
+  "avg_120d": 798.75,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "082-083",
+  "pe_ratio": null,
+  "book_value": 100.0,
+  "pbv": 9.06,
+  "dividend_pct": 4.21,
+  "dividend_fy": "081-082",
+  "avg_volume_30d": 29125.0,
+  "market_cap": 8493750000.0,
+  "scraped_at": "2026-08-08T02:09:18",
+  "source": "merolagani.com",
+  "promoter_shares": 7500000.0,
+  "public_shares": 1875000.0,
+  "local_shares": 937500.0,
+  "promoter_pct": 80.0,
+  "public_pct": 20.0,
+  "all_time_high": 1017.1,
+  "all_time_high_date": "2026-07-24T00:00:00",
+  "paid_up_capital": 937500000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": "4.21"
+    }
+  ]
+}

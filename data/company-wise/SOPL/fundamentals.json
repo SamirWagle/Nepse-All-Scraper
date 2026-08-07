@@ -1,0 +1,42 @@
+{
+  "symbol": "SOPL",
+  "company_name": "Sopan Pharmaceuticals Limited (SOPL)",
+  "sector": "Manufacturing And Processing",
+  "shares_outstanding": 17160000.0,
+  "market_price": 792.0,
+  "percent_change": -1.0,
+  "last_traded_on": "2026/08/07 02:59:59",
+  "high_52w": 1217.0,
+  "low_52w": 276.5,
+  "avg_180d": 802.83,
+  "avg_120d": 802.83,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "082-083",
+  "pe_ratio": null,
+  "book_value": 100.0,
+  "pbv": 7.92,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 47730.0,
+  "market_cap": 13590720000.0,
+  "scraped_at": "2026-08-08T02:09:28",
+  "source": "merolagani.com",
+  "promoter_shares": 12870000.0,
+  "public_shares": 4290000.0,
+  "promoter_pct": 75.0,
+  "public_pct": 25.0,
+  "all_time_high": 1347.0,
+  "all_time_high_date": "2026-07-29T00:00:00",
+  "paid_up_capital": 1716000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "082-083",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "100.0",
+      "dividend_pct": ""
+    }
+  ]
+}
