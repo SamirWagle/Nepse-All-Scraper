@@ -30,7 +30,10 @@ let cachedEnginePort = null;
 async function pingEnginePort(p) {
   try {
     const r = await fetch(`http://localhost:${p}/ping`, { signal: AbortSignal.timeout(300) });
-    return r.ok;
+    if (!r.ok) return false;
+    // Other local apps answer 200 with HTML on every path — require the engine's JSON body.
+    const body = await r.json();
+    return body?.status === 'ok';
   } catch (_) {
     return false;
   }
