@@ -14,6 +14,7 @@ GET /ping
   Response: {"status": "ok"}
 """
 
+import base64
 import errno
 import json
 import os
@@ -333,6 +334,14 @@ _CEO_MAPPING: dict = _load_ceo_mapping()
 # NEPSE symbols are 1-15 uppercase alphanumeric characters.
 # Validated before any filesystem access to prevent path traversal.
 _SYMBOL_RE = re.compile(r'^[A-Z0-9]{1,20}$')
+
+SCREENSHOTS_DIR = DATA_DIR / "screenshots"
+# Bare filename only — blocks path traversal (../) same as the karma_signal history route.
+_SCREENSHOT_FILENAME_RE = re.compile(r'^[\w .()-]+\.(?:png|jpe?g|gif|webp)$', re.IGNORECASE)
+_SCREENSHOT_MIME = {
+    ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+    ".gif": "image/gif", ".webp": "image/webp",
+}
 
 
 def _load_interest_rates() -> dict:
@@ -684,6 +693,14 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _send_bytes(self, data, content_type, status=200):
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(data)))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        self.wfile.write(data)
+
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -975,6 +992,29 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json({"version": 1, "entries": _load_merger_meta()})
         elif self.path == "/interest_rates":
             self._send_json(_load_interest_rates())
+        elif self.path == "/screenshots":
+            files = []
+            if SCREENSHOTS_DIR.is_dir():
+                for p in SCREENSHOTS_DIR.iterdir():
+                    if p.is_file() and _SCREENSHOT_FILENAME_RE.match(p.name):
+                        files.append((p.stat().st_mtime, p.name))
+            files.sort(reverse=True)
+            self._send_json({"files": [
+                {"name": name, "url": f"/screenshots/file/{quote(name)}"}
+                for _, name in files
+            ]})
+        elif self.path.startswith("/screenshots/file/"):
+            from urllib.parse import unquote
+            filename = unquote(self.path[len("/screenshots/file/"):])
+            if not _SCREENSHOT_FILENAME_RE.match(filename):
+                self._send_json({"error": "Invalid screenshot filename"}, status=400)
+            else:
+                fpath = SCREENSHOTS_DIR / filename
+                if fpath.is_file():
+                    mime = _SCREENSHOT_MIME.get(fpath.suffix.lower(), "application/octet-stream")
+                    self._send_bytes(fpath.read_bytes(), mime)
+                else:
+                    self._send_json({"error": "Screenshot not found"}, status=404)
         elif self.path.startswith("/karma_signal/history/"):
             filename = self.path[len("/karma_signal/history/"):]
             # Only bare filenames matching the archiver's own naming pattern —
@@ -1279,6 +1319,27 @@ Snapshot rows removed: <strong>{removed_rows}</strong></p>
 
             result = calculate_cagr(symbol, start_date, investment, end_date)
             self._send_json(result)
+        elif self.path == "/screenshots/upload":
+            raw_name = os.path.basename(body.get("filename", ""))
+            data_b64 = body.get("data", "")
+            if not raw_name or not _SCREENSHOT_FILENAME_RE.match(raw_name):
+                self._send_json({"error": "Filename must end in .png, .jpg, .jpeg, .gif, or .webp"}, status=400)
+                return
+            try:
+                img_bytes = base64.b64decode(data_b64, validate=True)
+            except Exception:
+                self._send_json({"error": "Invalid base64 image data"}, status=400)
+                return
+
+            SCREENSHOTS_DIR.mkdir(parents=True, exist_ok=True)
+            stem, ext = os.path.splitext(raw_name)
+            dest = SCREENSHOTS_DIR / raw_name
+            n = 1
+            while dest.exists():
+                dest = SCREENSHOTS_DIR / f"{stem}-{n}{ext}"
+                n += 1
+            dest.write_bytes(img_bytes)
+            self._send_json({"name": dest.name, "url": f"/screenshots/file/{quote(dest.name)}"})
         else:
             self.send_response(404)
             self.end_headers()

@@ -54,6 +54,9 @@
               <button class="nav-menu-item" id="menu-nepsenews">
                 <span class="item-icon">📰</span> KarmaNepseNewsDigest
               </button>
+              <button class="nav-menu-item" id="menu-screenshots">
+                <span class="item-icon">🖼️</span> My Screenshot Collection
+              </button>
             </div>
           </div>
         </div>
@@ -479,6 +482,24 @@
       <iframe id="kn-report" style="display:none;width:100%;border:0;border-radius:12px;background:#1b1b1b"></iframe>
       <pre id="kn-output" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;overflow-x:auto;font-size:12px;line-height:1.5;white-space:pre;margin:0"></pre>
     </div>
+  </div>
+
+  <div class="page" id="page-myscreenshots">
+    <div class="hero">
+      <div class="hero-title">My Screenshot Collection</div>
+      <div class="hero-sub">Upload screenshots — each one gets a link below</div>
+      <input type="file" id="ss-upload-input" accept="image/png,image/jpeg,image/gif,image/webp" multiple style="display:none">
+      <button class="search-btn" id="ss-upload-btn" style="margin-top:14px">Upload screenshot(s)</button>
+    </div>
+    <div class="results-area" style="display:block">
+      <div id="ss-status" style="margin:12px 0;color:var(--text-3);font-size:13px"></div>
+      <div id="ss-gallery" class="ss-gallery"></div>
+    </div>
+  </div>
+
+  <div id="ss-lightbox" class="ss-lightbox" hidden>
+    <button id="ss-lightbox-close" class="ss-lightbox-close" title="Close">✕ Back</button>
+    <img id="ss-lightbox-img" alt="">
   </div>
 
   <script src="common.js"></script>

@@ -124,6 +124,9 @@
       if (name === 'nepsenews') {
         runNepseNews();
       }
+      if (name === 'myscreenshots') {
+        runScreenshots();
+      }
     }
 
     // Snapshot links in the generated reports are root-relative
@@ -278,6 +281,74 @@
       }
     }
 
+    // ── My Screenshot Collection ──
+    async function runScreenshots() {
+      const statusEl = document.getElementById('ss-status');
+      const galleryEl = document.getElementById('ss-gallery');
+      statusEl.textContent = '⏳ Loading...';
+      try {
+        const port = await findPort();
+        if (!port) {
+          statusEl.textContent = '❌ Engine offline. Open the extension popup to start it.';
+          return;
+        }
+        const resp = await fetch(`http://localhost:${port}/screenshots`, { signal: AbortSignal.timeout(15000) });
+        const data = await resp.json();
+        const files = data.files || [];
+        galleryEl.innerHTML = files.map(f => `
+          <a class="ss-item" href="http://localhost:${port}${f.url}" data-full="http://localhost:${port}${f.url}">
+            <img src="http://localhost:${port}${f.url}" alt="${esc(f.name)}" loading="lazy">
+            <div class="ss-item-name">${esc(f.name)}</div>
+          </a>
+        `).join('');
+        statusEl.textContent = files.length
+          ? `${files.length} screenshot${files.length === 1 ? '' : 's'}`
+          : 'No screenshots yet — upload one above.';
+      } catch (err) {
+        statusEl.textContent = '❌ ' + (err && err.message ? err.message : String(err));
+      }
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function uploadScreenshots(fileList) {
+      const files = Array.from(fileList || []);
+      if (!files.length) return;
+      const statusEl = document.getElementById('ss-status');
+      const port = await findPort();
+      if (!port) {
+        statusEl.textContent = '❌ Engine offline. Open the extension popup to start it.';
+        return;
+      }
+      for (const file of files) {
+        statusEl.textContent = `⏳ Uploading ${file.name}...`;
+        try {
+          const data = await fileToBase64(file);
+          const resp = await fetch(`http://localhost:${port}/screenshots/upload`, {
+            method: 'POST',
+            body: JSON.stringify({ filename: file.name, data }),
+            signal: AbortSignal.timeout(30000),
+          });
+          const result = await resp.json();
+          if (result.error) {
+            statusEl.textContent = '⚠️ ' + result.error;
+            return;
+          }
+        } catch (err) {
+          statusEl.textContent = '❌ ' + (err && err.message ? err.message : String(err));
+          return;
+        }
+      }
+      runScreenshots();
+    }
+
     async function openBullBearFromQuery(query) {
       if (!query) return;
       // Index tickers bypass company symbol resolution
@@ -364,6 +435,36 @@
       switchPage('nepsenews');
     });
     document.getElementById('kn-rerun-btn').addEventListener('click', () => runNepseNews(true));
+    document.getElementById('menu-screenshots').addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchPage('myscreenshots');
+    });
+    document.getElementById('ss-upload-btn').addEventListener('click', () => {
+      document.getElementById('ss-upload-input').click();
+    });
+    document.getElementById('ss-upload-input').addEventListener('change', (e) => {
+      uploadScreenshots(e.target.files);
+      e.target.value = '';
+    });
+    document.getElementById('ss-gallery').addEventListener('click', (e) => {
+      const item = e.target.closest('.ss-item');
+      if (!item) return;
+      e.preventDefault();
+      const lightbox = document.getElementById('ss-lightbox');
+      document.getElementById('ss-lightbox-img').src = item.dataset.full;
+      lightbox.hidden = false;
+    });
+    function closeSsLightbox() {
+      document.getElementById('ss-lightbox').hidden = true;
+      document.getElementById('ss-lightbox-img').src = '';
+    }
+    document.getElementById('ss-lightbox-close').addEventListener('click', closeSsLightbox);
+    document.getElementById('ss-lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'ss-lightbox') closeSsLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !document.getElementById('ss-lightbox').hidden) closeSsLightbox();
+    });
     document.getElementById('btc-circle-btn').addEventListener('click', () => switchPage('btc'));
     document.getElementById('nexttop-btn').addEventListener('click', () => {
       switchPage('nexttop');
