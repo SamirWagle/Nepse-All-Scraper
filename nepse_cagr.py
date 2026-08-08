@@ -92,6 +92,49 @@ def load_prices(symbol: str, data_dir: Path) -> pd.DataFrame:
     return df
 
 
+def load_index_prices(index_name: str, data_dir: Path) -> pd.DataFrame:
+    path = data_dir / "index" / index_name / "history.csv"
+    if not path.exists():
+        sys.exit(f"❌  history.csv not found for index '{index_name}' at:\n    {path}")
+    df = pd.read_csv(path, parse_dates=["date"])
+    df.sort_values("date", inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    if "ltp" in df.columns and "close" not in df.columns:
+        df = df.rename(columns={"ltp": "close"})
+    return df
+
+
+def resolve_target(symbol: str, data_dir: Path) -> tuple:
+    """
+    Resolve a user-typed symbol to either a company ticker or a sector index.
+    Returns (kind, resolved_name) where kind is "company" or "index".
+    """
+    company_path = data_dir / "company-wise" / symbol.upper() / "prices.csv"
+    if company_path.exists():
+        return "company", symbol.upper()
+
+    index_dir = data_dir / "index"
+    if index_dir.exists():
+        query = symbol.strip().lower().replace(" ", "").replace("_", "")
+        candidates = sorted(
+            d.name for d in index_dir.iterdir()
+            if d.is_dir() and (d / "history.csv").exists()
+        )
+        for name in candidates:
+            if name.lower().replace("_", "") == query:
+                return "index", name
+        for name in candidates:
+            norm = name.lower().replace("_", "")
+            if query in norm or norm in query:
+                return "index", name
+
+    sys.exit(
+        f"❌  No company or sector index found for '{symbol}'.\n"
+        f"    Checked: {company_path}\n"
+        f"    Checked data/index/ for a sector match (e.g. hydropower, banking, nepse)."
+    )
+
+
 def load_dividends(symbol: str, data_dir: Path) -> pd.DataFrame:
     path = data_dir / "company-wise" / symbol.upper() / "dividend.csv"
     if not path.exists():
@@ -207,13 +250,25 @@ def calculate_cagr(
     if start_date >= reference_end:
         raise ValueError(f"Start date {start_date} must be before end date {reference_end}.")
 
-    prices    = load_prices(symbol, data_dir)
-    face_value = FACE_VALUE_OVERRIDES.get(symbol.upper(), FACE_VALUE)
-    dividends = load_dividends(symbol, data_dir)
-    rights    = load_right_shares(symbol, data_dir)
+    kind, resolved = resolve_target(symbol, data_dir)
+    is_index = kind == "index"
+
+    if is_index:
+        prices    = load_index_prices(resolved, data_dir)
+        face_value = FACE_VALUE
+        dividends = pd.DataFrame(columns=["fiscal_year", "bonus_share", "cash_dividend", "total_dividend", "book_closure_date"])
+        rights    = pd.DataFrame(columns=["ratio", "total_units", "issue_price", "opening_date", "closing_date", "status", "issue_manager"])
+        known_listing_date = None
+        display_symbol = f"{resolved.upper()} INDEX"
+    else:
+        prices    = load_prices(resolved, data_dir)
+        face_value = FACE_VALUE_OVERRIDES.get(resolved, FACE_VALUE)
+        dividends = load_dividends(resolved, data_dir)
+        rights    = load_right_shares(resolved, data_dir)
+        known_listing_date = LISTING_DATES.get(resolved)
+        display_symbol = resolved
 
     # Check if there's a known listing date that's later than earliest data
-    known_listing_date = LISTING_DATES.get(symbol.upper())
     first_available = prices["date"].dt.date.min()
     if known_listing_date and known_listing_date > first_available:
         first_available = known_listing_date
@@ -238,7 +293,7 @@ def calculate_cagr(
 
     if verbose:
         print(f"\n{'='*60}")
-        print(f"  NEPSE CAGR Calculator  |  {symbol.upper()}")
+        print(f"  NEPSE CAGR Calculator  |  {display_symbol}")
         print(f"{'='*60}")
         print(f"  Requested start date : {start_date}")
         if start_date < first_available:
@@ -349,7 +404,7 @@ def calculate_cagr(
         print(f"{'='*60}\n")
 
     return {
-        "symbol": symbol.upper(),
+        "symbol": display_symbol,
         "start_date": actual_start_date,
         "end_date": latest_date,
         "years": round(years, 4),
