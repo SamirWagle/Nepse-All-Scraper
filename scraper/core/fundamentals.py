@@ -220,6 +220,24 @@ def _apply_eps_fallback(result, company_dir):
         result["pe_ratio"] = None
 
 
+def _apply_hydro_capacity(result, company_dir):
+    """Fill installed capacity (MW) from the cached Chukul scrape, hydro sector only."""
+    if (result.get("sector") or "").strip().lower() != "hydro power":
+        return
+
+    capacity_path = Path(company_dir) / "hydro_capacity.json"
+    if not capacity_path.exists():
+        return
+    try:
+        capacity = json.loads(capacity_path.read_text())
+    except (json.JSONDecodeError, OSError) as exc:
+        logger.warning("Could not read %s: %s", capacity_path, exc)
+        return
+
+    if capacity.get("capacity_mw"):
+        result["capacity_mw"] = capacity["capacity_mw"]
+
+
 def _fetch_shareholding(symbol, session, timeout=15):
     """Scrape promoter/public share counts and financial metrics from ShareHubNepal.
 
@@ -487,6 +505,7 @@ class MerolaganiFundamentalsScraper:
             "source": "merolagani.com",
         }
         _apply_eps_fallback(result, Path(self.data_dir) / symbol)
+        _apply_hydro_capacity(result, Path(self.data_dir) / symbol)
 
         # Accumulate EPS history for Shiller P/E — appends to eps_history.csv
         if result.get("eps") and result.get("eps_fy"):

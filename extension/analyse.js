@@ -1052,11 +1052,16 @@
       setText('r-name', name);
       setText('r-symbol', d.symbol || '—');
       setText('r-sector', d.sector || 'NEPSE');
-      setText('r-substext', [
-        d.ceo ? `CEO: ${d.ceo}` : null,
-        d.shares_outstanding ? `${fmtCompact(d.shares_outstanding)} shares listed` : null,
-        d.listing_date ? `Listed ${d.listing_date}` : null,
-      ].filter(Boolean).join(' · ') || '—');
+      const substextEl = document.getElementById('r-substext');
+      if (substextEl) {
+        const substextParts = [
+          d.ceo ? `CEO: ${esc(d.ceo)}` : null,
+          d.shares_outstanding ? `${esc(fmtCompact(d.shares_outstanding))} shares listed` : null,
+          d.listing_date ? `Listed ${esc(d.listing_date)}` : null,
+          d.capacity_mw != null ? `<span class="meta-mw">${esc(Number(d.capacity_mw).toLocaleString('en-IN', { maximumFractionDigits: 2 }))} MW</span>` : null,
+        ].filter(Boolean);
+        substextEl.innerHTML = substextParts.length ? substextParts.join(' · ') : '—';
+      }
 
       // Logo: first 2 chars of ticker
       const logoEl = document.getElementById('r-logo');

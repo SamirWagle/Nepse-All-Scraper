@@ -440,6 +440,10 @@
       font-size: 12px;
       margin-top: 2px;
     }
+    .meta-mw {
+      color: #f7931a;
+      font-weight: 600;
+    }
     .pill {
       display: inline-flex;
       align-items: center;
