@@ -1,15 +1,54 @@
-"""Authoritative promoter/public shareholding via NEPSE's own API.
+"""Promoter/public shareholding via NEPSE's own API.
 
-ShareHubNepal's promoterShares field is unreliable for entire sectors —
-confirmed 0 for every hydropower company tested, including Chilime (CHCL),
-which NEA majority-owns (real figure: 51% promoter). NEPSE's own API
-(nepalstock.com.np, accessed via the `nepse` package, which handles the
-site's scrambled auth-token handshake) gives the correct split, e.g.
-MEN: 80% promoter / 20% public, not ShareHub's implied 0%/100%.
+Two DIFFERENT questions live in this data. Keep them apart:
+
+  promoter_pct  — the ORIGINAL ALLOTMENT ratio. A control proxy, not float.
+  float_pct     — how much stock can actually trade today.
+
+ShareHubNepal's promoterShares field is unusable: confirmed 0 for every
+hydropower company tested, including Chilime (CHCL), which NEA
+majority-owns (real figure: 51% promoter). It is a null field, not data —
+its "float market cap" always equals total market cap. NEPSE's own API
+(nepalstock.com.np, via the `nepse` package, which handles the site's
+scrambled auth-token handshake) is the better source for promoter_pct.
+
+But NEPSE's promoter_pct is NOT current ownership. It does not update when
+a company converts promoter shares to ordinary, so it reports the original
+allotment indefinitely:
+
+  API Power — NEPSE says 58% promoter. Its 20th/21st/22nd Annual Reports
+  state that since Kartik 23, 2075 the lock-in ended, promoter-group shares
+  now trade as ordinary, and only one share group remains. API is 100%
+  public; NEPSE's 58% is the stale 60/10/30 allotment.
+
+  MEN — NEPSE says 80% promoter, and the annual reports agree: the 80/20
+  split is preserved through every bonus issue, with no conversion
+  statement anywhere. Here 80% is real.
+
+Conversion is per-company and NEPSE cannot tell you which happened. The
+tiebreaker is the company's own annual report — look for the explicit
+Nepali lock-in/conversion sentence in the introduction. Do NOT rely on the
+audited-accounts phrase "The Company has a single class of equity shares";
+that is an NFRS rights disclosure and appears in BOTH API's and MEN's
+reports regardless of conversion.
+
+float_pct applies the rule that outside banking/insurance promoter shares
+convert automatically at lock-in expiry, so everything is tradable after
+that date. promoter_pct is deliberately never overwritten — that is what
+keeps NEA's 51% at Chilime intact without needing a carve-out list of
+state-owned companies.
+
+For actual control (who holds what, are promoters exiting), neither field
+is enough: read the annual report's Significant Shareholders table and the
+board composition. MEN's 80% promoter block turned out to have no holder
+above 4.17%, with eleven significant holders exiting post-lock-in.
 """
 import logging
+from datetime import date
 
 logger = logging.getLogger(__name__)
+
+PROMOTER_LOCKIN_YEARS = 3
 
 _client = None
 
@@ -22,8 +61,39 @@ def _get_client():
     return _client
 
 
+def needs_regulator_approval(regulatory_body):
+    """True for sectors where lock-in expiry does NOT free promoter shares.
+
+    Banks and insurers need their regulator's approval to convert promoter
+    shares to ordinary, so their float does not open on a fixed date the way
+    a hydropower company's does. Keyed off the regulator rather than the
+    sector name so new sub-sectors (development banks, microfinance,
+    reinsurance) are covered without a list to maintain.
+    """
+    if not regulatory_body:
+        return False
+    body = regulatory_body.lower()
+    return "rastra bank" in body or "insurance" in body or "beema" in body
+
+
+def compute_float_pct(public_pct, lockin_expired, conversion_needs_approval=False):
+    """Tradable percentage. Post lock-in every share is tradable, converted or not.
+
+    Returns None when there is nothing to base it on, so callers can tell
+    "unknown" apart from a real 0.
+    """
+    if lockin_expired and not conversion_needs_approval:
+        return 100.0
+    return public_pct
+
+
 def fetch_shareholding_nepse(symbol):
-    """Return promoter/public shares + pct + paid-up capital from NEPSE. Empty dict on failure."""
+    """Return promoter/public shares + pct + float + paid-up capital from NEPSE. Empty dict on failure.
+
+    lockin_expired: True once listing_date + PROMOTER_LOCKIN_YEARS has passed.
+    float_pct: tradable %, derived from it. promoter_pct stays as NEPSE reports it
+    (original allotment) — see module docstring for why it is never overwritten.
+    """
     try:
         details = _get_client().getCompanyDetails(symbol)
     except Exception as exc:
@@ -37,4 +107,49 @@ def fetch_shareholding_nepse(symbol):
         "publicPercentage": "public_pct",
         "paidUpCapital": "paid_up_capital",
     }
-    return {out_key: details[src_key] for src_key, out_key in field_map.items() if details.get(src_key) is not None}
+    result = {out_key: details[src_key] for src_key, out_key in field_map.items() if details.get(src_key) is not None}
+
+    listing_date_str = details.get("security", {}).get("listingDate")
+    if listing_date_str:
+        listing_date = date.fromisoformat(listing_date_str)
+        lockin_end = listing_date.replace(year=listing_date.year + PROMOTER_LOCKIN_YEARS)
+        result["listing_date"] = listing_date_str
+        result["lockin_expired"] = date.today() >= lockin_end
+
+    sector = details.get("security", {}).get("companyId", {}).get("sectorMaster") or {}
+    regulatory_body = sector.get("regulatoryBody")
+    if regulatory_body:
+        result["regulatory_body"] = regulatory_body
+
+    float_pct = compute_float_pct(
+        result.get("public_pct"),
+        result.get("lockin_expired"),
+        needs_regulator_approval(regulatory_body),
+    )
+    if float_pct is not None:
+        result["float_pct"] = float_pct
+
+    return result
+
+
+def _self_check():
+    # MEN: lock-in expired 2023-12-02, promoters still classified at 80% -> all tradable.
+    assert compute_float_pct(20.0, True) == 100.0
+    # CHCL: NEA's 51% must not leak into float, but the stock still trades freely.
+    assert compute_float_pct(49.0, True) == 100.0
+    # Still locked: only the public tranche trades.
+    assert compute_float_pct(20.0, False) == 20.0
+    # No listing date -> lockin_expired is None -> unknown, not 0.
+    assert compute_float_pct(None, None) is None
+    # BFIs: the 3yr rule does not free their promoter shares, so lock-in
+    # expiry must NOT open the float. NABIL-shaped input.
+    assert compute_float_pct(41.56, True, True) == 41.56
+    assert needs_regulator_approval("Nepal Rastra Bank") is True
+    assert needs_regulator_approval("Nepal Insurance Authority") is True
+    assert needs_regulator_approval("Securities Board of Nepal") is False
+    assert needs_regulator_approval(None) is False
+    print("nepse_shareholding self-check OK")
+
+
+if __name__ == "__main__":
+    _self_check()

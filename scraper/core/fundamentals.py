@@ -246,8 +246,11 @@ def _fetch_shareholding(symbol, session, timeout=15):
     Promoter/public shareholding is NOT sourced here — ShareHubNepal's
     promoterShares field is unreliable for entire sectors (confirmed 0 for
     every hydropower company tested, including Chilime, which NEA
-    majority-owns). See nepse_shareholding.fetch_shareholding_nepse for the
-    authoritative source (NEPSE's own API).
+    majority-owns). See nepse_shareholding.fetch_shareholding_nepse, which
+    uses NEPSE's own API — but note its promoter_pct is the ORIGINAL
+    ALLOTMENT, not current ownership, and is stale for any company that
+    converted promoter shares to ordinary post lock-in (e.g. API Power).
+    Use float_pct for tradability; confirm control against the annual report.
 
     Returns dict with keys: all_time_high, all_time_high_date, paid_up_capital,
     bonus_dividend_pct. Empty dict on failure.

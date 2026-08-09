@@ -1,15 +1,15 @@
 {
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/instrument_type.py": {
-    "mtime": 1786125006.2092829,
+    "mtime": 1786133933.8505433,
     "hash": "5c9ff07c7dc1b7123df5b528a69b42bc"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_cagr.py": {
-    "mtime": 1784916357.9445322,
-    "hash": "10390df83e82ca64bcaf2f88e3fd4209"
+    "mtime": 1786166214.4110303,
+    "hash": "6db84d644d063b9f4062f8032d053e70"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_cagr_server.py": {
-    "mtime": 1786125053.4934409,
-    "hash": "b829964361f07c903822301932919921"
+    "mtime": 1786184988.5439472,
+    "hash": "1e552e7198dd577f871cd249cba59bf8"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/nepse_cagr_modified12.py": {
     "mtime": 1784916357.944791,
@@ -24,7 +24,7 @@
     "hash": "ae8f140208f96cb34ca9d751119cda46"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/run_daily.py": {
-    "mtime": 1786128238.109201,
+    "mtime": 1786133933.8525834,
     "hash": "78cedc0db6dc9f76db41256ac057d046"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/btc_scraper.py": {
@@ -56,12 +56,16 @@
     "hash": "29dd1598281e9ac3234b24645116cf82"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/refresh_company_registry.py": {
-    "mtime": 1786124957.6656735,
-    "hash": "369046acaa6b3c28c371162f258eea9a"
+    "mtime": 1786133933.8524332,
+    "hash": "5bd7f445933921547a4bd52dbbc360dd"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/audit_listing_dates.py": {
     "mtime": 1779987450.6995037,
     "hash": "4ce66542182c20b5b009a05b6e080e9c"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/nepse_shareholding.py": {
+    "mtime": 1786300873.6640131,
+    "hash": "87bbdc07a27e771b63c099af49003cc2"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/daily_prices.py": {
     "mtime": 1778991015.5493708,
@@ -72,12 +76,16 @@
     "hash": "84c8e685462cafe86b4c83c6c6d6f62a"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/listing_date.py": {
-    "mtime": 1779987450.699687,
-    "hash": "377e0dcb6a416e9dd6c93bfa3c0d755c"
+    "mtime": 1786133933.8521097,
+    "hash": "d6cd19ef265943ca376bc40c134ee9eb"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/hydro_capacity.py": {
+    "mtime": 1786181669.4806323,
+    "hash": "1f6914bc8261eaf1c839968ea9f15086"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/fundamentals.py": {
-    "mtime": 1785922206.5580597,
-    "hash": "b43cabe6deab68e229fe3158db45e2dd"
+    "mtime": 1786300788.320287,
+    "hash": "e03154cfe666369a59f2cb4f700946d6"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/__init__.py": {
     "mtime": 1777869511.864606,
@@ -88,12 +96,12 @@
     "hash": "e8d451baac2ea81cbbf8e18755f11248"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/mergers.py": {
-    "mtime": 1786127856.753281,
+    "mtime": 1786133933.8522542,
     "hash": "4b8914992531ca3cb8399edfbda30f8e"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/daily.py": {
-    "mtime": 1786125313.0021389,
-    "hash": "e2f74a4ab4c429bfd0135e2f666693c1"
+    "mtime": 1786133933.8517604,
+    "hash": "ea68db377d6dae6e58947874335fd094"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scraper/core/nepsealpha_quarterly.py": {
     "mtime": 1785610364.0851457,
@@ -116,12 +124,12 @@
     "hash": "283d65ad75eca387c3fc8d0f8d37ae3b"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/analyse.js": {
-    "mtime": 1785584003.4233413,
-    "hash": "5f127d89dbf8846a87b23c69fd2c000b"
+    "mtime": 1786266422.12268,
+    "hash": "d0473eeffb7ccf96601daa16ebf59110"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/common.js": {
-    "mtime": 1782996237.993114,
-    "hash": "67cf144695af3beaecf44b48f94f376a"
+    "mtime": 1786165205.1011746,
+    "hash": "08d4214d4e35f3059c34104ccf46a8c0"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/analysis/find_new_listings_and _listing date_interactive.py": {
     "mtime": 1779030080.2946131,
@@ -156,8 +164,8 @@
     "hash": "848d78b01bae6cee6d3361e4deec06fa"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scripts/data_freshness.py": {
-    "mtime": 1786128221.6620946,
-    "hash": "e842cc4e0dfd4965221c933dcb5eddfe"
+    "mtime": 1786133933.8527036,
+    "hash": "9d71fa504175d9ee43ce3d0c5c06595f"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scripts/nepse_news.py": {
     "mtime": 1785584003.4256752,
@@ -183,6 +191,10 @@
     "mtime": 1785221406.2531111,
     "hash": "28b3afdc8f7ef038452da5565dfef214"
   },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/scripts/scrape_all_hydro_capacity.py": {
+    "mtime": 1786181669.480764,
+    "hash": "e16e997f79366ac05d66d9dbea85d226"
+  },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/scripts/scrape_all_nepsealpha.py": {
     "mtime": 1785610364.0853126,
     "hash": "17507fcc2441bc255b8d7f050b1348a3"
@@ -192,8 +204,8 @@
     "hash": "39a423449b665199116db5b1e3522197"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/requirements.txt": {
-    "mtime": 1779811982.9130182,
-    "hash": "4ec6bf143c16aa920479531015f19f1e"
+    "mtime": 1786290863.5254526,
+    "hash": "8969f228a809b0929f6d99d0f5829298"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/SETUP.md": {
     "mtime": 1777864152.0,
@@ -220,23 +232,23 @@
     "hash": "bb150922d1de4130483d2a32471a4c5a"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/analyse.html": {
-    "mtime": 1785578937.3183954,
-    "hash": "e702f62a85b942eca17982440cbc9c60"
+    "mtime": 1786184988.5434222,
+    "hash": "84885bd2855eff2679b92c3a3aae6fe3"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/extension/popup.html": {
     "mtime": 1782996237.9940171,
     "hash": "cfa3b33e72c3b5f971ff65ea83279625"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/news_latest.html": {
-    "mtime": 1786119519.6916754,
-    "hash": "14bbdd45b4c4e4bc34440700c89e8a4f"
+    "mtime": 1786296271.6310678,
+    "hash": "d8a8836f4a4464022091a5845e65f520"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/harness.html": {
     "mtime": 1785251321.1800544,
     "hash": "f8d9f7515514c7bf951476dab6419196"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/latest.html": {
-    "mtime": 1785917420.7246313,
+    "mtime": 1786133933.850906,
     "hash": "92caad5c28db62a8902797b2010784c3"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/news_history/news_20260801_144942.html": {
@@ -248,7 +260,7 @@
     "hash": "0139bd55bf17c1344f528ea1eecc780d"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/news_history/news_20260805_220307.html": {
-    "mtime": 1785946687.5752509,
+    "mtime": 1786133933.8510907,
     "hash": "861ee382fea72f7884c22eb6c71bfc1a"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/news_history/news_20260801_170544.html": {
@@ -283,6 +295,10 @@
     "mtime": 1785584003.4245508,
     "hash": "cc50b3606b435d1df7b7aa9192b86121"
   },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/news_history/news_20260809_220321.html": {
+    "mtime": 1786296271.6310678,
+    "hash": "d8a8836f4a4464022091a5845e65f520"
+  },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/news_history/news_20260801_145512.html": {
     "mtime": 1785578937.3212745,
     "hash": "b8c8d43e8e021c688250ac17ebb8cc99"
@@ -300,7 +316,7 @@
     "hash": "ecf25fe718c5c128df0c6ce6b3a80752"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/news_history/news_20260807_220339.html": {
-    "mtime": 1786119519.6916754,
+    "mtime": 1786133933.8511553,
     "hash": "14bbdd45b4c4e4bc34440700c89e8a4f"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/news_history/news_20260801_220333.html": {
@@ -724,7 +740,7 @@
     "hash": "34989645dc8af6855d3e3138969a1d65"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/history/scan_swing_position_20260805_135520.html": {
-    "mtime": 1785917420.7246313,
+    "mtime": 1786133933.850906,
     "hash": "92caad5c28db62a8902797b2010784c3"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/output/history/scan_swing_position_20260728_180330.html": {
@@ -838,6 +854,10 @@
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/data_backup/index/nepse/Nepse Graph.png": {
     "mtime": 1778910002.1026118,
     "hash": "ca74406f24f9591043e40a8c9026bad0"
+  },
+  "/Users/karmagurung/CodingProjects/Nepse-CAGR/data/screenshots/6 year annulaized CAGR.png": {
+    "mtime": 1786184988.5429413,
+    "hash": "b5084160ed85211e1cd4ec57606fb43f"
   },
   "/Users/karmagurung/CodingProjects/Nepse-CAGR/data/index/nepse/Nepse Graph.png": {
     "mtime": 1778244438.0557704,
