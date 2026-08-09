@@ -1,0 +1,17 @@
+{
+  "symbol": "RSML",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 3.76,
+  "roa_ttm_pct": 2.54,
+  "net_margin_ttm_pct": 3.58,
+  "eps_ttm": 18.72,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 497.37,
+  "bvps_yoy_pct": null,
+  "net_profit_till_qtr": 26.69,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 746.05,
+  "revenue_till_qtr_yoy_pct": null,
+  "scraped_at": "2026-08-09T18:53:13",
+  "source": "nepsealpha.com"
+}

@@ -1,0 +1,17 @@
+{
+  "symbol": "BJHL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -1.78,
+  "net_margin_ttm_pct": -19.69,
+  "eps_ttm": -3.26,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 88.82,
+  "bvps_yoy_pct": null,
+  "net_profit_till_qtr": -244.29,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 12.41,
+  "revenue_till_qtr_yoy_pct": null,
+  "scraped_at": "2026-08-09T18:04:54",
+  "source": "nepsealpha.com"
+}

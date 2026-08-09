@@ -1,0 +1,17 @@
+{
+  "symbol": "SIPD",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": null,
+  "roa_ttm_pct": -4.01,
+  "net_margin_ttm_pct": -188.42,
+  "eps_ttm": -6.62,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 96.58,
+  "bvps_yoy_pct": null,
+  "net_profit_till_qtr": -486.65,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 2.58,
+  "revenue_till_qtr_yoy_pct": null,
+  "scraped_at": "2026-08-09T19:02:08",
+  "source": "nepsealpha.com"
+}

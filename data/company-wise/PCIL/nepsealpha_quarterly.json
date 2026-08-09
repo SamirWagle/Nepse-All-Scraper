@@ -1,0 +1,17 @@
+{
+  "symbol": "PCIL",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 1.57,
+  "roa_ttm_pct": 0.7,
+  "net_margin_ttm_pct": 1.68,
+  "eps_ttm": 2.04,
+  "eps_ttm_yoy_pct": null,
+  "bvps": 129.58,
+  "bvps_yoy_pct": null,
+  "net_profit_till_qtr": 5.73,
+  "net_profit_till_qtr_yoy_pct": null,
+  "revenue_till_qtr": 340.39,
+  "revenue_till_qtr_yoy_pct": null,
+  "scraped_at": "2026-08-09T18:47:17",
+  "source": "nepsealpha.com"
+}
