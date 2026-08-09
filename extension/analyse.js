@@ -1260,10 +1260,29 @@
       const acquisitions = Array.isArray(d.acquisitions) ? d.acquisitions : [];
       const mergers = Array.isArray(d.mergers) ? d.mergers : [];
       const totalMa = acquisitions.length + mergers.length;
-      if (totalMa > 0) {
-        const maLabel = totalMa === 1 ? '1 event' : `${totalMa} events`;
+
+      // Multiple constituents merging into this company on the same date are one
+      // event, not one per constituent — group before counting or rendering.
+      const allMa = [
+        ...acquisitions.map(a => ({ ...a, _type: 'Acquisition', _entity: Array.isArray(a.entities) ? a.entities.join(', ') : (a.entity || '—') })),
+        ...mergers.map(m => ({ ...m, _type: 'Merger', _entity: m.entity || '—' })),
+      ].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
+      const grouped = [];
+      const groupIndex = new Map();
+      allMa.forEach(item => {
+        const key = `${item.date || ''}|${item._type}`;
+        if (groupIndex.has(key)) {
+          grouped[groupIndex.get(key)].entities.push(item._entity);
+        } else {
+          groupIndex.set(key, grouped.length);
+          grouped.push({ date: item.date, _type: item._type, entities: [item._entity], status: item.status, swap_ratio: item.swap_ratio });
+        }
+      });
+
+      if (grouped.length > 0) {
+        const maLabel = grouped.length === 1 ? '1 event' : `${grouped.length} events`;
         setText('r-ma-count', maLabel);
-        const latestMa = [...acquisitions, ...mergers].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+        const latestMa = grouped[grouped.length - 1];
         const latestYear = latestMa && latestMa.date ? new Date(latestMa.date).getFullYear() : null;
         setText('r-ma-sub', latestYear ? `Latest: ${latestYear}` : 'See details below');
       } else {
@@ -1274,21 +1293,17 @@
       // Render M&A details section — single chronological list, type labeled inline
       const maSection = document.getElementById('r-ma-section');
       const maContent = document.getElementById('r-ma-content');
-      if (totalMa > 0) {
+      if (grouped.length > 0) {
         maSection.style.display = 'block';
         maContent.innerHTML = '';
 
-        const allMa = [
-          ...acquisitions.map(a => ({ ...a, _type: 'Acquisition', _entity: Array.isArray(a.entities) ? a.entities.join(', ') : (a.entity || '—') })),
-          ...mergers.map(m => ({ ...m, _type: 'Merger', _entity: m.entity || '—' })),
-        ].sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-
-        allMa.forEach(item => {
+        grouped.forEach(item => {
           const row = document.createElement('div');
           row.style.cssText = 'padding:12px;border:1px solid var(--border);border-radius:8px;font-size:12px;line-height:1.6;margin-bottom:8px;';
+          const entityLabel = item.entities.length > 1 ? item.entities.join(' + ') : item.entities[0];
           row.innerHTML = `
             <div style="color:var(--text-2);margin-bottom:4px;"><strong>${item.date || '—'}</strong> · ${item._type}</div>
-            <div style="color:var(--text-3);margin-bottom:4px;">${item._entity}</div>
+            <div style="color:var(--text-3);margin-bottom:4px;">${entityLabel}</div>
             <div style="color:var(--text-3);font-size:11px;">${item.status || '—'}${item.swap_ratio ? ' · Ratio: ' + item.swap_ratio : ''}</div>
           `;
           maContent.appendChild(row);

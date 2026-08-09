@@ -1079,14 +1079,14 @@
       "status": "closed",
       "display_name": "Jyoti Life Insurance Company Limited",
       "display_mode": "closed",
-      "note": "Jyoti Life Insurance Company Limited is marked as Merged on ShareSansar company page.",
+      "note": "Jyoti Life Insurance Company Limited merged into SuryaJyoti Life Insurance Company Limited (ordinary shares). Corrected from a prior mismap to SJLICP (promoter) — JLI has no separate promoter-share symbol in this dataset, unlike SLICL/SLICLP.",
       "source_url": "https://www.sharesansar.com/company/jli",
       "source_title": "ShareSansar company page (JLI)",
       "merged_date": "2022-12-22",
-      "merged_into": "SJLICP",
-      "merged_into_name": "SuryaJyoti Life Insurance Company Limited Promoter",
-      "surviving_symbol": "SJLICP",
-      "surviving_name": "SuryaJyoti Life Insurance Company Limited Promoter"
+      "merged_into": "SJLIC",
+      "merged_into_name": "SuryaJyoti Life Insurance Company Limited",
+      "surviving_symbol": "SJLIC",
+      "surviving_name": "SuryaJyoti Life Insurance Company Limited"
     },
     "KADBL": {
       "symbol": "KADBL",
