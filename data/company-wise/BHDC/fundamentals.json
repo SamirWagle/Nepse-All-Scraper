@@ -20,13 +20,17 @@
   "dividend_fy": "081-082",
   "avg_volume_30d": 7488.0,
   "market_cap": 5053595400.0,
-  "scraped_at": "2026-08-09T17:41:23",
+  "scraped_at": "2026-08-09T21:33:10",
   "source": "merolagani.com",
   "capacity_mw": 15.4,
   "all_time_high": 829.7,
   "all_time_high_date": "2024-08-13T00:00:00",
   "paid_up_capital": 1186290000.0,
   "bonus_dividend_pct": 5.0,
+  "promoter_shares": 8897175.0,
+  "public_shares": 2965725,
+  "promoter_pct": 75.0,
+  "public_pct": 25.0,
   "net_profit": 156827538.0,
   "financial_history": [
     {

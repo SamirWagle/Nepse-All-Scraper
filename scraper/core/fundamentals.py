@@ -18,6 +18,8 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
+from scraper.core.nepse_shareholding import fetch_shareholding_nepse
+
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://merolagani.com/CompanyDetail.aspx"
@@ -239,12 +241,16 @@ def _apply_hydro_capacity(result, company_dir):
 
 
 def _fetch_shareholding(symbol, session, timeout=15):
-    """Scrape promoter/public share counts and financial metrics from ShareHubNepal.
+    """Scrape all-time-high and misc financial metrics from ShareHubNepal.
 
-    Returns dict with keys: promoter_shares, public_shares, promoter_pct,
-    public_pct, all_time_high, all_time_high_date, and best-effort financial
-    fields: net_profit_sharehub, total_revenue_sharehub, npl_pct_sharehub.
-    Empty dict on failure.
+    Promoter/public shareholding is NOT sourced here — ShareHubNepal's
+    promoterShares field is unreliable for entire sectors (confirmed 0 for
+    every hydropower company tested, including Chilime, which NEA
+    majority-owns). See nepse_shareholding.fetch_shareholding_nepse for the
+    authoritative source (NEPSE's own API).
+
+    Returns dict with keys: all_time_high, all_time_high_date, paid_up_capital,
+    bonus_dividend_pct. Empty dict on failure.
     """
     try:
         url = f"{SHAREHUB_URL}/{symbol}"
@@ -252,7 +258,7 @@ def _fetch_shareholding(symbol, session, timeout=15):
         resp.raise_for_status()
         html = resp.text
 
-        # Inline JSON keys like \"promoterShares\":162341990
+        # Inline JSON keys like \"allTimeHigh\":1234.5
         def _num(key):
             m = re.search(rf'\\?"{key}\\?":(\d+(?:\.\d+)?)', html)
             return float(m.group(1)) if m else None
@@ -261,62 +267,14 @@ def _fetch_shareholding(symbol, session, timeout=15):
             m = re.search(rf'\\?"{key}\\?":\\?"([^"\\]+)\\?"', html)
             return m.group(1) if m else None
 
-        promoter = _num("promoterShares")
-        public = _num("publicShares")
-        # Hydropower IPOs carry a project-affected-locals tranche that
-        # ShareHubNepal reports separately. Ignoring it made promoter+public
-        # fall short of listedShares, so the mismatch guard below discarded
-        # good data for 91 hydropower companies (SOHL: 80M + 10M + 10M = 100M).
-        # Locals are ordinary non-promoter holders, so they count as public.
-        local = _num("localShares")
-        if local:
-            public = (public or 0) + local
-        listed = _num("listedShares")
+        out = {}
         ath = _num("allTimeHigh")
         ath_date = _str("allTimeHighDate")
-
-        out = {}
-        # ShareHubNepal sometimes reports promoterShares:0 when it has no data —
-        # arithmetic still checks out (0 + public == listedShares) so the old
-        # sum-mismatch check couldn't catch it. Confirmed bad on UNL 2026-08:
-        # JSON says promoterShares:0 but ShareHub's own page prose says ~80%
-        # Hindustan Unilever + ~5% Sibkrim Land & Industrial. Only AKJCL is a
-        # confirmed genuine 100%-public company — treat any other promoter==0
-        # as unreliable rather than silently trusting it.
-        GENUINE_ZERO_PROMOTER_SYMBOLS = {"AKJCL"}
-        shareholding_unreliable = (
-            promoter is not None and public is not None and listed is not None
-            and abs((promoter + public) - listed) > 1
-        ) or (
-            promoter is not None and public is not None
-            and promoter == 0 and public == 0
-        ) or (
-            promoter is not None and promoter == 0
-            and symbol not in GENUINE_ZERO_PROMOTER_SYMBOLS
-        )
-        if shareholding_unreliable:
-            logger.warning(
-                "Skipping shareholding for %s: promoter+public doesn't match listedShares (bad source data)",
-                symbol,
-            )
-        else:
-            if promoter is not None:
-                out["promoter_shares"] = promoter
-            if public is not None:
-                out["public_shares"] = public
-            if local:
-                out["local_shares"] = local
-            if promoter is not None and public is not None:
-                total = promoter + public
-                if total > 0:
-                    out["promoter_pct"] = round(promoter / total * 100, 2)
-                    out["public_pct"] = round(public / total * 100, 2)
         if ath is not None:
             out["all_time_high"] = ath
         if ath_date:
             out["all_time_high_date"] = ath_date
 
-        # Extract additional fields confirmed present in sharehubnepal inline JSON.
         paid_up = _num("paidUpCapital")
         bonus_val = _num("bonus")
         if paid_up is not None:
@@ -510,8 +468,11 @@ class MerolaganiFundamentalsScraper:
         # Accumulate EPS history for Shiller P/E — appends to eps_history.csv
         if result.get("eps") and result.get("eps_fy"):
             _update_eps_history(Path(self.data_dir) / result["symbol"], result["eps"], result["eps_fy"])
-        # Best-effort: merge shareholding + ATH + financial metrics from ShareHubNepal
+        # Best-effort: merge ATH + financial metrics from ShareHubNepal
         result.update(_fetch_shareholding(symbol, self.session))
+        # Authoritative promoter/public shareholding + paid-up capital from NEPSE
+        # itself — overrides ShareHub's paid_up_capital where both are present.
+        result.update(fetch_shareholding_nepse(symbol))
 
         # Derived: net_profit = EPS × shares_outstanding (current FY only)
         # Uses merolagani's shares_outstanding as-is here — EPS is reported against

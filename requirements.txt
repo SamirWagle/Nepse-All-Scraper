@@ -1,6 +1,7 @@
 # HTTP & scraping
 requests>=2.28,<3
 beautifulsoup4>=4.12
+nepse>=0.6              # authoritative promoter/public shareholding from nepalstock.com.np
 # Optional: lets scraper/core/mergers.py bypass ShareSansar's Cloudflare
 # challenge on the /merger-acquisition DataTable feed.
 cloudscraper>=1.2
