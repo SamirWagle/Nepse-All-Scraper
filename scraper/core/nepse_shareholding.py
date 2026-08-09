@@ -33,15 +33,37 @@ that is an NFRS rights disclosure and appears in BOTH API's and MEN's
 reports regardless of conversion.
 
 float_pct applies the rule that outside banking/insurance promoter shares
-convert automatically at lock-in expiry, so everything is tradable after
-that date. promoter_pct is deliberately never overwritten — that is what
-keeps NEA's 51% at Chilime intact without needing a carve-out list of
-state-owned companies.
+become tradable once the 3yr lock-in expires. promoter_pct is deliberately
+never overwritten — that is what keeps NEA's 51% at Chilime intact without
+needing a carve-out list of state-owned companies.
+
+float_pct IS AN ASSUMPTION, NOT AN OBSERVATION. Sources conflict on whether
+conversion is automatic at expiry: one says promoter shares convert at the
+three-year mark, another says the company must pass an AGM resolution, get
+SEBON and NEPSE approval, then apply to CDSC — i.e. expiry only makes
+conversion permissible. Our own data fits the second reading: MEN's lock
+expired 2023-12-02 and NEPSE still classifies 80% as promoter 2.5 years
+later, while API converted and documented it as an event. So float_pct=100
+means "no regulatory lock remains", NOT "verified converted". Anything
+derived this way is flagged float_pct_is_assumed=True — never screen on
+float_pct as observed free float without checking that flag.
+
+float_pct is a LEGAL-TRADABILITY claim, not a LIQUIDITY one, and the two
+diverge badly:
+
+  UNL — Manufacturing, ~80% held by its multinational parent. Unlocked, so
+  float_pct=100, but one hand holds 80% permanently and it never trades.
+
+  MEN — 80% promoter, but never a block: ~1000+ dispersed holders from a
+  merger roll-up, no holder ever above 4.17%. Disclosed >1% holdings fell
+  38.73% (FY2079/80) -> 20.25% (Ashad 2082) across the unlock. Genuinely
+  dispersing, though some of that is repackaging into holding vehicles
+  (Leverage 1.44% -> 2.84%, plus Shreevridhi/Shreeniwas/Sajan Sharma at
+  ~5.1% combined) rather than true exit.
 
 For actual control (who holds what, are promoters exiting), neither field
 is enough: read the annual report's Significant Shareholders table and the
-board composition. MEN's 80% promoter block turned out to have no holder
-above 4.17%, with eleven significant holders exiting post-lock-in.
+board composition.
 """
 import logging
 from datetime import date
@@ -77,7 +99,10 @@ def needs_regulator_approval(regulatory_body):
 
 
 def compute_float_pct(public_pct, lockin_expired, conversion_needs_approval=False):
-    """Tradable percentage. Post lock-in every share is tradable, converted or not.
+    """Assumed tradable percentage once the lock-in has expired.
+
+    Assumes no promoter remains locked, which is NOT verified — see the
+    module docstring. Callers should pair this with float_pct_is_assumed.
 
     Returns None when there is nothing to base it on, so callers can tell
     "unknown" apart from a real 0.
@@ -128,6 +153,10 @@ def fetch_shareholding_nepse(symbol):
     )
     if float_pct is not None:
         result["float_pct"] = float_pct
+        # True when float_pct came from "lock-in expired" rather than an
+        # observed conversion, so downstream code can tell the assumption
+        # apart from a fact. Verifying it means reading the annual report.
+        result["float_pct_is_assumed"] = float_pct != result.get("public_pct")
 
     return result
 
@@ -148,6 +177,11 @@ def _self_check():
     assert needs_regulator_approval("Nepal Insurance Authority") is True
     assert needs_regulator_approval("Securities Board of Nepal") is False
     assert needs_regulator_approval(None) is False
+    # float_pct_is_assumed mirrors "did we move off public_pct?"
+    assert (compute_float_pct(20.0, True) != 20.0) is True      # MEN: assumed
+    assert (compute_float_pct(20.0, False) != 20.0) is False    # locked: observed
+    assert (compute_float_pct(41.56, True, True) != 41.56) is False  # BFI: observed
+    assert (compute_float_pct(100.0, True) != 100.0) is False   # already all public
     print("nepse_shareholding self-check OK")
 
 
