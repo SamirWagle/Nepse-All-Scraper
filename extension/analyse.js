@@ -1402,6 +1402,15 @@
         publicCircle.setAttribute('stroke-dashoffset', String(25 - promoterPct));
       }
 
+      // Provenance: NEPSE never updates promoter % after a promoter->ordinary
+      // conversion, so an unverified figure is the ORIGINAL ALLOTMENT, not
+      // current ownership. Say so rather than labelling it "Promoter holding".
+      setText('r-shareholding-source', !hasData
+        ? 'Promoter vs. Public'
+        : d.promoter_pct_source === 'annual_report'
+          ? 'Promoter vs. Public · verified from annual report'
+          : 'Original allotment · current holding unverified');
+
       // Legend
       setText('r-promoter-pct', hasData ? promoterPct.toFixed(2) + '%' : '—');
       setText('r-public-pct', hasData ? publicPct.toFixed(2) + '%' : '—');

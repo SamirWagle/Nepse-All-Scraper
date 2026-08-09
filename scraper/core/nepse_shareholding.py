@@ -65,14 +65,36 @@ For actual control (who holds what, are promoters exiting), neither field
 is enough: read the annual report's Significant Shareholders table and the
 board composition.
 """
+import json
 import logging
 from datetime import date
+from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
 PROMOTER_LOCKIN_YEARS = 3
 
+CONVERSIONS_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "promoter_conversions.json"
+
 _client = None
+_conversions = None
+
+
+def load_promoter_conversions():
+    """Tickers whose promoter->ordinary conversion was verified in an annual report.
+
+    NEPSE never updates promoterPercentage on conversion, so this hand-curated
+    file is the only way to correct it. Missing/broken file means "nothing
+    verified" — the scraper still works, it just reports NEPSE's allotment.
+    """
+    global _conversions
+    if _conversions is None:
+        try:
+            _conversions = json.loads(CONVERSIONS_PATH.read_text()).get("conversions", {})
+        except (OSError, json.JSONDecodeError) as exc:
+            logger.warning("promoter conversions unreadable (%s): %s", CONVERSIONS_PATH, exc)
+            _conversions = {}
+    return _conversions
 
 
 def _get_client():
@@ -141,6 +163,23 @@ def fetch_shareholding_nepse(symbol):
         result["listing_date"] = listing_date_str
         result["lockin_expired"] = date.today() >= lockin_end
 
+    # NEPSE reports the ORIGINAL allotment forever. Where an annual report has
+    # been read and conversion confirmed, correct it — otherwise say plainly
+    # that the number is an unverified allotment, not current ownership.
+    conversion = load_promoter_conversions().get(symbol.upper(), {})
+    if conversion.get("converted"):
+        total_shares = (result.get("promoter_shares") or 0) + (result.get("public_shares") or 0)
+        result = {
+            **result,
+            "promoter_pct": 0.0,
+            "public_pct": 100.0,
+            "promoter_shares": 0,
+            "public_shares": total_shares or result.get("public_shares"),
+            "promoter_pct_source": "annual_report",
+        }
+    else:
+        result["promoter_pct_source"] = "nepse_allotment"
+
     sector = details.get("security", {}).get("companyId", {}).get("sectorMaster") or {}
     regulatory_body = sector.get("regulatoryBody")
     if regulatory_body:
@@ -182,6 +221,10 @@ def _self_check():
     assert (compute_float_pct(20.0, False) != 20.0) is False    # locked: observed
     assert (compute_float_pct(41.56, True, True) != 41.56) is False  # BFI: observed
     assert (compute_float_pct(100.0, True) != 100.0) is False   # already all public
+    # API's conversion is documented in its annual reports; MEN's is not.
+    conversions = load_promoter_conversions()
+    assert conversions.get("API", {}).get("converted") is True
+    assert "MEN" not in conversions
     print("nepse_shareholding self-check OK")
 
 

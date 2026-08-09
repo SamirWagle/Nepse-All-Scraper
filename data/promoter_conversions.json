@@ -1,0 +1,12 @@
+{
+  "_comment": "Verified promoter->ordinary share conversions, read from company annual reports. NEPSE's promoterPercentage does NOT update on conversion, so it keeps reporting the original allotment forever. Only add a ticker here after reading the explicit lock-in/conversion sentence in the company's own annual report (usually the Nepali introduction section). Do NOT add a ticker on the basis of the audited-accounts phrase 'The Company has a single class of equity shares' — that is an NFRS rights disclosure and appears whether or not conversion happened. Aggregator sites (ShareHubNepal, Chukul, NepaliPaisa) report 0% promoter for every hydropower company as a null field, so they are never evidence either.",
+  "conversions": {
+    "API": {
+      "converted": true,
+      "source": "Api Power Company 20th/21st/22nd Annual Reports, introduction section",
+      "quote": "Since the lock-in period of the company's promoter shares ended on Kartik 23, 2075, the shares of the promoter group are currently traded as ordinary shares, and therefore only an ordinary share group remains in the company.",
+      "nepse_reported_promoter_pct": 58.0,
+      "verified_on": "2026-08-10"
+    }
+  }
+}

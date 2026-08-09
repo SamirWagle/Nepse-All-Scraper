@@ -20,7 +20,7 @@
   "dividend_fy": "081-082",
   "avg_volume_30d": 7488.0,
   "market_cap": 5053595400.0,
-  "scraped_at": "2026-08-09T21:33:10",
+  "scraped_at": "2026-08-10T00:50:30",
   "source": "merolagani.com",
   "capacity_mw": 15.4,
   "all_time_high": 829.7,
@@ -31,6 +31,11 @@
   "public_shares": 2965725,
   "promoter_pct": 75.0,
   "public_pct": 25.0,
+  "listing_date": "2022-07-27",
+  "lockin_expired": true,
+  "regulatory_body": "Nepal Hydropower Board",
+  "float_pct": 100.0,
+  "float_pct_is_assumed": true,
   "net_profit": 156827538.0,
   "financial_history": [
     {
