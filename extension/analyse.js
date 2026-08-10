@@ -1202,7 +1202,8 @@
         : '—');
       setText('r-avg-vol', isClosedMerged ? '—' : (d.avg_volume_30d != null
         ? `${Number(d.avg_volume_30d).toLocaleString('en-IN', { maximumFractionDigits: 0 })}` +
-          (d.market_price != null ? ` (Rs. ${fmtCompact(d.avg_volume_30d * d.market_price)})` : '')
+          (d.market_price != null ? ` (Rs. ${fmtCompact(d.avg_volume_30d * d.market_price)})` : '') +
+          (d.shares_outstanding ? ` (${(d.avg_volume_30d / d.shares_outstanding * 100).toFixed(2)}%)` : '')
         : '—'));
       setText('r-1y-yield', isClosedMerged ? '—' : (d.year_yield_pct != null ? d.year_yield_pct.toFixed(2) + '%' : '—'));
 

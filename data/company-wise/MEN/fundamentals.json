@@ -47,5 +47,19 @@
       "book_value": "148.71",
       "dividend_pct": "1.05"
     }
+  ],
+  "mergers": [
+    {
+      "date": "2018-09-13",
+      "entity": "Aadhi Shakti Bidhyut Bikash Co. Ltd. (ASBL) \u2014 Tadi Khola 5MW, wholly-owned subsidiary",
+      "status": "Absorbed into MEN, Bhadra 28 2075 BS. Not an arm-length acquisition \u2014 ASBL was already MEN's own subsidiary; accounted for under NFRS Acquisition Method (goodwill recognized), 4,205,987 shares issued jointly for both entities.",
+      "swap_ratio": null
+    },
+    {
+      "date": "2018-09-13",
+      "entity": "Robust Energy Ltd. (REL) \u2014 Mistri Khola 42MW, wholly-owned subsidiary",
+      "status": "Absorbed into MEN, Bhadra 28 2075 BS, while Mistri Khola was still under construction. Not an arm-length acquisition \u2014 REL was already MEN's own subsidiary; MEN had no subsidiaries left after. Source: MEN 7th/8th Annual Reports; corroborated by CARE Ratings Nepal (Mar 2024).",
+      "swap_ratio": null
+    }
   ]
 }

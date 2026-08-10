@@ -1,0 +1,19 @@
+{
+  "date": "2026-08-10",
+  "present_pe": 26.69,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 22.52,
+  "shiller_pe": 35.53,
+  "shiller_pe_years": 7,
+  "shiller_avg_eps": 16.92,
+  "historical_pe_avg": 36.67,
+  "historical_pe_median": 26.95,
+  "historical_pe_min": 25.26,
+  "historical_pe_max": 52.78,
+  "historical_pe_years": 6,
+  "read_vs_shiller": "cheap",
+  "read_vs_median": "in-line",
+  "verdict_lean": "HOLD",
+  "verdict_reason": "Present PE sits right at own historical median and near the low end of its 6yr range, but only 7yr EPS depth (not full 10yr CAPE) and one outlier early-listing year (146 PE, thin liquidity) distort the average -- median is the more trustworthy anchor here and it says fairly priced, not cheap.",
+  "devils_advocate": "EPS is erratic, not smoothly compounding: 31.04 (078-079) -> 11.88 (080-081) during the NEA arbitration dispute -> 23.72 -> 22.52, so the 'cheap vs Shiller' read may just be catching a still-recovering earnings base rather than genuine undervaluation. Promoter lock-in just expired to 100% float (2026-08-10 correction) with no verified conversion event on record -- a wave of former-promoter selling into a thin-volume stock could pressure price below what this backward-looking PE band assumes."
+}
