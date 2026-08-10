@@ -1405,11 +1405,13 @@
       // Provenance: NEPSE never updates promoter % after a promoter->ordinary
       // conversion, so an unverified figure is the ORIGINAL ALLOTMENT, not
       // current ownership. Say so rather than labelling it "Promoter holding".
+      const sourceLabels = {
+        annual_report: 'Promoter vs. Public · verified from annual report',
+        lockin_expired_hydro: 'Promoter vs. Public · assumed 100% public (hydro lock-in expired)',
+      };
       setText('r-shareholding-source', !hasData
         ? 'Promoter vs. Public'
-        : d.promoter_pct_source === 'annual_report'
-          ? 'Promoter vs. Public · verified from annual report'
-          : 'Original allotment · current holding unverified');
+        : sourceLabels[d.promoter_pct_source] || 'Original allotment · current holding unverified');
 
       // Legend
       setText('r-promoter-pct', hasData ? promoterPct.toFixed(2) + '%' : '—');

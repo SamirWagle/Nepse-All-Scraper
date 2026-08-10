@@ -21,32 +21,35 @@ allotment indefinitely:
   now trade as ordinary, and only one share group remains. API is 100%
   public; NEPSE's 58% is the stale 60/10/30 allotment.
 
-  MEN — NEPSE says 80% promoter, and the annual reports agree: the 80/20
-  split is preserved through every bonus issue, with no conversion
-  statement anywhere. Here 80% is real.
+  MEN — NEPSE says 80% promoter with no conversion statement in any annual
+  report, but the company confirmed by phone (2026-08-10) that it is 100%
+  public. A private hydro promoter has no reason to stay locked in an
+  illiquid stake once free to convert — MEN just never bothered writing it
+  down. This is the HYDRO RULE below, not the annual-report registry.
 
-Conversion is per-company and NEPSE cannot tell you which happened. The
-tiebreaker is the company's own annual report — look for the explicit
-Nepali lock-in/conversion sentence in the introduction. Do NOT rely on the
-audited-accounts phrase "The Company has a single class of equity shares";
-that is an NFRS rights disclosure and appears in BOTH API's and MEN's
-reports regardless of conversion.
+Conversion is per-company and NEPSE cannot tell you which happened from its
+own field. The tiebreaker, in order:
 
-float_pct applies the rule that outside banking/insurance promoter shares
-become tradable once the 3yr lock-in expires. promoter_pct is deliberately
-never overwritten — that is what keeps NEA's 51% at Chilime intact without
-needing a carve-out list of state-owned companies.
+  1. An annual report's explicit Nepali lock-in/conversion sentence in the
+     introduction (see promoter_conversions.json) — hard evidence, wins.
+     Do NOT rely on the audited-accounts phrase "The Company has a single
+     class of equity shares"; that is an NFRS rights disclosure and appears
+     whether or not conversion happened.
+  2. HYDRO RULE (hydro sector only): once listing + 3yr lock-in has expired
+     and no annual report documents conversion, assume 100% public anyway —
+     UNLESS NEA is a promoter (see nea_promoter_hydro.json), in which case
+     the reported stake is left as-is until a source expressly says
+     otherwise. A state promoter does not exit like a private one does.
+  3. Everything else (non-hydro, or hydro still locked): report NEPSE's
+     allotment plainly as unverified current ownership.
 
-float_pct IS AN ASSUMPTION, NOT AN OBSERVATION. Sources conflict on whether
-conversion is automatic at expiry: one says promoter shares convert at the
-three-year mark, another says the company must pass an AGM resolution, get
-SEBON and NEPSE approval, then apply to CDSC — i.e. expiry only makes
-conversion permissible. Our own data fits the second reading: MEN's lock
-expired 2023-12-02 and NEPSE still classifies 80% as promoter 2.5 years
-later, while API converted and documented it as an event. So float_pct=100
-means "no regulatory lock remains", NOT "verified converted". Anything
-derived this way is flagged float_pct_is_assumed=True — never screen on
-float_pct as observed free float without checking that flag.
+promoter_pct_source records which of the three fired: "annual_report",
+"lockin_expired_hydro", or "nepse_allotment".
+
+float_pct is a separate, older mechanism (compute_float_pct) that still
+applies the lock-in-expiry assumption broadly across ALL non-BFI sectors,
+not just hydro — kept for backward compatibility, but promoter_pct/
+public_pct/promoter_pct_source above are the fields to trust for hydro.
 
 float_pct is a LEGAL-TRADABILITY claim, not a LIQUIDITY one, and the two
 diverge badly:
@@ -54,12 +57,12 @@ diverge badly:
   UNL — Manufacturing, ~80% held by its multinational parent. Unlocked, so
   float_pct=100, but one hand holds 80% permanently and it never trades.
 
-  MEN — 80% promoter, but never a block: ~1000+ dispersed holders from a
-  merger roll-up, no holder ever above 4.17%. Disclosed >1% holdings fell
-  38.73% (FY2079/80) -> 20.25% (Ashad 2082) across the unlock. Genuinely
-  dispersing, though some of that is repackaging into holding vehicles
-  (Leverage 1.44% -> 2.84%, plus Shreevridhi/Shreeniwas/Sajan Sharma at
-  ~5.1% combined) rather than true exit.
+  MEN — 80% NEPSE-reported promoter, but never a block: ~1000+ dispersed
+  holders from a merger roll-up, no holder ever above 4.17%. Disclosed >1%
+  holdings fell 38.73% (FY2079/80) -> 20.25% (Ashad 2082) across the unlock.
+  Genuinely dispersing, though some of that is repackaging into holding
+  vehicles (Leverage 1.44% -> 2.84%, plus Shreevridhi/Shreeniwas/Sajan
+  Sharma at ~5.1% combined) rather than true exit.
 
 For actual control (who holds what, are promoters exiting), neither field
 is enough: read the annual report's Significant Shareholders table and the
@@ -75,9 +78,12 @@ logger = logging.getLogger(__name__)
 PROMOTER_LOCKIN_YEARS = 3
 
 CONVERSIONS_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "promoter_conversions.json"
+NEA_PROMOTER_HYDRO_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "nea_promoter_hydro.json"
+HYDRO_REGULATOR = "Nepal Hydropower Board"
 
 _client = None
 _conversions = None
+_nea_promoter_hydro = None
 
 
 def load_promoter_conversions():
@@ -95,6 +101,22 @@ def load_promoter_conversions():
             logger.warning("promoter conversions unreadable (%s): %s", CONVERSIONS_PATH, exc)
             _conversions = {}
     return _conversions
+
+
+def load_nea_promoter_hydro():
+    """Hydro tickers where NEA is a promoter — excluded from the hard 100%-public override.
+
+    Missing/broken file means "none known" — every hydro ticker with an
+    expired lock-in and no conversion note gets the override, per the rule.
+    """
+    global _nea_promoter_hydro
+    if _nea_promoter_hydro is None:
+        try:
+            _nea_promoter_hydro = set(json.loads(NEA_PROMOTER_HYDRO_PATH.read_text()).get("tickers", {}))
+        except (OSError, json.JSONDecodeError) as exc:
+            logger.warning("NEA promoter hydro list unreadable (%s): %s", NEA_PROMOTER_HYDRO_PATH, exc)
+            _nea_promoter_hydro = set()
+    return _nea_promoter_hydro
 
 
 def _get_client():
@@ -163,10 +185,22 @@ def fetch_shareholding_nepse(symbol):
         result["listing_date"] = listing_date_str
         result["lockin_expired"] = date.today() >= lockin_end
 
+    sector = details.get("security", {}).get("companyId", {}).get("sectorMaster") or {}
+    regulatory_body = sector.get("regulatoryBody")
+    if regulatory_body:
+        result["regulatory_body"] = regulatory_body
+
     # NEPSE reports the ORIGINAL allotment forever. Where an annual report has
-    # been read and conversion confirmed, correct it — otherwise say plainly
-    # that the number is an unverified allotment, not current ownership.
-    conversion = load_promoter_conversions().get(symbol.upper(), {})
+    # been read and conversion confirmed, correct it. Otherwise, for hydro
+    # only: once the lock-in has expired and NEA is not a promoter, hard-note
+    # 100% public — no private promoter has reason to stay locked in an
+    # illiquid stake once free to convert. NEA is a state promoter and does
+    # not behave that way, so it keeps its reported stake unless a source
+    # expressly says otherwise. Every other case reports NEPSE's allotment
+    # plainly, as unverified current ownership.
+    symbol_upper = symbol.upper()
+    conversion = load_promoter_conversions().get(symbol_upper, {})
+    is_hydro = regulatory_body == HYDRO_REGULATOR
     if conversion.get("converted"):
         total_shares = (result.get("promoter_shares") or 0) + (result.get("public_shares") or 0)
         result = {
@@ -177,13 +211,18 @@ def fetch_shareholding_nepse(symbol):
             "public_shares": total_shares or result.get("public_shares"),
             "promoter_pct_source": "annual_report",
         }
+    elif is_hydro and result.get("lockin_expired") and symbol_upper not in load_nea_promoter_hydro():
+        total_shares = (result.get("promoter_shares") or 0) + (result.get("public_shares") or 0)
+        result = {
+            **result,
+            "promoter_pct": 0.0,
+            "public_pct": 100.0,
+            "promoter_shares": 0,
+            "public_shares": total_shares or result.get("public_shares"),
+            "promoter_pct_source": "lockin_expired_hydro",
+        }
     else:
         result["promoter_pct_source"] = "nepse_allotment"
-
-    sector = details.get("security", {}).get("companyId", {}).get("sectorMaster") or {}
-    regulatory_body = sector.get("regulatoryBody")
-    if regulatory_body:
-        result["regulatory_body"] = regulatory_body
 
     float_pct = compute_float_pct(
         result.get("public_pct"),
@@ -225,6 +264,10 @@ def _self_check():
     conversions = load_promoter_conversions()
     assert conversions.get("API", {}).get("converted") is True
     assert "MEN" not in conversions
+    # NEA promoter hydro list: CHCL keeps its reported stake, MEN gets no carve-out.
+    nea_hydro = load_nea_promoter_hydro()
+    assert "CHCL" in nea_hydro
+    assert "MEN" not in nea_hydro
     print("nepse_shareholding self-check OK")
 
 

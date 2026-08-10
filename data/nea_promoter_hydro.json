@@ -1,0 +1,7 @@
+{
+  "_comment": "Hydro tickers where NEA (Nepal Electricity Authority) is a promoter. Excluded from the lock-in-expired -> 100% public hard override: a state promoter does not exit like a private one after lock-in. Add a ticker only when NEA's promoter stake is confirmed (annual report Significant Shareholders table or NEPSE promoter list).",
+  "tickers": {
+    "CHCL": { "reason": "Chilime Hydropower, NEA ~51% promoter", "verified_on": "2026-08-10" },
+    "UPPER": { "reason": "Upper Tamakoshi Hydropower, NEA majority promoter", "verified_on": "2026-08-10" }
+  }
+}
