@@ -205,6 +205,43 @@ def load_right_shares(symbol: str, data_dir: Path) -> pd.DataFrame:
     return df
 
 
+def xirr(cashflows: list) -> float:
+    """
+    Money-weighted rate of return. Solves:
+        0 = Sum( CF_i / (1+r)^((date_i - date_0)/365) )
+    for r, via bisection.
+
+    cashflows: list of (date, amount) tuples. Negative = money in,
+    positive = money out (dividends, final market value).
+    """
+    t0 = min(d for d, _ in cashflows)
+
+    def npv(rate):
+        return sum(
+            cf / (1.0 + rate) ** ((d - t0).days / 365.0)
+            for d, cf in cashflows
+        )
+
+    lo, hi = -0.9999, 10.0
+    flo, fhi = npv(lo), npv(hi)
+    while flo * fhi > 0 and hi < 1000:
+        hi *= 2
+        fhi = npv(hi)
+    if flo * fhi > 0:
+        return float("nan")
+
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        fmid = npv(mid)
+        if abs(fmid) < 1e-6:
+            return mid
+        if flo * fmid < 0:
+            hi, fhi = mid, fmid
+        else:
+            lo, flo = mid, fmid
+    return (lo + hi) / 2
+
+
 def nearest_price(prices: pd.DataFrame, target_date: date, direction: str = "forward") -> pd.Series:
     prices_dates = prices["date"].dt.date
     if direction == "forward":
@@ -291,9 +328,18 @@ def calculate_cagr(
             f"Earliest available data: {first_available}."
         )
 
+    has_rights = False
+    if not rights.empty:
+        valid_rights = rights[
+            (rights["closing_date"].dt.date > actual_start_date)
+            & (rights["closing_date"].dt.date <= reference_end)
+        ]
+        has_rights = not valid_rights.empty
+    method_label = "XIRR" if has_rights else "CAGR"
+
     if verbose:
         print(f"\n{'='*60}")
-        print(f"  NEPSE CAGR Calculator  |  {display_symbol}")
+        print(f"  NEPSE {method_label} Calculator  |  {display_symbol}")
         print(f"{'='*60}")
         print(f"  Requested start date : {start_date}")
         if start_date < first_available:
@@ -336,6 +382,7 @@ def calculate_cagr(
     # ── Step 3: Process all corporate actions chronologically ────────────
     total_cash_dividends  = 0.0
     total_right_share_cost = 0.0
+    cashflows = [(actual_start_date, -initial_investment)]
 
     for action_date, action_type, row in actions:
 
@@ -348,6 +395,7 @@ def calculate_cagr(
             cost        = new_units * issue_price
             units       += new_units
             total_right_share_cost += cost
+            cashflows.append((action_date, -cost))
 
             event_label = f"Right share ({ratio_str})  @ Rs.{issue_price:.0f}"
             if verbose:
@@ -364,6 +412,7 @@ def calculate_cagr(
             if cash_pct > 0:
                 cash_rs = units * face_value * cash_pct
                 total_cash_dividends += cash_rs
+                cashflows.append((action_date, cash_rs))
                 event_label = f"Cash div {cash_pct*100:.4f}%  [{fiscal_yr}]"
                 if verbose:
                     print(f"  {str(action_date):<14} {event_label:<35} {units:>12.4f} {cash_rs:>12,.2f}")
@@ -387,6 +436,13 @@ def calculate_cagr(
     years = (latest_date - actual_start_date).days / DAYS_PER_YEAR
     cagr  = (todays_value / total_invested) ** (1 / years) - 1
 
+    # ── XIRR: money-weighted return, each cashflow discounted from its
+    # own date (fixes rights-share cash arriving mid-stream getting
+    # treated as if it were invested for the full period). Dividends
+    # are NOT reinvested — they're a cash-out on the date paid.
+    cashflows.append((latest_date, market_value))
+    xirr_rate = xirr(cashflows)
+
     if verbose:
         print(f"\n  {'─'*75}")
         print(f"  Latest price date       : {latest_date}  (LTP: Rs. {ltp:,.2f})")
@@ -394,17 +450,31 @@ def calculate_cagr(
         print(f"  Market value            : Rs. {market_value:,.2f}  ({units:.4f} × {ltp:,.2f})")
         print(f"  Total cash dividends    : Rs. {total_cash_dividends:,.2f}")
         print(f"  Total right share cost  : Rs. {total_right_share_cost:,.2f}")
-        print(f"  Today's Value           : Rs. {todays_value:,.2f}")
-        print(f"\n  ── CAGR Calculation ───────────────────────────────────────")
-        print(f"  Formula : (Today's Value / Total Invested)^(1/years) - 1")
-        print(f"  Total invested          : Rs. {total_invested:,.2f}  (initial + right share cost)")
-        print(f"          : ({todays_value:,.2f} / {total_invested:,.2f})^(1/{years:.4f}) - 1")
-        print(f"\n  Years   : {years:.4f}")
-        print(f"  CAGR    : {cagr*100:.2f}%")
+
+        if has_rights:
+            print(f"\n  ── XIRR Calculation ───────────────────────────────────────")
+            print(f"  Formula : 0 = Sum( CF_i / (1+r)^((date_i - date_0)/365) )")
+            print(f"            CF negative = money in (purchase, right share cost)")
+            print(f"            CF positive = money out (cash div at payment date,")
+            print(f"                          market value at end date = final CF)")
+            print(f"  Years   : {years:.4f}")
+            if xirr_rate == xirr_rate:  # not NaN
+                print(f"  XIRR    : {xirr_rate*100:.2f}%")
+            else:
+                print(f"  XIRR    : could not solve (no sign change in cashflow NPV)")
+        else:
+            print(f"  Today's Value           : Rs. {todays_value:,.2f}")
+            print(f"\n  ── CAGR Calculation ───────────────────────────────────────")
+            print(f"  Formula : (Today's Value / Total Invested)^(1/years) - 1")
+            print(f"  Total invested          : Rs. {total_invested:,.2f}  (initial + right share cost)")
+            print(f"          : ({todays_value:,.2f} / {total_invested:,.2f})^(1/{years:.4f}) - 1")
+            print(f"\n  Years   : {years:.4f}")
+            print(f"  CAGR    : {cagr*100:.2f}%")
         print(f"{'='*60}\n")
 
     return {
         "symbol": display_symbol,
+        "method": method_label,
         "start_date": actual_start_date,
         "end_date": latest_date,
         "years": round(years, 4),
@@ -419,6 +489,7 @@ def calculate_cagr(
         "total_cash_dividends": round(total_cash_dividends, 2),
         "todays_value": round(todays_value, 2),
         "cagr_pct": round(cagr * 100, 2),
+        "xirr_pct": round(xirr_rate * 100, 2) if xirr_rate == xirr_rate else None,
     }
 
 
@@ -502,7 +573,9 @@ def main():
     )
 
     if args.quiet:
-        print(f"{result['symbol']}  |  CAGR: {result['cagr_pct']:.2f}%  "
+        pct = result['xirr_pct'] if result['method'] == "XIRR" else result['cagr_pct']
+        pct_str = f"{pct:.2f}%" if pct is not None else "n/a"
+        print(f"{result['symbol']}  |  {result['method']}: {pct_str}  "
               f"({result['start_date']} → {result['end_date']}, {result['years']:.2f} yrs)")
 
 
