@@ -367,6 +367,7 @@ def fetch_sharesansar(keywords: list[str]) -> list[dict]:
         md = _firecrawl_markdown(SHARESANSAR_URL, api_key)
         for title, url in _SHARESANSAR_ARTICLE_RE.findall(md):
             title = title.strip()
+            url = url.split(" ", 1)[0].strip()
             if not _matches_keywords(title, keywords):
                 continue
             items.append({"source": "Sharesansar", "title": title, "url": url})
