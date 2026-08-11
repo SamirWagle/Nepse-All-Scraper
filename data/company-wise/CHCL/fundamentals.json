@@ -35,8 +35,8 @@
   "lockin_expired": true,
   "regulatory_body": "Nepal Hydropower Board",
   "promoter_pct_source": "nepse_allotment",
-  "float_pct": 100.0,
-  "float_pct_is_assumed": true,
+  "float_pct": 49.0,
+  "float_pct_is_assumed": false,
   "net_profit": 615575765.33,
   "financial_history": [
     {

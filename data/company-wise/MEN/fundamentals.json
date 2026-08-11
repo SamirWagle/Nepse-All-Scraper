@@ -3,26 +3,26 @@
   "company_name": "Mountain Energy Nepal Limited (MEN)",
   "sector": "Hydro Power",
   "shares_outstanding": 31232588.5,
-  "market_price": 601.0,
-  "percent_change": 0.99,
-  "last_traded_on": "2026/08/10 02:59:56",
+  "market_price": 611.9,
+  "percent_change": 1.81,
+  "last_traded_on": "2026/08/11 02:57:34",
   "high_52w": 683.4,
   "low_52w": 535.0,
   "avg_180d": 595.24,
-  "avg_120d": 592.42,
+  "avg_120d": 592.66,
   "year_yield_pct": -5.89,
-  "eps": 22.52,
+  "eps": 25.52,
   "eps_fy": "082-083",
-  "pe_ratio": 26.69,
-  "book_value": 148.71,
-  "pbv": 4.04,
+  "pe_ratio": 23.98,
+  "book_value": 150.78,
+  "pbv": 4.06,
   "dividend_pct": 1.05,
   "dividend_fy": "081-082",
-  "avg_volume_30d": 51471.0,
-  "market_cap": 18770785688.5,
-  "scraped_at": "2026-08-10T22:14:27",
+  "avg_volume_30d": 49132.0,
+  "market_cap": 19111220903.15,
+  "scraped_at": "2026-08-11T15:00:11",
   "source": "merolagani.com",
-  "capacity_mw": 42.0,
+  "capacity_mw": 47.0,
   "all_time_high": 1530.0,
   "all_time_high_date": "2021-08-26T00:00:00",
   "paid_up_capital": 3123259000.0,
@@ -37,7 +37,7 @@
   "promoter_pct_source": "lockin_expired_hydro",
   "float_pct": 100.0,
   "float_pct_is_assumed": false,
-  "net_profit": 703357893.02,
+  "net_profit": 797055658.52,
   "financial_history": [
     {
       "fiscal_year": "082-083",
@@ -46,20 +46,6 @@
       "npl_pct": "",
       "book_value": "148.71",
       "dividend_pct": "1.05"
-    }
-  ],
-  "mergers": [
-    {
-      "date": "2018-09-13",
-      "entity": "Aadhi Shakti Bidhyut Bikash Co. Ltd. (ASBL) \u2014 Tadi Khola 5MW, wholly-owned subsidiary",
-      "status": "Absorbed into MEN, Bhadra 28 2075 BS. Not an arm-length acquisition \u2014 ASBL was already MEN's own subsidiary; accounted for under NFRS Acquisition Method (goodwill recognized), 4,205,987 shares issued jointly for both entities.",
-      "swap_ratio": null
-    },
-    {
-      "date": "2018-09-13",
-      "entity": "Robust Energy Ltd. (REL) \u2014 Mistri Khola 42MW, wholly-owned subsidiary",
-      "status": "Absorbed into MEN, Bhadra 28 2075 BS, while Mistri Khola was still under construction. Not an arm-length acquisition \u2014 REL was already MEN's own subsidiary; MEN had no subsidiaries left after. Source: MEN 7th/8th Annual Reports; corroborated by CARE Ratings Nepal (Mar 2024).",
-      "swap_ratio": null
     }
   ]
 }

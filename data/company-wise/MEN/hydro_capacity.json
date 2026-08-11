@@ -1,6 +1,6 @@
 {
   "symbol": "MEN",
-  "capacity_mw": 42.0,
-  "scraped_at": "2026-08-08T14:44:46",
-  "source": "chukul.com"
+  "capacity_mw": 47.0,
+  "scraped_at": "2026-08-10T00:00:00",
+  "source": "manual: MEN 7th/8th Annual Reports (NotebookLM) -- Tadi Khola 5MW + Mistri Khola 42MW. chukul.com's 42MW only counted Mistri Khola."
 }

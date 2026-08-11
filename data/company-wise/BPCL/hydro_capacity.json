@@ -1,6 +1,6 @@
 {
   "symbol": "BPCL",
-  "capacity_mw": 9.4,
-  "scraped_at": "2026-08-08T14:37:16",
-  "source": "chukul.com"
+  "capacity_mw": 25.4,
+  "scraped_at": "2026-08-10T00:00:00",
+  "source": "manual: bpc.com.np + Wikipedia -- Jhimruk 12MW + Andhi Khola 9.4MW + Khudi 4MW. chukul.com's 9.4MW only counted Andhi Khola."
 }

@@ -224,17 +224,31 @@ def fetch_shareholding_nepse(symbol):
     else:
         result["promoter_pct_source"] = "nepse_allotment"
 
-    float_pct = compute_float_pct(
-        result.get("public_pct"),
-        result.get("lockin_expired"),
-        needs_regulator_approval(regulatory_body),
-    )
-    if float_pct is not None:
-        result["float_pct"] = float_pct
+    if is_hydro:
+        # The hydro rule above already resolved public_pct correctly (including
+        # the NEA carve-out) — mirror it directly instead of re-deriving float
+        # via the legacy calc below, which doesn't know about NEA and would
+        # wrongly report 100% float for a real state promoter stake (CHCL).
+        float_pct = result.get("public_pct")
+        # Only the hard-noted lock-in-expiry branch is an assumption. Both
+        # "annual_report" (observed conversion) and "nepse_allotment" (raw
+        # NEPSE figure, e.g. CHCL's real 49% with NEA still locked in) are
+        # as-reported, not derived — flag neither as assumed.
+        float_pct_is_assumed = result.get("promoter_pct_source") == "lockin_expired_hydro"
+    else:
+        float_pct = compute_float_pct(
+            result.get("public_pct"),
+            result.get("lockin_expired"),
+            needs_regulator_approval(regulatory_body),
+        )
         # True when float_pct came from "lock-in expired" rather than an
         # observed conversion, so downstream code can tell the assumption
         # apart from a fact. Verifying it means reading the annual report.
-        result["float_pct_is_assumed"] = float_pct != result.get("public_pct")
+        float_pct_is_assumed = float_pct != result.get("public_pct") if float_pct is not None else None
+
+    if float_pct is not None:
+        result["float_pct"] = float_pct
+        result["float_pct_is_assumed"] = float_pct_is_assumed
 
     return result
 
