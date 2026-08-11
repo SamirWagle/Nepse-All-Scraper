@@ -1,6 +1,36 @@
 {
   "version": 1,
   "entries": {
+    "ASBL": {
+      "status": "closed",
+      "display_name": "Aadhi Shakti Bidhyut Bikash Company Limited",
+      "display_mode": "closed",
+      "note": "Aadhi Shakti Bidhyut Bikash Co. Ltd (developer of Tadi Khola 5MW) was never NEPSE-listed; acquired by Mountain Energy Nepal Ltd under NFRS Acquisition Method, 4,205,987 equity shares issued in pursuit of merger. Verified via NotebookLM against MEN's 7th Annual Report (p.55 Note 17, p.57 Note 21.1) and 12th Annual Report (p.54 Note 3-g).",
+      "symbol": "ASBL",
+      "source_url": "https://www.mountainenergy.com.np/assets/files/Mountain%20Energy%207th%20Annual%20Report-Final.pdf",
+      "source_title": "MEN 7th Annual Report (via NotebookLM)",
+      "merged_date": "2018-09-13",
+      "event_type": "acquisition",
+      "merged_into": "MEN",
+      "merged_into_name": "Mountain Energy Nepal Limited",
+      "surviving_symbol": "MEN",
+      "surviving_name": "Mountain Energy Nepal Limited"
+    },
+    "REL": {
+      "status": "closed",
+      "display_name": "Robust Energy Limited",
+      "display_mode": "closed",
+      "note": "Robust Energy Ltd (developer of Mistri Khola 42MW) was never NEPSE-listed; acquired by Mountain Energy Nepal Ltd under NFRS Acquisition Method same transaction as Aadhi Shakti. Verified via NotebookLM against MEN's 7th Annual Report (p.55 Note 17, p.57 Note 21.1) and 12th Annual Report (p.54 Note 3-g).",
+      "symbol": "REL",
+      "source_url": "https://www.mountainenergy.com.np/assets/files/Mountain%20Energy%207th%20Annual%20Report-Final.pdf",
+      "source_title": "MEN 7th Annual Report (via NotebookLM)",
+      "merged_date": "2018-09-13",
+      "event_type": "acquisition",
+      "merged_into": "MEN",
+      "merged_into_name": "Mountain Energy Nepal Limited",
+      "surviving_symbol": "MEN",
+      "surviving_name": "Mountain Energy Nepal Limited"
+    },
     "HAMA": {
       "status": "closed",
       "display_name": "Hama Merchant & Finance Ltd.",

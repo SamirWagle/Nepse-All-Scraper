@@ -1437,7 +1437,7 @@
     function isMarketOpen() {
       // NEPSE trading: Sun–Thu 11:00–15:00 NPT (UTC+5:45). Closed Fri/Sat.
       const now = new Date();
-      const nptMs = now.getTime() + (now.getTimezoneOffset() + 345) * 60 * 1000;
+      const nptMs = now.getTime() + 345 * 60 * 1000;
       const npt = new Date(nptMs);
       const day = npt.getUTCDay(); // 0=Sun, 5=Fri, 6=Sat
       if (day === 5 || day === 6) return false;
