@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEPSE CAGR Calculator</title>
+  <title>NEPSE Returns Calculator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
   <div class="header">
     <div class="header-left">
       <img src="icons/icon48.png" alt="NEPSE">
-      <span class="header-title">NEPSE CAGR Calculator</span>
+      <span class="header-title">NEPSE Returns Calculator</span>
     </div>
     <div class="header-right">
       <button class="theme-toggle" id="theme-btn" title="Toggle theme">☀️</button>
@@ -65,13 +65,13 @@
     </div>
 
     <!-- Calculate -->
-    <button id="calc-btn">Calculate CAGR</button>
+    <button id="calc-btn">Calculate Returns</button>
     <div id="status"></div>
 
     <!-- Results -->
     <div id="results">
       <div class="cagr-banner">
-        <div class="cagr-label">Compound Annual Growth Rate</div>
+        <div class="cagr-label" id="cagr-label">Compound Annual Growth Rate</div>
         <div class="cagr-value" id="cagr-display">—</div>
         <div class="cagr-meta" id="cagr-meta"></div>
         <div class="cagr-multiplier" id="cagr-multiplier"></div>

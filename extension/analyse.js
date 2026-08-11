@@ -743,8 +743,11 @@
         const ratio = d.todays_value / d.initial_investment;
         const multX = ratio >= 2 ? Math.round(ratio) + 'x' : ratio.toFixed(1) + 'x';
         const soFar = cycle.current ? ' so far' : '';
-        const verb  = d.cagr_pct >= 0 ? 'grew' : 'fell';
-        const cagrColor = d.cagr_pct >= 0 ? 'var(--accent)' : 'var(--down)';
+        const isXirr = d.method === 'XIRR';
+        const returnPct = isXirr ? d.xirr_pct : d.cagr_pct;
+        const returnLabel = isXirr ? 'XIRR' : 'CAGR';
+        const verb  = returnPct >= 0 ? 'grew' : 'fell';
+        const cagrColor = returnPct >= 0 ? 'var(--accent)' : 'var(--down)';
 
         const isIndex = !!d.is_index;
         const boxId = `bull-perf-${cycle.num}`;
@@ -772,7 +775,7 @@
           <div class="bull-box-title">${cycle.label}</div>
           <div class="bull-box-period">${esc(d.start_date)} → ${esc(d.end_date)}</div>
           <div class="bull-box-symbol">${esc(symbol)}</div>
-          <div class="bull-box-cagr" style="color:${cagrColor}">${d.cagr_pct >= 0 ? '+' : ''}${d.cagr_pct.toFixed(1)}% CAGR</div>
+          <div class="bull-box-cagr" style="color:${cagrColor}">${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(1)}% ${returnLabel}</div>
           <div class="bull-box-duration">⏱ ${d.years.toFixed(1)} yrs</div>
           <div class="bull-box-multi">📈 Investment ${verb} ~${multX}${soFar}</div>
           <div class="bull-box-prices">${isIndex ? 'Index: ' : 'Rs.'}${fmt(d.start_price)} → ${isIndex ? '' : 'Rs.'}${fmt(d.ltp)}</div>
@@ -809,8 +812,10 @@
               </div>
             </div>
             <div class="perf-formula">
-              CAGR = (${fmt(d.todays_value)} ÷ ${fmt(d.total_invested)})<sup>1/${d.years}</sup> − 1
-              = <span style="color:${cagrColor}">${d.cagr_pct >= 0 ? '+' : ''}${d.cagr_pct.toFixed(2)}%</span>
+              ${isXirr
+                ? `XIRR: 0 = Σ CF<sub>i</sub> / (1+r)<sup>t<sub>i</sub></sup> — each cashflow (purchase, right share cost, cash div, market value) discounted from its own date`
+                : `CAGR = (${fmt(d.todays_value)} ÷ ${fmt(d.total_invested)})<sup>1/${d.years}</sup> − 1`}
+              = <span style="color:${cagrColor}">${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(2)}%</span>
             </div>
             <div class="perf-events-label">Corporate Action Timeline</div>
             <div class="perf-table-wrap">

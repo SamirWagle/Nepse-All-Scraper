@@ -250,11 +250,15 @@ function handleResult(data) {
   perfDetails.style.display = 'none';
   perfToggleBtn.textContent = '▼ Performance Details';
 
-  // CAGR banner
-  const cagr = data.cagr_pct;
+  // Returns banner — XIRR when rights shares occurred in the window
+  // (money-weighted, each cashflow timed correctly), CAGR otherwise.
+  const isXirr = data.method === 'XIRR';
+  const cagr = isXirr ? data.xirr_pct : data.cagr_pct;
   const cagrEl = document.getElementById('cagr-display');
   cagrEl.textContent = (cagr >= 0 ? '+' : '') + cagr.toFixed(2) + '%';
   cagrEl.className = 'cagr-value ' + (cagr >= 0 ? 'positive' : 'negative');
+  document.getElementById('cagr-label').textContent =
+    isXirr ? 'XIRR (Money-Weighted Return)' : 'Compound Annual Growth Rate';
   document.getElementById('cagr-meta').textContent =
     `${data.start_date} → ${data.end_date}  (${data.years} yrs)`;
 
