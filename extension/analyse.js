@@ -1119,7 +1119,7 @@
       }
       let data;
       try {
-        const resp = await fetch(`http://localhost:${port}/fundamentals?symbol=${encodeURIComponent(symbol)}`, { signal: AbortSignal.timeout(15000) });
+        const resp = await fetch(`http://localhost:${port}/fundamentals?symbol=${encodeURIComponent(symbol)}`, { signal: AbortSignal.timeout(90000) });
         data = await resp.json();
       } catch (e) {
         document.getElementById('page-status').textContent = '❌ ' + e.message;
