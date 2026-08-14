@@ -47,6 +47,7 @@ CKHL,Chirkhwa Hydro Power Limited
 CLI,Citizen Life Insurance Company Limited
 CMF2,2
 CORBL,Corporate Development Bank Limited
+CORBLP,Corporate Development Bank Limited Promoter Share
 CREST,Crest Micro Life Insurance Limited
 CSY,Citizens Santulit Yojana
 CYCL,CYC Nepal Laghubitta Bittiya Sanstha Limited
@@ -70,7 +71,9 @@ FMDBL,First Microfinance Laghubitta Bittiya Sanstha Limited
 FOWAD,Forward Microfinance Laghubitta Bittiya Sanstha Limited
 GBBD85,8.75% Garima Debenture 2085
 GBBL,Garima Bikas Bank Limited
+GBILD86/87,8.5% Global IME Bank Ltd. Debenture 2086/87
 GBIME,Global IME Bank Limited
+GBIMEP,Global IME Bank Limited Promoter Share
 GBIMESY2,II
 GBLBS,Grameen Bikas Laghubitta Bittiya Sanstha Limited
 GCIL,Ghorahi Cement Industry Limited
@@ -108,12 +111,14 @@ HPPL,Himalayan Power Partner Limited
 HRL,Himalayan Reinsurance Limited
 HURJA,Himalaya Urja Bikas Company Limited
 ICFC,ICFC Finance Limited
+ICFCD83,12% ICFC Finance Limited Debenture 2083
 ICFCD88,9% ICFC Finance Limited Debenture 2088
 ICFCD89,8% ICFC Finance Limited Debenture 2089
 IGI,IGI Prudential Insurance Limited
 IHL,Ingwa Hydropower Ltd
 ILBS,Infinity Laghubitta Bittiya Sanstha Limited
 ILI,IME Life Insurance Company Limited
+JBBD87,Jyoti Bikash Bank Bond 2087
 JBBL,Jyoti Bikash Bank Limited
 JBLB,Jeevan Bikas Laghubitta Bittiya Sanstha Limited
 JBLBP,Jeevan Bikas Laghubitta Bittya Sanstha Ltd Promoter
@@ -133,9 +138,11 @@ KKHC,Khani Khola Hydropower Company Limited
 KMCDB,Kalika Laghubitta Bittiya Sanstha Limited
 KPCL,Kalika Power Company Limited
 KSBBL,Kamana Sewa Bikas Bank Limited
+KSBBLD87,9% Kamana Sewa Bikas Bank Limited Debenture 2087
 KSY,Kumari Sabal Yojana
 LBBL,Lumbini Bikas Bank Limited
 LBBLD89,11% LBBL Debenture 2089
+LBLD86,10% Laxmi Bank Debenture 2086
 LEC,Liberty Energy Company Limited
 LICN,Life Insurance Corporation Nepal Limited
 LLBS,Laxmi Laghubitta Bittiya Sanstha Limited
@@ -156,6 +163,7 @@ MDB,Miteri Development Bank Limited
 MEHL,Manakamana Engineering Hydropower Limited
 MEL,Modi Energy Limited
 MEN,Mountain Energy Nepal Limited
+MEPDL,Mount Everest Power Development Limited
 MERO,Mero Microfinance Laghubitta Bittiya Sanstha Limited
 MFIL,Manjushree Finance Limited
 MHCL,Molung Hydropower Company Limited
@@ -174,6 +182,7 @@ MLBSL,Mahila Laghubitta Bittiya Sanstha Limited
 MMF1,1
 MMKJL,Mathillo Mailun Khola Jalvidhyut Limited
 MNBBL,Muktinath Bikas Bank Limited
+MND84/85,8.75% Muktinath Debenture/Rinpatra 2084/85
 MNMF1,Muktinath Mutual Fund 1
 MPFL,Multipurpose Finance Company Limited
 MSHL,Mid Solu Hydropower Company Limited
@@ -187,6 +196,7 @@ NBF3,Nabil Balanced Fund III
 NBL,Nepal Bank Limited
 NBLD82,10% Nabil Bank Debenture 2082
 NBLD87,8.5% Nepal Bank Debenture 2087
+NCCD86,9.5% NCC Rinpatra 2086
 NESDO,Nesdo Sambridha Laghubitta Bittiya Sanstha Limited
 NFS,Nepal Finance Limited
 NGPL,Ngadi Group Power Limited
@@ -209,12 +219,14 @@ NIFRAGED,6% Nifra Harit Urja Debenture 2088/89
 NIFRAUR85/86,7% NIFRA Urja Rinpatra 2085/86
 NIL,Neco Insurance Limited
 NIMB,Nepal Investment Mega Bank Limited
+NIMBD90,10% NIMB Debenture 2090
 NIMBPO,Nepal Investment Mega Bank Ltd. Promoter Share
 NLG,NLG Insurance Company Limited
 NLIC,Nepal Life Insurance Company Limited
 NLICL,National Life Insurance Company Limited
 NMB,NMB Bank Limited
 NMB50,NMB 50
+NMBD2085,10% NMB Debenture 2085
 NMBD87/88,8.5% NMB Rinpatra 2087/88
 NMBHF2,II
 NMBMF,NMB Laghubitta Bittiya Sanstha Limited
@@ -236,6 +248,7 @@ PBD84,10.15% Prime Debenture 2084
 PBD85,8.75% Prime Debenture 2085
 PBD88,10% Prime Debenture 2088
 PBLD84,10% Prabhu Bank Debenture 2084 (PBLD84)
+PBLD86,10.25% Prabhu Bank Debenture 2086
 PBLD87,8.5% Prabhu Bank Debenture 2087
 PCBL,Prime Commercial Bank Limited
 PCIL,Palpa Cements Industries Limited
@@ -249,6 +262,7 @@ PRIN,Prabhu Insurance Company Limited
 PROFL,Progressive Finance Limited
 PRSF,Prabhu Smart Fund
 PRVU,Prabhu Bank Limited
+PRVUPO,Prabhu Bank Limited Promoter Share
 PSF,Prabhu Select Fund
 PURE,Pure Energy Limited
 RADHI,Radhi Bidyut Company Limited
@@ -283,6 +297,7 @@ SALICO,Sagarmatha Lumbini Insurance Company Limited
 SANIMA,Sanima Bank Limited
 SANVI,Sanvi Energy Limited
 SAPDBL,Saptakoshi Development Bank Limited
+SAPIL,Sarvottam Paints Industries Limited
 SARBTM,Sarbottam Cement Limited
 SBCF,Sunrise Bluechip Fund
 SBD87,8.5% Sanima Debenture 2087

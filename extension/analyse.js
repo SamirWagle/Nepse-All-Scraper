@@ -649,7 +649,7 @@
         nepseStart: 299.0, nepseEnd: 1175.38, nepseStartDate: '2002-03-15', nepseEndDate: '2008-08-31' },
       { num: 3, label: 'Bull 3', period: '2012–2016', start: '2012-03-29', end: '2016-07-27' },
       { num: 4, label: 'Bull 4', period: '2019–2021', start: '2019-03-05', end: '2021-08-18' },
-      { num: 5, label: 'Bull 5 ★ Current', period: '2022–now', start: '2022-09-25', end: null, current: true },
+      { num: 5, label: 'Current Cycle', period: '2022–now', start: '2022-09-25', end: null, current: true },
     ];
 
     async function doBullSearch(symbol) {
@@ -679,7 +679,7 @@
       const fetched = await Promise.all(fetchable.map(async cycle => {
         // Cycle ended before stock was listed — skip fetching, mark as not listed
         if (listingDate && cycle.end && cycle.end < listingDate) {
-          return { num: cycle.num, data: { notListed: true, listingDate } };
+          return { num: cycle.num, data: { beforeListing: true, listingDate } };
         }
         if (lastTradingDate && cycle.start > lastTradingDate) {
           return { num: cycle.num, data: { notListed: true, listingDate: lastTradingDate } };
@@ -721,7 +721,17 @@
           </div>`;
         }
         const d = dataMap[cycle.num];
-        // Stock didn't exist during this cycle
+        // Cycle ended before the stock's IPO — nothing to show yet
+        if (d && d.beforeListing) {
+          const listedDate = d.listingDate ? d.listingDate : 'Unknown';
+          return `<div class="bull-box bull-box-blank">
+            <div class="bull-box-title">${cycle.label}</div>
+            <div class="bull-box-period">${cycle.period}</div>
+            <div class="bull-box-na">—</div>
+            <div class="bull-box-note">Not yet listed<br><span style="font-size:10px">Listed: ${esc(listedDate)}</span></div>
+          </div>`;
+        }
+        // Cycle started after the stock stopped trading (merger/delisting)
         if (d && d.notListed) {
           const mergedDate = d.listingDate ? d.listingDate : 'Unknown';
           return `<div class="bull-box bull-box-blank">
@@ -777,7 +787,7 @@
           <div class="bull-box-symbol">${esc(symbol)}</div>
           <div class="bull-box-cagr" style="color:${cagrColor}">${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(1)}% ${returnLabel}</div>
           <div class="bull-box-duration">⏱ ${d.years.toFixed(1)} yrs</div>
-          <div class="bull-box-multi">📈 Investment ${verb} ~${multX}${soFar}</div>
+          <div class="bull-box-multi">${isXirr ? '&nbsp;' : `📈 Investment ${verb} ~${multX}${soFar}`}</div>
           <div class="bull-box-prices">${isIndex ? 'Index: ' : 'Rs.'}${fmt(d.start_price)} → ${isIndex ? '' : 'Rs.'}${fmt(d.ltp)}</div>
 
           ${isIndex ? '' : `<button class="perf-toggle-btn" data-perf-id="${boxId}">
