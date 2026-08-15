@@ -783,7 +783,7 @@
 
         return `<div class="bull-box">
           <div class="bull-box-title">${cycle.label}</div>
-          <div class="bull-box-period">${esc(d.start_date)} → ${esc(d.end_date)}</div>
+          <div class="bull-box-period">${esc(cycle.start)} → ${esc(cycle.end || d.end_date)}</div>
           <div class="bull-box-symbol">${esc(symbol)}</div>
           <div class="bull-box-cagr" style="color:${cagrColor}">${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(1)}% ${returnLabel}</div>
           <div class="bull-box-duration">⏱ ${d.years.toFixed(1)} yrs</div>
