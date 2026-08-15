@@ -1526,11 +1526,6 @@
 
     function buildChart() {
       if (bbChart) { bbChart.destroy(); bbChart = null; }
-      // Rebuild drops any ticker overlay dataset — reset the toggle button to match
-      const overlayBtn = document.getElementById('overlay-ticker-btn');
-      overlayBtn.style.background = 'transparent';
-      overlayBtn.style.color = TICKER_OVERLAY_COLOR;
-      overlayBtn.textContent = '📈 Overlay current ticker';
       const lineColor = isDark ? '#5b9cff' : '#2a6fdb';
       const estColor  = isDark ? 'rgba(91,156,255,0.5)' : 'rgba(42,111,219,0.5)';
       const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.06)';
@@ -1642,77 +1637,18 @@
       });
     }
 
-    // ── Current-ticker overlay on the bull/bear chart ──
-    const TICKER_OVERLAY_LABEL = 'Ticker';
-    const TICKER_OVERLAY_COLOR = '#e67e22';
+    // ── Current-ticker overlay: opens the NEPSE Ticker Cycles artifact for this symbol ──
+    const TICKER_CYCLES_ARTIFACT_URL = 'https://claude.ai/code/artifact/ce245072-fd44-42e5-a7fc-b6239aac6a2d';
 
-    async function toggleTickerOverlay() {
-      if (!bbChart) return;
+    function toggleTickerOverlay() {
       const btn = document.getElementById('overlay-ticker-btn');
-      const existingIdx = bbChart.data.datasets.findIndex(d => d.label === TICKER_OVERLAY_LABEL);
-
-      // Toggle off if already shown
-      if (existingIdx !== -1) {
-        bbChart.data.datasets.splice(existingIdx, 1);
-        if (bbChart.options.scales.yTicker) delete bbChart.options.scales.yTicker;
-        bbChart.update();
-        btn.style.background = 'transparent';
-        btn.style.color = TICKER_OVERLAY_COLOR;
-        btn.textContent = '📈 Overlay current ticker';
-        return;
-      }
-
       const sym = lastSearchedSymbol;
       if (!sym) {
         btn.textContent = '⚠️ Search a ticker first';
         setTimeout(() => { btn.textContent = '📈 Overlay current ticker'; }, 2500);
         return;
       }
-
-      btn.textContent = '⏳ Loading…';
-      try {
-        const port = await findPort();
-        if (!port) throw new Error('Server not running');
-        const resp = await fetch(`http://localhost:${port}/series?symbol=${encodeURIComponent(sym)}&adjusted=1`, { signal: AbortSignal.timeout(8000) });
-        const data = await resp.json();
-        if (data.error) throw new Error(data.error);
-        const points = data.points || [];
-        if (!points.length) throw new Error('No price data');
-
-        // Map ticker close onto the chart's existing labels (last close on/before each label date)
-        const labels = bbChart.data.labels;
-        let pi = 0;
-        const mapped = labels.map(lbl => {
-          while (pi < points.length && points[pi].date <= lbl) pi++;
-          return pi > 0 ? points[pi - 1].close : null;
-        });
-
-        bbChart.options.scales.yTicker = {
-          position: 'right',
-          ticks: { color: TICKER_OVERLAY_COLOR, callback: v => v.toLocaleString() },
-          grid: { drawOnChartArea: false },
-          title: { display: true, text: `${sym} adj. (bonus+div)`, color: TICKER_OVERLAY_COLOR },
-        };
-        bbChart.data.datasets.push({
-          label: TICKER_OVERLAY_LABEL,
-          data: mapped,
-          borderColor: TICKER_OVERLAY_COLOR,
-          borderWidth: 2,
-          pointRadius: 0,
-          pointHoverRadius: 4,
-          fill: false,
-          tension: 0.3,
-          spanGaps: true,
-          yAxisID: 'yTicker',
-        });
-        bbChart.update();
-        btn.style.background = TICKER_OVERLAY_COLOR;
-        btn.style.color = '#fff';
-        btn.textContent = `✕ Remove ${sym}`;
-      } catch (err) {
-        btn.textContent = `❌ ${err.message}`;
-        setTimeout(() => { btn.textContent = '📈 Overlay current ticker'; }, 2500);
-      }
+      window.open(`${TICKER_CYCLES_ARTIFACT_URL}?ticker=${encodeURIComponent(sym)}`, '_blank');
     }
 
     // ── FD interest-rate overlay chart ──
