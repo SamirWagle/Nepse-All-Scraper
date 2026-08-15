@@ -337,6 +337,11 @@ def calculate_cagr(
         has_rights = not valid_rights.empty
     method_label = "XIRR" if has_rights else "CAGR"
 
+    # Resolve actual end date/price up front so the header can show it
+    latest_row  = nearest_price(prices, reference_end, direction="backward")
+    latest_date = latest_row["date"].date()
+    ltp         = float(latest_row["close"])
+
     if verbose:
         print(f"\n{'='*60}")
         print(f"  NEPSE {method_label} Calculator  |  {display_symbol}")
@@ -346,7 +351,9 @@ def calculate_cagr(
             print(f"  ⚠️  Adjusted to       : {actual_start_date}  (earliest available data)")
         else:
             print(f"  Actual start date    : {actual_start_date}  (nearest trading day)")
-        print(f"  End date             : {reference_end}{' (today)' if end_date is None else ''}")
+        print(f"  Requested end date   : {reference_end}{' (today)' if end_date is None else ''}")
+        if latest_date != reference_end:
+            print(f"  Actual end date      : {latest_date}  (nearest trading day)")
         print(f"  Price on start date  : Rs. {start_price:,.2f}")
         print(f"  Initial investment   : Rs. {initial_investment:,.2f}")
         print(f"  Units purchased      : {units:.4f} kitta")
@@ -425,10 +432,6 @@ def calculate_cagr(
                     print(f"  {str(action_date):<14} {event_label:<35} {units:>12.4f} {'':>12}")
 
     # ── Step 4: End-of-window value ───────────────────────────────────────
-    latest_row  = nearest_price(prices, reference_end, direction="backward")
-    latest_date = latest_row["date"].date()
-    ltp         = float(latest_row["close"])
-
     market_value   = units * ltp
     total_invested = initial_investment + total_right_share_cost
     todays_value   = market_value + total_cash_dividends
