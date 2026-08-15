@@ -1478,8 +1478,6 @@
       { date: "2008-08-31", value: 1175.38,  label: "Bull 2 Top\n1,175" },
       { date: "2016-07-27", value: 1881.45,  label: "Bull 3 Top\n1,881" },
       { date: "2021-08-18", value: 3198.60,  label: "Bull 4 Top\n3,199" },
-      { date: "2024-08-15", value: 3000.81,  label: "Bull 5 Peak\n3,001" },
-      { date: "2025-07-27", value: 3002.00,  label: "Bull 5 Peak\n3,002" },
     ];
     const bearBottoms = [
       { date: "2002-03-15", value: 186.22,  label: "Bear 1\n186" },
