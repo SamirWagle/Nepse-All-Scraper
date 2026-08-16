@@ -47,6 +47,7 @@ from scraper.core.fundamentals import MerolaganiFundamentalsScraper
 _listing_scraper = ShareHubListingDateScraper()
 _fundamentals_scraper = MerolaganiFundamentalsScraper()
 _merger_meta_cache = None
+_ceo_directory_cache = None
 
 # ── Known listing dates (overrides scraper data) ───────────────────────────────
 LISTING_DATE_OVERRIDES = {
@@ -156,6 +157,25 @@ def _load_merger_meta() -> dict:
 def get_merger_info(symbol: str) -> dict | None:
     info = _load_merger_meta().get(symbol.upper())
     return info if isinstance(info, dict) else None
+
+def _load_ceo_directory() -> dict:
+    global _ceo_directory_cache
+    if _ceo_directory_cache is not None:
+        return _ceo_directory_cache
+    path = Path(__file__).parent / "data" / "ceo_directory.csv"
+    directory = {}
+    if path.exists():
+        import csv
+        with open(path, newline="", encoding="utf-8") as f:
+            for row in csv.DictReader(f):
+                ticker = (row.get("ticker") or "").strip().upper()
+                if ticker:
+                    directory[ticker] = row.get("ceo_name", "").strip()
+    _ceo_directory_cache = directory
+    return _ceo_directory_cache
+
+def get_ceo_name(symbol: str) -> str | None:
+    return _load_ceo_directory().get(symbol.upper()) or None
 
 def resolve_final_survivor(symbol: str) -> dict | None:
     """Walk the merger chain to the terminal surviving entity still trading.
@@ -861,14 +881,15 @@ class Handler(BaseHTTPRequestHandler):
                 self._send_json({"error": "Invalid symbol"})
             else:
                 data = _fundamentals_scraper.get(symbol, force_refresh=force)
-                if "listing_date" not in data:
-                    if symbol in LISTING_DATE_OVERRIDES:
-                        data["listing_date"] = LISTING_DATE_OVERRIDES[symbol]
-                    else:
-                        try:
-                            data["listing_date"] = _listing_scraper.get(symbol)
-                        except Exception:
-                            data["listing_date"] = None
+                if symbol in LISTING_DATE_OVERRIDES:
+                    data["listing_date"] = LISTING_DATE_OVERRIDES[symbol]
+                elif "listing_date" not in data:
+                    try:
+                        data["listing_date"] = _listing_scraper.get(symbol)
+                    except Exception:
+                        data["listing_date"] = None
+                if not data.get("ceo"):
+                    data["ceo"] = get_ceo_name(symbol)
                 merger_info = get_merger_info(symbol)
                 if merger_info:
                     data["merger"] = merger_info
