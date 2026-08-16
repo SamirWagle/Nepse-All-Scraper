@@ -1,6 +1,17 @@
 {
   "symbol": "GILB",
-  "latest_quarter": null,
-  "scraped_at": "2026-08-09T18:16:36",
+  "latest_quarter": "082-083Q3",
+  "roe_ttm_pct": 23.07,
+  "roa_ttm_pct": 2.87,
+  "net_margin_ttm_pct": 20.05,
+  "eps_ttm": 47.07,
+  "eps_ttm_yoy_pct": 65.14,
+  "bvps": 214.72,
+  "bvps_yoy_pct": 11.53,
+  "net_profit_till_qtr": 21.96,
+  "net_profit_till_qtr_yoy_pct": 46.07,
+  "revenue_till_qtr": 116.05,
+  "revenue_till_qtr_yoy_pct": 17.14,
+  "scraped_at": "2026-08-16T18:18:06",
   "source": "nepsealpha.com"
 }
