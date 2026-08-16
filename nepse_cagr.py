@@ -352,8 +352,7 @@ def calculate_cagr(
         else:
             print(f"  Actual start date    : {actual_start_date}  (nearest trading day)")
         print(f"  Requested end date   : {reference_end}{' (today)' if end_date is None else ''}")
-        if latest_date != reference_end:
-            print(f"  Actual end date      : {latest_date}  (nearest trading day)")
+        print(f"  Actual end date      : {latest_date}  (nearest trading day)")
         print(f"  Price on start date  : Rs. {start_price:,.2f}")
         print(f"  Initial investment   : Rs. {initial_investment:,.2f}")
         print(f"  Units purchased      : {units:.4f} kitta")
@@ -455,6 +454,7 @@ def calculate_cagr(
         print(f"  Total right share cost  : Rs. {total_right_share_cost:,.2f}")
 
         if has_rights:
+            print(f"  Today's Value           : Rs. {market_value:,.2f}")
             print(f"\n  ── XIRR Calculation ───────────────────────────────────────")
             print(f"  Formula : 0 = Sum( CF_i / (1+r)^((date_i - date_0)/365) )")
             print(f"            CF negative = money in (purchase, right share cost)")

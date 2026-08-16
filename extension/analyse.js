@@ -755,11 +755,12 @@
         const soFar = cycle.current ? ' so far' : '';
         const isXirr = d.method === 'XIRR';
         const returnLabel = isXirr ? 'XIRR' : 'CAGR';
-        // Duration/CAGR recomputed against the displayed NEPSE cycle span (not the
-        // backend's nearest-trading-date span), so the years shown always match the
-        // dates shown. XIRR is solved from actual cashflow dates, so it stays as-is.
-        const spanYears = (new Date(cycle.end || d.end_date) - new Date(cycle.start)) / (1000 * 60 * 60 * 24 * 365.25);
-        const returnPct = isXirr ? d.xirr_pct : (Math.pow(ratio, 1 / spanYears) - 1) * 100;
+        // Years/CAGR come straight from the backend, computed off the actual
+        // nearest-trading dates — not the requested cycle dates — so the card
+        // matches the real math even when data gaps push the actual dates off
+        // the requested ones (see perf panel below for both requested vs actual).
+        const spanYears = d.years;
+        const returnPct = isXirr ? d.xirr_pct : d.cagr_pct;
         const verb  = returnPct >= 0 ? 'grew' : 'fell';
         const cagrColor = returnPct >= 0 ? 'var(--accent)' : 'var(--down)';
 
@@ -787,7 +788,7 @@
 
         return `<div class="bull-box">
           <div class="bull-box-title">${cycle.label}</div>
-          <div class="bull-box-period">${esc(cycle.start)} → ${esc(cycle.end || d.end_date)}</div>
+          <div class="bull-box-period">${esc(d.start_date)} → ${esc(d.end_date)}</div>
           <div class="bull-box-symbol">${esc(symbol)}</div>
           <div class="bull-box-cagr" style="color:${cagrColor}">${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(1)}% ${returnLabel}</div>
           <div class="bull-box-duration">⏱ ${spanYears.toFixed(1)} yrs</div>
@@ -1496,7 +1497,7 @@
       { start: "2002-03-15", end: "2008-08-31", label: "Bull 2", color: "rgba(102,187,106,0.13)" },
       { start: "2012-03-29", end: "2016-07-31", label: "Bull 3", color: "rgba(255,193,7,0.11)"   },
       { start: "2019-03-05", end: "2021-08-18", label: "Bull 4", color: "rgba(171,71,188,0.13)"  },
-      { start: "2022-09-25", end: "2099-01-01", label: "Bull 5", color: "rgba(78,205,196,0.09)"  },
+      { start: "2022-09-25", end: "2099-01-01", label: "Current Cycle", color: "rgba(78,205,196,0.09)"  },
     ];
 
     const bullCyclePlugin = {
@@ -1639,18 +1640,13 @@
       });
     }
 
-    // ── Current-ticker overlay: opens the NEPSE Ticker Cycles artifact for this symbol ──
+    // ── NEPSE Ticker Cycles artifact: opens the chart; ticker is picked manually in
+    // the dropdown there (claude.ai strips query params before the artifact iframe
+    // loads, so a deep-link ?ticker= param never reaches the artifact's own JS).
     const TICKER_CYCLES_ARTIFACT_URL = 'https://claude.ai/code/artifact/ce245072-fd44-42e5-a7fc-b6239aac6a2d';
 
     function toggleTickerOverlay() {
-      const btn = document.getElementById('overlay-ticker-btn');
-      const sym = lastSearchedSymbol;
-      if (!sym) {
-        btn.textContent = '⚠️ Search a ticker first';
-        setTimeout(() => { btn.textContent = '📈 Overlay current ticker'; }, 2500);
-        return;
-      }
-      window.open(`${TICKER_CYCLES_ARTIFACT_URL}?ticker=${encodeURIComponent(sym)}`, '_blank');
+      window.open(TICKER_CYCLES_ARTIFACT_URL, '_blank');
     }
 
     // ── FD interest-rate overlay chart ──
