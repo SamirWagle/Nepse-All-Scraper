@@ -12,10 +12,13 @@ Usage:
 Output: one JSON object on stdout —
     {"prices": {"dates": [...], "prices": [...]},
      "meta": {"name": ..., "bonusEvents": [[date, pct], ...],
+               "rightsEvents": [[date, pct], ...],
                "hasRights": bool, "dividendEvents": [[date, bonusPct, cashPct], ...]}}
 
-hasRights is informational only (drives a text note in the artifact) — the
-artifact does not yet do rights-share unit/price adjustment math.
+rightsEvents uses the same [date, pct] shape as bonusEvents (pct = ratio_multiplier
+from load_right_shares × 100) so the artifact's adjusted-price series can fold rights
+dilution in alongside bonus dilution — a rights issue increases share count the same
+way a bonus issue does, just at a subscription cost instead of free.
 """
 import json
 import sys
@@ -60,9 +63,18 @@ def build(symbol: str) -> dict:
         if bonus_pct > 0 or cash_pct > 0:
             dividend_events.append([iso_date, bonus_pct, cash_pct])
 
+    rights_events = []
+    for _, row in rights_df.iterrows():
+        if row["closing_date"] is None or row["closing_date"] != row["closing_date"]:
+            continue
+        pct = round(float(row.get("ratio_multiplier", 0) or 0) * 100, 4)
+        if pct > 0:
+            rights_events.append([row["closing_date"].strftime("%Y-%m-%d"), pct])
+
     # newest first, matching HDL's existing ordering in the artifact
     bonus_events.sort(key=lambda e: e[0], reverse=True)
     dividend_events.sort(key=lambda e: e[0], reverse=True)
+    rights_events.sort(key=lambda e: e[0], reverse=True)
 
     has_rights = not rights_df.empty
 
@@ -71,6 +83,7 @@ def build(symbol: str) -> dict:
         "meta": {
             "name": company_name(symbol),
             "bonusEvents": bonus_events,
+            "rightsEvents": rights_events,
             "hasRights": has_rights,
             "dividendEvents": dividend_events,
         },
