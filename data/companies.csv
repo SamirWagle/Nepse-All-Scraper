@@ -1,6 +1,7 @@
 symbol,name
 ACLBSL,Aarambha Chautari Laghubitta Bittiya Sanstha Limited
 ADBL,Agricultural Development Bank Limited
+ADBLB87,4% Agricultural Bond 2087
 ADBLD83,10.35% Agricultural Bank Debenture 2083
 AHL,Asian Hydropower Limited
 AHPC,Arun Valley Hydropower Development Company Limited
@@ -71,6 +72,7 @@ FMDBL,First Microfinance Laghubitta Bittiya Sanstha Limited
 FOWAD,Forward Microfinance Laghubitta Bittiya Sanstha Limited
 GBBD85,8.75% Garima Debenture 2085
 GBBL,Garima Bikas Bank Limited
+GBILD84/85,11.25% Global IME Bank Debenture 2084/85
 GBILD86/87,8.5% Global IME Bank Ltd. Debenture 2086/87
 GBIME,Global IME Bank Limited
 GBIMEP,Global IME Bank Limited Promoter Share
@@ -195,6 +197,7 @@ NBF2,2
 NBF3,Nabil Balanced Fund III
 NBL,Nepal Bank Limited
 NBLD82,10% Nabil Bank Debenture 2082
+NBLD85,8% Nabil Debenture 2085
 NBLD87,8.5% Nepal Bank Debenture 2087
 NCCD86,9.5% NCC Rinpatra 2086
 NESDO,Nesdo Sambridha Laghubitta Bittiya Sanstha Limited
@@ -209,6 +212,7 @@ NIBSF2,2
 NICA,NIC Asia Bank Limited
 NICAD2091,7% NIC Asia Debenture 2091
 NICBF,NIC ASIA Balanced Fund
+NICD83/84,10.25% NIC ASIA Debenture 2083/84
 NICFC,NIC Asia Flexi Cap Fund
 NICGF2,NIC Asia Growth Fund 2
 NICL,Nepal Insurance Company Limited
@@ -307,6 +311,7 @@ SBID83,10.25% Nepal SBI Bank Debenture 2083
 SBID89,9% Nepal SBI Bank Debenture 2089
 SBL,Siddhartha Bank Limited
 SBLD2091,7.25% SBL Debenture 2091
+SBLD83,10.25% SBL Debenture 2083
 SBLD84,8.5% SBL Debenture 2084
 SBLD89,10.75 % SBL Debenture 2089
 SCB,Standard Chartered Bank Nepal Limited
