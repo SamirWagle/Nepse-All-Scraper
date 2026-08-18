@@ -1469,6 +1469,7 @@
 
     // ── Bull & Bear Chart ──
     let bbChart = null;
+    let bbScale = 'linear';
 
     // Estimated data 1994–2000 (no official daily records; approximate based on known start 100pts Jan 1994)
     const estLabels = ["1994-01-13","1994-07-01","1995-01-01","1995-07-01","1996-01-01","1996-07-01","1997-01-01","1997-07-01","1998-01-01","1998-07-01","1999-01-01","1999-07-01","2000-01-01","2000-07-01"];
@@ -1632,6 +1633,7 @@
               grid: { color: gridColor }
             },
             y: {
+              type: bbScale,
               ticks: { color: textColor, callback: v => v.toLocaleString() },
               grid: { color: gridColor }
             }
@@ -1639,6 +1641,18 @@
         }
       });
     }
+
+    function setBbScale(scale) {
+      bbScale = scale;
+      document.getElementById('bb-scale-log').classList.toggle('active', scale === 'logarithmic');
+      document.getElementById('bb-scale-linear').classList.toggle('active', scale === 'linear');
+      if (!bbChart) return;
+      bbChart.options.scales.y.type = scale;
+      if (bbChart.options.scales.yTicker) bbChart.options.scales.yTicker.type = scale;
+      bbChart.update();
+    }
+    document.getElementById('bb-scale-log').addEventListener('click', () => setBbScale('logarithmic'));
+    document.getElementById('bb-scale-linear').addEventListener('click', () => setBbScale('linear'));
 
     // ── Current-ticker overlay on the bull/bear chart ──
     const TICKER_OVERLAY_LABEL = 'Ticker';
@@ -1682,6 +1696,7 @@
         });
 
         bbChart.options.scales.yTicker = {
+          type: bbScale,
           position: 'right',
           ticks: { color: TICKER_OVERLAY_COLOR, callback: v => v.toLocaleString() },
           grid: { drawOnChartArea: false },
