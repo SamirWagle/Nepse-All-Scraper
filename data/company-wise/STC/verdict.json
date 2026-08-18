@@ -1,0 +1,19 @@
+{
+  "date": "2026-08-18",
+  "present_pe": 142.19,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 36.36,
+  "shiller_pe": 156.42,
+  "shiller_pe_years": 10,
+  "shiller_avg_eps": 33.05,
+  "historical_pe_avg": 28.69,
+  "historical_pe_median": 12.34,
+  "historical_pe_min": 3.28,
+  "historical_pe_max": 425.63,
+  "historical_pe_years": 10,
+  "read_vs_shiller": "cheap",
+  "read_vs_median": "expensive",
+  "verdict_lean": "SELL-CASE",
+  "verdict_reason": "Present PE (142) is priced for growth EPS history doesn't support -- EPS fell from Rs.75 (073-074) to a Rs.13-36 range for 6 straight years while price ran up 20x+.",
+  "devils_advocate": "Historical median (12.34) blends a pre-076-077 illiquid regime (PE 3-21) with the post-re-rating regime (PE 87-425) -- against the post-re-rating band alone, 142 is mid-pack, not extreme. Real question is whether the re-rating itself was ever earnings-justified; flat EPS says no."
+}
