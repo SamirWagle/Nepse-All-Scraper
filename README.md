@@ -165,12 +165,12 @@ print(prices["count"], prices["data"][-1])
 // JavaScript / TypeScript
 const r = await fetch("https://samirwagle.github.io/Nepse-All-Scraper/docs/api/latest.json");
 const latest = await r.json();
-console.log(latest["NABIL"]);
+console.log(latest["ADBL"]);
 ```
 
 ```bash
 # CLI
-curl https://cdn.jsdelivr.net/gh/SamirWagle/Nepse-All-Scraper@main/data/company-wise/NABIL/dividend.csv
+curl https://cdn.jsdelivr.net/gh/SamirWagle/Nepse-All-Scraper@main/data/company-wise/ADBL/dividend.csv
 ```
 
 ---
