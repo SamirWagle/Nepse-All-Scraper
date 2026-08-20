@@ -134,7 +134,7 @@ https://samirwagle.github.io/Nepse-All-Scraper/docs/api/companies.json
 https://samirwagle.github.io/Nepse-All-Scraper/docs/api/latest.json
 https://samirwagle.github.io/Nepse-All-Scraper/docs/api/prices/ADBL.json
 https://samirwagle.github.io/Nepse-All-Scraper/docs/api/dividends/ADBL.json
-https://samirwagle.github.io/Nepse-All-Scraper/docs/api/right-shares/NABIL.json
+https://samirwagle.github.io/Nepse-All-Scraper/docs/api/right-shares/ADBL.json
 https://samirwagle.github.io/Nepse-All-Scraper/docs/api/floorsheet/index.json
 https://samirwagle.github.io/Nepse-All-Scraper/docs/api/status.json  # health snapshot
 ```
