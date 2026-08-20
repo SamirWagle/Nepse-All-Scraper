@@ -129,7 +129,7 @@ Two equivalent ways to consume the data — pick whichever your client likes.
 
 ```
 https://samirwagle.github.io/Nepse-All-Scraper/                 # Swagger UI
-https://samirwagle.github.io/Nepse-All-Scraper/openapi.json     # OpenAPI 3.1 spec
+https://samirwagle.github.io/Nepse-All-Scraper/docs/openapi.json     # OpenAPI 3.1 spec
 https://samirwagle.github.io/Nepse-All-Scraper/docs/api/companies.json
 https://samirwagle.github.io/Nepse-All-Scraper/docs/api/latest.json
 https://samirwagle.github.io/Nepse-All-Scraper/docs/api/prices/ADBL.json
