@@ -3958,7 +3958,12 @@
       "display_mode": "closed",
       "note": "Samriddhi Finance Company Limited (former World Merchant Banking) is marked as Merged on ShareSansar company page.",
       "source_url": "https://www.sharesansar.com/company/sfcl",
-      "source_title": "ShareSansar company page (SFCL)"
+      "source_title": "ShareSansar company page (SFCL)",
+      "merged_date": "2026-06-17",
+      "merged_into": "PFL",
+      "merged_into_name": "Pokhara Finance Limited",
+      "surviving_symbol": "PFL",
+      "surviving_name": "Pokhara Finance Limited"
     },
     "SOCIAL": {
       "symbol": "SOCIAL",
@@ -4008,6 +4013,20 @@
       "note": "Grameen Bikas Laghubitta Bittiya Sanstha Limited merged into Samaj Laghubitta Bittiya Sanstha Limited.",
       "source_url": "https://www.sharesansar.com/newsdetail/after-successful-merger-between-gblbs-and-samaj-shares-of-grameen-bikas-laghubitta-listed-in-nepse-2025-12-22",
       "source_title": "After Successful Merger Between GBLBS and SAMAJ, Shares of Grameen Bikas Laghubitta Listed in NEPSE"
+    },
+    "WNLB": {
+      "symbol": "WNLB",
+      "status": "closed",
+      "display_name": "Wean Nepal Laghubitta Bittiya Sanstha Limited",
+      "merged_date": "2026-09-06",
+      "merged_into": "SLBBL",
+      "merged_into_name": "Swarojgar Laghubitta Bittiya Sanstha Limited",
+      "surviving_symbol": "SLBBL",
+      "surviving_name": "Swarojgar Laghubitta Bittiya Sanstha Limited",
+      "display_mode": "closed",
+      "note": "Wean Nepal Laghubitta Bittiya Sanstha Limited merged into Swarojgar Laghubitta Bittiya Sanstha Limited.",
+      "source_url": "https://www.sharesansar.com/merger-acquisition",
+      "source_title": "ShareSansar M&A feed → SLBBL"
     }
   }
 }
