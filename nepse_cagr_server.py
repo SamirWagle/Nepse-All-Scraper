@@ -53,6 +53,7 @@ _ceo_directory_cache = None
 LISTING_DATE_OVERRIDES = {
     "SPIL": "2023-04-03",
     "SBL": "2006-02-24",
+    "SRLI": "2023-05-18",
 }
 
 # ── Sub-index ticker aliases → data/index/{slug}/history.csv ──────────────────
