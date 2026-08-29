@@ -11,21 +11,28 @@
   "avg_180d": 387.0,
   "avg_120d": 0.0,
   "year_yield_pct": 0.0,
-  "eps": 0.0,
+  "eps": null,
   "eps_fy": "079-080",
-  "pe_ratio": 0.0,
+  "pe_ratio": null,
   "book_value": 120.75,
   "pbv": 3.2,
   "dividend_pct": 5.26,
   "dividend_fy": "076-077",
   "avg_volume_30d": 0.0,
   "market_cap": 8127000000.0,
-  "scraped_at": "2026-05-27T00:33:55",
+  "scraped_at": "2026-08-29T16:09:08",
   "source": "merolagani.com",
-  "promoter_shares": 14700000.0,
-  "public_shares": 6300000.0,
-  "promoter_pct": 70.0,
-  "public_pct": 30.0,
   "all_time_high": 818.0,
-  "all_time_high_date": "2021-02-03T00:00:00"
+  "all_time_high_date": "2021-02-03T00:00:00",
+  "paid_up_capital": 2100000000.0,
+  "financial_history": [
+    {
+      "fiscal_year": "079-080",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "120.75",
+      "dividend_pct": "5.26"
+    }
+  ]
 }
