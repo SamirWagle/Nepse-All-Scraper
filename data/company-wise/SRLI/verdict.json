@@ -1,0 +1,19 @@
+{
+  "date": "2026-08-29",
+  "present_pe": 46.71,
+  "present_pe_fy": "082-083",
+  "present_pe_eps": 7.65,
+  "shiller_pe": 35.12,
+  "shiller_pe_years": 4,
+  "shiller_avg_eps": 10.17,
+  "historical_pe_avg": 45.76,
+  "historical_pe_median": 44.91,
+  "historical_pe_min": 36.92,
+  "historical_pe_max": 56.28,
+  "historical_pe_years": 4,
+  "read_vs_shiller": "expensive",
+  "read_vs_median": "expensive",
+  "verdict_lean": "SELL-CASE",
+  "verdict_reason": "Present PE sits above both the Shiller PE and the historical median, at the high end of a thin 4-year band.",
+  "devils_advocate": "FY082-083 EPS (7.65) is unaudited Q4 YTD, before the actuarial surplus transfer that lifted the prior two years' audited net profit by 43.8% and 47.5%. If FY082-083 sees the same adjustment, EPS could reach ~11 once audited, pulling Present PE to ~32-33 -- below the Shiller PE and median, flipping this to a cheap read."
+}

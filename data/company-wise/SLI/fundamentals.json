@@ -1,0 +1,35 @@
+{
+  "symbol": "SLI",
+  "company_name": "Sanima Life Insurance Limited (SLI)",
+  "sector": "Life Insurance",
+  "shares_outstanding": 20000000.0,
+  "market_price": 396.8,
+  "percent_change": -1.29,
+  "last_traded_on": "2023/03/22 03:00:00",
+  "high_52w": 405.0,
+  "low_52w": 393.0,
+  "avg_180d": 396.8,
+  "avg_120d": 0.0,
+  "year_yield_pct": 0.0,
+  "eps": null,
+  "eps_fy": "079-080",
+  "pe_ratio": null,
+  "book_value": 120.19,
+  "pbv": 3.3,
+  "dividend_pct": null,
+  "dividend_fy": null,
+  "avg_volume_30d": 0.0,
+  "market_cap": 7936000000.0,
+  "scraped_at": "2026-08-29T16:16:49",
+  "source": "merolagani.com",
+  "financial_history": [
+    {
+      "fiscal_year": "079-080",
+      "net_profit": "",
+      "total_revenue": "",
+      "npl_pct": "",
+      "book_value": "120.19",
+      "dividend_pct": ""
+    }
+  ]
+}
