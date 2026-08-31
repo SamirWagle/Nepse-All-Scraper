@@ -4,14 +4,14 @@
   "roe_ttm_pct": 2.24,
   "roa_ttm_pct": 0.86,
   "net_margin_ttm_pct": 2.09,
-  "eps_ttm": 4.2,
+  "eps_ttm": 4.19,
   "eps_ttm_yoy_pct": -71.26,
-  "bvps": 192.14,
+  "bvps": 191.95,
   "bvps_yoy_pct": 2.36,
   "net_profit_till_qtr": 13.01,
   "net_profit_till_qtr_yoy_pct": -71.26,
   "revenue_till_qtr": 621.13,
   "revenue_till_qtr_yoy_pct": 8.92,
-  "scraped_at": "2026-08-23T19:00:05",
+  "scraped_at": "2026-08-30T19:09:46",
   "source": "nepsealpha.com"
 }
