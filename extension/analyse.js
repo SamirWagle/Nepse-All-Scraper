@@ -118,6 +118,9 @@
       if (name === 'btc') {
         buildBtcChart();
       }
+      if (name === 'bubbles') {
+        initBubblesPage();
+      }
       if (name === 'karmasignal') {
         runKarmaSignal();
       }
@@ -416,6 +419,10 @@
     document.getElementById('menu-bullbear').addEventListener('click', (e) => {
       e.stopPropagation();
       openBullBearFromQuery(document.getElementById('search-input').value.trim());
+    });
+    document.getElementById('menu-bubbles').addEventListener('click', (e) => {
+      e.stopPropagation();
+      switchPage('bubbles');
     });
     document.getElementById('menu-btc').addEventListener('click', (e) => {
       e.stopPropagation();
@@ -2144,4 +2151,258 @@
         <td style="padding:10px 14px;text-align:right;"><span class="val-bull">+442%</span></td>
       </tr>`;
       tbody.innerHTML = html;
+    }
+
+    // ══ NEPSE BUBBLES (cryptobubbles.net-style bubble map) ══════════════════
+    let bubblesInited = false;
+    let bubblesPeriod = '1m';
+    let bubblesNodes = [];
+    let bubblesAnimId = null;
+    let bubblesHover = null;
+    let bubblesSizeMode = 'pct';        // 'pct' = size by return magnitude, 'mc' = by market cap
+    const BUBBLE_MIN_R = 9;
+    const BUBBLE_GAP = 3;               // breathing room between bubbles
+    const BUBBLE_FILL_RATIO = 0.62;     // share of the frame the pack should cover
+
+    function initBubblesPage() {
+      if (!bubblesInited) {
+        bubblesInited = true;
+        document.getElementById('bubbles-period-toggle').addEventListener('click', (e) => {
+          const btn = e.target.closest('button[data-period]');
+          if (!btn) return;
+          document.querySelectorAll('#bubbles-period-toggle button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          bubblesPeriod = btn.dataset.period;
+          fetchAndRenderBubbles(bubblesPeriod);
+        });
+        document.getElementById('bubbles-size-toggle').addEventListener('click', (e) => {
+          const btn = e.target.closest('button[data-size]');
+          if (!btn) return;
+          document.querySelectorAll('#bubbles-size-toggle button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          bubblesSizeMode = btn.dataset.size;
+          sizeBubblesRadii();
+        });
+        const canvas = document.getElementById('bubbles-canvas');
+        canvas.addEventListener('mousemove', onBubblesHover);
+        canvas.addEventListener('mouseleave', () => {
+          bubblesHover = null;
+          document.getElementById('bubbles-tooltip').hidden = true;
+        });
+        window.addEventListener('resize', () => {
+          sizeBubblesCanvas();
+          sizeBubblesRadii();
+        });
+      }
+      sizeBubblesCanvas();
+      if (bubblesNodes.length === 0) {
+        fetchAndRenderBubbles(bubblesPeriod);
+      } else {
+        sizeBubblesRadii();   // canvas may have resized while the page was hidden
+        if (!bubblesAnimId) runBubblesSim();
+      }
+    }
+
+    function sizeBubblesCanvas() {
+      const canvas = document.getElementById('bubbles-canvas');
+      const wrap = canvas.parentElement;
+      canvas.width = wrap.clientWidth;
+      canvas.height = wrap.clientHeight;
+    }
+
+    async function fetchAndRenderBubbles(period) {
+      if (bubblesAnimId) { cancelAnimationFrame(bubblesAnimId); bubblesAnimId = null; }
+      const statusEl = document.getElementById('bubbles-status');
+      statusEl.textContent = '⏳ Loading NEPSE bubbles...';
+      statusEl.style.display = 'flex';
+      try {
+        const port = await findPort();
+        if (!port) {
+          statusEl.textContent = '❌ Engine offline. Open the extension popup to start it.';
+          return;
+        }
+        const resp = await fetch(`http://localhost:${port}/bubbles?period=${encodeURIComponent(period)}`,
+          { signal: AbortSignal.timeout(20000) });
+        const data = await resp.json();
+        if (data.error) { statusEl.textContent = '❌ ' + data.error; return; }
+        buildBubblesNodes(data.data || []);
+        statusEl.style.display = 'none';
+        runBubblesSim();
+      } catch (err) {
+        statusEl.textContent = '❌ ' + err.message;
+      }
+    }
+
+    function buildBubblesNodes(rows) {
+      const withCap = rows.filter(r => r.market_cap > 0);
+      const top = withCap.sort((a, b) => b.market_cap - a.market_cap).slice(0, 75);
+      const canvas = document.getElementById('bubbles-canvas');
+      bubblesNodes = top.map(r => ({
+        symbol: r.symbol,
+        name: r.name.replace(/\s+/g, ' ').trim(),
+        price: r.price,
+        pct: r.cagr_pct,
+        isCagr: r.is_cagr,
+        marketCap: r.market_cap,
+        r: BUBBLE_MIN_R,
+        // Seed across the whole frame so collisions settle into a full-frame
+        // pack instead of one blob in the middle.
+        x: BUBBLE_MIN_R + Math.random() * Math.max(1, canvas.width - BUBBLE_MIN_R * 2),
+        y: BUBBLE_MIN_R + Math.random() * Math.max(1, canvas.height - BUBBLE_MIN_R * 2),
+        vx: 0, vy: 0,
+      }));
+      sizeBubblesRadii();
+    }
+
+    // Radius ∝ sqrt(metric), globally scaled so the bubbles cover a fixed
+    // share of the frame — that's what makes the pack fill the box the way
+    // cryptobubbles does, at any canvas size or spread of values.
+    function sizeBubblesRadii() {
+      if (bubblesNodes.length === 0) return;
+      const canvas = document.getElementById('bubbles-canvas');
+      const metric = n => bubblesSizeMode === 'mc'
+        ? Math.max(n.marketCap || 0, 1)
+        : Math.max(Math.abs(n.pct), 0.35);   // floor keeps flat movers visible
+
+      const weights = bubblesNodes.map(n => Math.sqrt(metric(n)));
+      const weightSqSum = weights.reduce((sum, w) => sum + w * w, 0) || 1;
+      const targetArea = BUBBLE_FILL_RATIO * canvas.width * canvas.height;
+      const k = Math.sqrt(targetArea / (Math.PI * weightSqSum));
+      const maxR = Math.min(canvas.width, canvas.height) * 0.21;
+
+      bubblesNodes.forEach((n, i) => {
+        n.r = Math.max(BUBBLE_MIN_R, Math.min(maxR, k * weights[i]));
+      });
+    }
+
+    function stepBubblesSim(cx, cy) {
+      const n = bubblesNodes.length;
+      const canvas = document.getElementById('bubbles-canvas');
+      // Very weak centering — enough to close gaps, too weak to clump.
+      for (const a of bubblesNodes) {
+        a.vx += (cx - a.x) * 0.00025 + (Math.random() - 0.5) * 0.06;
+        a.vy += (cy - a.y) * 0.00035 + (Math.random() - 0.5) * 0.06;
+      }
+      // Pairwise collision resolution (n is capped at 75 — cheap enough at 60fps).
+      for (let i = 0; i < n; i++) {
+        const a = bubblesNodes[i];
+        for (let j = i + 1; j < n; j++) {
+          const b = bubblesNodes[j];
+          const dx = b.x - a.x, dy = b.y - a.y;
+          const dist = Math.hypot(dx, dy) || 0.01;
+          const minDist = a.r + b.r + BUBBLE_GAP;
+          if (dist < minDist) {
+            const overlap = (minDist - dist) / dist * 0.5;
+            const ox = dx * overlap, oy = dy * overlap;
+            a.vx -= ox; a.vy -= oy;
+            b.vx += ox; b.vy += oy;
+          }
+        }
+      }
+      for (const a of bubblesNodes) {
+        a.vx *= 0.86; a.vy *= 0.86;
+        a.x += a.vx; a.y += a.vy;
+        // Keep every bubble fully inside the frame.
+        if (a.x < a.r) { a.x = a.r; a.vx *= -0.4; }
+        if (a.x > canvas.width - a.r) { a.x = canvas.width - a.r; a.vx *= -0.4; }
+        if (a.y < a.r) { a.y = a.r; a.vy *= -0.4; }
+        if (a.y > canvas.height - a.r) { a.y = canvas.height - a.r; a.vy *= -0.4; }
+      }
+    }
+
+    function drawBubbles(ctx, canvas) {
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.textAlign = 'center';
+
+      for (const n of bubblesNodes) {
+        const isUp = n.pct >= 0;
+        const rgb = isUp ? '46,220,110' : '255,45,45';
+        const mag = Math.min(Math.abs(n.pct) / 40, 1);
+        const hovered = n === bubblesHover;
+
+        // Dark core fading to the signal color at the rim.
+        const grad = ctx.createRadialGradient(n.x, n.y, n.r * 0.15, n.x, n.y, n.r);
+        grad.addColorStop(0, isUp ? 'rgba(3,20,10,0.98)' : 'rgba(26,4,4,0.98)');
+        grad.addColorStop(0.72, `rgba(${rgb},${0.10 + mag * 0.12})`);
+        grad.addColorStop(1, `rgba(${rgb},${0.30 + mag * 0.30})`);
+
+        ctx.save();
+        ctx.shadowColor = `rgba(${rgb},${0.5 + mag * 0.5})`;
+        ctx.shadowBlur = 8 + mag * 22 + (hovered ? 12 : 0);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.lineWidth = Math.max(2, n.r * 0.055) + (hovered ? 2 : 0);
+        ctx.strokeStyle = hovered ? '#fff' : `rgba(${rgb},${0.75 + mag * 0.25})`;
+        ctx.stroke();
+        ctx.restore();
+
+        if (n.r < 11) continue;   // too small for any legible label
+
+        const pctStr = (isUp ? '+' : '') + (Math.abs(n.pct) >= 100
+          ? Math.round(n.pct).toLocaleString('en-US')
+          : n.pct.toFixed(1)) + '%';
+
+        ctx.fillStyle = '#fff';
+        if (n.r < 20) {
+          // Tiny bubble: ticker on top, % underneath, both shrunk to fit.
+          ctx.font = `700 ${n.r * 0.42}px "IBM Plex Sans", sans-serif`;
+          ctx.fillText(n.symbol, n.x, n.y + n.r * 0.02);
+          ctx.font = `600 ${n.r * 0.34}px "IBM Plex Sans", sans-serif`;
+          ctx.fillText(pctStr, n.x, n.y + n.r * 0.45);
+          continue;
+        }
+
+        // Shrink the ticker if it would overflow the circle.
+        let symSize = n.r * 0.46;
+        ctx.font = `700 ${symSize}px "IBM Plex Sans", sans-serif`;
+        const maxTextW = n.r * 1.55;
+        const symW = ctx.measureText(n.symbol).width;
+        if (symW > maxTextW) {
+          symSize *= maxTextW / symW;
+          ctx.font = `700 ${symSize}px "IBM Plex Sans", sans-serif`;
+        }
+        ctx.fillText(n.symbol, n.x, n.y + symSize * 0.12);
+        ctx.font = `600 ${n.r * 0.32}px "IBM Plex Sans", sans-serif`;
+        ctx.fillText(pctStr, n.x, n.y + n.r * 0.52);
+      }
+    }
+
+    function runBubblesSim() {
+      const canvas = document.getElementById('bubbles-canvas');
+      const ctx = canvas.getContext('2d');
+      const loop = () => {
+        if (!document.getElementById('page-bubbles').classList.contains('active')) {
+          bubblesAnimId = null;
+          return;
+        }
+        stepBubblesSim(canvas.width / 2, canvas.height / 2);
+        drawBubbles(ctx, canvas);
+        bubblesAnimId = requestAnimationFrame(loop);
+      };
+      loop();
+    }
+
+    function onBubblesHover(e) {
+      const canvas = document.getElementById('bubbles-canvas');
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+      const tooltip = document.getElementById('bubbles-tooltip');
+      let hit = null;
+      for (let i = bubblesNodes.length - 1; i >= 0; i--) {
+        const n = bubblesNodes[i];
+        if (Math.hypot(mx - n.x, my - n.y) <= n.r) { hit = n; break; }
+      }
+      bubblesHover = hit;
+      if (!hit) { tooltip.hidden = true; return; }
+      tooltip.hidden = false;
+      const priceStr = hit.price.toLocaleString('en-US', { maximumFractionDigits: hit.price < 10 ? 2 : 1 });
+      const pctLabel = hit.isCagr ? 'CAGR' : 'Change';
+      tooltip.innerHTML = `<strong>${esc(hit.symbol)}</strong> — ${esc(hit.name)}<br>Rs. ${priceStr} · ${pctLabel} ${(hit.pct >= 0 ? '+' : '') + hit.pct.toFixed(2)}%`;
+      let left = mx + 14, top = my + 14;
+      if (left + 240 > canvas.width) left = mx - 254;
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = top + 'px';
     }

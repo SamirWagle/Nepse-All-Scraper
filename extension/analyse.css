@@ -844,6 +844,45 @@
     }
     .chart-wrap { position: relative; width: 100%; height: 420px; }
 
+    .bubbles-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .bubbles-period-toggle { flex-wrap: wrap; gap: 2px; width: fit-content; }
+    #bubbles-size-toggle { margin-left: auto; }
+    .bubbles-wrap {
+      position: relative;
+      width: 100%;
+      height: 74vh;
+      min-height: 520px;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .bubbles-wrap canvas { display: block; width: 100%; height: 100%; }
+    .bubbles-status {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); font-size: 13px; pointer-events: none;
+    }
+    .bubbles-tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      z-index: 5;
+      white-space: nowrap;
+    }
+
     .bb-table-title {
       font-size: 11px;
       font-weight: 600;

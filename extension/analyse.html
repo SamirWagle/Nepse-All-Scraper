@@ -41,6 +41,9 @@
               <button class="nav-menu-item" id="menu-bullbear">
                 <span class="item-icon">🐂</span> Bull &amp; Bear
               </button>
+              <button class="nav-menu-item" id="menu-bubbles">
+                <span class="item-icon">🫧</span> NEPSE Bubbles
+              </button>
               <button class="nav-menu-item" id="menu-btc">
                 <span class="item-icon">₿</span> BTC Cycles
               </button>
@@ -290,6 +293,44 @@
 
       <!-- cycle modal -->
       <div id="bull-cycle-results"></div>
+    </div>
+  </div>
+
+  <!-- ══ NEPSE BUBBLES PAGE ══ -->
+  <div class="page" id="page-bubbles">
+    <div class="bb-page" style="max-width:1700px;">
+      <div class="bb-title">🫧 NEPSE Bubbles</div>
+      <div class="bb-sub">Top 75 NEPSE stocks by market cap, sized by return magnitude, colored by % change (CAGR for periods over 1 year) · Data: local NEPSE history</div>
+
+      <div class="bubbles-controls">
+        <div class="bubbles-period-toggle opt-toggle" id="bubbles-period-toggle" role="group" aria-label="Bubble period">
+          <button type="button" data-period="1d">1D</button>
+          <button type="button" data-period="1w">1W</button>
+          <button type="button" data-period="1m" class="active">1M</button>
+          <button type="button" data-period="1y">1Y</button>
+          <button type="button" data-period="2y">2Y</button>
+          <button type="button" data-period="3y">3Y</button>
+          <button type="button" data-period="4y">4Y</button>
+          <button type="button" data-period="5y">5Y</button>
+          <button type="button" data-period="6y">6Y</button>
+          <button type="button" data-period="7y">7Y</button>
+          <button type="button" data-period="8y">8Y</button>
+          <button type="button" data-period="9y">9Y</button>
+          <button type="button" data-period="10y">10Y</button>
+          <button type="button" data-period="11y">11Y</button>
+          <button type="button" data-period="12y">12Y</button>
+        </div>
+        <div class="opt-toggle" id="bubbles-size-toggle" role="group" aria-label="Bubble size metric">
+          <button type="button" data-size="pct" class="active">Size: %</button>
+          <button type="button" data-size="mc">Size: MC</button>
+        </div>
+      </div>
+
+      <div class="bubbles-wrap">
+        <canvas id="bubbles-canvas"></canvas>
+        <div id="bubbles-status" class="bubbles-status"></div>
+        <div id="bubbles-tooltip" class="bubbles-tooltip" hidden></div>
+      </div>
     </div>
   </div>
 

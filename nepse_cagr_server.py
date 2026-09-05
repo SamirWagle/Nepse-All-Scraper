@@ -544,6 +544,114 @@ def get_company_trading_range(symbol: str) -> dict:
         return {"symbol": symbol, "first_date": None, "last_date": None}
 
 
+BUBBLE_PERIOD_DAYS = {
+    "1d": 1, "1w": 7, "1m": 30,
+    "1y": 365, "2y": 730, "3y": 1095, "4y": 1460, "5y": 1825,
+    "6y": 2190, "7y": 2555, "8y": 2920, "9y": 3285,
+    "10y": 3650, "11y": 4015, "12y": 4380,
+}
+
+
+BUBBLE_TOP_N = 75
+
+
+def get_bubbles_data(period: str) -> list:
+    """Total return % (or annualized CAGR/XIRR) + market cap, for the bubble map.
+
+    Price-only % change is misleading whenever bonus shares, cash dividends,
+    or rights fell inside the window (see CIT: heavy bonus dilution pushes
+    the raw price down over a decade while a holder's actual total return is
+    positive). So every window runs the same bonus/dividend/rights-adjusted
+    engine the CAGR calculator uses (nepse_cagr.calculate_cagr, XIRR when
+    rights are involved):
+      - <=1y windows show the *raw* total return over that window (not
+        annualized — annualizing a 1-day move is nonsensical).
+      - >1y windows show the annualized CAGR/XIRR.
+    Only run over the top-N by market cap since the adjusted engine is much
+    heavier than a raw price lookup.
+    """
+    days = BUBBLE_PERIOD_DAYS.get(period, BUBBLE_PERIOD_DAYS["1m"])
+    use_annualized = days > 365
+
+    candidates = []
+    for c in _load_companies():
+        symbol = c["symbol"]
+        csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
+        if not csv_path.exists():
+            continue
+        try:
+            df = pd.read_csv(csv_path, usecols=["date", "ltp"], parse_dates=["date"])
+        except Exception:
+            continue
+        df = df.dropna(subset=["date", "ltp"]).sort_values("date")
+        if df.empty:
+            continue
+        last_date = df.iloc[-1]["date"]
+        last_price = float(df.iloc[-1]["ltp"])
+        if last_price <= 0:
+            continue
+        target_date = last_date - pd.Timedelta(days=days)
+        past = df[df["date"] <= target_date]
+        if past.empty:
+            continue
+        past_price = float(past.iloc[-1]["ltp"])
+        if past_price <= 0:
+            continue
+
+        market_cap = None
+        fpath = DATA_DIR / "company-wise" / symbol / "fundamentals.json"
+        if fpath.exists():
+            try:
+                market_cap = json.loads(fpath.read_text()).get("market_cap")
+            except Exception:
+                market_cap = None
+
+        candidates.append({
+            "symbol": symbol,
+            "name": c["name"],
+            "price": round(last_price, 2),
+            "pct_change": round((last_price / past_price - 1) * 100, 2),
+            "market_cap": market_cap,
+            "last_date": last_date,
+            "target_date": target_date,
+        })
+
+    candidates.sort(key=lambda r: -(r["market_cap"] or 0))
+    candidates = candidates[:BUBBLE_TOP_N]
+
+    results = []
+    for r in candidates:
+        display_pct = r["pct_change"]
+        try:
+            cagr_result = calculate_cagr(
+                symbol=r["symbol"],
+                start_date=r["target_date"].date(),
+                initial_investment=100_000,
+                end_date=r["last_date"].date(),
+            )
+            if "error" not in cagr_result:
+                if use_annualized:
+                    display_pct = cagr_result.get("xirr_pct", cagr_result.get("cagr_pct"))
+                else:
+                    total_invested = cagr_result["total_invested"]
+                    display_pct = (cagr_result["todays_value"] / total_invested - 1) * 100
+                display_pct = round(display_pct, 2)
+        except Exception:
+            pass  # fall back to raw price % change for this symbol
+
+        results.append({
+            "symbol": r["symbol"],
+            "name": r["name"],
+            "price": r["price"],
+            "pct_change": r["pct_change"],
+            "cagr_pct": display_pct,
+            "is_cagr": use_annualized,
+            "market_cap": r["market_cap"],
+            "last_date": str(r["last_date"].date()),
+        })
+    return results
+
+
 def build_adjusted_series(symbol: str, df: pd.DataFrame) -> list:
     """Bonus/right/cash-adjusted wealth-index series for a company.
 
@@ -791,6 +899,14 @@ class Handler(BaseHTTPRequestHandler):
                     self._send_json({"error": f"No price data found for {symbol}"})
                 except Exception as ex:
                     self._send_json({"error": str(ex)})
+        elif self.path.startswith("/bubbles"):
+            from urllib.parse import urlparse, parse_qs
+            qs = parse_qs(urlparse(self.path).query)
+            period = qs.get("period", ["1m"])[0].strip().lower()
+            if period not in BUBBLE_PERIOD_DAYS:
+                self._send_json({"error": f"Invalid period. Use one of: {', '.join(BUBBLE_PERIOD_DAYS)}"})
+            else:
+                self._send_json({"period": period, "data": get_bubbles_data(period)})
         elif self.path.startswith("/series"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
