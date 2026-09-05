@@ -852,7 +852,7 @@
       margin-bottom: 18px;
     }
     .bubbles-period-toggle { flex-wrap: wrap; gap: 2px; width: fit-content; }
-    #bubbles-size-toggle { margin-left: auto; }
+    #bubbles-mc-btn { margin-left: 6px; border-left: 1px solid var(--border); padding-left: 12px; }
     .bubbles-wrap {
       position: relative;
       width: 100%;

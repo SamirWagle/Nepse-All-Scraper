@@ -300,7 +300,7 @@
   <div class="page" id="page-bubbles">
     <div class="bb-page" style="max-width:1700px;">
       <div class="bb-title">🫧 NEPSE Bubbles</div>
-      <div class="bb-sub">Top 75 NEPSE stocks by market cap, sized by return magnitude, colored by % change (CAGR for periods over 1 year) · Data: local NEPSE history</div>
+      <div class="bb-sub">Top 75 NEPSE stocks by market cap · Period view: sized by return magnitude, green/red by % change (CAGR over 1 year) · MC view: sized by market cap, labelled with share of NEPSE market cap</div>
 
       <div class="bubbles-controls">
         <div class="bubbles-period-toggle opt-toggle" id="bubbles-period-toggle" role="group" aria-label="Bubble period">
@@ -319,10 +319,7 @@
           <button type="button" data-period="10y">10Y</button>
           <button type="button" data-period="11y">11Y</button>
           <button type="button" data-period="12y">12Y</button>
-        </div>
-        <div class="opt-toggle" id="bubbles-size-toggle" role="group" aria-label="Bubble size metric">
-          <button type="button" data-size="pct" class="active">Size: %</button>
-          <button type="button" data-size="mc">Size: MC</button>
+          <button type="button" id="bubbles-mc-btn" title="Market cap share of NEPSE — current snapshot, no time period">MC</button>
         </div>
       </div>
 

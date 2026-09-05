@@ -2159,7 +2159,12 @@
     let bubblesNodes = [];
     let bubblesAnimId = null;
     let bubblesHover = null;
-    let bubblesSizeMode = 'pct';        // 'pct' = size by return magnitude, 'mc' = by market cap
+    // 'period' = sized by return magnitude over the selected window;
+    // 'mc' = sized by market cap, labelled with share of NEPSE market cap.
+    // Market cap is a current snapshot, so MC carries no time window — the two
+    // modes are mutually exclusive in the UI.
+    let bubblesMode = 'period';
+    let bubblesTick = 0;                // drives the idle drift animation
     const BUBBLE_MIN_R = 9;
     const BUBBLE_GAP = 3;               // breathing room between bubbles
     const BUBBLE_FILL_RATIO = 0.62;     // share of the frame the pack should cover
@@ -2168,20 +2173,24 @@
       if (!bubblesInited) {
         bubblesInited = true;
         document.getElementById('bubbles-period-toggle').addEventListener('click', (e) => {
-          const btn = e.target.closest('button[data-period]');
+          const btn = e.target.closest('button');
           if (!btn) return;
-          document.querySelectorAll('#bubbles-period-toggle button').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          bubblesPeriod = btn.dataset.period;
-          fetchAndRenderBubbles(bubblesPeriod);
-        });
-        document.getElementById('bubbles-size-toggle').addEventListener('click', (e) => {
-          const btn = e.target.closest('button[data-size]');
-          if (!btn) return;
-          document.querySelectorAll('#bubbles-size-toggle button').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          bubblesSizeMode = btn.dataset.size;
-          sizeBubblesRadii();
+          const mcBtn = document.getElementById('bubbles-mc-btn');
+          if (btn.dataset.period) {
+            document.querySelectorAll('#bubbles-period-toggle button')
+              .forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            bubblesMode = 'period';
+            bubblesPeriod = btn.dataset.period;
+            fetchAndRenderBubbles(bubblesPeriod);
+          } else if (btn === mcBtn) {
+            // MC has no time window — deselect every period button.
+            document.querySelectorAll('#bubbles-period-toggle button')
+              .forEach(b => b.classList.remove('active'));
+            mcBtn.classList.add('active');
+            bubblesMode = 'mc';
+            fetchAndRenderBubbles('mc');
+          }
         });
         const canvas = document.getElementById('bubbles-canvas');
         canvas.addEventListener('mousemove', onBubblesHover);
@@ -2241,10 +2250,13 @@
         symbol: r.symbol,
         name: r.name.replace(/\s+/g, ' ').trim(),
         price: r.price,
-        pct: r.cagr_pct,
-        isCagr: r.is_cagr,
+        // In MC mode the label is share of NEPSE market cap, not a return.
+        pct: r.is_mc ? r.mc_share_pct : r.cagr_pct,
+        isCagr: !!r.is_cagr,
+        isMc: !!r.is_mc,
         marketCap: r.market_cap,
         r: BUBBLE_MIN_R,
+        phase: Math.random() * Math.PI * 2,   // desyncs each bubble's drift
         // Seed across the whole frame so collisions settle into a full-frame
         // pack instead of one blob in the middle.
         x: BUBBLE_MIN_R + Math.random() * Math.max(1, canvas.width - BUBBLE_MIN_R * 2),
@@ -2260,7 +2272,7 @@
     function sizeBubblesRadii() {
       if (bubblesNodes.length === 0) return;
       const canvas = document.getElementById('bubbles-canvas');
-      const metric = n => bubblesSizeMode === 'mc'
+      const metric = n => bubblesMode === 'mc'
         ? Math.max(n.marketCap || 0, 1)
         : Math.max(Math.abs(n.pct), 0.35);   // floor keeps flat movers visible
 
@@ -2278,10 +2290,13 @@
     function stepBubblesSim(cx, cy) {
       const n = bubblesNodes.length;
       const canvas = document.getElementById('bubbles-canvas');
-      // Very weak centering — enough to close gaps, too weak to clump.
+      bubblesTick += 1;
+      const t = bubblesTick * 0.012;
+      // Very weak centering — enough to close gaps, too weak to clump — plus a
+      // slow per-bubble drift so the pack keeps breathing instead of freezing.
       for (const a of bubblesNodes) {
-        a.vx += (cx - a.x) * 0.00025 + (Math.random() - 0.5) * 0.06;
-        a.vy += (cy - a.y) * 0.00035 + (Math.random() - 0.5) * 0.06;
+        a.vx += (cx - a.x) * 0.00025 + Math.cos(t + a.phase) * 0.05;
+        a.vy += (cy - a.y) * 0.00035 + Math.sin(t * 0.83 + a.phase) * 0.05;
       }
       // Pairwise collision resolution (n is capped at 75 — cheap enough at 60fps).
       for (let i = 0; i < n; i++) {
@@ -2315,24 +2330,27 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.textAlign = 'center';
 
+      const maxShare = bubblesMode === 'mc'
+        ? Math.max(...bubblesNodes.map(n => n.pct), 0.01)
+        : 0;
+
       for (const n of bubblesNodes) {
         const isUp = n.pct >= 0;
-        const rgb = isUp ? '46,220,110' : '255,45,45';
-        const mag = Math.min(Math.abs(n.pct) / 40, 1);
+        // MC is a weight, not a gain — colour it neutrally so it never reads
+        // as "everything is up".
+        const rgb = n.isMc ? '91,156,255' : (isUp ? '46,220,110' : '255,45,45');
+        const mag = n.isMc
+          ? Math.min(n.pct / maxShare, 1)
+          : Math.min(Math.abs(n.pct) / 40, 1);
         const hovered = n === bubblesHover;
 
-        // Dark core fading to the signal color at the rim.
-        const grad = ctx.createRadialGradient(n.x, n.y, n.r * 0.15, n.x, n.y, n.r);
-        grad.addColorStop(0, isUp ? 'rgba(3,20,10,0.98)' : 'rgba(26,4,4,0.98)');
-        grad.addColorStop(0.72, `rgba(${rgb},${0.10 + mag * 0.12})`);
-        grad.addColorStop(1, `rgba(${rgb},${0.30 + mag * 0.30})`);
-
+        // Black interior — only the ring and its glow carry the color.
         ctx.save();
         ctx.shadowColor = `rgba(${rgb},${0.5 + mag * 0.5})`;
         ctx.shadowBlur = 8 + mag * 22 + (hovered ? 12 : 0);
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
+        ctx.fillStyle = '#000';
         ctx.fill();
         ctx.lineWidth = Math.max(2, n.r * 0.055) + (hovered ? 2 : 0);
         ctx.strokeStyle = hovered ? '#fff' : `rgba(${rgb},${0.75 + mag * 0.25})`;
@@ -2341,9 +2359,11 @@
 
         if (n.r < 11) continue;   // too small for any legible label
 
-        const pctStr = (isUp ? '+' : '') + (Math.abs(n.pct) >= 100
-          ? Math.round(n.pct).toLocaleString('en-US')
-          : n.pct.toFixed(1)) + '%';
+        const pctStr = n.isMc
+          ? n.pct.toFixed(n.pct >= 1 ? 1 : 2) + '%'
+          : (isUp ? '+' : '') + (Math.abs(n.pct) >= 100
+              ? Math.round(n.pct).toLocaleString('en-US')
+              : n.pct.toFixed(1)) + '%';
 
         ctx.fillStyle = '#fff';
         if (n.r < 20) {
@@ -2398,9 +2418,11 @@
       bubblesHover = hit;
       if (!hit) { tooltip.hidden = true; return; }
       tooltip.hidden = false;
-      const priceStr = hit.price.toLocaleString('en-US', { maximumFractionDigits: hit.price < 10 ? 2 : 1 });
-      const pctLabel = hit.isCagr ? 'CAGR' : 'Change';
-      tooltip.innerHTML = `<strong>${esc(hit.symbol)}</strong> — ${esc(hit.name)}<br>Rs. ${priceStr} · ${pctLabel} ${(hit.pct >= 0 ? '+' : '') + hit.pct.toFixed(2)}%`;
+      const priceStr = (hit.price || 0).toLocaleString('en-US', { maximumFractionDigits: hit.price < 10 ? 2 : 1 });
+      const detail = hit.isMc
+        ? `${hit.pct.toFixed(2)}% of NEPSE market cap`
+        : `${hit.isCagr ? 'CAGR' : 'Change'} ${(hit.pct >= 0 ? '+' : '') + hit.pct.toFixed(2)}%`;
+      tooltip.innerHTML = `<strong>${esc(hit.symbol)}</strong> — ${esc(hit.name)}<br>Rs. ${priceStr} · ${detail}`;
       let left = mx + 14, top = my + 14;
       if (left + 240 > canvas.width) left = mx - 254;
       tooltip.style.left = left + 'px';

@@ -555,6 +555,45 @@ BUBBLE_PERIOD_DAYS = {
 BUBBLE_TOP_N = 75
 
 
+def get_bubbles_mc_data() -> list:
+    """Each company's share of total NEPSE market cap, for the bubble map's MC mode.
+
+    Market cap is a point-in-time snapshot from fundamentals.json, so this mode
+    is inherently "as of the last scrape" and carries no time window at all —
+    which is why the UI treats MC and the period buttons as mutually exclusive.
+    The denominator is every company we hold a market cap for, so the share is
+    of covered NEPSE market cap.
+    """
+    companies = []
+    for c in _load_companies():
+        fpath = DATA_DIR / "company-wise" / c["symbol"] / "fundamentals.json"
+        if not fpath.exists():
+            continue
+        try:
+            fund = json.loads(fpath.read_text())
+        except Exception:
+            continue
+        market_cap = fund.get("market_cap")
+        if not market_cap or market_cap <= 0:
+            continue
+        companies.append({
+            "symbol": c["symbol"],
+            "name": c["name"],
+            "price": fund.get("market_price"),
+            "market_cap": market_cap,
+            "last_date": (fund.get("scraped_at") or "")[:10],
+        })
+
+    total_mc = sum(c["market_cap"] for c in companies)
+    companies.sort(key=lambda c: -c["market_cap"])
+
+    results = []
+    for c in companies[:BUBBLE_TOP_N]:
+        share = (c["market_cap"] / total_mc * 100) if total_mc else 0
+        results.append({**c, "mc_share_pct": round(share, 2), "is_mc": True})
+    return results
+
+
 def get_bubbles_data(period: str) -> list:
     """Total return % (or annualized CAGR/XIRR) + market cap, for the bubble map.
 
@@ -903,8 +942,10 @@ class Handler(BaseHTTPRequestHandler):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
             period = qs.get("period", ["1m"])[0].strip().lower()
-            if period not in BUBBLE_PERIOD_DAYS:
-                self._send_json({"error": f"Invalid period. Use one of: {', '.join(BUBBLE_PERIOD_DAYS)}"})
+            if period == "mc":
+                self._send_json({"period": "mc", "data": get_bubbles_mc_data()})
+            elif period not in BUBBLE_PERIOD_DAYS:
+                self._send_json({"error": f"Invalid period. Use one of: mc, {', '.join(BUBBLE_PERIOD_DAYS)}"})
             else:
                 self._send_json({"period": period, "data": get_bubbles_data(period)})
         elif self.path.startswith("/series"):
