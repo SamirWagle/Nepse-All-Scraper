@@ -2167,7 +2167,8 @@
     let bubblesTick = 0;                // drives the idle drift animation
     const BUBBLE_MIN_R = 9;
     const BUBBLE_GAP = 3;               // breathing room between bubbles
-    const BUBBLE_FILL_RATIO = 0.62;     // share of the frame the pack should cover
+    const BUBBLE_FILL_RATIO = 0.58;     // share of the frame the pack should cover
+    const BUBBLE_MAX_SPEED = 0.55;      // px/frame — a slow float, never a jitter
 
     function initBubblesPage() {
       if (!bubblesInited) {
@@ -2291,14 +2292,18 @@
       const n = bubblesNodes.length;
       const canvas = document.getElementById('bubbles-canvas');
       bubblesTick += 1;
-      const t = bubblesTick * 0.012;
-      // Very weak centering — enough to close gaps, too weak to clump — plus a
-      // slow per-bubble drift so the pack keeps breathing instead of freezing.
+      const t = bubblesTick * 0.008;
+
       for (const a of bubblesNodes) {
-        a.vx += (cx - a.x) * 0.00025 + Math.cos(t + a.phase) * 0.05;
-        a.vy += (cy - a.y) * 0.00035 + Math.sin(t * 0.83 + a.phase) * 0.05;
+        // Slow per-bubble wander + a whisper of centering. Both are tiny; the
+        // light damping below is what lets them accumulate into visible drift.
+        a.vx += Math.cos(t + a.phase) * 0.018 + (cx - a.x) * 0.00006;
+        a.vy += Math.sin(t * 0.77 + a.phase) * 0.018 + (cy - a.y) * 0.00008;
       }
-      // Pairwise collision resolution (n is capped at 75 — cheap enough at 60fps).
+
+      // Collisions are resolved POSITIONALLY (push the pair apart) rather than
+      // by killing velocity — otherwise a tightly packed board spends all its
+      // motion fighting overlaps and freezes solid.
       for (let i = 0; i < n; i++) {
         const a = bubblesNodes[i];
         for (let j = i + 1; j < n; j++) {
@@ -2306,22 +2311,36 @@
           const dx = b.x - a.x, dy = b.y - a.y;
           const dist = Math.hypot(dx, dy) || 0.01;
           const minDist = a.r + b.r + BUBBLE_GAP;
-          if (dist < minDist) {
-            const overlap = (minDist - dist) / dist * 0.5;
-            const ox = dx * overlap, oy = dy * overlap;
-            a.vx -= ox; a.vy -= oy;
-            b.vx += ox; b.vy += oy;
+          if (dist >= minDist) continue;
+
+          const nx = dx / dist, ny = dy / dist;
+          const push = (minDist - dist) * 0.5;
+          a.x -= nx * push; a.y -= ny * push;
+          b.x += nx * push; b.y += ny * push;
+
+          // Bounce the closing component so they glide off each other.
+          const rel = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+          if (rel < 0) {
+            const imp = rel * 0.5;
+            a.vx += imp * nx; a.vy += imp * ny;
+            b.vx -= imp * nx; b.vy -= imp * ny;
           }
         }
       }
+
       for (const a of bubblesNodes) {
-        a.vx *= 0.86; a.vy *= 0.86;
+        a.vx *= 0.985; a.vy *= 0.985;   // light drag — motion persists
+        const speed = Math.hypot(a.vx, a.vy);
+        if (speed > BUBBLE_MAX_SPEED) {
+          a.vx = a.vx / speed * BUBBLE_MAX_SPEED;
+          a.vy = a.vy / speed * BUBBLE_MAX_SPEED;
+        }
         a.x += a.vx; a.y += a.vy;
         // Keep every bubble fully inside the frame.
-        if (a.x < a.r) { a.x = a.r; a.vx *= -0.4; }
-        if (a.x > canvas.width - a.r) { a.x = canvas.width - a.r; a.vx *= -0.4; }
-        if (a.y < a.r) { a.y = a.r; a.vy *= -0.4; }
-        if (a.y > canvas.height - a.r) { a.y = canvas.height - a.r; a.vy *= -0.4; }
+        if (a.x < a.r) { a.x = a.r; a.vx = Math.abs(a.vx) * 0.6; }
+        if (a.x > canvas.width - a.r) { a.x = canvas.width - a.r; a.vx = -Math.abs(a.vx) * 0.6; }
+        if (a.y < a.r) { a.y = a.r; a.vy = Math.abs(a.vy) * 0.6; }
+        if (a.y > canvas.height - a.r) { a.y = canvas.height - a.r; a.vy = -Math.abs(a.vy) * 0.6; }
       }
     }
 

@@ -554,6 +554,60 @@ BUBBLE_PERIOD_DAYS = {
 
 BUBBLE_TOP_N = 75
 
+# A company whose last trade is older than this (relative to the market's most
+# recent trading day) is delisted or merged away — NBB stopped trading on
+# 2022-01-13 when it merged into NABIL, but still carries a stale market cap in
+# fundamentals.json, so without this it lands in the top 75 showing its final
+# pre-merger year as if it were current.
+BUBBLE_STALE_DAYS = 30
+
+
+def _bubble_price_snapshot() -> tuple[list, "pd.Timestamp | None"]:
+    """Last price/date/market cap per company, plus the market's latest trade date."""
+    snapshot = []
+    for c in _load_companies():
+        csv_path = DATA_DIR / "company-wise" / c["symbol"] / "prices.csv"
+        if not csv_path.exists():
+            continue
+        try:
+            df = pd.read_csv(csv_path, usecols=["date", "ltp"], parse_dates=["date"])
+        except Exception:
+            continue
+        df = df.dropna(subset=["date", "ltp"]).sort_values("date")
+        if df.empty:
+            continue
+        last_price = float(df.iloc[-1]["ltp"])
+        if last_price <= 0:
+            continue
+
+        market_cap = None
+        fpath = DATA_DIR / "company-wise" / c["symbol"] / "fundamentals.json"
+        if fpath.exists():
+            try:
+                market_cap = json.loads(fpath.read_text()).get("market_cap")
+            except Exception:
+                market_cap = None
+
+        snapshot.append({
+            "symbol": c["symbol"],
+            "name": c["name"],
+            "prices": df,
+            "last_date": df.iloc[-1]["date"],
+            "price": round(last_price, 2),
+            "market_cap": market_cap,
+        })
+
+    market_last = max((s["last_date"] for s in snapshot), default=None)
+    return snapshot, market_last
+
+
+def _drop_stale(snapshot: list, market_last) -> list:
+    """Keep only companies still trading as of the market's latest session."""
+    if market_last is None:
+        return snapshot
+    cutoff = market_last - pd.Timedelta(days=BUBBLE_STALE_DAYS)
+    return [s for s in snapshot if s["last_date"] >= cutoff]
+
 
 def get_bubbles_mc_data() -> list:
     """Each company's share of total NEPSE market cap, for the bubble map's MC mode.
@@ -564,25 +618,18 @@ def get_bubbles_mc_data() -> list:
     The denominator is every company we hold a market cap for, so the share is
     of covered NEPSE market cap.
     """
-    companies = []
-    for c in _load_companies():
-        fpath = DATA_DIR / "company-wise" / c["symbol"] / "fundamentals.json"
-        if not fpath.exists():
-            continue
-        try:
-            fund = json.loads(fpath.read_text())
-        except Exception:
-            continue
-        market_cap = fund.get("market_cap")
-        if not market_cap or market_cap <= 0:
-            continue
-        companies.append({
-            "symbol": c["symbol"],
-            "name": c["name"],
-            "price": fund.get("market_price"),
-            "market_cap": market_cap,
-            "last_date": (fund.get("scraped_at") or "")[:10],
-        })
+    snapshot, market_last = _bubble_price_snapshot()
+    companies = [
+        {
+            "symbol": s["symbol"],
+            "name": s["name"],
+            "price": s["price"],
+            "market_cap": s["market_cap"],
+            "last_date": str(s["last_date"].date()),
+        }
+        for s in _drop_stale(snapshot, market_last)
+        if s["market_cap"] and s["market_cap"] > 0
+    ]
 
     total_mc = sum(c["market_cap"] for c in companies)
     companies.sort(key=lambda c: -c["market_cap"])
@@ -612,46 +659,30 @@ def get_bubbles_data(period: str) -> list:
     days = BUBBLE_PERIOD_DAYS.get(period, BUBBLE_PERIOD_DAYS["1m"])
     use_annualized = days > 365
 
+    snapshot, market_last = _bubble_price_snapshot()
+    if market_last is None:
+        return []
+    # The window is anchored to the MARKET's latest session, not each company's
+    # own last row — otherwise a delisted ticker reports its final year as if
+    # it were the current one.
+    target_date = market_last - pd.Timedelta(days=days)
+
     candidates = []
-    for c in _load_companies():
-        symbol = c["symbol"]
-        csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
-        if not csv_path.exists():
-            continue
-        try:
-            df = pd.read_csv(csv_path, usecols=["date", "ltp"], parse_dates=["date"])
-        except Exception:
-            continue
-        df = df.dropna(subset=["date", "ltp"]).sort_values("date")
-        if df.empty:
-            continue
-        last_date = df.iloc[-1]["date"]
-        last_price = float(df.iloc[-1]["ltp"])
-        if last_price <= 0:
-            continue
-        target_date = last_date - pd.Timedelta(days=days)
-        past = df[df["date"] <= target_date]
+    for s in _drop_stale(snapshot, market_last):
+        past = s["prices"][s["prices"]["date"] <= target_date]
         if past.empty:
             continue
         past_price = float(past.iloc[-1]["ltp"])
         if past_price <= 0:
             continue
 
-        market_cap = None
-        fpath = DATA_DIR / "company-wise" / symbol / "fundamentals.json"
-        if fpath.exists():
-            try:
-                market_cap = json.loads(fpath.read_text()).get("market_cap")
-            except Exception:
-                market_cap = None
-
         candidates.append({
-            "symbol": symbol,
-            "name": c["name"],
-            "price": round(last_price, 2),
-            "pct_change": round((last_price / past_price - 1) * 100, 2),
-            "market_cap": market_cap,
-            "last_date": last_date,
+            "symbol": s["symbol"],
+            "name": s["name"],
+            "price": s["price"],
+            "pct_change": round((s["price"] / past_price - 1) * 100, 2),
+            "market_cap": s["market_cap"],
+            "last_date": s["last_date"],
             "target_date": target_date,
         })
 
