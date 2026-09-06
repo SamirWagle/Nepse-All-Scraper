@@ -327,10 +327,17 @@ def _get_floorsheet_hidden(soup):
     return {i["name"]: i.get("value", "") for i in soup.find_all("input", type="hidden") if i.get("name")}
 
 
-def scrape_floorsheet(max_pages=None):
-    """Scrape today's full floorsheet from merolagani. Returns list of records."""
+def scrape_floorsheet(max_pages=None, for_date=None):
+    """Scrape a full floorsheet from merolagani. Returns list of records.
+
+    for_date (a datetime.date) fetches a past session via the page's date
+    filter; without it the page serves the latest session. The rows are stamped
+    with the requested date rather than today's, which is what makes backfill
+    possible — the original version hardcoded today and so could only ever
+    record the current day.
+    """
     import re
-    today = str(dt_date.today())
+    today = str(for_date or dt_date.today())
     fs_session = make_session()
     fs_session.headers.update({
         "Origin": "https://merolagani.com",
@@ -338,13 +345,23 @@ def scrape_floorsheet(max_pages=None):
         "Upgrade-Insecure-Requests": "1",
     })
 
-    log.info("Floorsheet: loading page...")
+    log.info(f"Floorsheet: loading page ({today})...")
     resp = fs_session.get(FLOORSHEET_URL, timeout=30)
     if resp.status_code != 200:
         log.error(f"Floorsheet: failed to load page ({resp.status_code})")
         return []
 
     soup = BeautifulSoup(resp.text, "html.parser")
+
+    if for_date is not None:
+        payload = _get_floorsheet_hidden(soup)
+        payload["ctl00$ContentPlaceHolder1$txtFloorsheetDateFilter"] = for_date.strftime("%m/%d/%Y")
+        payload["ctl00$ContentPlaceHolder1$lbtnSearchFloorsheet"] = "Search"
+        resp = fs_session.post(FLOORSHEET_URL, data=payload, timeout=60)
+        if resp.status_code != 200:
+            log.error(f"Floorsheet: date filter failed ({resp.status_code}) for {today}")
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
     all_records = []
     page_num = 1
 
@@ -392,6 +409,12 @@ def scrape_floorsheet(max_pages=None):
         payload = _get_floorsheet_hidden(soup)
         payload[hidden_input["name"]] = next_page_num
         payload[submit_input["name"]] = ""
+        # The date filter is a plain text input, not a hidden field, so it is
+        # NOT part of _get_floorsheet_hidden(). Without re-sending it every
+        # page, ASP.NET falls back to the latest session from page 2 onward —
+        # which silently filled a backfilled file with 98.8% wrong-day rows.
+        if for_date is not None:
+            payload["ctl00$ContentPlaceHolder1$txtFloorsheetDateFilter"] = for_date.strftime("%m/%d/%Y")
 
         time.sleep(random.uniform(1, 2))
         resp = fs_session.post(FLOORSHEET_URL, data=payload, timeout=45)
@@ -399,6 +422,19 @@ def scrape_floorsheet(max_pages=None):
             break
         soup = BeautifulSoup(resp.text, "html.parser")
         page_num += 1
+
+    # Contract numbers start with the trade date (20260101...), so they are an
+    # independent check that every row really belongs to the session we asked
+    # for. Trust the contract number over the page we think we requested.
+    if for_date is not None:
+        stamp = for_date.strftime("%Y%m%d")
+        clean = [r for r in all_records if str(r["contract_no"]).startswith(stamp)]
+        if len(clean) != len(all_records):
+            log.warning(
+                f"Floorsheet {today}: dropped {len(all_records) - len(clean)} rows "
+                f"belonging to another session (kept {len(clean)})"
+            )
+        all_records = clean
 
     log.info(f"Floorsheet: scraped {len(all_records)} records")
     return all_records
@@ -408,7 +444,8 @@ def save_floorsheet(records):
     """Save to data/floorsheet/floorsheet_YYYY-MM-DD.csv (overwrites if re-run same day)."""
     if not records:
         return
-    today = str(dt_date.today())
+    # Name the file after the session the rows belong to, not the day we ran.
+    today = str(records[0].get("date") or dt_date.today())
     ensure_dir(FLOORSHEET_DIR)
 
     csv_path = FLOORSHEET_DIR / f"floorsheet_{today}.csv"
