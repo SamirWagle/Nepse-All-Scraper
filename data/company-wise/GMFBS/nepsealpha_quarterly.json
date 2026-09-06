@@ -1,17 +1,6 @@
 {
   "symbol": "GMFBS",
-  "latest_quarter": "082-083Q4",
-  "roe_ttm_pct": 16.19,
-  "roa_ttm_pct": 1.67,
-  "net_margin_ttm_pct": 13.92,
-  "eps_ttm": 28.68,
-  "eps_ttm_yoy_pct": 2.27,
-  "bvps": 158.0,
-  "bvps_yoy_pct": -10.96,
-  "net_profit_till_qtr": 4.35,
-  "net_profit_till_qtr_yoy_pct": 2.27,
-  "revenue_till_qtr": 31.23,
-  "revenue_till_qtr_yoy_pct": -5.69,
-  "scraped_at": "2026-08-30T18:16:31",
+  "latest_quarter": null,
+  "scraped_at": "2026-09-06T18:15:08",
   "source": "nepsealpha.com"
 }
