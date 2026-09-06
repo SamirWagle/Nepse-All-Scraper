@@ -63,3 +63,7 @@ Research/*.xlsx
 Research/Bull and bear research/
 Research/IPO Research/
 Research/
+
+# Floorsheet: trade-level data, ~4.4 MB per session. Backfilled locally;
+# committing it would grow .git by GBs permanently.
+data/floorsheet/
