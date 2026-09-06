@@ -22,10 +22,16 @@ def main():
     parser.add_argument("--skip-index", action="store_true", help="Skip the NEPSE index/sub-index history scrape.")
     parser.add_argument("--skip-alerts", action="store_true", help="Skip the Karma position-alarm check.")
     parser.add_argument("--skip-floorsheet", action="store_true", help="Skip today's floorsheet scrape.")
-    parser.add_argument("--skip-corporate-actions", action="store_true", help="Skip the dividend and right-share scrapes.")
+    parser.add_argument("--skip-corporate-actions", action="store_true", help="(default) Skip the dividend and right-share scrapes.")
+    parser.add_argument("--with-corporate-actions", action="store_true", help="Also re-crawl dividends and right shares (slow — hours; weekly job).")
 
     args = parser.parse_args()
-    
+
+    lock = _acquire_lock()
+    if lock is None:
+        print("Another daily run is already in progress — exiting.")
+        return
+
     manager = DailyScraperManager()
     
     priority_only = not args.all_companies
@@ -71,10 +77,15 @@ def main():
 
     # Dividends and right shares were CI-only too, so they died with the
     # workflow on 2026-05-09 alongside the floorsheet. Same treatment.
+    #
+    # These re-crawl EVERY company's full dividend/right-share history — data
+    # that changes a few times a year — and took 8h29m on 2026-08-31 alone.
+    # Nightly was never the right cadence, so they're opt-in now and run from a
+    # separate weekly job. Prices, index and floorsheet stay nightly.
     runner = str(repo / "scraper" / "run_github_actions.py")
-    if not args.skip_corporate_actions:
-        run_step("dividends", [sys.executable, runner, "--dividends"])
-        run_step("right shares", [sys.executable, runner, "--right-shares"])
+    if args.with_corporate_actions:
+        run_step("dividends", [sys.executable, runner, "--dividends"], timeout=4 * 3600)
+        run_step("right shares", [sys.executable, runner, "--right-shares"], timeout=4 * 3600)
 
     if not args.skip_alerts:
         run_step("karma alerts", [sys.executable, str(repo / "scripts" / "karma_alerts.py"), "watch"])
@@ -97,24 +108,69 @@ def _market_traded_today(repo: Path) -> bool:
     return _newest_price_date() == date.today()
 
 
-def run_step(name: str, cmd: list) -> None:
+def _acquire_lock():
+    """Hold an exclusive lock for the run, or return None if one is already held.
+
+    Without this, a run that overruns its schedule is joined by the next one and
+    they fight over the same CSVs.  The handle is returned (not closed) so the
+    lock lives as long as the process.
+    """
+    import fcntl
+
+    handle = open(Path(__file__).parent.parent / ".daily_run.lock", "w")
+    try:
+        fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        handle.close()
+        return None
+    handle.write(f"{os.getpid()}\n")
+    handle.flush()
+    return handle
+
+
+def run_step(name: str, cmd: list, timeout: int = 1800) -> None:
     """Run a follow-on step without letting its failure kill the rest of the run.
 
     A failure here is logged loudly rather than raised: yesterday's data plus a
     visible warning beats aborting the daily job, and the alarm step reports
     staleness on its own rather than giving a false all-clear.
+
+    The child gets its own process group so a timeout kills the whole tree.
+    subprocess.run() only kills the direct child, which is why the 2026-08-31
+    dividend step kept logging for 8 hours after "timed out after 30 min".
     """
+    import signal
     import subprocess
 
     print(f"\n=== {name} ===", flush=True)
+    proc = None
     try:
-        result = subprocess.run(cmd, timeout=1800)
-        if result.returncode != 0:
-            print(f"WARNING: {name} exited {result.returncode}. Data may be stale.")
+        proc = subprocess.Popen(cmd, start_new_session=True)
+        returncode = proc.wait(timeout=timeout)
+        if returncode != 0:
+            print(f"WARNING: {name} exited {returncode}. Data may be stale.")
     except subprocess.TimeoutExpired:
-        print(f"WARNING: {name} timed out after 30 min. Data may be stale.")
+        _kill_tree(proc, signal.SIGTERM)
+        try:
+            proc.wait(timeout=30)
+        except Exception:
+            _kill_tree(proc, signal.SIGKILL)
+        print(f"WARNING: {name} timed out after {timeout // 60} min (killed). Data may be stale.")
     except Exception as exc:
         print(f"WARNING: {name} failed: {exc}. Data may be stale.")
+
+
+def _kill_tree(proc, sig) -> None:
+    """Signal the child's whole process group; orphans are the thing to avoid."""
+    if proc is None:
+        return
+    try:
+        os.killpg(os.getpgid(proc.pid), sig)
+    except Exception:
+        try:
+            proc.kill()
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

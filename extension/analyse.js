@@ -2244,8 +2244,9 @@
     }
 
     function buildBubblesNodes(rows) {
-      const withCap = rows.filter(r => r.market_cap > 0);
-      const top = withCap.sort((a, b) => b.market_cap - a.market_cap).slice(0, 75);
+      // The server already picked and ranked the 75 — biggest movers in period
+      // mode, biggest companies in Market Cap mode. Don't re-rank here.
+      const top = rows.slice(0, 75);
       const canvas = document.getElementById('bubbles-canvas');
       bubblesNodes = top.map(r => ({
         symbol: r.symbol,

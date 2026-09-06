@@ -545,7 +545,7 @@ def get_company_trading_range(symbol: str) -> dict:
 
 
 BUBBLE_PERIOD_DAYS = {
-    "1d": 1, "1w": 7, "1m": 30,
+    "1d": 1, "1w": 7, "1m": 30, "6m": 182,
     "1y": 365, "2y": 730, "3y": 1095, "4y": 1460, "5y": 1825,
     "6y": 2190, "7y": 2555, "8y": 2920, "9y": 3285,
     "10y": 3650, "11y": 4015, "12y": 4380,
@@ -561,14 +561,56 @@ BUBBLE_TOP_N = 75
 # pre-merger year as if it were current.
 BUBBLE_STALE_DAYS = 30
 
+# The bubble map is for ordinary shares only. company_names.json is corrupted
+# for several listings ("Mega Mutual Fund-1" is stored as just "1"), so the
+# name-based classifier can't spot them — fundamentals.json's scraped `sector`
+# is the reliable signal, and its company_name is the clean one.
+BUBBLE_EXCLUDED_SECTORS = {"mutual fund", "corporate debenture", "promotor share", "promoter share"}
+
+
+_bubbles_cache: dict = {}
+_bubbles_cache_lock = threading.Lock()
+
+
+def _cached_bubbles(key: str, build):
+    """Memoize a bubble view for the process lifetime.
+
+    Ranking the whole live universe through the adjusted-return engine takes
+    ~10s for 1Y, and the underlying CSVs only change when the scrapers run —
+    so serve repeat clicks from memory. Restarting the engine clears it.
+    """
+    with _bubbles_cache_lock:
+        if key in _bubbles_cache:
+            return _bubbles_cache[key]
+    data = build()
+    with _bubbles_cache_lock:
+        _bubbles_cache[key] = data
+    return data
+
 
 def _bubble_price_snapshot() -> tuple[list, "pd.Timestamp | None"]:
-    """Last price/date/market cap per company, plus the market's latest trade date."""
+    """Last price/date/market cap per ordinary share, plus the market's latest trade date."""
     snapshot = []
     for c in _load_companies():
-        csv_path = DATA_DIR / "company-wise" / c["symbol"] / "prices.csv"
+        symbol = c["symbol"]
+        csv_path = DATA_DIR / "company-wise" / symbol / "prices.csv"
         if not csv_path.exists():
             continue
+
+        name = c["name"]
+        market_cap = None
+        fpath = DATA_DIR / "company-wise" / symbol / "fundamentals.json"
+        if fpath.exists():
+            try:
+                fund = json.loads(fpath.read_text())
+            except Exception:
+                fund = {}
+            if str(fund.get("sector") or "").strip().lower() in BUBBLE_EXCLUDED_SECTORS:
+                continue
+            market_cap = fund.get("market_cap")
+            if fund.get("company_name"):
+                name = str(fund["company_name"])
+
         try:
             df = pd.read_csv(csv_path, usecols=["date", "ltp"], parse_dates=["date"])
         except Exception:
@@ -580,17 +622,9 @@ def _bubble_price_snapshot() -> tuple[list, "pd.Timestamp | None"]:
         if last_price <= 0:
             continue
 
-        market_cap = None
-        fpath = DATA_DIR / "company-wise" / c["symbol"] / "fundamentals.json"
-        if fpath.exists():
-            try:
-                market_cap = json.loads(fpath.read_text()).get("market_cap")
-            except Exception:
-                market_cap = None
-
         snapshot.append({
-            "symbol": c["symbol"],
-            "name": c["name"],
+            "symbol": symbol,
+            "name": name,
             "prices": df,
             "last_date": df.iloc[-1]["date"],
             "price": round(last_price, 2),
@@ -653,8 +687,9 @@ def get_bubbles_data(period: str) -> list:
       - <=1y windows show the *raw* total return over that window (not
         annualized — annualizing a 1-day move is nonsensical).
       - >1y windows show the annualized CAGR/XIRR.
-    Only run over the top-N by market cap since the adjusted engine is much
-    heavier than a raw price lookup.
+    The returned top-N are the biggest movers by absolute return — the extreme
+    gainers AND losers — not the biggest companies, so the adjusted engine has
+    to run over every live company before the ranking can be done.
     """
     days = BUBBLE_PERIOD_DAYS.get(period, BUBBLE_PERIOD_DAYS["1m"])
     use_annualized = days > 365
@@ -686,9 +721,6 @@ def get_bubbles_data(period: str) -> list:
             "target_date": target_date,
         })
 
-    candidates.sort(key=lambda r: -(r["market_cap"] or 0))
-    candidates = candidates[:BUBBLE_TOP_N]
-
     results = []
     for r in candidates:
         display_pct = r["pct_change"]
@@ -719,7 +751,11 @@ def get_bubbles_data(period: str) -> list:
             "market_cap": r["market_cap"],
             "last_date": str(r["last_date"].date()),
         })
-    return results
+
+    # Biggest absolute movers first, so the board shows the extremes at both
+    # ends rather than simply the largest companies.
+    results.sort(key=lambda r: -abs(r["cagr_pct"]))
+    return results[:BUBBLE_TOP_N]
 
 
 def build_adjusted_series(symbol: str, df: pd.DataFrame) -> list:
@@ -974,11 +1010,12 @@ class Handler(BaseHTTPRequestHandler):
             qs = parse_qs(urlparse(self.path).query)
             period = qs.get("period", ["1m"])[0].strip().lower()
             if period == "mc":
-                self._send_json({"period": "mc", "data": get_bubbles_mc_data()})
+                self._send_json({"period": "mc", "data": _cached_bubbles("mc", get_bubbles_mc_data)})
             elif period not in BUBBLE_PERIOD_DAYS:
                 self._send_json({"error": f"Invalid period. Use one of: mc, {', '.join(BUBBLE_PERIOD_DAYS)}"})
             else:
-                self._send_json({"period": period, "data": get_bubbles_data(period)})
+                data = _cached_bubbles(period, lambda: get_bubbles_data(period))
+                self._send_json({"period": period, "data": data})
         elif self.path.startswith("/series"):
             from urllib.parse import urlparse, parse_qs
             qs = parse_qs(urlparse(self.path).query)
