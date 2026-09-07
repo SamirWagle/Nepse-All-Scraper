@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEPSE Bubbles</title>
+<meta name="description" content="Every NEPSE stock as a bubble — sized by return, coloured by gain or loss, from 1 day to 12 years.">
+<meta property="og:title" content="NEPSE Bubbles">
+<meta property="og:description" content="The 75 biggest movers on the Nepal Stock Exchange, 1 day to 12 years. Bonus, dividend and rights adjusted.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0e14;
+    --panel: #10141d;
+    --border: #1f2738;
+    --text: #e8ecf3;
+    --text-3: #8b95a7;
+    --accent: #5b9cff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1700px; margin: 0 auto; padding: 20px 18px 32px; }
+  header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  h1 { font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.2px; }
+  .sub { font-size: 12.5px; color: var(--text-3); line-height: 1.5; margin: 6px 0 16px; }
+  .sub strong { color: var(--text); font-weight: 600; }
+
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .toggle {
+    display: flex; flex-wrap: wrap; gap: 2px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 3px; width: fit-content;
+  }
+  .toggle button {
+    background: none; border: none; color: var(--text-3);
+    padding: 5px 11px; border-radius: 6px;
+    font: inherit; font-size: 12.5px; font-weight: 500;
+    cursor: pointer; white-space: nowrap;
+  }
+  .toggle button:hover { color: var(--text); }
+  .toggle button.active { background: #222a3a; color: #fff; }
+  #mc-btn { margin-left: 6px; border-left: 1px solid var(--border); padding-left: 12px; border-radius: 0 6px 6px 0; }
+
+  .stage {
+    position: relative; width: 100%; height: 74vh; min-height: 460px;
+    background: #000; border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; touch-action: pan-y;
+  }
+  canvas { display: block; width: 100%; height: 100%; }
+  .status {
+    position: absolute; inset: 0; display: flex; align-items: center;
+    justify-content: center; color: var(--text-3); font-size: 13px;
+    text-align: center; padding: 20px; pointer-events: none;
+  }
+  .tip {
+    position: absolute; pointer-events: none; z-index: 5;
+    background: #161d2c; border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 11px; font-size: 12.5px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5); max-width: 280px;
+  }
+  .tip .sym { font-weight: 700; }
+  .tip .co { color: var(--text-3); }
+
+  footer { margin-top: 14px; font-size: 11.5px; color: var(--text-3); line-height: 1.6; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; border: 2px solid; }
+  .up { border-color: #2edc6e; } .down { border-color: #ff2d2d; } .neutral { border-color: #5b9cff; }
+
+  @media (max-width: 640px) {
+    h1 { font-size: 18px; }
+    .stage { height: 68vh; min-height: 380px; }
+    .toggle button { padding: 5px 9px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🫧 NEPSE Bubbles</h1>
+  </header>
+  <div class="sub" id="subtitle">
+    The <strong>75 biggest movers</strong> on the Nepal Stock Exchange — bubble size is the size of the move, green is up, red is down.
+    Returns are adjusted for bonus shares, cash dividends and rights, and annualised (CAGR) for periods over one year.
+  </div>
+
+  <div class="controls">
+    <div class="toggle" id="period-toggle" role="group" aria-label="Period">
+      <button type="button" data-period="1d">1D</button>
+      <button type="button" data-period="1w">1W</button>
+      <button type="button" data-period="1m" class="active">1M</button>
+      <button type="button" data-period="6m">6M</button>
+      <button type="button" data-period="1y">1Y</button>
+      <button type="button" data-period="2y">2Y</button>
+      <button type="button" data-period="3y">3Y</button>
+      <button type="button" data-period="4y">4Y</button>
+      <button type="button" data-period="5y">5Y</button>
+      <button type="button" data-period="6y">6Y</button>
+      <button type="button" data-period="7y">7Y</button>
+      <button type="button" data-period="8y">8Y</button>
+      <button type="button" data-period="9y">9Y</button>
+      <button type="button" data-period="10y">10Y</button>
+      <button type="button" data-period="11y">11Y</button>
+      <button type="button" data-period="12y">12Y</button>
+      <button type="button" id="mc-btn">Market Cap</button>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot up"></i> Gain</span>
+    <span><i class="dot down"></i> Loss</span>
+    <span><i class="dot neutral"></i> Market cap share</span>
+    <span style="color:var(--text-3)">Tap or hover a bubble for details</span>
+  </div>
+
+  <div class="stage">
+    <canvas id="canvas"></canvas>
+    <div class="status" id="status">Loading…</div>
+    <div class="tip" id="tip" hidden></div>
+  </div>
+
+  <footer>
+    <div id="freshness">—</div>
+    <div style="margin-top:6px">
+      Data: local NEPSE price history (ShareSansar / Merolagani). Ordinary shares only — mutual funds, debentures and promoter shares excluded.
+      Not investment advice. Built with <a href="https://github.com/karmataklu-bot/Nepse-CAGR">Nepse-CAGR</a>.
+    </div>
+  </footer>
+</div>
+
+<script>
+// ── Bubble map ────────────────────────────────────────────────────────────
+// Physics and rendering lifted from the Nepse-CAGR extension; the only real
+// difference is that this fetches a precomputed JSON per period instead of
+// asking a local engine to compute one on demand.
+let nodes = [], mode = 'period', period = '1m', hover = null, animId = null, tick = 0;
+const MIN_R = 9, GAP = 3, FILL_RATIO = 0.58, MAX_SPEED = 0.55;
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const statusEl = document.getElementById('status');
+const tipEl = document.getElementById('tip');
+
+function sizeCanvas() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  canvas.dataset.w = rect.width;
+  canvas.dataset.h = rect.height;
+}
+const W = () => Number(canvas.dataset.w) || canvas.width;
+const H = () => Number(canvas.dataset.h) || canvas.height;
+
+async function load(p) {
+  if (animId) { cancelAnimationFrame(animId); animId = null; }
+  statusEl.textContent = 'Loading…';
+  statusEl.style.display = 'flex';
+  try {
+    const resp = await fetch(`data/bubbles_${p}.json`, { cache: 'no-cache' });
+    if (!resp.ok) throw new Error(`${resp.status}`);
+    const json = await resp.json();
+    build(json.data || []);
+    statusEl.style.display = 'none';
+    run();
+  } catch (err) {
+    statusEl.textContent = 'Could not load data for this period. Try another, or reload the page.';
+  }
+}
+
+function build(rows) {
+  nodes = rows.slice(0, 75).map(r => ({
+    symbol: r.symbol,
+    name: (r.name || '').replace(/\s+/g, ' ').trim(),
+    price: r.price,
+    pct: r.is_mc ? r.mc_share_pct : r.cagr_pct,
+    isCagr: !!r.is_cagr,
+    isMc: !!r.is_mc,
+    marketCap: r.market_cap,
+    r: MIN_R,
+    phase: Math.random() * Math.PI * 2,
+    x: MIN_R + Math.random() * Math.max(1, W() - MIN_R * 2),
+    y: MIN_R + Math.random() * Math.max(1, H() - MIN_R * 2),
+    vx: 0, vy: 0,
+  }));
+  sizeRadii();
+}
+
+// Radius ∝ sqrt(metric), scaled so the pack covers a fixed share of the frame.
+function sizeRadii() {
+  if (!nodes.length) return;
+  const metric = n => mode === 'mc' ? Math.max(n.marketCap || 0, 1) : Math.max(Math.abs(n.pct), 0.35);
+  const weights = nodes.map(n => Math.sqrt(metric(n)));
+  const sumSq = weights.reduce((s, w) => s + w * w, 0) || 1;
+  const k = Math.sqrt((FILL_RATIO * W() * H()) / (Math.PI * sumSq));
+  const maxR = Math.min(W(), H()) * 0.21;
+  nodes.forEach((n, i) => { n.r = Math.max(MIN_R, Math.min(maxR, k * weights[i])); });
+}
+
+function step() {
+  const cx = W() / 2, cy = H() / 2;
+  tick += 1;
+  const t = tick * 0.008;
+  for (const a of nodes) {
+    a.vx += Math.cos(t + a.phase) * 0.018 + (cx - a.x) * 0.00006;
+    a.vy += Math.sin(t * 0.77 + a.phase) * 0.018 + (cy - a.y) * 0.00008;
+  }
+  // Positional collision resolution — velocity-only would freeze a tight pack.
+  for (let i = 0; i < nodes.length; i++) {
+    const a = nodes[i];
+    for (let j = i + 1; j < nodes.length; j++) {
+      const b = nodes[j];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist = Math.hypot(dx, dy) || 0.01;
+      const minDist = a.r + b.r + GAP;
+      if (dist >= minDist) continue;
+      const nx = dx / dist, ny = dy / dist, push = (minDist - dist) * 0.5;
+      a.x -= nx * push; a.y -= ny * push;
+      b.x += nx * push; b.y += ny * push;
+      const rel = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+      if (rel < 0) {
+        const imp = rel * 0.5;
+        a.vx += imp * nx; a.vy += imp * ny;
+        b.vx -= imp * nx; b.vy -= imp * ny;
+      }
+    }
+  }
+  for (const a of nodes) {
+    a.vx *= 0.985; a.vy *= 0.985;
+    const sp = Math.hypot(a.vx, a.vy);
+    if (sp > MAX_SPEED) { a.vx = a.vx / sp * MAX_SPEED; a.vy = a.vy / sp * MAX_SPEED; }
+    a.x += a.vx; a.y += a.vy;
+    if (a.x < a.r) { a.x = a.r; a.vx = Math.abs(a.vx) * 0.6; }
+    if (a.x > W() - a.r) { a.x = W() - a.r; a.vx = -Math.abs(a.vx) * 0.6; }
+    if (a.y < a.r) { a.y = a.r; a.vy = Math.abs(a.vy) * 0.6; }
+    if (a.y > H() - a.r) { a.y = H() - a.r; a.vy = -Math.abs(a.vy) * 0.6; }
+  }
+}
+
+function draw() {
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W(), H());
+  ctx.textAlign = 'center';
+  const maxShare = mode === 'mc' ? Math.max(...nodes.map(n => n.pct), 0.01) : 0;
+
+  for (const n of nodes) {
+    const isUp = n.pct >= 0;
+    const rgb = n.isMc ? '91,156,255' : (isUp ? '46,220,110' : '255,45,45');
+    const mag = n.isMc ? Math.min(n.pct / maxShare, 1) : Math.min(Math.abs(n.pct) / 40, 1);
+    const hovered = n === hover;
+
+    ctx.save();
+    ctx.shadowColor = `rgba(${rgb},${0.5 + mag * 0.5})`;
+    ctx.shadowBlur = 8 + mag * 22 + (hovered ? 12 : 0);
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = '#000';
+    ctx.fill();
+    ctx.lineWidth = Math.max(2, n.r * 0.055) + (hovered ? 2 : 0);
+    ctx.strokeStyle = hovered ? '#fff' : `rgba(${rgb},${0.75 + mag * 0.25})`;
+    ctx.stroke();
+    ctx.restore();
+
+    if (n.r < 11) continue;
+    const pctStr = n.isMc
+      ? n.pct.toFixed(n.pct >= 1 ? 1 : 2) + '%'
+      : (isUp ? '+' : '') + (Math.abs(n.pct) >= 100 ? Math.round(n.pct).toLocaleString('en-US') : n.pct.toFixed(1)) + '%';
+
+    ctx.fillStyle = '#fff';
+    if (n.r < 20) {
+      ctx.font = `700 ${n.r * 0.42}px "IBM Plex Sans", sans-serif`;
+      ctx.fillText(n.symbol, n.x, n.y + n.r * 0.02);
+      ctx.font = `600 ${n.r * 0.34}px "IBM Plex Sans", sans-serif`;
+      ctx.fillText(pctStr, n.x, n.y + n.r * 0.45);
+      continue;
+    }
+    let symSize = n.r * 0.46;
+    ctx.font = `700 ${symSize}px "IBM Plex Sans", sans-serif`;
+    const maxTextW = n.r * 1.55, symW = ctx.measureText(n.symbol).width;
+    if (symW > maxTextW) {
+      symSize *= maxTextW / symW;
+      ctx.font = `700 ${symSize}px "IBM Plex Sans", sans-serif`;
+    }
+    ctx.fillText(n.symbol, n.x, n.y + symSize * 0.12);
+    ctx.font = `600 ${n.r * 0.32}px "IBM Plex Sans", sans-serif`;
+    ctx.fillText(pctStr, n.x, n.y + n.r * 0.52);
+  }
+}
+
+function run() {
+  const loop = () => { step(); draw(); animId = requestAnimationFrame(loop); };
+  loop();
+}
+
+// ── Interaction ───────────────────────────────────────────────────────────
+function hitTest(mx, my) {
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    if (Math.hypot(mx - nodes[i].x, my - nodes[i].y) <= nodes[i].r) return nodes[i];
+  }
+  return null;
+}
+
+function showTip(hit, mx, my) {
+  hover = hit;
+  if (!hit) { tipEl.hidden = true; return; }
+  const price = (hit.price || 0).toLocaleString('en-US', { maximumFractionDigits: hit.price < 10 ? 2 : 1 });
+  const detail = hit.isMc
+    ? `${hit.pct.toFixed(2)}% of NEPSE market cap`
+    : `${hit.isCagr ? 'CAGR' : 'Change'} ${(hit.pct >= 0 ? '+' : '') + hit.pct.toFixed(2)}%`;
+  tipEl.innerHTML = `<div><span class="sym">${hit.symbol}</span> <span class="co">— ${hit.name}</span></div>`
+                  + `<div>Rs. ${price} · ${detail}</div>`;
+  tipEl.hidden = false;
+  const tw = tipEl.offsetWidth || 220, th = tipEl.offsetHeight || 44;
+  let left = mx + 14, top = my + 14;
+  if (left + tw > W()) left = Math.max(4, mx - tw - 14);
+  if (top + th > H()) top = Math.max(4, my - th - 14);
+  tipEl.style.left = left + 'px';
+  tipEl.style.top = top + 'px';
+}
+
+canvas.addEventListener('mousemove', e => {
+  const r = canvas.getBoundingClientRect();
+  showTip(hitTest(e.clientX - r.left, e.clientY - r.top), e.clientX - r.left, e.clientY - r.top);
+});
+canvas.addEventListener('mouseleave', () => { hover = null; tipEl.hidden = true; });
+// Touch: tap a bubble to pin its tooltip, tap empty space to dismiss.
+canvas.addEventListener('touchstart', e => {
+  const t = e.touches[0], r = canvas.getBoundingClientRect();
+  const mx = t.clientX - r.left, my = t.clientY - r.top;
+  const hit = hitTest(mx, my);
+  if (hit) e.preventDefault();
+  showTip(hit, mx, my);
+}, { passive: false });
+
+document.getElementById('period-toggle').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  document.querySelectorAll('#period-toggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (btn.dataset.period) {
+    mode = 'period'; period = btn.dataset.period;
+    load(period);
+  } else {
+    mode = 'mc';
+    load('mc');
+  }
+});
+
+window.addEventListener('resize', () => { sizeCanvas(); sizeRadii(); });
+
+// ── Boot ──────────────────────────────────────────────────────────────────
+sizeCanvas();
+load(period);
+
+fetch('data/manifest.json', { cache: 'no-cache' })
+  .then(r => r.json())
+  .then(m => {
+    const el = document.getElementById('freshness');
+    const gen = m.generated_at ? new Date(m.generated_at).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '—';
+    el.textContent = `Last NEPSE session in data: ${m.last_session || '—'} · Updated ${gen}`;
+  })
+  .catch(() => {});
+</script>
+</body>
+</html>
