@@ -90,6 +90,10 @@ def main():
     if not args.skip_alerts:
         run_step("karma alerts", [sys.executable, str(repo / "scripts" / "karma_alerts.py"), "watch"])
 
+    # Refresh the public bubbles site from tonight's prices and push it. Runs
+    # after the scrapes so it publishes today's session, not yesterday's.
+    run_step("bubbles site", [sys.executable, str(repo / "scripts" / "publish_bubbles_site.py")])
+
     # Last word of the run: what is current and what is not. A step that dies
     # quietly still shows up here as a stale product.
     run_step("data freshness", [sys.executable, str(repo / "scripts" / "data_freshness.py")])
