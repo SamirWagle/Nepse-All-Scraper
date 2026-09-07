@@ -39,12 +39,24 @@ def trading_days(since: date) -> list:
     return sorted({d.date() for d in df["date"] if d.date() >= since})
 
 
-def already_have() -> set:
+def _dates_from(pattern: str) -> set:
     return {
         datetime.strptime(m.group(1), "%Y-%m-%d").date()
-        for p in FLOORSHEET_DIR.glob("floorsheet_*.csv")
+        for p in FLOORSHEET_DIR.glob(pattern)
         if (m := re.search(r"(\d{4}-\d\d-\d\d)", p.name))
     }
+
+
+def already_have() -> set:
+    """Sessions that don't need fetching: a real CSV, or confirmed no data.
+
+    Going back through 2015-2016, individual days return zero rows with no
+    pattern to it — 2015-07-01 and 2015-09-01 both work, 2015-08-01 doesn't —
+    so it isn't a clean "before date X" cutoff. Without a marker for the
+    confirmed-empty ones, the nightly job would retry the same unreachable
+    days every year forever and never finish backfilling.
+    """
+    return _dates_from("floorsheet_*.csv") | _dates_from("floorsheet_*.nodata")
 
 
 def main() -> int:
@@ -77,7 +89,7 @@ def main() -> int:
         print("Nothing to do.")
         return 0
 
-    done = failed = 0
+    done = confirmed_empty = failed = 0
     for i, day in enumerate(missing, 1):
         print(f"\n[{i}/{len(missing)}] {day}", flush=True)
         try:
@@ -88,17 +100,31 @@ def main() -> int:
             continue
 
         if not records:
-            # No rows: a holiday the index still lists, or the filter returned
-            # nothing. Leave no file so a later run retries it.
-            print(f"  no rows for {day} — skipped", flush=True)
-            failed += 1
-            continue
+            # A single empty response isn't trustworthy on its own — this data
+            # source returns zero rows for some genuinely-traded days with no
+            # visible pattern, which reads the same as a transient hiccup. A
+            # couple of retries filters out the hiccups; whatever still comes
+            # back empty gets a marker so future runs stop asking, instead of
+            # retrying the same unreachable day forever.
+            for attempt in range(2):
+                time.sleep(random.uniform(3, 5))
+                records = scrape_floorsheet(for_date=day)
+                if records:
+                    break
+            if not records:
+                (FLOORSHEET_DIR / f"floorsheet_{day.isoformat()}.nodata").touch()
+                print(f"  no data for {day} after retries — marked, will not retry", flush=True)
+                confirmed_empty += 1
+                continue
 
         save_floorsheet(records)
         done += 1
         time.sleep(random.uniform(2, 4))  # be a polite guest on their server
 
-    print(f"\nBackfill finished: {done} sessions saved, {failed} skipped/failed.")
+    print(
+        f"\nBackfill finished: {done} sessions saved, "
+        f"{confirmed_empty} confirmed no-data, {failed} failed (will retry)."
+    )
     return 0
 
 
