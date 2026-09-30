@@ -12,7 +12,7 @@ for **365 listed companies** — committed to this repo every weekday via GitHub
 [![Latest Scrape](https://img.shields.io/endpoint?url=https://samirwagle.github.io/Nepse-All-Scraper/docs/api/status.json&label=latest+scrape)](https://samirwagle.github.io/Nepse-All-Scraper/docs/api/status.json)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
 ![Data Source](https://img.shields.io/badge/Source-ShareSansar%20%7C%20Merolagani-orange)
-![License](https://img.shields.io/badge/License-Educational-green)
+![License](https://img.shields.io/badge/License-Not%20declared-lightgrey)
 ![Companies](https://img.shields.io/badge/Companies-365-purple)
 
 </div>
@@ -272,6 +272,11 @@ Want to help build Phase 3? **PRs are welcome.**
 > This project is for **educational purposes only**.  
 > Data is sourced from publicly available websites (ShareSansar, Merolagani).  
 > Not financial advice. Do your own research before making investment decisions.
+
+## License status
+
+No repository-wide software or data license is currently declared. Public access does
+not grant reuse rights. Source websites may impose separate terms on collected data.
 
 ---
 
